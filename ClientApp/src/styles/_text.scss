@@ -1,0 +1,21 @@
+// define default text-styling here
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+.text-left {
+    text-align: left;
+}
+.text-purple {
+    color: $purple;
+}
+.bold {
+    font-weight: bold;
+}
+
+.w-no-wrap {
+    white-space: nowrap;
+}

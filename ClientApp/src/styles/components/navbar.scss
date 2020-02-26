@@ -1,0 +1,10 @@
+.navbar {
+
+    text-align: center;
+    a {
+        color: $purple;
+        &:hover {
+            color: lighten($purple, 18%);
+        }
+    }
+}
