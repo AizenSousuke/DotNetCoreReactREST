@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using DotNetCoreReactREST.Repositories;
 
 namespace DotNetCoreReactREST
 {
@@ -24,6 +25,10 @@ namespace DotNetCoreReactREST
         {
             services.AddDbContext<AppDbContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // Add Repositories
+            services.AddScoped<IPostRepository, PostRepository>();
+            
             services.AddIdentityCore<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();
             services.AddControllersWithViews();
 
