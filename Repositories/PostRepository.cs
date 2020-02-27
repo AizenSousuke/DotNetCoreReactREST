@@ -35,17 +35,17 @@ namespace DotNetCoreReactREST.Repositories
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Post[]> GetPostByCategory(string category)
+        public IAsyncEnumerable<Post[]> GetPostByCategory(string category)
         {
             throw new NotImplementedException();
         }
 
-        public Post GetPostById(int postId)
+        public async Task<Post> GetPostById(int postId)
         {
-            throw new NotImplementedException();
+            return await _appDbContext.Posts.FindAsync(postId);
         }
 
-        public Post GetPostByIdAndCategory(int postId, string category)
+        public Task<Post> GetPostByIdAndCategory(int postId, string category)
         {
             throw new NotImplementedException();
         }
@@ -55,7 +55,7 @@ namespace DotNetCoreReactREST.Repositories
             _appDbContext.SaveChangesAsync();
         }
 
-        public void UpdatePost(Post post)
+        public Task<Post> UpdatePost(Post post)
         {
             throw new NotImplementedException();
         }
