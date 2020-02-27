@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29709.97
+VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCoreReactREST", "DotNetCoreReactREST.csproj", "{E213B884-91F8-470A-98EB-85C1D8ED3C81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetCoreReactREST", "DotNetCoreReactREST.csproj", "{14164204-0346-4115-8EA1-05BF1B09B24B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E213B884-91F8-470A-98EB-85C1D8ED3C81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E213B884-91F8-470A-98EB-85C1D8ED3C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E213B884-91F8-470A-98EB-85C1D8ED3C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E213B884-91F8-470A-98EB-85C1D8ED3C81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14164204-0346-4115-8EA1-05BF1B09B24B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14164204-0346-4115-8EA1-05BF1B09B24B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14164204-0346-4115-8EA1-05BF1B09B24B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14164204-0346-4115-8EA1-05BF1B09B24B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {CAD8F72C-0986-439B-B28A-C2C7A28D0D47}
+		SolutionGuid = {B65E8925-EB77-4F1C-905B-CEC0B643CE60}
 	EndGlobalSection
 EndGlobal
