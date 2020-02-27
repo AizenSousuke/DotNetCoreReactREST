@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Downloads\DotNetCoreReactREST-development\DotNetCoreReactREST.Data\DotNetCoreReactREST.Data.csproj" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

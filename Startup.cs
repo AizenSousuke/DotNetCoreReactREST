@@ -1,4 +1,4 @@
-using DotNetCoreReactREST.Data;
+using DotNetCoreReactREST.Models;
 using DotNetCoreReactREST.DbContexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

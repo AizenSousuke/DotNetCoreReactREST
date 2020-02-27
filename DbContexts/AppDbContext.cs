@@ -1,4 +1,4 @@
-﻿using DotNetCoreReactREST.Data;
+﻿using DotNetCoreReactREST.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
