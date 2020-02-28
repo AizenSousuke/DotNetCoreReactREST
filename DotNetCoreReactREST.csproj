@@ -16,13 +16,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,20 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200226225744_initial.cs" />
-    <Compile Remove="Migrations\20200226225744_initial.Designer.cs" />
-    <Compile Remove="Migrations\20200228151241_ChangedPost.cs" />
-    <Compile Remove="Migrations\20200228151241_ChangedPost.Designer.cs" />
-    <Compile Remove="Migrations\20200228151421_AddPost.cs" />
-    <Compile Remove="Migrations\20200228151421_AddPost.Designer.cs" />
-    <Compile Remove="Migrations\20200228151540_AddPost.cs" />
-    <Compile Remove="Migrations\20200228151540_AddPost.Designer.cs" />
-    <Compile Remove="Migrations\20200228151846_Initial.cs" />
-    <Compile Remove="Migrations\20200228151846_Initial.Designer.cs" />
-    <Compile Remove="Migrations\20200228152357_Initia.cs" />
-    <Compile Remove="Migrations\20200228152357_Initia.Designer.cs" />
-    <Compile Remove="Migrations\20200228152523_AddSeed.cs" />
-    <Compile Remove="Migrations\20200228152523_AddSeed.Designer.cs" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
