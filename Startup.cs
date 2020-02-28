@@ -30,8 +30,19 @@ namespace DotNetCoreReactREST
             services.AddScoped<IPostRepository, PostRepository>();
             
             services.AddIdentityCore<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();
-            services.AddControllersWithViews();
+            services.AddControllers();
+            //Cross Origin Requests
+            //AddPolicy("Name of policy")
+            services.AddCors(options => options.AddPolicy("AllowOpenOrigin", builder =>
+            {
 
+                builder.AllowAnyOrigin()
+                      //for specific origins - builder.WithOrigins("http://example.com",
+                      //"http://www.contoso.com");
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+
+            }));
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -45,6 +56,7 @@ namespace DotNetCoreReactREST
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors("AllowOpenOrigin");
             }
             else
             {
