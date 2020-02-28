@@ -4,14 +4,16 @@ using DotNetCoreReactREST.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DotNetCoreReactREST.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200228152412_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,14 +105,6 @@ namespace DotNetCoreReactREST.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Sed justo exerci takimata nulla labore nonumy autem eirmod no",
-                            Name = "Sample Category"
-                        });
                 });
 
             modelBuilder.Entity("DotNetCoreReactREST.Models.Comment", b =>
@@ -179,35 +173,6 @@ namespace DotNetCoreReactREST.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Posts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ApplicationUserId = 0,
-                            CategoryId = 1,
-                            Content = "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 2, 28, 23, 28, 0, 35, DateTimeKind.Local).AddTicks(8093),
-                            Title = "Autem nibh nulla nonumy lorem"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ApplicationUserId = 0,
-                            CategoryId = 1,
-                            Content = "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 2, 28, 23, 31, 0, 36, DateTimeKind.Local).AddTicks(4666),
-                            Title = "Autem nibh nulla nonumy lorem"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ApplicationUserId = 0,
-                            CategoryId = 1,
-                            Content = "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 2, 28, 23, 34, 0, 36, DateTimeKind.Local).AddTicks(4764),
-                            Title = "Autem nibh nulla nonumy lorem"
-                        });
                 });
 
             modelBuilder.Entity("DotNetCoreReactREST.Models.UpVote", b =>

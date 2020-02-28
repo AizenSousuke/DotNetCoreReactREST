@@ -32,6 +32,23 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20200226225744_initial.cs" />
+    <Compile Remove="Migrations\20200226225744_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200228151241_ChangedPost.cs" />
+    <Compile Remove="Migrations\20200228151241_ChangedPost.Designer.cs" />
+    <Compile Remove="Migrations\20200228151421_AddPost.cs" />
+    <Compile Remove="Migrations\20200228151421_AddPost.Designer.cs" />
+    <Compile Remove="Migrations\20200228151540_AddPost.cs" />
+    <Compile Remove="Migrations\20200228151540_AddPost.Designer.cs" />
+    <Compile Remove="Migrations\20200228151846_Initial.cs" />
+    <Compile Remove="Migrations\20200228151846_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200228152357_Initia.cs" />
+    <Compile Remove="Migrations\20200228152357_Initia.Designer.cs" />
+    <Compile Remove="Migrations\20200228152523_AddSeed.cs" />
+    <Compile Remove="Migrations\20200228152523_AddSeed.Designer.cs" />
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

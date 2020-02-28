@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DotNetCoreReactREST.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -177,7 +177,7 @@ namespace DotNetCoreReactREST.Migrations
                     Title = table.Column<string>(nullable: true),
                     ImageUrl = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Content = table.Column<long>(nullable: false),
+                    Content = table.Column<string>(nullable: true),
                     DateTime = table.Column<DateTime>(nullable: false),
                     ApplicationUserId = table.Column<int>(nullable: false),
                     ApplicationUserId1 = table.Column<string>(nullable: true)

@@ -12,7 +12,7 @@ namespace DotNetCoreReactREST.Models
         public string Title { get; set; }
         public string ImageUrl { get; set; }
         public string Description { get; set; }
-        public long Content { get; set; }
+        public string Content { get; set; }
         public DateTime DateTime { get; set; }
         public int ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
