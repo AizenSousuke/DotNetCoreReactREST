@@ -19,7 +19,8 @@ namespace DotNetCoreReactREST.Repositories
         {
           get
             {
-                throw new NotImplementedException();
+                IEnumerable<Post> Posts = _appDbContext.Posts;
+                return Posts;
             }
         }
 
@@ -40,9 +41,10 @@ namespace DotNetCoreReactREST.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<Post> GetPostById(int postId)
+        public Post GetPostById(int postId)
         {
-            return await _appDbContext.Posts.FindAsync(postId);
+            Post post = _appDbContext.Posts.Where(p => p.Id == postId).FirstOrDefault();
+            return post;
         }
 
         public Task<Post> GetPostByIdAndCategory(int postId, string category)

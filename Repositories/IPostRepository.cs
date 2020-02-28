@@ -10,7 +10,7 @@ namespace DotNetCoreReactREST.Repositories
     public interface IPostRepository
     {
         IEnumerable<Post> GetPosts { get; }
-        Task<Post> GetPostById(int postId);
+        Post GetPostById(int postId);
         IAsyncEnumerable<Post[]> GetPostByCategory(string category);
         Task<Post> GetPostByIdAndCategory(int postId, string category);
         void CreatePost(Post post);
