@@ -23,5 +23,23 @@ namespace DotNetCoreReactREST
         {
             return _postRepository.GetPosts;
         }
+
+        [HttpPost]
+        public ActionResult CreatePost([FromBody]Post post)
+        {
+            return Ok(_postRepository.CreatePost(post));
+        }
+
+        [HttpGet]
+        [Route("post/{postId}")]
+        public ActionResult GetPostById(int postId)
+        {
+            var post = _postRepository.GetPostById(postId);
+            if (post == null)
+            {
+                return NotFound();
+            }
+            return Ok(_postRepository.GetPostById(postId));
+        }
     }
 }

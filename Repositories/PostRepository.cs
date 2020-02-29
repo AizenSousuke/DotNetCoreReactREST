@@ -1,5 +1,6 @@
 ﻿using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,20 +16,27 @@ namespace DotNetCoreReactREST.Repositories
             this._appDbContext = appDbContext;
         }
 
+        public Post CreatePost(Post post)
+        {
+            post.DateTime = DateTime.Now;
+            _appDbContext.Posts.Add(post);
+            Save();
+            Post newPost = GetPosts.Last();
+            return newPost;
+        }
+
         public IEnumerable<Post> GetPosts
         {
-          get
+            get
             {
                 IEnumerable<Post> Posts = _appDbContext.Posts;
                 return Posts;
             }
         }
 
-        public void CreatePost(Post post)
+        public Task<Post> UpdatePost(Post post)
         {
-            post.DateTime = DateTime.Now;
-            _appDbContext.Posts.Add(post);
-            Save();
+            throw new NotImplementedException();
         }
 
         public void DeletePost(int postId)
@@ -52,14 +60,9 @@ namespace DotNetCoreReactREST.Repositories
             throw new NotImplementedException();
         }
 
-        public void Save()
+        public int Save()
         {
-            _appDbContext.SaveChangesAsync();
-        }
-
-        public Task<Post> UpdatePost(Post post)
-        {
-            throw new NotImplementedException();
+            return _appDbContext.SaveChanges();
         }
     }
 }

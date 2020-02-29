@@ -13,9 +13,9 @@ namespace DotNetCoreReactREST.Repositories
         Post GetPostById(int postId);
         IAsyncEnumerable<Post[]> GetPostByCategory(string category);
         Task<Post> GetPostByIdAndCategory(int postId, string category);
-        void CreatePost(Post post);
+        Post CreatePost(Post post);
         Task<Post> UpdatePost(Post post);
         void DeletePost(int postId);
-        void Save();
+        int Save();
     }
 }
