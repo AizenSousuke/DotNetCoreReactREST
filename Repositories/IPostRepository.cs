@@ -15,7 +15,7 @@ namespace DotNetCoreReactREST.Repositories
         Post GetPostByIdAndCategory(int postId, string category);
         Post CreatePost(Post post);
         Post UpdatePost(int postId, Post post);
-        void DeletePost(int postId);
+        bool DeletePost(int postId);
         bool Save();
     }
 }

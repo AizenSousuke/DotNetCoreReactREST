@@ -51,8 +51,8 @@ namespace DotNetCoreReactREST
             return Ok(_mapper.Map<PostDto>(postFromRepository));
         }
 
-        [HttpPatch(Name = "post/{postId}")]
-        [Route("post/{postId}")]
+        [HttpPatch(Name = "post/{postId:int}")]
+        [Route("post/{postId:int}")]
         public ActionResult UpdatePost([FromRoute]int postId, [FromBody]Post post)
         {
             if (_postRepository.GetPostById(postId) == null)
@@ -63,6 +63,17 @@ namespace DotNetCoreReactREST
             {
                 return Ok(_postRepository.UpdatePost(postId, post));
             };
+        }
+
+        [HttpDelete]
+        [Route("post/{postId:int}")]
+        public ActionResult DeletePost([FromRoute]int postId)
+        {
+            if (_postRepository.DeletePost(postId))
+            {
+                return Ok("Post Deleted");
+            }
+            return NotFound("There is nothing to delete.");
         }
     }
 }

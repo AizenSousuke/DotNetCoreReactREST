@@ -44,9 +44,15 @@ namespace DotNetCoreReactREST.Repositories
             return GetPostById(postId);
         }
 
-        public void DeletePost(int postId)
+        public bool DeletePost(int postId)
         {
-            throw new NotImplementedException();
+            Post post = GetPostById(postId);
+            if (post != null)
+            {
+                _appDbContext.Posts.Remove(post);
+                return Save();
+            }
+            return false;
         }
 
         public Post[] GetPostByCategory(string category)
