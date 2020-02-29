@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using DotNetCoreReactREST.Repositories;
+using AutoMapper;
+using System;
 
 namespace DotNetCoreReactREST
 {
@@ -28,7 +30,10 @@ namespace DotNetCoreReactREST
 
             // Add Repositories
             services.AddScoped<IPostRepository, PostRepository>();
-            
+
+            // Add AutoMapper to map object to object
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddIdentityCore<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();
             services.AddControllers();
             //Cross Origin Requests

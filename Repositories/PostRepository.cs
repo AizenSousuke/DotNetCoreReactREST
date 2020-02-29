@@ -34,9 +34,14 @@ namespace DotNetCoreReactREST.Repositories
             }
         }
 
-        public Task<Post> UpdatePost(Post post)
+        public Post UpdatePost(int postId, Post post)
         {
-            throw new NotImplementedException();
+            Post updatedPost = GetPostById(postId);
+            updatedPost.Title = post.Title;
+            updatedPost.Content = post.Content;
+            updatedPost.DateTime = DateTime.Now;
+            Save();
+            return GetPostById(postId);
         }
 
         public void DeletePost(int postId)
@@ -44,7 +49,7 @@ namespace DotNetCoreReactREST.Repositories
             throw new NotImplementedException();
         }
 
-        public IAsyncEnumerable<Post[]> GetPostByCategory(string category)
+        public Post[] GetPostByCategory(string category)
         {
             throw new NotImplementedException();
         }
@@ -55,14 +60,14 @@ namespace DotNetCoreReactREST.Repositories
             return post;
         }
 
-        public Task<Post> GetPostByIdAndCategory(int postId, string category)
+        public Post GetPostByIdAndCategory(int postId, string category)
         {
             throw new NotImplementedException();
         }
 
-        public int Save()
+        public bool Save()
         {
-            return _appDbContext.SaveChanges();
+            return (_appDbContext.SaveChanges() >= 0);
         }
     }
 }

@@ -11,11 +11,11 @@ namespace DotNetCoreReactREST.Repositories
     {
         IEnumerable<Post> GetPosts { get; }
         Post GetPostById(int postId);
-        IAsyncEnumerable<Post[]> GetPostByCategory(string category);
-        Task<Post> GetPostByIdAndCategory(int postId, string category);
+        Post[] GetPostByCategory(string category);
+        Post GetPostByIdAndCategory(int postId, string category);
         Post CreatePost(Post post);
-        Task<Post> UpdatePost(Post post);
+        Post UpdatePost(int postId, Post post);
         void DeletePost(int postId);
-        int Save();
+        bool Save();
     }
 }

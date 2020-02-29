@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DotNetCoreReactREST.Repositories;
+using AutoMapper;
 
 namespace DotNetCoreReactREST
 {
@@ -13,15 +14,11 @@ namespace DotNetCoreReactREST
     public class BlogController: ControllerBase
     {
         private readonly IPostRepository _postRepository;
-        public BlogController(IPostRepository postRepository)
+        private readonly IMapper _mapper;
+        public BlogController(IPostRepository postRepository, IMapper mapper)
         {
             _postRepository = postRepository;
-        }
-
-        [HttpGet]
-        public IEnumerable<Post> GetPost()
-        {
-            return _postRepository.GetPosts;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -31,15 +28,41 @@ namespace DotNetCoreReactREST
         }
 
         [HttpGet]
-        [Route("post/{postId}")]
-        public ActionResult GetPostById(int postId)
+        public ActionResult GetPost()
         {
-            var post = _postRepository.GetPostById(postId);
-            if (post == null)
+            IEnumerable<Post> postFromRepository = _postRepository.GetPosts;
+            if (postFromRepository == null)
             {
                 return NotFound();
             }
-            return Ok(_postRepository.GetPostById(postId));
+            return Ok(_mapper.Map<IEnumerable<PostDto>>(postFromRepository));
+        }
+
+        [HttpGet]
+        // Route will only match if postId can be casted as a int
+        [Route("post/{postId:int}")]
+        public ActionResult GetPostById(int postId)
+        {
+            var postFromRepository = _postRepository.GetPostById(postId);
+            if (postFromRepository == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<PostDto>(postFromRepository));
+        }
+
+        [HttpPatch(Name = "post/{postId}")]
+        [Route("post/{postId}")]
+        public ActionResult UpdatePost([FromRoute]int postId, [FromBody]Post post)
+        {
+            if (_postRepository.GetPostById(postId) == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(_postRepository.UpdatePost(postId, post));
+            };
         }
     }
 }
