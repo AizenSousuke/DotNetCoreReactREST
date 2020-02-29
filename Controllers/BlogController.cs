@@ -22,13 +22,13 @@ namespace DotNetCoreReactREST
         }
 
         [HttpPost]
-        public ActionResult CreatePost([FromBody]Post post)
+        public IActionResult CreatePost([FromBody]Post post)
         {
             return Ok(_postRepository.CreatePost(post));
         }
 
         [HttpGet]
-        public ActionResult GetPost()
+        public IActionResult GetPost()
         {
             IEnumerable<Post> postFromRepository = _postRepository.GetPosts;
             if (postFromRepository == null)
@@ -41,7 +41,7 @@ namespace DotNetCoreReactREST
         [HttpGet]
         // Route will only match if postId can be casted as a int
         [Route("post/{postId:int}")]
-        public ActionResult GetPostById(int postId)
+        public IActionResult GetPostById(int postId)
         {
             var postFromRepository = _postRepository.GetPostById(postId);
             if (postFromRepository == null)
@@ -53,7 +53,7 @@ namespace DotNetCoreReactREST
 
         [HttpPatch(Name = "post/{postId:int}")]
         [Route("post/{postId:int}")]
-        public ActionResult UpdatePost([FromRoute]int postId, [FromBody]Post post)
+        public IActionResult UpdatePost([FromRoute]int postId, [FromBody]Post post)
         {
             if (_postRepository.GetPostById(postId) == null)
             {
@@ -67,7 +67,7 @@ namespace DotNetCoreReactREST
 
         [HttpDelete]
         [Route("post/{postId:int}")]
-        public ActionResult DeletePost([FromRoute]int postId)
+        public IActionResult DeletePost([FromRoute]int postId)
         {
             if (_postRepository.DeletePost(postId))
             {
