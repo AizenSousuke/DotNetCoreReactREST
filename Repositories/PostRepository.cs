@@ -16,35 +16,32 @@ namespace DotNetCoreReactREST.Repositories
             this._appDbContext = appDbContext;
         }
 
-        public Post CreatePost(Post post)
+        public async Task<Post> CreatePostAsync(Post post)
         {
             post.DateTime = DateTime.Now;
-            _appDbContext.Posts.Add(post);
-            Save();
-            Post newPost = GetPosts.Last();
+            await _appDbContext.Posts.AddAsync(post);
+            await Save();
+            Post newPost = GetPosts().FirstOrDefault(p => p.Id == post.Id);
             return newPost;
         }
 
-        public IEnumerable<Post> GetPosts
+        public IEnumerable<Post> GetPosts()
         {
-            get
-            {
-                IEnumerable<Post> Posts = _appDbContext.Posts;
-                return Posts;
-            }
+            IEnumerable<Post> Posts = _appDbContext.Posts.OrderBy(p => p.Id);
+            return Posts;
         }
 
-        public Post UpdatePost(int postId, Post post)
+        public async Task<Post> UpdatePost(int postId, Post post)
         {
             Post updatedPost = GetPostById(postId);
             updatedPost.Title = post.Title;
             updatedPost.Content = post.Content;
             updatedPost.DateTime = DateTime.Now;
-            Save();
+            await Save();
             return GetPostById(postId);
         }
 
-        public bool DeletePost(int postId)
+        public Task<bool> DeletePost(int postId)
         {
             Post post = GetPostById(postId);
             if (post != null)
@@ -52,7 +49,7 @@ namespace DotNetCoreReactREST.Repositories
                 _appDbContext.Posts.Remove(post);
                 return Save();
             }
-            return false;
+            return Task.FromResult(false);
         }
 
         public Post[] GetPostByCategory(string category)
@@ -71,9 +68,10 @@ namespace DotNetCoreReactREST.Repositories
             throw new NotImplementedException();
         }
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            return (_appDbContext.SaveChanges() >= 0);
+            int result = await _appDbContext.SaveChangesAsync();
+            return (result >= 0);
         }
     }
 }

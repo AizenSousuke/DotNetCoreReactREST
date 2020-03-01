@@ -1,20 +1,19 @@
-﻿using DotNetCoreReactREST.Models;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using DotNetCoreReactREST.Models;
 using DotNetCoreReactREST.Repositories;
-using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BlogController: ControllerBase
+    public class BlogController : ControllerBase
     {
         private readonly IPostRepository _postRepository;
         private readonly IMapper _mapper;
+
         public BlogController(IPostRepository postRepository, IMapper mapper)
         {
             _postRepository = postRepository;
@@ -22,15 +21,16 @@ namespace DotNetCoreReactREST
         }
 
         [HttpPost]
-        public IActionResult CreatePost([FromBody]Post post)
+        public async Task<IActionResult> CreatePostAsync([FromBody]Post post)
         {
-            return Ok(_postRepository.CreatePost(post));
+            Post newPost = await _postRepository.CreatePostAsync(post);
+            return Ok(newPost);
         }
 
         [HttpGet]
         public IActionResult GetPost()
         {
-            IEnumerable<Post> postFromRepository = _postRepository.GetPosts;
+            IEnumerable<Post> postFromRepository = _postRepository.GetPosts();
             if (postFromRepository == null)
             {
                 return NotFound();
@@ -53,7 +53,7 @@ namespace DotNetCoreReactREST
 
         [HttpPatch(Name = "post/{postId:int}")]
         [Route("post/{postId:int}")]
-        public IActionResult UpdatePost([FromRoute]int postId, [FromBody]Post post)
+        public async Task<IActionResult> UpdatePost([FromRoute]int postId, [FromBody]Post post)
         {
             if (_postRepository.GetPostById(postId) == null)
             {
@@ -61,15 +61,15 @@ namespace DotNetCoreReactREST
             }
             else
             {
-                return Ok(_postRepository.UpdatePost(postId, post));
+                return Ok(await _postRepository.UpdatePost(postId, post));
             };
         }
 
         [HttpDelete]
         [Route("post/{postId:int}")]
-        public IActionResult DeletePost([FromRoute]int postId)
+        public async Task<IActionResult> DeletePost([FromRoute]int postId)
         {
-            if (_postRepository.DeletePost(postId))
+            if (await _postRepository.DeletePost(postId))
             {
                 return Ok("Post Deleted");
             }

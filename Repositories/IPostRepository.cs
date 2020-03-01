@@ -9,13 +9,13 @@ namespace DotNetCoreReactREST.Repositories
 {
     public interface IPostRepository
     {
-        IEnumerable<Post> GetPosts { get; }
+        IEnumerable<Post> GetPosts();
         Post GetPostById(int postId);
         Post[] GetPostByCategory(string category);
         Post GetPostByIdAndCategory(int postId, string category);
-        Post CreatePost(Post post);
-        Post UpdatePost(int postId, Post post);
-        bool DeletePost(int postId);
-        bool Save();
+        Task<Post> CreatePostAsync(Post post);
+        Task<Post> UpdatePost(int postId, Post post);
+        Task<bool> DeletePost(int postId);
+        Task<bool> Save();
     }
 }

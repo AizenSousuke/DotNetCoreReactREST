@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Models
 {
@@ -17,5 +18,10 @@ namespace DotNetCoreReactREST.Models
         public int ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public IEnumerable<Comment> Comments { get; set; } = new List<Comment>();
+
+        public static implicit operator Task<object>(Post v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
