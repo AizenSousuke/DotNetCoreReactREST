@@ -28,7 +28,21 @@ namespace DotNetCoreReactREST.DbContexts
             modelBuilder.Entity<Category>().HasData(new Category()
             {
                 Id = 1,
-                Name = "Sample Category",
+                Name = "Stet sit Category",
+                Description = "Sed justo exerci takimata nulla labore nonumy autem eirmod no"
+            });
+
+            modelBuilder.Entity<Category>().HasData(new Category()
+            {
+                Id = 2,
+                Name = "Aliquam consectetuer Category",
+                Description = "Sed justo exerci takimata nulla labore nonumy autem eirmod no"
+            });
+
+            modelBuilder.Entity<Category>().HasData(new Category()
+            {
+                Id = 3,
+                Name = "Et amet Category",
                 Description = "Sed justo exerci takimata nulla labore nonumy autem eirmod no"
             });
 
@@ -45,8 +59,8 @@ namespace DotNetCoreReactREST.DbContexts
             {
                 Id = 2,
                 CategoryId = 1,
-                Title = "Autem nibh nulla nonumy lorem",
-                Content = "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
+                Title = "Vero ipsum kasd in dolor",
+                Content = "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
                 DateTime = DateTime.Now.AddMinutes(3)
             });
 
@@ -54,8 +68,8 @@ namespace DotNetCoreReactREST.DbContexts
             {
                 Id = 3,
                 CategoryId = 1,
-                Title = "Autem nibh nulla nonumy lorem",
-                Content = "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
+                Title = "Eos dolores suscipit consetetur dolores sadipscing eos lorem",
+                Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
                 DateTime = DateTime.Now.AddMinutes(6)
             });
         }

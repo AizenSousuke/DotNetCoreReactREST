@@ -13,7 +13,7 @@ namespace DotNetCoreReactREST.Repositories
         private readonly AppDbContext _appDbContext;
         public PostRepository(AppDbContext appDbContext)
         {
-            this._appDbContext = appDbContext;
+            _appDbContext = appDbContext;
         }
 
         public async Task<Post> CreatePostAsync(Post post)
