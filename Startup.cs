@@ -30,6 +30,7 @@ namespace DotNetCoreReactREST
 
             // Add Repositories
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             // Add AutoMapper to map object to object
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
