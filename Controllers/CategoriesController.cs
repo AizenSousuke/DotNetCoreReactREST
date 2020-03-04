@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Models;
+using DotNetCoreReactREST.Repositories;
 
 namespace DotNetCoreReactREST.Controllers
 {
@@ -15,24 +16,26 @@ namespace DotNetCoreReactREST.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public CategoriesController(AppDbContext context)
+        public CategoriesController(AppDbContext context, ICategoryRepository categoryRepository)
         {
             _context = context;
+            _categoryRepository = categoryRepository;
         }
 
         // GET: api/Categories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            return await _categoryRepository.GetCategories();
         }
 
         // GET: api/Categories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _categoryRepository.GetCategory(id);
 
             if (category == null)
             {
@@ -57,7 +60,7 @@ namespace DotNetCoreReactREST.Controllers
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _categoryRepository.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -81,7 +84,7 @@ namespace DotNetCoreReactREST.Controllers
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
             _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
+            await _categoryRepository.SaveChangesAsync();
 
             return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
@@ -97,14 +100,14 @@ namespace DotNetCoreReactREST.Controllers
             }
 
             _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+            await _categoryRepository.SaveChangesAsync();
 
             return category;
         }
 
         private bool CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return _categoryRepository.CategoryExists(id);
         }
     }
 }
