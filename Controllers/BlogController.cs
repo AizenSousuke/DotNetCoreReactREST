@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using DotNetCoreReactREST.Models;
+using DotNetCoreReactREST.Dtos;
+using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

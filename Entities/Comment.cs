@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DotNetCoreReactREST.Models
+namespace DotNetCoreReactREST.Entities
 {
     public class Comment
     {

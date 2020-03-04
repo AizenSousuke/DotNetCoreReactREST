@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DotNetCoreReactREST.Models
+namespace DotNetCoreReactREST.Entities
 {
     public class Categories
     {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using DotNetCoreReactREST.Models;
+using DotNetCoreReactREST.Dtos.User;
+using DotNetCoreReactREST.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

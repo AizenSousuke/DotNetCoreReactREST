@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DotNetCoreReactREST.DbContexts;
-using DotNetCoreReactREST.Models;
+using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 
 namespace DotNetCoreReactREST.Controllers

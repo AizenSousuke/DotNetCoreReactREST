@@ -1,5 +1,5 @@
 ﻿using DotNetCoreReactREST.DbContexts;
-using DotNetCoreReactREST.Models;
+using DotNetCoreReactREST.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using DotNetCoreReactREST.Models;
+using DotNetCoreReactREST.Dtos.User;
+using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -63,17 +64,13 @@ namespace DotNetCoreReactREST.Controllers
                 return NotFound();
             }
             _mapper.Map(user, userFromRepo);
-            //is same code as this 
-            //var userToUpdate = _mapper.Map<UserForUpdateDto>(userFromRepo);
-            //userToUpdate = user;
-            //var updatedUser = _mapper.Map<ApplicationUser>(userToUpdate);
-            
+                        
             _userRepo.UpdateUser(userFromRepo);
             _userRepo.Save();
 
             return NoContent();
-
         }
+
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
