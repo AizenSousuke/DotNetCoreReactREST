@@ -6,13 +6,21 @@ using AutoMapper;
 using DotNetCoreReactREST.Dtos.User;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DotNetCoreReactREST.Controllers
 {
+    //TODO Add authentication
     [Route("api/Users")]
+    [ApiController]
     public class UsersController : Controller
     {
         private IMapper _mapper;
@@ -25,10 +33,10 @@ namespace DotNetCoreReactREST.Controllers
         }
         // GET: api/Users
         [HttpGet]
-        public ActionResult<IEnumerable<UserDto>>GetUsers()
+        public ActionResult<IEnumerable<UserDto>> GetUsers()
         {
             var userEntities = _userRepo.GetUsers();
-            if(userEntities == null)
+            if (userEntities == null)
             {
                 return NotFound();
             }
@@ -36,11 +44,11 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         // GET api/Users/5
-        [HttpGet("{userId}", Name ="GetUser")]
+        [HttpGet("{userId}", Name = "GetUser")]
         public ActionResult<UserDto> Get(string userId)
         {
             var userEntity = _userRepo.GetUserById(userId);
-            if(userEntity == null)
+            if (userEntity == null)
             {
                 return NotFound();
             }
@@ -49,33 +57,71 @@ namespace DotNetCoreReactREST.Controllers
 
         // POST api/Users
         [HttpPost]
-        public void Post([FromBody]UserForCreationDto user)
-        {
-            //TODO Add Authentication
+        public ActionResult<UserDto> Post([FromBody]UserForCreationDto user)
+        {           
+            var userToAdd = _mapper.Map<ApplicationUser>(user);
+            _userRepo.AddUser(userToAdd);
+            _userRepo.Save();
+            
+            var userToReturn = _mapper.Map<UserDto>(userToAdd);
+            return CreatedAtRoute("GetUser", new { userId = userToAdd.Id }, userToReturn);            
         }
 
         // PUT api/<controller>/5
         [HttpPut("{userId}")]
-        public ActionResult Put(string userId, [FromBody]UserForUpdateDto user)
+        public ActionResult UpdateUser(string userId, [FromBody]UserForUpdateDto user)
         {
             var userFromRepo = _userRepo.GetUserById(userId);
-            if(userFromRepo == null)
+            if (userFromRepo == null)
             {
                 return NotFound();
             }
             _mapper.Map(user, userFromRepo);
-                        
+
             _userRepo.UpdateUser(userFromRepo);
             _userRepo.Save();
 
             return NoContent();
         }
 
+        [HttpPatch("{userId}")]
+        public ActionResult PartiallyUpdateUser(string userId, 
+            JsonPatchDocument<UserForUpdateDto> patchDocument)
+        {
+            var userFromRepo = _userRepo.GetUserById(userId);
+            if (userFromRepo == null)
+            {
+                return NotFound();
+            }
+            var userToPatch = _mapper.Map<UserForUpdateDto>(userFromRepo);
+            patchDocument.ApplyTo(userToPatch);
+            
+            if (!TryValidateModel(userToPatch))
+            {
+                return ValidationProblem(ModelState); 
+            }
+
+            //following convention
+            _mapper.Map(userToPatch, userFromRepo);
+            _userRepo.UpdateUser(userFromRepo);
+            _userRepo.Save();
+
+            return NoContent();
+        }
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+
+        public override ActionResult ValidationProblem(
+            [ActionResultObjectValue] ModelStateDictionary modelStateDictionary)
+        {
+            var options = HttpContext.RequestServices
+                .GetRequiredService<IOptions<ApiBehaviorOptions>>();
+            return (ActionResult)options.Value.InvalidModelStateResponseFactory(ControllerContext);
         }
     }
 }

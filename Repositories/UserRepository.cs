@@ -1,5 +1,6 @@
 ﻿using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,24 +11,36 @@ namespace DotNetCoreReactREST.Repositories
     public class UserRepository : IUserRepository
     {
         private AppDbContext _context;
+        private UserManager<ApplicationUser> _userManager;
 
-        public UserRepository(AppDbContext context)
+        public UserRepository(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
         public void AddUser(ApplicationUser user)
         {
-            throw new NotImplementedException();
+            if(user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+            var tempPassword = "P@ssw0rd!" + Guid.NewGuid().ToString();
+            user.PasswordHash = tempPassword;
+            _context.Users.Add(user);
         }
 
-        public void DeleteUser(string userId)
+        public void DeleteUser(ApplicationUser user)
         {
-            throw new NotImplementedException();
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+            _context.Users.Remove(user);
         }
 
         public ApplicationUser GetUserById(string userId)
         {
-            if(String.IsNullOrWhiteSpace(userId))
+            if (String.IsNullOrWhiteSpace(userId))
             {
                 throw new ArgumentNullException(nameof(userId));
             }
@@ -36,12 +49,16 @@ namespace DotNetCoreReactREST.Repositories
 
         public IEnumerable<ApplicationUser> GetUsers()
         {
-            return _context.Users.ToList();
+            return _context.Users.OrderBy(u => u.IsAdmin)
+                .OrderBy(u => u.UserName).ToList();
         }
-
+        public async Task<IdentityResult> SaveUser(ApplicationUser user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
         public bool Save()
         {
-            throw new NotImplementedException();
+            return (_context.SaveChanges() >= 0);
         }
 
         public void UpdateUser(ApplicationUser user)
@@ -53,7 +70,12 @@ namespace DotNetCoreReactREST.Repositories
 
         public bool UserExists(string userId)
         {
-            throw new NotImplementedException();
+            if (String.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+
+            return _context.Users.Any(u => u.Id == userId);
         }
     }
 }

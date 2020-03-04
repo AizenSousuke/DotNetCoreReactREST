@@ -1,4 +1,5 @@
 ﻿using DotNetCoreReactREST.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace DotNetCoreReactREST.Repositories
         public ApplicationUser GetUserById(string userId);
         public void AddUser(ApplicationUser user);
         public void UpdateUser(ApplicationUser user);
-        public void DeleteUser(string userId);
+        public void DeleteUser(ApplicationUser user);
         public bool UserExists(string userId);
         public bool Save();
     }

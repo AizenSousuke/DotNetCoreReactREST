@@ -10,6 +10,9 @@ using Microsoft.Extensions.Hosting;
 using DotNetCoreReactREST.Repositories;
 using AutoMapper;
 using System;
+using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace DotNetCoreReactREST
 {
@@ -35,7 +38,39 @@ namespace DotNetCoreReactREST
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddIdentityCore<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();
-            services.AddControllers();
+            services.AddControllers(setupAction =>
+            {
+                setupAction.ReturnHttpNotAcceptable = true;
+
+            }).AddNewtonsoftJson(setupAction =>
+            {
+                setupAction.SerializerSettings.ContractResolver =
+                   new CamelCasePropertyNamesContractResolver();
+            })
+            //add support for xml
+            .AddXmlDataContractSerializerFormatters()
+           .ConfigureApiBehaviorOptions(setupAction =>
+           {
+               //if api modelstate is invalid, add problem details
+               setupAction.InvalidModelStateResponseFactory = context =>
+               {
+                   var problemDetails = new ValidationProblemDetails(context.ModelState)
+                   {
+                       Type = "",
+                       Title = "One or more model validation errors occurred.",
+                       Status = StatusCodes.Status422UnprocessableEntity,
+                       Detail = "See the errors property for details.",
+                       Instance = context.HttpContext.Request.Path
+                   };
+
+                   problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
+
+                   return new UnprocessableEntityObjectResult(problemDetails)
+                   {
+                       ContentTypes = { "application/problem+json" }
+                   };
+               };
+           });
             //Cross Origin Requests
             //AddPolicy("Name of policy")
             services.AddCors(options => options.AddPolicy("AllowOpenOrigin", builder =>
