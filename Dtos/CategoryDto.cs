@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using DotNetCoreReactREST.Models;
+using System.Collections.Generic;
 
-namespace DotNetCoreReactREST.Models
+namespace DotNetCoreReactREST.Dtos
 {
-    public class Category
+    public class CategoryDto
     {
+        // Public facing properties
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
