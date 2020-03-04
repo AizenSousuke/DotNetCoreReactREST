@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DotNetCoreReactREST.Entities
 {
     public class UpVote
     {
-        public int Id { get; set; } 
+        [Key]
+        public int Id { get; set; }
+        [Required]
         public bool IsLiked { get; set; }
+        [Required]
         public ApplicationUser ApplicationUser { get; set; }
+        [Required]
         public int ApplicationUserId { get; set; }
+        [Required]
         public int PostId { get; set; }
-        public Post Post { get; set; } 
+        [Required]
+        public Post Post { get; set; }
     }
 }

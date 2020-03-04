@@ -16,14 +16,21 @@ namespace DotNetCoreReactREST.Repositories
         {
             _appDbContext = appDbContext;
         }
+
         public bool CategoryExists(int id)
         {
             return _appDbContext.Categories.Any(e => e.Id == id);
         }
 
-        public Task<ActionResult<Category>> DeleteCategory(int id)
+        public async Task<int> DeleteCategory(int id)
         {
-            throw new NotImplementedException();
+            if (CategoryExists(id))
+            {
+                _appDbContext.Categories.Remove(await _appDbContext.Categories.FirstOrDefaultAsync(p => p.Id == id));
+                return await SaveChangesAsync();
+            }
+
+            return 0;
         }
 
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()

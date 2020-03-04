@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Entities
 {
     public class Post
     {
+        [Key]
         public int Id { get; set; }
         public Category Category { get; set; }
+        [Required]
         public int CategoryId { get; set; }
+        [Required]
+        [MaxLength(50)]
         public string Title { get; set; }
         public string ImageUrl { get; set; }
+        [MaxLength(250)]
         public string Description { get; set; }
+        [MaxLength(1000)]
         public string Content { get; set; }
         public DateTime DateTime { get; set; }
         public int ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public IEnumerable<Comment> Comments { get; set; } = new List<Comment>();
-
-        public static implicit operator Task<object>(Post v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

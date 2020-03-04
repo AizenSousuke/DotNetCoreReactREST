@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using DotNetCoreReactREST.Models;
+using System.Collections.Generic;
 
-namespace DotNetCoreReactREST.Entities
+namespace DotNetCoreReactREST.Dtos
 {
-    public class Category
+    public class CategoryDto
     {
-        [Key]
+        // Public facing properties
         public int Id { get; set; }
-        [Required]
-        [MaxLength(50)]
         public string Name { get; set; }
         public string Description { get; set; }
         public IEnumerable<Post> Posts { get; set; } = new List<Post>();
