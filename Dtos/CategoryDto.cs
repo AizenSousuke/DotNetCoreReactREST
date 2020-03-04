@@ -1,4 +1,4 @@
-﻿using DotNetCoreReactREST.Models;
+﻿using DotNetCoreReactREST.Entities;
 using System.Collections.Generic;
 
 namespace DotNetCoreReactREST.Dtos

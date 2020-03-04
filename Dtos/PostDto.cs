@@ -1,6 +1,7 @@
-﻿using System;
+﻿using DotNetCoreReactREST.Entities;
+using System;
 
-namespace DotNetCoreReactREST.Models
+namespace DotNetCoreReactREST.Dtos
 {
     public class PostDto
     {

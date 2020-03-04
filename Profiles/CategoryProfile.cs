@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DotNetCoreReactREST.Dtos;
-using DotNetCoreReactREST.Models;
+using DotNetCoreReactREST.Entities;
 
 namespace DotNetCoreReactREST.Profiles
 {
