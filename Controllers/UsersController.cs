@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using DotNetCoreReactREST.Dtos.User;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -58,13 +54,13 @@ namespace DotNetCoreReactREST.Controllers
         // POST api/Users
         [HttpPost]
         public ActionResult<UserDto> Post([FromBody]UserForCreationDto user)
-        {           
+        {
             var userToAdd = _mapper.Map<ApplicationUser>(user);
             _userRepo.AddUser(userToAdd);
             _userRepo.Save();
-            
+
             var userToReturn = _mapper.Map<UserDto>(userToAdd);
-            return CreatedAtRoute("GetUser", new { userId = userToAdd.Id }, userToReturn);            
+            return CreatedAtRoute("GetUser", new { userId = userToAdd.Id }, userToReturn);
         }
 
         // PUT api/<controller>/5
@@ -85,7 +81,7 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         [HttpPatch("{userId}")]
-        public ActionResult PartiallyUpdateUser(string userId, 
+        public ActionResult PartiallyUpdateUser(string userId,
             JsonPatchDocument<UserForUpdateDto> patchDocument)
         {
             var userFromRepo = _userRepo.GetUserById(userId);
@@ -95,10 +91,10 @@ namespace DotNetCoreReactREST.Controllers
             }
             var userToPatch = _mapper.Map<UserForUpdateDto>(userFromRepo);
             patchDocument.ApplyTo(userToPatch, ModelState);
-            
+
             if (!TryValidateModel(userToPatch))
             {
-                return ValidationProblem(ModelState); 
+                return ValidationProblem(ModelState);
             }
 
             //following convention
@@ -114,7 +110,7 @@ namespace DotNetCoreReactREST.Controllers
         public ActionResult Delete(string userId)
         {
             var userFromRepo = _userRepo.GetUserById(userId);
-            if(userFromRepo == null)
+            if (userFromRepo == null)
             {
                 return NotFound();
             }

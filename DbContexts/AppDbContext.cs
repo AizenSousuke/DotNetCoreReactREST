@@ -56,8 +56,8 @@ namespace DotNetCoreReactREST.DbContexts
             {
                 Id = 2,
                 CategoryId = 1,
-                Title = "Vero ipsum kasd in dolor",
-                Content = "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
+                Title = "Vero isd in dolor",
+                Content = "Sea ullamcorper dolores tempor aliquyam sitiet et nisl eos takimata te diam",
                 DateTime = DateTime.Now.AddMinutes(3)
             });
 
@@ -65,8 +65,8 @@ namespace DotNetCoreReactREST.DbContexts
             {
                 Id = 3,
                 CategoryId = 1,
-                Title = "Eos dolores suscipit consetetur dolores sadipscing eos lorem",
-                Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
+                Title = "Eos dolores suscipit consem",
+                Content = "Nihil cum sit sanctm imperdiet et nisl eos takimata te diam",
                 DateTime = DateTime.Now.AddMinutes(6)
             });
         }
