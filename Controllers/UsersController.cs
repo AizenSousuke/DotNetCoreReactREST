@@ -94,7 +94,7 @@ namespace DotNetCoreReactREST.Controllers
                 return NotFound();
             }
             var userToPatch = _mapper.Map<UserForUpdateDto>(userFromRepo);
-            patchDocument.ApplyTo(userToPatch);
+            patchDocument.ApplyTo(userToPatch, ModelState);
             
             if (!TryValidateModel(userToPatch))
             {
@@ -110,9 +110,17 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         // DELETE api/<controller>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{userId}")]
+        public ActionResult Delete(string userId)
         {
+            var userFromRepo = _userRepo.GetUserById(userId);
+            if(userFromRepo == null)
+            {
+                return NotFound();
+            }
+            _userRepo.DeleteUser(userFromRepo);
+            _userRepo.Save();
+            return NoContent();
         }
 
 

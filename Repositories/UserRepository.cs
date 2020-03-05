@@ -11,21 +11,18 @@ namespace DotNetCoreReactREST.Repositories
     public class UserRepository : IUserRepository
     {
         private AppDbContext _context;
-        private UserManager<ApplicationUser> _userManager;
 
         public UserRepository(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
         public void AddUser(ApplicationUser user)
         {
-            if(user == null)
+            if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            var tempPassword = "P@ssw0rd!" + Guid.NewGuid().ToString();
-            user.PasswordHash = tempPassword;
+            ///for testing
             _context.Users.Add(user);
         }
 
@@ -52,10 +49,7 @@ namespace DotNetCoreReactREST.Repositories
             return _context.Users.OrderBy(u => u.IsAdmin)
                 .OrderBy(u => u.UserName).ToList();
         }
-        public async Task<IdentityResult> SaveUser(ApplicationUser user)
-        {
-            return await _userManager.UpdateAsync(user);
-        }
+        
         public bool Save()
         {
             return (_context.SaveChanges() >= 0);

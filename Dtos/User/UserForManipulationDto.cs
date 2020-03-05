@@ -16,6 +16,6 @@ namespace DotNetCoreReactREST.Dtos.User
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Please type a password")]
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
     }
 }
