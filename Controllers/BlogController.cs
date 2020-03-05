@@ -4,6 +4,7 @@ using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -76,6 +77,12 @@ namespace DotNetCoreReactREST
                 {
                     return new BadRequestObjectResult(ModelState);
                 }
+
+                // Update time
+                oldPost.DateTime = DateTime.Now;
+
+                // Save
+                await _postRepository.Save();
 
                 return Ok(oldPost);
             };
