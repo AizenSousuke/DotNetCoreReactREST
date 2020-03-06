@@ -14,7 +14,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -32,6 +32,31 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200229054006_RemovedVoteClass.cs" />
+    <Compile Remove="Migrations\20200229054006_RemovedVoteClass.Designer.cs" />
+    <Compile Remove="Migrations\20200304042350_CategoryMigration.cs" />
+    <Compile Remove="Migrations\20200304042350_CategoryMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200305114144_UpdatedMigration.cs" />
+    <Compile Remove="Migrations\20200305114144_UpdatedMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200305114336_Initial.cs" />
+    <Compile Remove="Migrations\20200305114336_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200305114725_NewMigration.cs" />
+    <Compile Remove="Migrations\20200305114725_NewMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200305115106_FixAutomapper.cs" />
+    <Compile Remove="Migrations\20200305115106_FixAutomapper.Designer.cs" />
+    <Compile Remove="Migrations\20200305115331_Initial.cs" />
+    <Compile Remove="Migrations\20200305115331_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200305115918_Initial.cs" />
+    <Compile Remove="Migrations\20200305115918_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200305120605_Initial.cs" />
+    <Compile Remove="Migrations\20200305120605_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200305121349_Initial.cs" />
+    <Compile Remove="Migrations\20200305121349_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200305121951_AddedKey.cs" />
+    <Compile Remove="Migrations\20200305121951_AddedKey.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -1,12 +1,11 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace DotNetCoreReactREST.Entities
 {
     public class ApplicationUser : IdentityUser
-    { 
+    {
         //ID is string by default
         //username
         //password

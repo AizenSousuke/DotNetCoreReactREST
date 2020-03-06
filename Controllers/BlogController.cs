@@ -2,7 +2,9 @@
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -42,9 +44,9 @@ namespace DotNetCoreReactREST
         [HttpGet]
         // Route will only match if postId can be casted as a int
         [Route("post/{postId:int}")]
-        public IActionResult GetPostById(int postId)
+        public async Task<IActionResult> GetPostByIdAsync(int postId)
         {
-            var postFromRepository = _postRepository.GetPostById(postId);
+            Post postFromRepository = await _postRepository.GetPostByIdAsync(postId);
             if (postFromRepository == null)
             {
                 return NotFound();
@@ -54,15 +56,35 @@ namespace DotNetCoreReactREST
 
         [HttpPatch(Name = "post/{postId:int}")]
         [Route("post/{postId:int}")]
-        public async Task<IActionResult> UpdatePost([FromRoute]int postId, [FromBody]Post post)
+        public async Task<IActionResult> UpdatePost([FromRoute]int postId, [FromBody]JsonPatchDocument<Post> patchDocument)
         {
-            if (_postRepository.GetPostById(postId) == null)
+            if (!ModelState.IsValid)
+            {
+                return new BadRequestObjectResult(ModelState);
+            }
+
+            // Post to update
+            Post oldPost = await _postRepository.GetPostByIdAsync(postId);
+            if (oldPost == null)
             {
                 return NotFound();
             }
             else
             {
-                return Ok(await _postRepository.UpdatePost(postId, post));
+                patchDocument.ApplyTo(oldPost, ModelState);
+
+                if (!ModelState.IsValid)
+                {
+                    return new BadRequestObjectResult(ModelState);
+                }
+
+                // Update time
+                oldPost.DateTime = DateTime.Now;
+
+                // Save
+                await _postRepository.Save();
+
+                return Ok(oldPost);
             };
         }
 

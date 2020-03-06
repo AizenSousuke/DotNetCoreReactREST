@@ -1,6 +1,7 @@
 ﻿using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,19 +32,17 @@ namespace DotNetCoreReactREST.Repositories
             return Posts;
         }
 
-        public async Task<Post> UpdatePost(int postId, Post post)
+        public async Task<Post> UpdatePost(int postId, JsonPatchDocument post)
         {
-            Post updatedPost = GetPostById(postId);
-            updatedPost.Title = post.Title;
-            updatedPost.Content = post.Content;
-            updatedPost.DateTime = DateTime.Now;
+            Task<Post> oldPost = GetPostByIdAsync(postId);
+
             await Save();
-            return GetPostById(postId);
+            return GetPostByIdAsync(postId).Result;
         }
 
         public Task<bool> DeletePost(int postId)
         {
-            Post post = GetPostById(postId);
+            Post post = GetPostByIdAsync(postId).Result;
             if (post != null)
             {
                 _appDbContext.Posts.Remove(post);
@@ -57,10 +56,9 @@ namespace DotNetCoreReactREST.Repositories
             throw new NotImplementedException();
         }
 
-        public Post GetPostById(int postId)
+        public async Task<Post> GetPostByIdAsync(int postId)
         {
-            Post post = _appDbContext.Posts.Where(p => p.Id == postId).FirstOrDefault();
-            return post;
+            return await _appDbContext.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
         }
 
         public Post GetPostByIdAndCategory(int postId, string category)
