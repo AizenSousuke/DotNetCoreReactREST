@@ -1,6 +1,5 @@
 ﻿using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
-using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -48,8 +47,7 @@ namespace DotNetCoreReactREST.Repositories
         {
             return _context.Users.OrderBy(u => u.IsAdmin == true)
                 .OrderBy(u => u.UserName).ToList();
-        }
-               
+        }              
 
         public bool Save()
         {

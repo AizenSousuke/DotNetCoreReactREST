@@ -21,7 +21,9 @@ namespace DotNetCoreReactREST.DbContexts
             base.OnModelCreating(modelBuilder);
 
             // Seed data
-
+            modelBuilder.Entity<ApplicationUser>().HasData(
+                new ApplicationUser { Id = "1", UserName = "JohnDoe", PasswordHash = "password" },
+                new ApplicationUser { Id = "2", UserName = "Jane", PasswordHash = "password2" });
             modelBuilder.Entity<Category>().HasData(new Category()
             {
                 Id = 1,
@@ -47,6 +49,7 @@ namespace DotNetCoreReactREST.DbContexts
             {
                 Id = 1,
                 CategoryId = 1,
+                ApplicationUserId = "1",
                 Title = "Autem nibh nulla nonumy lorem",
                 Content = "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
                 DateTime = DateTime.Now
@@ -56,6 +59,7 @@ namespace DotNetCoreReactREST.DbContexts
             {
                 Id = 2,
                 CategoryId = 1,
+                ApplicationUserId = "1",
                 Title = "Vero ipsum kasd in dolor",
                 Content = "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
                 DateTime = DateTime.Now.AddMinutes(3)
@@ -65,6 +69,7 @@ namespace DotNetCoreReactREST.DbContexts
             {
                 Id = 3,
                 CategoryId = 1,
+                ApplicationUserId = "2",
                 Title = "Eos dolores suscipit consetetur dolores sadipscing eos lorem",
                 Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
                 DateTime = DateTime.Now.AddMinutes(6)

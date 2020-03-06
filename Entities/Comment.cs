@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotNetCoreReactREST.Entities
 {
     public class Comment
-    {
-        [Key]
+    {        
         public int Id { get; set; }
         [Required]
         [MaxLength(1000)]
@@ -15,7 +15,8 @@ namespace DotNetCoreReactREST.Entities
         public Post Post { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         [Required]
-        public int ApplicationUserId { get; set; }
+        [ForeignKey("ApplicationUser")]
+        public string ApplicationUserId { get; set; }
         public DateTime DateTime { get; set; } 
     }
 }

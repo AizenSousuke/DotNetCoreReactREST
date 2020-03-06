@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DotNetCoreReactREST.Migrations
 {
-    public partial class initial_normalizedUser_name : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,7 +53,7 @@ namespace DotNetCoreReactREST.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
                     Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -174,20 +174,19 @@ namespace DotNetCoreReactREST.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryId = table.Column<int>(nullable: false),
-                    Title = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: false),
                     ImageUrl = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(maxLength: 250, nullable: true),
+                    Content = table.Column<string>(maxLength: 1000, nullable: true),
                     DateTime = table.Column<DateTime>(nullable: false),
-                    ApplicationUserId = table.Column<int>(nullable: false),
-                    ApplicationUserId1 = table.Column<string>(nullable: true)
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Posts_AspNetUsers_ApplicationUserId1",
-                        column: x => x.ApplicationUserId1,
+                        name: "FK_Posts_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -205,20 +204,20 @@ namespace DotNetCoreReactREST.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<long>(nullable: false),
+                    Content = table.Column<string>(maxLength: 1000, nullable: false),
                     PostId = table.Column<int>(nullable: false),
-                    ApplicationUserId1 = table.Column<string>(nullable: true),
-                    ApplicationUserId = table.Column<int>(nullable: false)
+                    ApplicationUserId = table.Column<string>(nullable: false),
+                    DateTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_AspNetUsers_ApplicationUserId1",
-                        column: x => x.ApplicationUserId1,
+                        name: "FK_Comments_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comments_Posts_PostId",
                         column: x => x.PostId,
@@ -234,19 +233,18 @@ namespace DotNetCoreReactREST.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsLiked = table.Column<bool>(nullable: false),
-                    ApplicationUserId1 = table.Column<string>(nullable: true),
-                    ApplicationUserId = table.Column<int>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: false),
                     PostId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UpVotes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UpVotes_AspNetUsers_ApplicationUserId1",
-                        column: x => x.ApplicationUserId1,
+                        name: "FK_UpVotes_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UpVotes_Posts_PostId",
                         column: x => x.PostId,
@@ -256,24 +254,38 @@ namespace DotNetCoreReactREST.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "IsAdmin", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "1", 0, "2afb9a8e-2d5c-4f50-9826-2935a60ad00a", null, false, false, false, null, null, null, "password", null, false, "4429b983-4e75-47c2-8c7a-605480be09c6", false, "JohnDoe" },
+                    { "2", 0, "2656dde6-42cf-476f-b44a-9738153cdbc6", null, false, false, false, null, null, null, "password2", null, false, "c91284b5-d07e-431d-afbe-962cc74e73ff", false, "Jane" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "Description", "Name" },
-                values: new object[] { 1, "Sed justo exerci takimata nulla labore nonumy autem eirmod no", "Sample Category" });
+                values: new object[,]
+                {
+                    { 1, "Sed justo exerci takimata nulla labore nonumy autem eirmod no", "Stet sit Category" },
+                    { 2, "Sed justo exerci takimata nulla labore nonumy autem eirmod no", "Aliquam consectetuer Category" },
+                    { 3, "Sed justo exerci takimata nulla labore nonumy autem eirmod no", "Et amet Category" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Posts",
-                columns: new[] { "Id", "ApplicationUserId", "ApplicationUserId1", "CategoryId", "Content", "DateTime", "Description", "ImageUrl", "Title" },
-                values: new object[] { 1, 0, null, 1, "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 2, 28, 18, 18, 28, 577, DateTimeKind.Local).AddTicks(8053), null, null, "Autem nibh nulla nonumy lorem" });
+                columns: new[] { "Id", "ApplicationUserId", "CategoryId", "Content", "DateTime", "Description", "ImageUrl", "Title" },
+                values: new object[] { 1, "1", 1, "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 6, 1, 30, 7, 80, DateTimeKind.Local).AddTicks(3623), null, null, "Autem nibh nulla nonumy lorem" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
-                columns: new[] { "Id", "ApplicationUserId", "ApplicationUserId1", "CategoryId", "Content", "DateTime", "Description", "ImageUrl", "Title" },
-                values: new object[] { 2, 0, null, 1, "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 2, 28, 18, 21, 28, 581, DateTimeKind.Local).AddTicks(9947), null, null, "Autem nibh nulla nonumy lorem" });
+                columns: new[] { "Id", "ApplicationUserId", "CategoryId", "Content", "DateTime", "Description", "ImageUrl", "Title" },
+                values: new object[] { 2, "1", 1, "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 6, 1, 33, 7, 83, DateTimeKind.Local).AddTicks(3584), null, null, "Vero ipsum kasd in dolor" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
-                columns: new[] { "Id", "ApplicationUserId", "ApplicationUserId1", "CategoryId", "Content", "DateTime", "Description", "ImageUrl", "Title" },
-                values: new object[] { 3, 0, null, 1, "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 2, 28, 18, 24, 28, 582, DateTimeKind.Local).AddTicks(86), null, null, "Autem nibh nulla nonumy lorem" });
+                columns: new[] { "Id", "ApplicationUserId", "CategoryId", "Content", "DateTime", "Description", "ImageUrl", "Title" },
+                values: new object[] { 3, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 6, 1, 36, 7, 83, DateTimeKind.Local).AddTicks(3707), null, null, "Eos dolores suscipit consetetur dolores sadipscing eos lorem" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -315,9 +327,9 @@ namespace DotNetCoreReactREST.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_ApplicationUserId1",
+                name: "IX_Comments_ApplicationUserId",
                 table: "Comments",
-                column: "ApplicationUserId1");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_PostId",
@@ -325,9 +337,9 @@ namespace DotNetCoreReactREST.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_ApplicationUserId1",
+                name: "IX_Posts_ApplicationUserId",
                 table: "Posts",
-                column: "ApplicationUserId1");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_CategoryId",
@@ -335,9 +347,9 @@ namespace DotNetCoreReactREST.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UpVotes_ApplicationUserId1",
+                name: "IX_UpVotes_ApplicationUserId",
                 table: "UpVotes",
-                column: "ApplicationUserId1");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UpVotes_PostId",

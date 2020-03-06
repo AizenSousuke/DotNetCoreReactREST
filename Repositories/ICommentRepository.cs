@@ -8,7 +8,7 @@ namespace DotNetCoreReactREST.Repositories
 {
     public interface ICommentRepository
     {
-        public IEnumerable<Comment> GetComment();
+        public IEnumerable<Comment> GetAllComments();
         public Comment GetCommentById(int commentId);
         public void AddComment(Comment comment);
         public void UpdateComment(Comment comment);

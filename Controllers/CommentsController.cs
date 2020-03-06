@@ -2,51 +2,134 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using DotNetCoreReactREST.Dtos.Comment;
+using DotNetCoreReactREST.Dtos.User;
+using DotNetCoreReactREST.Entities;
+using DotNetCoreReactREST.Repositories;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace DotNetCoreReactREST.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users/{userId}/comments")]
     [ApiController]
     public class CommentsController : Controller
     {
         private ICommentRepository _commentRepo;
-        public CommentsController(ICommentRepository commentRepo)
+        private IMapper _mapper;
+
+        public CommentsController(ICommentRepository commentRepo, IMapper mapper)
         {
             _commentRepo = commentRepo;
+            _mapper = mapper;
         }
-        // GET: api/comments
+        // GET: api/users/{userId}/comments
         [HttpGet]
-        public ActionResult GetComments()
+        public ActionResult<IEnumerable<Comment>> GetComments()
         {
-           
+            var commentsFromRepo = _commentRepo.GetAllComments();
+            return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
         }
 
-        // GET api/comments/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET api//users/{userId}/comments/{commentId}
+        [HttpGet("{commentId}", Name = "GetComment")]
+        public ActionResult Comment(int commentId)
         {
-            return "value";
+            var commentFromRepo = _commentRepo.GetCommentById(commentId);
+            if (commentFromRepo == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<CommentDto>(commentFromRepo));
         }
 
-        // POST api/comments
+        // POST api/users/{userId}/comments
         [HttpPost]
-        public void Post([FromBody]string value)
+        public ActionResult<CommentDto> CreateComment(CommentForCreationDto comment)
         {
+            var commentToAdd = _mapper.Map<Comment>(comment);
+            _commentRepo.AddComment(commentToAdd);
+            _commentRepo.Save();
+
+            var commentToReturn = _mapper.Map<CommentDto>(commentToAdd);
+            return CreatedAtRoute("GetComment",
+                new { commentId = commentToReturn.Id },
+                commentToReturn);
         }
 
-        // PUT api/comments
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        // PUT api/users/{userId}/comments/{commentId}
+        [HttpPut("{commentId}")]
+        public ActionResult UpdateComment(int commentId, CommentForUpdateDto comment)
         {
+            var commentToUpdate =_commentRepo.GetCommentById(commentId);
+            if(commentToUpdate == null)
+            {
+                return BadRequest();
+            }
+            _mapper.Map(comment, commentToUpdate);
+
+            _commentRepo.UpdateComment(commentToUpdate);
+            _commentRepo.Save();
+
+            return NoContent();
         }
 
-        // DELETE api/comments
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPatch("{commentId}")]
+        public ActionResult UpdateCommentPartially(int commentId,
+            JsonPatchDocument<CommentForUpdateDto> patchDocument)
         {
+            var commentFromRepo = _commentRepo.GetCommentById(commentId);
+            if (commentFromRepo == null)
+            {
+                return BadRequest();
+            }                      
+            
+            //map comment from repo to a commentForUpdateDto
+            var commentToPatch = _mapper.Map<CommentForUpdateDto>(commentFromRepo);
+            //patch passing in modelstate to patch item to be aware of
+            patchDocument.ApplyTo(commentToPatch, ModelState);
+            
+            if (!TryValidateModel(commentToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            //does nothing, just following convention
+            _mapper.Map(commentToPatch, commentFromRepo);
+            _commentRepo.UpdateComment(commentFromRepo);
+            _commentRepo.Save();
+
+            return NoContent();
+        }
+        
+
+        // DELETE api/users/{userid}/comments/{commentId}
+        [HttpDelete("{commentId}")]
+        public ActionResult Delete(int commentId)
+        {
+            var commentFromRepo = _commentRepo.GetCommentById(commentId);
+            if (commentFromRepo == null)
+            {
+                return NotFound();
+            }
+            _commentRepo.DeleteComment(commentFromRepo);
+            _commentRepo.Save();
+            return NoContent();
+        }
+
+        //this overrides validation behavior in patch to show 
+        //more detailed error info if model is invalid
+        public override ActionResult ValidationProblem(
+           [ActionResultObjectValue] ModelStateDictionary modelStateDictionary)
+        {
+            var options = HttpContext.RequestServices
+                .GetRequiredService<IOptions<ApiBehaviorOptions>>();
+            return (ActionResult)options.Value.InvalidModelStateResponseFactory(ControllerContext);
         }
     }
 }

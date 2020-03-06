@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotNetCoreReactREST.Entities
 {
@@ -10,8 +11,8 @@ namespace DotNetCoreReactREST.Entities
         public bool IsLiked { get; set; }
         [Required]
         public ApplicationUser ApplicationUser { get; set; }
-        [Required]
-        public int ApplicationUserId { get; set; }
+        [ForeignKey("ApplicationUser")]
+        public string ApplicationUserId { get; set; }
         [Required]
         public int PostId { get; set; }
         [Required]

@@ -19,7 +19,7 @@ namespace DotNetCoreReactREST.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DotNetCoreReactREST.Models.ApplicationUser", b =>
+            modelBuilder.Entity("DotNetCoreReactREST.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -85,9 +85,39 @@ namespace DotNetCoreReactREST.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "2afb9a8e-2d5c-4f50-9826-2935a60ad00a",
+                            EmailConfirmed = false,
+                            IsAdmin = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "password",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "4429b983-4e75-47c2-8c7a-605480be09c6",
+                            TwoFactorEnabled = false,
+                            UserName = "JohnDoe"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "2656dde6-42cf-476f-b44a-9738153cdbc6",
+                            EmailConfirmed = false,
+                            IsAdmin = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "password2",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "c91284b5-d07e-431d-afbe-962cc74e73ff",
+                            TwoFactorEnabled = false,
+                            UserName = "Jane"
+                        });
                 });
 
-            modelBuilder.Entity("DotNetCoreReactREST.Models.Category", b =>
+            modelBuilder.Entity("DotNetCoreReactREST.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,7 +128,9 @@ namespace DotNetCoreReactREST.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
@@ -125,68 +157,71 @@ namespace DotNetCoreReactREST.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DotNetCoreReactREST.Models.Comment", b =>
+            modelBuilder.Entity("DotNetCoreReactREST.Entities.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ApplicationUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ApplicationUserId1")
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<long>("Content")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId1");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("PostId");
 
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("DotNetCoreReactREST.Models.Post", b =>
+            modelBuilder.Entity("DotNetCoreReactREST.Entities.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ApplicationUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ApplicationUserId1")
+                    b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId1");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("CategoryId");
 
@@ -196,43 +231,41 @@ namespace DotNetCoreReactREST.Migrations
                         new
                         {
                             Id = 1,
-                            ApplicationUserId = 0,
+                            ApplicationUserId = "1",
                             CategoryId = 1,
                             Content = "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 4, 12, 23, 50, 55, DateTimeKind.Local).AddTicks(627),
+                            DateTime = new DateTime(2020, 3, 6, 1, 30, 7, 80, DateTimeKind.Local).AddTicks(3623),
                             Title = "Autem nibh nulla nonumy lorem"
                         },
                         new
                         {
                             Id = 2,
-                            ApplicationUserId = 0,
+                            ApplicationUserId = "1",
                             CategoryId = 1,
                             Content = "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 4, 12, 26, 50, 55, DateTimeKind.Local).AddTicks(5778),
+                            DateTime = new DateTime(2020, 3, 6, 1, 33, 7, 83, DateTimeKind.Local).AddTicks(3584),
                             Title = "Vero ipsum kasd in dolor"
                         },
                         new
                         {
                             Id = 3,
-                            ApplicationUserId = 0,
+                            ApplicationUserId = "2",
                             CategoryId = 1,
                             Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 4, 12, 29, 50, 55, DateTimeKind.Local).AddTicks(5879),
+                            DateTime = new DateTime(2020, 3, 6, 1, 36, 7, 83, DateTimeKind.Local).AddTicks(3707),
                             Title = "Eos dolores suscipit consetetur dolores sadipscing eos lorem"
                         });
                 });
 
-            modelBuilder.Entity("DotNetCoreReactREST.Models.UpVote", b =>
+            modelBuilder.Entity("DotNetCoreReactREST.Entities.UpVote", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ApplicationUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ApplicationUserId1")
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsLiked")
@@ -243,7 +276,7 @@ namespace DotNetCoreReactREST.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId1");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("PostId");
 
@@ -381,39 +414,43 @@ namespace DotNetCoreReactREST.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("DotNetCoreReactREST.Models.Comment", b =>
+            modelBuilder.Entity("DotNetCoreReactREST.Entities.Comment", b =>
                 {
-                    b.HasOne("DotNetCoreReactREST.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId1");
+                    b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany("Comments")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("DotNetCoreReactREST.Models.Post", "Post")
+                    b.HasOne("DotNetCoreReactREST.Entities.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DotNetCoreReactREST.Models.Post", b =>
+            modelBuilder.Entity("DotNetCoreReactREST.Entities.Post", b =>
                 {
-                    b.HasOne("DotNetCoreReactREST.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", "ApplicationUser")
                         .WithMany("Posts")
-                        .HasForeignKey("ApplicationUserId1");
+                        .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("DotNetCoreReactREST.Models.Category", "Category")
+                    b.HasOne("DotNetCoreReactREST.Entities.Category", "Category")
                         .WithMany("Posts")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DotNetCoreReactREST.Models.UpVote", b =>
+            modelBuilder.Entity("DotNetCoreReactREST.Entities.UpVote", b =>
                 {
-                    b.HasOne("DotNetCoreReactREST.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId1");
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("DotNetCoreReactREST.Models.Post", "Post")
+                    b.HasOne("DotNetCoreReactREST.Entities.Post", "Post")
                         .WithMany()
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -431,7 +468,7 @@ namespace DotNetCoreReactREST.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("DotNetCoreReactREST.Models.ApplicationUser", null)
+                    b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -440,7 +477,7 @@ namespace DotNetCoreReactREST.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("DotNetCoreReactREST.Models.ApplicationUser", null)
+                    b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -455,7 +492,7 @@ namespace DotNetCoreReactREST.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DotNetCoreReactREST.Models.ApplicationUser", null)
+                    b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -464,7 +501,7 @@ namespace DotNetCoreReactREST.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("DotNetCoreReactREST.Models.ApplicationUser", null)
+                    b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

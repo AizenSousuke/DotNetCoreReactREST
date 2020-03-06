@@ -42,38 +42,7 @@ namespace DotNetCoreReactREST.Repositories
             _context.Comments.Remove(comment);
         }
 
-        public IEnumerable<Author> GetAuthors(AuthorsResourceParameters authorsResourceParameters)
-        {
-            if (authorsResourceParameters == null)
-            {
-                throw new ArgumentNullException(nameof(authorsResourceParameters));
-            }
-
-            if (string.IsNullOrWhiteSpace(authorsResourceParameters.MainCategory)
-                 && string.IsNullOrWhiteSpace(authorsResourceParameters.SearchQuery))
-            {
-                return GetAuthors();
-            }
-
-            var collection = _context.Authors as IQueryable<Author>;
-
-            if (!string.IsNullOrWhiteSpace(authorsResourceParameters.MainCategory))
-            {
-                var mainCategory = authorsResourceParameters.MainCategory.Trim();
-                collection = collection.Where(a => a.MainCategory == mainCategory);
-            }
-
-            if (!string.IsNullOrWhiteSpace(authorsResourceParameters.SearchQuery))
-            {
-
-                var searchQuery = authorsResourceParameters.SearchQuery.Trim();
-                collection = collection.Where(a => a.MainCategory.Contains(searchQuery)
-                    || a.FirstName.Contains(searchQuery)
-                    || a.LastName.Contains(searchQuery));
-            }
-
-            return collection.ToList();
-        }
+        
 
         public Comment GetCommentById(int commentId)
         {
@@ -82,6 +51,11 @@ namespace DotNetCoreReactREST.Repositories
                 throw new ArgumentNullException(nameof(commentId));
             }
             return _context.Comments.FirstOrDefault(c => c.Id == commentId);
+        }
+
+        public IEnumerable<Comment> GetAllComments()
+        {
+            return _context.Comments.OrderBy(c => c.DateTime).ToList();
         }
 
         public bool Save()
