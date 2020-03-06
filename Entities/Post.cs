@@ -21,7 +21,7 @@ namespace DotNetCoreReactREST.Entities
         [MaxLength(1000)]
         public string Content { get; set; }
         public DateTime DateTime { get; set; }
-        public int ApplicationUserId { get; set; }
+        public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         public IEnumerable<Comment> Comments { get; set; } = new List<Comment>();
     }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DotNetCoreReactREST.Entities
 {
@@ -10,10 +11,11 @@ namespace DotNetCoreReactREST.Entities
         [MaxLength(1000)]
         public string Content { get; set; }
         [Required]
-        public int PostId { get; set; }
-        [Required]
+        public int PostId { get; set; }        
         public Post Post { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
+        [Required]
         public int ApplicationUserId { get; set; }
+        public DateTime DateTime { get; set; } 
     }
 }
