@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Entities
 {
@@ -14,7 +13,7 @@ namespace DotNetCoreReactREST.Entities
         [Required]
         public int CategoryId { get; set; }
         [Required]
-        //[MaxLength(50)] one of the post tiutle that were seeded exceeded 50 char
+        [MaxLength(250)]
         public string Title { get; set; }
         public string ImageUrl { get; set; }
         [MaxLength(250)]

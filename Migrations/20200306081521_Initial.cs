@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace DotNetCoreReactREST.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -258,8 +258,8 @@ namespace DotNetCoreReactREST.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "IsAdmin", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "2afb9a8e-2d5c-4f50-9826-2935a60ad00a", null, false, false, false, null, null, null, "password", null, false, "4429b983-4e75-47c2-8c7a-605480be09c6", false, "JohnDoe" },
-                    { "2", 0, "2656dde6-42cf-476f-b44a-9738153cdbc6", null, false, false, false, null, null, null, "password2", null, false, "c91284b5-d07e-431d-afbe-962cc74e73ff", false, "Jane" }
+                    { "1", 0, "8e892a96-0c51-4c1a-b8d5-73c58e2c5085", null, false, false, false, null, null, null, "password", null, false, "cdbb837b-700f-480f-b839-88c8593fd26c", false, "JohnDoe" },
+                    { "2", 0, "e47d6351-ce57-47a7-b23a-d9a2b84eb100", null, false, false, false, null, null, null, "password2", null, false, "16433aa8-6cbe-4843-92de-b696ef8387cf", false, "Jane" }
                 });
 
             migrationBuilder.InsertData(
@@ -275,17 +275,17 @@ namespace DotNetCoreReactREST.Migrations
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "ApplicationUserId", "CategoryId", "Content", "DateTime", "Description", "ImageUrl", "Title" },
-                values: new object[] { 1, "1", 1, "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 6, 1, 30, 7, 80, DateTimeKind.Local).AddTicks(3623), null, null, "Autem nibh nulla nonumy lorem" });
+                values: new object[] { 1, "1", 1, "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 6, 16, 15, 21, 20, DateTimeKind.Local).AddTicks(8893), null, null, "Autem nibh nulla nonumy lorem" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "ApplicationUserId", "CategoryId", "Content", "DateTime", "Description", "ImageUrl", "Title" },
-                values: new object[] { 2, "1", 1, "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 6, 1, 33, 7, 83, DateTimeKind.Local).AddTicks(3584), null, null, "Vero ipsum kasd in dolor" });
+                values: new object[] { 2, "1", 1, "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 6, 16, 18, 21, 21, DateTimeKind.Local).AddTicks(3571), null, null, "Vero ipsum kasd in dolor" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "ApplicationUserId", "CategoryId", "Content", "DateTime", "Description", "ImageUrl", "Title" },
-                values: new object[] { 3, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 6, 1, 36, 7, 83, DateTimeKind.Local).AddTicks(3707), null, null, "Eos dolores suscipit consetetur dolores sadipscing eos lorem" });
+                values: new object[] { 3, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 6, 16, 21, 21, 21, DateTimeKind.Local).AddTicks(3692), null, null, "Eos dolores suscipit consetetur dolores sadipscing eos lorem" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

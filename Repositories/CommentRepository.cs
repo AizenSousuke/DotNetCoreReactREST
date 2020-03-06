@@ -3,7 +3,6 @@ using DotNetCoreReactREST.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {
@@ -17,7 +16,7 @@ namespace DotNetCoreReactREST.Repositories
         }
         public void AddComment(Comment comment)
         {
-            if(comment == null)
+            if (comment == null)
             {
                 throw new ArgumentNullException(nameof(comment));
             }
@@ -26,7 +25,7 @@ namespace DotNetCoreReactREST.Repositories
 
         public bool CommentExists(int commentId)
         {
-            if(String.IsNullOrEmpty(commentId.ToString()))
+            if (String.IsNullOrEmpty(commentId.ToString()))
             {
                 throw new ArgumentNullException(nameof(commentId));
             }
@@ -35,18 +34,18 @@ namespace DotNetCoreReactREST.Repositories
 
         public void DeleteComment(Comment comment)
         {
-            if(comment == null)
+            if (comment == null)
             {
                 throw new ArgumentNullException(nameof(comment));
             }
             _context.Comments.Remove(comment);
         }
 
-        
+
 
         public Comment GetCommentById(int commentId)
         {
-            if(String.IsNullOrWhiteSpace(commentId.ToString()))
+            if (String.IsNullOrWhiteSpace(commentId.ToString()))
             {
                 throw new ArgumentNullException(nameof(commentId));
             }
@@ -65,7 +64,7 @@ namespace DotNetCoreReactREST.Repositories
 
         public void UpdateComment(Comment comment)
         {
-            if(comment == null)
+            if (comment == null)
             {
                 throw new ArgumentNullException(nameof(comment));
             }

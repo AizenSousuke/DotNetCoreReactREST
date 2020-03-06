@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using DotNetCoreReactREST.Dtos.Comment;
 using DotNetCoreReactREST.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Profiles
 {

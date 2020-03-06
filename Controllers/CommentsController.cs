@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using DotNetCoreReactREST.Dtos.Comment;
-using DotNetCoreReactREST.Dtos.User;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.JsonPatch;
@@ -13,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 
 namespace DotNetCoreReactREST.Controllers
 {
@@ -66,8 +62,8 @@ namespace DotNetCoreReactREST.Controllers
         [HttpPut("{commentId}")]
         public ActionResult UpdateComment(int commentId, CommentForUpdateDto comment)
         {
-            var commentToUpdate =_commentRepo.GetCommentById(commentId);
-            if(commentToUpdate == null)
+            var commentToUpdate = _commentRepo.GetCommentById(commentId);
+            if (commentToUpdate == null)
             {
                 return BadRequest();
             }
@@ -87,13 +83,13 @@ namespace DotNetCoreReactREST.Controllers
             if (commentFromRepo == null)
             {
                 return BadRequest();
-            }                      
-            
+            }
+
             //map comment from repo to a commentForUpdateDto
             var commentToPatch = _mapper.Map<CommentForUpdateDto>(commentFromRepo);
             //patch passing in modelstate to patch item to be aware of
             patchDocument.ApplyTo(commentToPatch, ModelState);
-            
+
             if (!TryValidateModel(commentToPatch))
             {
                 return ValidationProblem(ModelState);
@@ -106,7 +102,7 @@ namespace DotNetCoreReactREST.Controllers
 
             return NoContent();
         }
-        
+
 
         // DELETE api/users/{userid}/comments/{commentId}
         [HttpDelete("{commentId}")]

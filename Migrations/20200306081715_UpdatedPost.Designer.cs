@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotNetCoreReactREST.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200306063007_initial")]
-    partial class initial
+    [Migration("20200306081715_UpdatedPost")]
+    partial class UpdatedPost
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -93,13 +93,13 @@ namespace DotNetCoreReactREST.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2afb9a8e-2d5c-4f50-9826-2935a60ad00a",
+                            ConcurrencyStamp = "28131d44-608d-4e33-ba2f-e8ee2fb80810",
                             EmailConfirmed = false,
                             IsAdmin = false,
                             LockoutEnabled = false,
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4429b983-4e75-47c2-8c7a-605480be09c6",
+                            SecurityStamp = "b52af01a-3312-48ea-ad32-060bc650e60d",
                             TwoFactorEnabled = false,
                             UserName = "JohnDoe"
                         },
@@ -107,13 +107,13 @@ namespace DotNetCoreReactREST.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2656dde6-42cf-476f-b44a-9738153cdbc6",
+                            ConcurrencyStamp = "b2645202-4cff-4f43-b1d3-b413442aa22a",
                             EmailConfirmed = false,
                             IsAdmin = false,
                             LockoutEnabled = false,
                             PasswordHash = "password2",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c91284b5-d07e-431d-afbe-962cc74e73ff",
+                            SecurityStamp = "7c1dd85c-9628-4646-956f-92c629dd34fb",
                             TwoFactorEnabled = false,
                             UserName = "Jane"
                         });
@@ -131,8 +131,8 @@ namespace DotNetCoreReactREST.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
 
                     b.HasKey("Id");
 
@@ -219,7 +219,8 @@ namespace DotNetCoreReactREST.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
 
                     b.HasKey("Id");
 
@@ -236,7 +237,7 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 1,
                             Content = "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 6, 1, 30, 7, 80, DateTimeKind.Local).AddTicks(3623),
+                            DateTime = new DateTime(2020, 3, 6, 16, 17, 15, 151, DateTimeKind.Local).AddTicks(6477),
                             Title = "Autem nibh nulla nonumy lorem"
                         },
                         new
@@ -245,7 +246,7 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 1,
                             Content = "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 6, 1, 33, 7, 83, DateTimeKind.Local).AddTicks(3584),
+                            DateTime = new DateTime(2020, 3, 6, 16, 20, 15, 152, DateTimeKind.Local).AddTicks(1297),
                             Title = "Vero ipsum kasd in dolor"
                         },
                         new
@@ -254,7 +255,7 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 1,
                             Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 6, 1, 36, 7, 83, DateTimeKind.Local).AddTicks(3707),
+                            DateTime = new DateTime(2020, 3, 6, 16, 23, 15, 152, DateTimeKind.Local).AddTicks(1398),
                             Title = "Eos dolores suscipit consetetur dolores sadipscing eos lorem"
                         });
                 });

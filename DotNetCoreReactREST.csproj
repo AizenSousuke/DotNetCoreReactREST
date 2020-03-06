@@ -57,6 +57,10 @@
     <Compile Remove="Migrations\20200305121349_Initial.Designer.cs" />
     <Compile Remove="Migrations\20200305121951_AddedKey.cs" />
     <Compile Remove="Migrations\20200305121951_AddedKey.Designer.cs" />
+    <Compile Remove="Migrations\20200306063007_initial.cs" />
+    <Compile Remove="Migrations\20200306063007_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200306072312_Update.cs" />
+    <Compile Remove="Migrations\20200306072312_Update.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

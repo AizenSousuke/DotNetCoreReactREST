@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {
@@ -47,7 +46,7 @@ namespace DotNetCoreReactREST.Repositories
         {
             return _context.Users.OrderBy(u => u.IsAdmin == true)
                 .OrderBy(u => u.UserName).ToList();
-        }              
+        }
 
         public bool Save()
         {

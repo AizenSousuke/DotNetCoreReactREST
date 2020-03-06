@@ -31,7 +31,7 @@ namespace DotNetCoreReactREST.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<UserDto>> GetUsers()
         {
-            var userEntities = _userRepo.GetUsers();            
+            var userEntities = _userRepo.GetUsers();
             return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
         }
 

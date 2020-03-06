@@ -1,18 +1,18 @@
-using DotNetCoreReactREST.Entities;
+using AutoMapper;
 using DotNetCoreReactREST.DbContexts;
+using DotNetCoreReactREST.Entities;
+using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using DotNetCoreReactREST.Repositories;
-using AutoMapper;
-using System;
 using Newtonsoft.Json.Serialization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
+using System;
 
 namespace DotNetCoreReactREST
 {
@@ -36,6 +36,7 @@ namespace DotNetCoreReactREST
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+
             // Add AutoMapper to map object to object
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
