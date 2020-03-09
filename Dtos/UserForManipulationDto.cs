@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DotNetCoreReactREST.Dtos.User
+namespace DotNetCoreReactREST.Dtos
 {
     public abstract class UserForManipulationDto
     {

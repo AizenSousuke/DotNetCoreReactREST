@@ -63,7 +63,8 @@ namespace DotNetCoreReactREST.Repositories
         {
             return _context.Comments
                 .Where(c => c.PostId == postId)
-                .OrderBy(c => c.DateTime)
+                .OrderBy(c => c.Likes.Count())
+                .ThenByDescending(c => c.DateTime)
                 .ToList();
         }
 

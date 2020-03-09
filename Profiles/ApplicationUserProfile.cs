@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DotNetCoreReactREST.Dtos.User;
+using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 
 namespace DotNetCoreReactREST.Profiles

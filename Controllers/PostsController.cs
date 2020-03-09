@@ -32,7 +32,7 @@ namespace DotNetCoreReactREST
         }
         //GET Api/posts
         [HttpGet]
-        public IActionResult GetPost(PostResourceParameter postResourceParameter)
+        public IActionResult GetPost([FromQuery]PostResourceParameter postResourceParameter)
         {
             IEnumerable<Post> postFromRepository = _postRepository.GetPosts(postResourceParameter);
             if (postFromRepository == null)

@@ -5,13 +5,13 @@ namespace DotNetCoreReactREST.Repositories
 {
     public interface ICommentRepository
     {
-        public IEnumerable<Comment> GetCommentsForUser(string userId);
-        public IEnumerable<Comment> GetCommentsForPost(int postId);
-        public Comment GetCommentById(int commentId);
-        public void AddComment(Comment comment);
-        public void UpdateComment(Comment comment);
-        public void DeleteComment(Comment comment);
-        public bool CommentExists(int commentId);
-        public bool Save();
+        IEnumerable<Comment> GetCommentsForUser(string userId);
+        IEnumerable<Comment> GetCommentsForPost(int postId);
+        Comment GetCommentById(int commentId);
+        void AddComment(Comment comment);
+        void UpdateComment(Comment comment);
+        void DeleteComment(Comment comment);
+        bool CommentExists(int commentId);
+        bool Save();
     }
 }

@@ -14,14 +14,14 @@ namespace DotNetCoreReactREST.DbContexts
         //ApplicationUser DbSet is inherited
         public DbSet<Category> Categories { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<UpVote> UpVotes { get; set; }
+        public DbSet<Like> Likes { get; set; }
         public DbSet<Comment> Comments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {           
             base.OnModelCreating(modelBuilder);
-
-            // Seed data
-            modelBuilder.Entity<ApplicationUser>().HasData(
+        
+        // Seed data
+        modelBuilder.Entity<ApplicationUser>().HasData(
                 new ApplicationUser { Id = "1", UserName = "JohnDoe", PasswordHash = "password" },
                 new ApplicationUser { Id = "2", UserName = "Jane", PasswordHash = "password2" });
             modelBuilder.Entity<Category>().HasData(new Category()

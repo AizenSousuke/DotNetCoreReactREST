@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DotNetCoreReactREST.Dtos.Comment;
+using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.JsonPatch;

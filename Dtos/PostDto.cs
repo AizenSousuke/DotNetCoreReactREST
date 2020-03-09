@@ -1,5 +1,7 @@
 ﻿using DotNetCoreReactREST.Entities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DotNetCoreReactREST.Dtos
 {
@@ -15,5 +17,7 @@ namespace DotNetCoreReactREST.Dtos
         public string Content { get; set; }
         public DateTime DateTime { get; set; }
         public string ApplicationUserId { get; set; }
+       
+        
     }
 }

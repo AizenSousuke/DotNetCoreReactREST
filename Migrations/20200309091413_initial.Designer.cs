@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotNetCoreReactREST.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200309030313_initial")]
+    [Migration("20200309091413_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,13 +93,13 @@ namespace DotNetCoreReactREST.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e364d359-cfde-46cc-ac70-a3aecc26a148",
+                            ConcurrencyStamp = "6039895f-979d-4549-9246-9f91df624ad6",
                             EmailConfirmed = false,
                             IsAdmin = false,
                             LockoutEnabled = false,
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "23103f09-0468-4ff5-bd62-acead1fc8ee2",
+                            SecurityStamp = "3a244060-96e7-472f-9de9-bcdb1e6c4507",
                             TwoFactorEnabled = false,
                             UserName = "JohnDoe"
                         },
@@ -107,13 +107,13 @@ namespace DotNetCoreReactREST.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "01cdff48-e3ac-4d02-8ba7-ff1f3b872925",
+                            ConcurrencyStamp = "21e3c69c-b4a7-4fd8-86b6-04630eb14a1c",
                             EmailConfirmed = false,
                             IsAdmin = false,
                             LockoutEnabled = false,
                             PasswordHash = "password2",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "14a14c1f-1977-4715-8f5d-45efd2363a76",
+                            SecurityStamp = "79fca3df-bbab-460a-b174-903b468f09e5",
                             TwoFactorEnabled = false,
                             UserName = "Jane"
                         });
@@ -190,6 +190,28 @@ namespace DotNetCoreReactREST.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("DotNetCoreReactREST.Entities.Like", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("Likes");
+                });
+
             modelBuilder.Entity("DotNetCoreReactREST.Entities.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -237,7 +259,7 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 1,
                             Content = "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 8, 23, 3, 12, 935, DateTimeKind.Local).AddTicks(5973),
+                            DateTime = new DateTime(2020, 3, 9, 5, 14, 12, 980, DateTimeKind.Local).AddTicks(2619),
                             Title = "Autem nibh nulla nonumy lorem"
                         },
                         new
@@ -246,7 +268,7 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 1,
                             Content = "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 8, 23, 6, 12, 939, DateTimeKind.Local).AddTicks(5047),
+                            DateTime = new DateTime(2020, 3, 9, 5, 17, 12, 983, DateTimeKind.Local).AddTicks(1925),
                             Title = "Vero ipsum kasd in dolor"
                         },
                         new
@@ -255,35 +277,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 1,
                             Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 8, 23, 9, 12, 939, DateTimeKind.Local).AddTicks(5391),
+                            DateTime = new DateTime(2020, 3, 9, 5, 20, 12, 983, DateTimeKind.Local).AddTicks(2038),
                             Title = "Eos dolores suscipit consetetur dolores sadipscing eos lorem"
                         });
-                });
-
-            modelBuilder.Entity("DotNetCoreReactREST.Entities.UpVote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsLiked")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("UpVotes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -432,6 +428,19 @@ namespace DotNetCoreReactREST.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DotNetCoreReactREST.Entities.Like", b =>
+                {
+                    b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("DotNetCoreReactREST.Entities.Comment", "Comment")
+                        .WithMany("Likes")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DotNetCoreReactREST.Entities.Post", b =>
                 {
                     b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", "ApplicationUser")
@@ -441,21 +450,6 @@ namespace DotNetCoreReactREST.Migrations
                     b.HasOne("DotNetCoreReactREST.Entities.Category", "Category")
                         .WithMany("Posts")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DotNetCoreReactREST.Entities.UpVote", b =>
-                {
-                    b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DotNetCoreReactREST.Entities.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -8,7 +8,7 @@ namespace DotNetCoreReactREST.Profiles
     {
         public PostProfile()
         {
-            CreateMap<Post, PostDto>();
+            CreateMap<Post, PostDto>();               
             CreateMap<PostDto, Post>();
         }
     }
