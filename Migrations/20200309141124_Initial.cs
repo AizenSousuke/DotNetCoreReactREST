@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DotNetCoreReactREST.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -257,8 +257,8 @@ namespace DotNetCoreReactREST.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "IsAdmin", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "6039895f-979d-4549-9246-9f91df624ad6", null, false, false, false, null, null, null, "password", null, false, "3a244060-96e7-472f-9de9-bcdb1e6c4507", false, "JohnDoe" },
-                    { "2", 0, "21e3c69c-b4a7-4fd8-86b6-04630eb14a1c", null, false, false, false, null, null, null, "password2", null, false, "79fca3df-bbab-460a-b174-903b468f09e5", false, "Jane" }
+                    { "1", 0, "f37dc7a4-9b11-4d8f-8ec2-2fd226c9ccb1", null, false, false, false, null, null, null, "password", null, false, "ac75cac2-50ef-40df-b861-f6f9fe6920af", false, "JohnDoe" },
+                    { "2", 0, "ee61c13f-9a3a-4d38-b142-f20b4ca9717d", null, false, false, false, null, null, null, "password2", null, false, "1ec6b47b-33eb-4017-a610-468c92419a35", false, "Jane" }
                 });
 
             migrationBuilder.InsertData(
@@ -274,17 +274,17 @@ namespace DotNetCoreReactREST.Migrations
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "ApplicationUserId", "CategoryId", "Content", "DateTime", "Description", "ImageUrl", "Title" },
-                values: new object[] { 1, "1", 1, "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 9, 5, 14, 12, 980, DateTimeKind.Local).AddTicks(2619), null, null, "Autem nibh nulla nonumy lorem" });
+                values: new object[] { 1, "1", 1, "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 9, 22, 11, 23, 859, DateTimeKind.Local).AddTicks(6364), null, null, "Autem nibh nulla nonumy lorem" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "ApplicationUserId", "CategoryId", "Content", "DateTime", "Description", "ImageUrl", "Title" },
-                values: new object[] { 2, "1", 1, "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 9, 5, 17, 12, 983, DateTimeKind.Local).AddTicks(1925), null, null, "Vero ipsum kasd in dolor" });
+                values: new object[] { 2, "1", 1, "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 9, 22, 14, 23, 860, DateTimeKind.Local).AddTicks(1073), null, null, "Vero ipsum kasd in dolor" });
 
             migrationBuilder.InsertData(
                 table: "Posts",
                 columns: new[] { "Id", "ApplicationUserId", "CategoryId", "Content", "DateTime", "Description", "ImageUrl", "Title" },
-                values: new object[] { 3, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 9, 5, 20, 12, 983, DateTimeKind.Local).AddTicks(2038), null, null, "Eos dolores suscipit consetetur dolores sadipscing eos lorem" });
+                values: new object[] { 3, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 9, 22, 17, 23, 860, DateTimeKind.Local).AddTicks(1170), null, null, "Eos dolores suscipit consetetur dolores sadipscing eos lorem" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

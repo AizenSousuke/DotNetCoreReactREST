@@ -3,6 +3,7 @@ using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using DotNetCoreReactREST.ResourceParameters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -25,10 +26,11 @@ namespace DotNetCoreReactREST
         }
         //POST Api/Posts
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreatePostAsync([FromBody]Post post)
         {
             Post newPost = await _postRepository.CreatePostAsync(post);
-            return Ok(newPost);
+            return Ok(_mapper.Map<PostDto>(newPost));
         }
         //GET Api/posts
         [HttpGet]
@@ -55,7 +57,8 @@ namespace DotNetCoreReactREST
             return Ok(_mapper.Map<PostDto>(postFromRepository));
         }
         //PATCH Api/Posts/{postId}
-        [HttpPatch("{postId:int}", Name = "{postId:int}")]        
+        [HttpPatch("{postId:int}", Name = "{postId:int}")]
+        [Authorize]
         public async Task<IActionResult> UpdatePost([FromRoute]int postId, [FromBody]JsonPatchDocument<Post> patchDocument)
         {
             if (!ModelState.IsValid)
@@ -88,7 +91,8 @@ namespace DotNetCoreReactREST
             };
         }
         //DELETE Api/Posts/{PostId}
-        [HttpDelete("{postId:int}")]        
+        [HttpDelete("{postId:int}")]  
+        [Authorize]
         public async Task<IActionResult> DeletePost([FromRoute]int postId)
         {
             if (await _postRepository.DeletePost(postId))
