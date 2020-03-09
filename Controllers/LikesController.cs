@@ -43,7 +43,7 @@ namespace DotNetCoreReactREST.Controllers
 
         //Authenticate to make sure userId is the same as logged user
         // POST api/Comments/{commentId}/user/{userId}/Likes
-        [HttpPost("comment/{commentId}/user/{userId}/Likes")]
+        //[HttpPost("comment/{commentId}/user/{userId}/Likes")]
         //public ActionResult LikeComment(int commentId, string userId)
         //{
         //    if (_likeRepo.LikeExists(commentId, userId))
@@ -58,7 +58,7 @@ namespace DotNetCoreReactREST.Controllers
 
         //Authenticate to make sure userId is the same as logged user
         // DELETE api/likes/{likeId}
-        [HttpDelete("likes/{LikeId}")]
+        //[HttpDelete("likes/{LikeId}")]
         //public ActionResult UnLike(int likeId)
         //{
         //    var commentFromRepo = _likeRepo.GetLikeById(likeId);
@@ -72,3 +72,5 @@ namespace DotNetCoreReactREST.Controllers
         //}
     }
 }
+
+
