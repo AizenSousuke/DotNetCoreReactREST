@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotNetCoreReactREST.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200306081715_UpdatedPost")]
-    partial class UpdatedPost
+    [Migration("20200309030313_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -93,13 +93,13 @@ namespace DotNetCoreReactREST.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "28131d44-608d-4e33-ba2f-e8ee2fb80810",
+                            ConcurrencyStamp = "e364d359-cfde-46cc-ac70-a3aecc26a148",
                             EmailConfirmed = false,
                             IsAdmin = false,
                             LockoutEnabled = false,
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b52af01a-3312-48ea-ad32-060bc650e60d",
+                            SecurityStamp = "23103f09-0468-4ff5-bd62-acead1fc8ee2",
                             TwoFactorEnabled = false,
                             UserName = "JohnDoe"
                         },
@@ -107,13 +107,13 @@ namespace DotNetCoreReactREST.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b2645202-4cff-4f43-b1d3-b413442aa22a",
+                            ConcurrencyStamp = "01cdff48-e3ac-4d02-8ba7-ff1f3b872925",
                             EmailConfirmed = false,
                             IsAdmin = false,
                             LockoutEnabled = false,
                             PasswordHash = "password2",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7c1dd85c-9628-4646-956f-92c629dd34fb",
+                            SecurityStamp = "14a14c1f-1977-4715-8f5d-45efd2363a76",
                             TwoFactorEnabled = false,
                             UserName = "Jane"
                         });
@@ -237,7 +237,7 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 1,
                             Content = "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 6, 16, 17, 15, 151, DateTimeKind.Local).AddTicks(6477),
+                            DateTime = new DateTime(2020, 3, 8, 23, 3, 12, 935, DateTimeKind.Local).AddTicks(5973),
                             Title = "Autem nibh nulla nonumy lorem"
                         },
                         new
@@ -246,7 +246,7 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 1,
                             Content = "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 6, 16, 20, 15, 152, DateTimeKind.Local).AddTicks(1297),
+                            DateTime = new DateTime(2020, 3, 8, 23, 6, 12, 939, DateTimeKind.Local).AddTicks(5047),
                             Title = "Vero ipsum kasd in dolor"
                         },
                         new
@@ -255,7 +255,7 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 1,
                             Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 6, 16, 23, 15, 152, DateTimeKind.Local).AddTicks(1398),
+                            DateTime = new DateTime(2020, 3, 8, 23, 9, 12, 939, DateTimeKind.Local).AddTicks(5391),
                             Title = "Eos dolores suscipit consetetur dolores sadipscing eos lorem"
                         });
                 });

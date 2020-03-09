@@ -2,6 +2,7 @@
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
+using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,38 +13,38 @@ namespace DotNetCoreReactREST
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BlogController : ControllerBase
+    public class PostsController : ControllerBase
     {
         private readonly IPostRepository _postRepository;
         private readonly IMapper _mapper;
 
-        public BlogController(IPostRepository postRepository, IMapper mapper)
+        public PostsController(IPostRepository postRepository, IMapper mapper)
         {
             _postRepository = postRepository;
             _mapper = mapper;
         }
-
+        //POST Api/Posts
         [HttpPost]
         public async Task<IActionResult> CreatePostAsync([FromBody]Post post)
         {
             Post newPost = await _postRepository.CreatePostAsync(post);
             return Ok(newPost);
         }
-
+        //GET Api/posts
         [HttpGet]
-        public IActionResult GetPost()
+        public IActionResult GetPost(PostResourceParameter postResourceParameter)
         {
-            IEnumerable<Post> postFromRepository = _postRepository.GetPosts();
+            IEnumerable<Post> postFromRepository = _postRepository.GetPosts(postResourceParameter);
             if (postFromRepository == null)
             {
                 return NotFound();
             }
             return Ok(_mapper.Map<IEnumerable<PostDto>>(postFromRepository));
         }
-
+        //GET Api/Posts/{PostId}
         [HttpGet]
         // Route will only match if postId can be casted as a int
-        [Route("post/{postId:int}")]
+        [Route("{postId:int}")]
         public async Task<IActionResult> GetPostByIdAsync(int postId)
         {
             Post postFromRepository = await _postRepository.GetPostByIdAsync(postId);
@@ -53,9 +54,8 @@ namespace DotNetCoreReactREST
             }
             return Ok(_mapper.Map<PostDto>(postFromRepository));
         }
-
-        [HttpPatch(Name = "post/{postId:int}")]
-        [Route("post/{postId:int}")]
+        //PATCH Api/Posts/{postId}
+        [HttpPatch("{postId:int}", Name = "{postId:int}")]        
         public async Task<IActionResult> UpdatePost([FromRoute]int postId, [FromBody]JsonPatchDocument<Post> patchDocument)
         {
             if (!ModelState.IsValid)
@@ -87,9 +87,8 @@ namespace DotNetCoreReactREST
                 return Ok(oldPost);
             };
         }
-
-        [HttpDelete]
-        [Route("post/{postId:int}")]
+        //DELETE Api/Posts/{PostId}
+        [HttpDelete("{postId:int}")]        
         public async Task<IActionResult> DeletePost([FromRoute]int postId)
         {
             if (await _postRepository.DeletePost(postId))

@@ -42,10 +42,18 @@ namespace DotNetCoreReactREST.Repositories
             }
             return _context.Users.FirstOrDefault(u => u.Id == userId);
         }
-        public IEnumerable<ApplicationUser> GetUsers()
+        public IEnumerable<ApplicationUser> GetAllUsers()
         {
-            return _context.Users.OrderBy(u => u.IsAdmin == true)
-                .OrderBy(u => u.UserName).ToList();
+            return _context.Users.
+                OrderBy(u => u.UserName)
+                .ToList();
+        }
+        public IEnumerable<ApplicationUser> GetAllAdmins()
+        {
+            return _context.Users
+                .Where(u => u.IsAdmin == true)               
+                .OrderBy(u => u.UserName)
+                .ToList();
         }
 
         public bool Save()

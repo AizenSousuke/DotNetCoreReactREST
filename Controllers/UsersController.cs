@@ -27,11 +27,18 @@ namespace DotNetCoreReactREST.Controllers
             _mapper = mapper;
             _userRepo = userRepository;
         }
-        // GET: api/Users
+        // GET: Api/Users
         [HttpGet]
         public ActionResult<IEnumerable<UserDto>> GetUsers()
         {
-            var userEntities = _userRepo.GetUsers();
+            var userEntities = _userRepo.GetAllUsers();
+            return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
+        }
+        // GET: Api/Users/Admins
+        [HttpGet("Admins")]
+        public ActionResult<IEnumerable<UserDto>> GetAdmins()
+        {
+            var userEntities = _userRepo.GetAllAdmins();
             return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
         }
 
@@ -47,7 +54,7 @@ namespace DotNetCoreReactREST.Controllers
             return Ok(_mapper.Map<UserDto>(userEntity));
         }
 
-        // POST api/Users
+        // POST Api/Users
         [HttpPost]
         public ActionResult<UserDto> Post([FromBody]UserForCreationDto user)
         {
@@ -59,7 +66,7 @@ namespace DotNetCoreReactREST.Controllers
             return CreatedAtRoute("GetUser", new { userId = userToAdd.Id }, userToReturn);
         }
 
-        // PUT api/<controller>/5
+        // PUT Api/User/{UserId}
         [HttpPut("{userId}")]
         public ActionResult UpdateUser(string userId, [FromBody]UserForUpdateDto user)
         {

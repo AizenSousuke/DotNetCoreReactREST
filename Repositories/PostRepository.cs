@@ -1,5 +1,6 @@
 ﻿using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
+using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,7 +17,6 @@ namespace DotNetCoreReactREST.Repositories
         {
             _appDbContext = appDbContext;
         }
-
         public async Task<Post> CreatePostAsync(Post post)
         {
             post.DateTime = DateTime.Now;
@@ -28,8 +28,37 @@ namespace DotNetCoreReactREST.Repositories
 
         public IEnumerable<Post> GetPosts()
         {
-            IEnumerable<Post> Posts = _appDbContext.Posts.OrderBy(p => p.Id);
+            IEnumerable<Post> Posts = _appDbContext.Posts
+                .OrderByDescending(p => p.DateTime);
             return Posts;
+        }
+
+        public IEnumerable<Post> GetPosts(PostResourceParameter postResourceParameters)
+        {
+            if (postResourceParameters == null)
+            {
+                throw new ArgumentNullException(nameof(postResourceParameters));
+            }
+            if (string.IsNullOrWhiteSpace(postResourceParameters.Category)
+                && string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery))
+            {
+                return GetPosts();
+            }
+            var collection = _appDbContext.Posts as IQueryable<Post>;
+
+            if (!string.IsNullOrWhiteSpace(postResourceParameters.Category))
+            {
+                var category = postResourceParameters.Category.Trim();
+                collection = collection.Where(post => post.Category.Name == category);
+            }
+
+            if (!string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery))
+            {
+
+                var searchQuery = postResourceParameters.SearchQuery.Trim();
+                collection = collection.Where(a => a.Title.Contains(searchQuery));                    
+            }
+            return collection.ToList(); 
         }
 
         public async Task<Post> UpdatePost(int postId, JsonPatchDocument post)
@@ -51,19 +80,9 @@ namespace DotNetCoreReactREST.Repositories
             return Task.FromResult(false);
         }
 
-        public Post[] GetPostByCategory(string category)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Post> GetPostByIdAsync(int postId)
         {
             return await _appDbContext.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
-        }
-
-        public Post GetPostByIdAndCategory(int postId, string category)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<bool> Save()

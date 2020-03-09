@@ -52,9 +52,19 @@ namespace DotNetCoreReactREST.Repositories
             return _context.Comments.FirstOrDefault(c => c.Id == commentId);
         }
 
-        public IEnumerable<Comment> GetAllComments()
+        public IEnumerable<Comment> GetCommentsForUser(string userId)
         {
-            return _context.Comments.OrderBy(c => c.DateTime).ToList();
+            return _context.Comments
+                .Where(c => c.ApplicationUserId == userId)
+                .OrderByDescending(c => c.DateTime)
+                .ToList();
+        }
+        public IEnumerable<Comment> GetCommentsForPost(int postId)
+        {
+            return _context.Comments
+                .Where(c => c.PostId == postId)
+                .OrderBy(c => c.DateTime)
+                .ToList();
         }
 
         public bool Save()
