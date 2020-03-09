@@ -44,31 +44,31 @@ namespace DotNetCoreReactREST.Controllers
         //Authenticate to make sure userId is the same as logged user
         // POST api/Comments/{commentId}/user/{userId}/Likes
         [HttpPost("comment/{commentId}/user/{userId}/Likes")]
-        public ActionResult LikeComment(int commentId, string userId)
-        {
-            //if (_likeRepo.LikeExists(commentId, userId)) 
-            ////like is unique to user, so none should exist
-            //{
-            //    return BadRequest();
-            //}
-            //_likeRepo.LikeComment(new Like { CommentId = commentId, ApplicationUserId = userId });
-            //_likeRepo.Save();
-            //return NoContent();
-        }
+        //public ActionResult LikeComment(int commentId, string userId)
+        //{
+        //    if (_likeRepo.LikeExists(commentId, userId))
+        //    //like is unique to user, so none should exist
+        //    {
+        //        return BadRequest();
+        //    }
+        //    _likeRepo.LikeComment(new Like { CommentId = commentId, ApplicationUserId = userId });
+        //    _likeRepo.Save();
+        //    return NoContent();
+        //}
 
         //Authenticate to make sure userId is the same as logged user
         // DELETE api/likes/{likeId}
         [HttpDelete("likes/{LikeId}")]
-        public ActionResult UnLike(int likeId)
-        {
-            //var commentFromRepo = _likeRepo.GetLikeById(likeId);
-            //if (commentFromRepo == null)
-            //{
-            //    return BadRequest();
-            //}
-            //_likeRepo.UnlikeComment(commentFromRepo);
-            //_likeRepo.Save();
-            //return NoContent();
-        }
+        //public ActionResult UnLike(int likeId)
+        //{
+        //    var commentFromRepo = _likeRepo.GetLikeById(likeId);
+        //    if (commentFromRepo == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    _likeRepo.UnlikeComment(commentFromRepo);
+        //    _likeRepo.Save();
+        //    return NoContent();
+        //}
     }
 }
