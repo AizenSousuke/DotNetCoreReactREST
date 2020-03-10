@@ -10,7 +10,7 @@ namespace DotNetCoreReactREST.Repositories
     {
         IEnumerable<Post> GetPosts();
         IEnumerable<Post> GetPosts(PostResourceParameter postResourceParameter);
-        Task<Post> GetPostByIdAsync(int postId);   
+        Task<Post> GetPostByIdAsync(int postId);
         Task<Post> CreatePostAsync(Post post);
         Task<Post> UpdatePost(int postId, JsonPatchDocument post);
         Task<bool> DeletePost(int postId);

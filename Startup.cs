@@ -115,6 +115,10 @@ namespace DotNetCoreReactREST
 
             app.UseRouting();
 
+            // Use authentication and authorization
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

@@ -1,9 +1,4 @@
-﻿using DotNetCoreReactREST.Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DotNetCoreReactREST.Dtos
 {
@@ -12,11 +7,11 @@ namespace DotNetCoreReactREST.Dtos
         public int Id { get; set; }
         [Required]
         public bool IsLiked { get; set; }
-        [Required]     
+        [Required]
         public string ApplicationUserId { get; set; }
         [Required]
         public int CommentId { get; set; }
-        
-        
+
+
     }
 }

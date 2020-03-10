@@ -6,7 +6,7 @@ namespace DotNetCoreReactREST.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        
+
         //ID is string by default
         //username
         //password

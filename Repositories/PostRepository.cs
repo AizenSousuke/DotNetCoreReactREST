@@ -56,7 +56,7 @@ namespace DotNetCoreReactREST.Repositories
             {
 
                 var searchQuery = postResourceParameters.SearchQuery.Trim();
-                collection = collection.Where(a => a.Title.Contains(searchQuery));                    
+                collection = collection.Where(a => a.Title.Contains(searchQuery));
             }
 
             if (collection.ToList().Count() == 0)
@@ -64,7 +64,7 @@ namespace DotNetCoreReactREST.Repositories
                 return null;
             }
 
-            return collection.ToList(); 
+            return collection.ToList();
         }
 
         public async Task<Post> UpdatePost(int postId, JsonPatchDocument post)

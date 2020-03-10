@@ -11,7 +11,7 @@ namespace DotNetCoreReactREST.Dtos
         public int PostId { get; set; }
         [Required]
         public int ApplicationUserId { get; set; }
-        
+
 
     }
 }

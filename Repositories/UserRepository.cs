@@ -51,7 +51,7 @@ namespace DotNetCoreReactREST.Repositories
         public IEnumerable<ApplicationUser> GetAllAdmins()
         {
             return _context.Users
-                .Where(u => u.IsAdmin == true)               
+                .Where(u => u.IsAdmin == true)
                 .OrderBy(u => u.UserName)
                 .ToList();
         }
@@ -76,6 +76,15 @@ namespace DotNetCoreReactREST.Repositories
             }
 
             return _context.Users.Any(u => u.Id == userId);
+        }
+
+        public bool UserExistsByName(string name)
+        {
+            if (String.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+            return _context.Users.Any(u => u.UserName == name);
         }
     }
 }

@@ -92,7 +92,7 @@ namespace DotNetCoreReactREST
             };
         }
         //DELETE Api/Posts/{PostId}
-        [HttpDelete("{postId:int}")]  
+        [HttpDelete("{postId:int}")]
         [Authorize]
         public async Task<IActionResult> DeletePost([FromRoute]int postId)
         {

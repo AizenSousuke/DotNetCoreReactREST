@@ -3,7 +3,6 @@ using DotNetCoreReactREST.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {
@@ -30,7 +29,7 @@ namespace DotNetCoreReactREST.Repositories
             if (like == null)
             {
                 throw new ArgumentNullException(nameof(like));
-            }            
+            }
             _context.Likes.Add(like);
 
         }
@@ -47,7 +46,7 @@ namespace DotNetCoreReactREST.Repositories
         {
             return (_context.Likes
                 .Any(like => like.ApplicationUserId == userId
-                && like.CommentId == commentId));  
+                && like.CommentId == commentId));
         }
 
         public bool Save()
@@ -57,7 +56,7 @@ namespace DotNetCoreReactREST.Repositories
 
         public Like GetLikeById(int likeId)
         {
-            if(String.IsNullOrWhiteSpace(likeId.ToString()))
+            if (String.IsNullOrWhiteSpace(likeId.ToString()))
             {
                 throw new ArgumentNullException(nameof(likeId));
             }

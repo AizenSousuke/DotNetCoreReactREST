@@ -20,7 +20,7 @@ namespace DotNetCoreReactREST.Entities
         public string ApplicationUserId { get; set; }
         public DateTime DateTime { get; set; }
         public IEnumerable<Like> Likes { get; set; } = new List<Like>();
-        
-       
+
+
     }
 }

@@ -122,6 +122,23 @@ namespace DotNetCoreReactREST.Controllers
             return NoContent();
         }
 
+        [HttpPost("register")]
+        public ActionResult RegisterUser([FromBody]UserForCreationDto registerModel)
+        {
+            try
+            {
+                if (!_userRepo.UserExistsByName(registerModel.UserName))
+                {
+                    Post(registerModel);
+                    return Ok("User " + registerModel.UserName + " created. You may now log in.");
+                }
+                return Ok("User " + registerModel.UserName + " exists.");
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
 
         public override ActionResult ValidationProblem(
             [ActionResultObjectValue] ModelStateDictionary modelStateDictionary)

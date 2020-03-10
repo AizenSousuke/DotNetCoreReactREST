@@ -17,13 +17,13 @@ namespace DotNetCoreReactREST.DbContexts
         public DbSet<Like> Likes { get; set; }
         public DbSet<Comment> Comments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {           
+        {
             base.OnModelCreating(modelBuilder);
-        
-        // Seed data
-        modelBuilder.Entity<ApplicationUser>().HasData(
-                new ApplicationUser { Id = "1", UserName = "JohnDoe", PasswordHash = "password" },
-                new ApplicationUser { Id = "2", UserName = "Jane", PasswordHash = "password2" });
+
+            // Seed data
+            modelBuilder.Entity<ApplicationUser>().HasData(
+                    new ApplicationUser { Id = "1", UserName = "JohnDoe", PasswordHash = "password" },
+                    new ApplicationUser { Id = "2", UserName = "Jane", PasswordHash = "password2" });
             modelBuilder.Entity<Category>().HasData(new Category()
             {
                 Id = 1,
