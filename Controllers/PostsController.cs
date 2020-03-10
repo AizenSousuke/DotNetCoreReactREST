@@ -32,8 +32,9 @@ namespace DotNetCoreReactREST
             Post newPost = await _postRepository.CreatePostAsync(post);
             return Ok(_mapper.Map<PostDto>(newPost));
         }
-        //GET Api/posts
+        //GET Api/posts[category=string &| searchQuery=string]
         [HttpGet]
+        [HttpHead]
         public IActionResult GetPost([FromQuery]PostResourceParameter postResourceParameter)
         {
             IEnumerable<Post> postFromRepository = _postRepository.GetPosts(postResourceParameter);
