@@ -123,6 +123,7 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         [HttpPost("register")]
+        // [ValidateAntiForgeryToken]
         public ActionResult RegisterUser([FromBody]UserForCreationDto registerModel)
         {
             try
@@ -132,7 +133,7 @@ namespace DotNetCoreReactREST.Controllers
                     Post(registerModel);
                     return Ok("User " + registerModel.UserName + " created. You may now log in.");
                 }
-                return Ok("User " + registerModel.UserName + " exists.");
+                return BadRequest("User " + registerModel.UserName + " exists.");
             }
             catch (System.Exception)
             {

@@ -5,6 +5,7 @@ using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +42,14 @@ namespace DotNetCoreReactREST
             // Add AutoMapper to map object to object
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            // Identity
             services.AddIdentityCore<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
+            {
+                // Password requirements
+                opt.Password.RequiredLength = 8;
+            }).AddEntityFrameworkStores<AppDbContext>();
+
             services.AddControllers(setupAction =>
             {
                 setupAction.ReturnHttpNotAcceptable = true;
