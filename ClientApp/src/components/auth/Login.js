@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
+import CommonModal from '../common/CommonModal';
+import LoginForm from './LoginForm';
 
 const Login = () => {
     return (
-        <div>
-            Loggin in
-        </div>
+      <CommonModal
+        bodyContent={LoginForm()}
+        buttonTitle="Login"
+        title="Login"
+        modalName="login"
+        defaultButtons={false}
+      />
     );
 }
 

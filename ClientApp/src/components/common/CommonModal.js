@@ -1,26 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { setModal } from "../../actions/auth";
 
-const CommonModal = ({bodyContent, buttonTitle, title, toggle, show}) => {
-
+const CommonModal = ({ bodyContent, buttonTitle, title, modalName, defaultButtons }) => {
+  const dispatch = useDispatch();
+  const getModal = useSelector(state => state.modal)
+  const close = () => {
+    dispatch(setModal(false));
+  };
   return (
     <div>
-      <Button color="danger" onClick={() => toggle()}>
-        &times;
-      </Button>
-      <Modal isOpen={show} toggle={toggle}>
-        <ModalHeader toggle={toggle}>{title}</ModalHeader>
-        <ModalBody>
-          {bodyContent}
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={toggle}>
+      <Modal isOpen={getModal.type && getModal.type === modalName} toggle={() => close()}>
+        <ModalHeader toggle={() => close()}>{title}</ModalHeader>
+        <ModalBody>{bodyContent}</ModalBody>
+        { defaultButtons && <ModalFooter>
+          <Button color="primary" onClick={() => close()}>
             {buttonTitle}
           </Button>
-          <Button color="secondary" onClick={() => toggle()}>
+          <Button color="secondary" onClick={() => close()}>
             Close
           </Button>
-        </ModalFooter>
+        </ModalFooter> }
       </Modal>
     </div>
   );

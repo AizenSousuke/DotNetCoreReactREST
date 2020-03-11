@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
+import CommonModal from '../common/CommonModal';
+import RegisterForm from './RegisterForm';
 const Register = () => {
     return (
-        <div>
-            Registering
-        </div>
+        <CommonModal 
+        bodyContent={RegisterForm()}
+        buttonTitle="Sign Up"
+        title="Sign Up"
+        modalName="register"
+        defaultButtons={false}
+        />
     );
 }
 
