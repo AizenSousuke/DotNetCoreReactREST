@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Route } from 'react-router-dom';
 import Home from './pages/Home';
 import './styles/index.scss';
+import "bootstrap/dist/css/bootstrap.min.css";
 import { getBlogs } from './actions/blogActions';
 import Profile from './pages/Profile';
 

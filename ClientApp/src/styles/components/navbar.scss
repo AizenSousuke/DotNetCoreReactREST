@@ -1,10 +1,31 @@
+$navItemMargins: 0 12px;
+$ctaColor: rgb(11, 224, 224);
 .navbar {
-
-    text-align: center;
-    a {
-        color: $purple;
+    width: 100%;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.288);
+   .nav-item a {
+        color: rgba(0, 0, 0, 0.705);
+        margin: $navItemMargins;
         &:hover {
-            color: lighten($purple, 18%);
+            color: black;
+            text-decoration: none;
         }
     }
+    .navbar__cta {
+        margin: $navItemMargins;
+        cursor: pointer;
+        color: $ctaColor;
+        font-weight: 500;
+        word-spacing: 3px;
+        &:hover {
+            color: darken($ctaColor, 6%);
+        }
+    }
+}
+
+.active {
+    color: black;
+    font-weight: bold;
 }
