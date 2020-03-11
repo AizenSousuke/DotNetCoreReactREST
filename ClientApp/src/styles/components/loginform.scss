@@ -1,0 +1,7 @@
+.login-form {
+    @include roboto();
+    input {
+        margin: 15px auto;
+        width: 60%;
+    }
+}

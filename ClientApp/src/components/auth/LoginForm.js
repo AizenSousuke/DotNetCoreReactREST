@@ -1,28 +1,18 @@
 import React, { useState } from "react";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Form } from "reactstrap";
 
 const LoginForm = () => {
   return (
-    <Form>
-      <FormGroup>
-        <Label for="email">Email or Username</Label>
-        <Input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="Enter Your Email or Username"
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label for="password">Password</Label>
-        <Input
-          type="password"
-          name="password"
-          id="password"
-          placeholder="Enter Your Password"
-        />
-      </FormGroup>
-      <Button>Login</Button>
+    <Form className="login-form">
+      <div>
+      <input type="text" className="default-input" name="email" placeholder="E-mail" />
+      </div>
+      <div>
+      <input type="password" className="default-input" name="password" placeholder="Password" />
+      </div>
+      <div className="text-center">
+      <button className="button button--primary">Login</button>
+      </div>
     </Form>
   );
 };

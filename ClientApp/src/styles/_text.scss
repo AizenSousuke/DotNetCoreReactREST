@@ -1,4 +1,5 @@
 // define default text-styling here
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
 .text-center {
     text-align: center;
 }
@@ -18,4 +19,11 @@
 
 .w-no-wrap {
     white-space: nowrap;
+}
+
+@mixin roboto() {
+  font-family: 'Roboto Mono', monospace !important;
+}
+body {
+    @include roboto();
 }
