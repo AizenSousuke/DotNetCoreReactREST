@@ -59,11 +59,6 @@ namespace DotNetCoreReactREST.Repositories
                 collection = collection.Where(a => a.Title.Contains(searchQuery));
             }
 
-            if (collection.ToList().Count() == 0)
-            {
-                return null;
-            }
-
             return collection.ToList();
         }
 
