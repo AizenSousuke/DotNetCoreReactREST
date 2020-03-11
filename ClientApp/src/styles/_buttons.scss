@@ -1,0 +1,119 @@
+@mixin button-reset {
+  background-image: none;
+  background-color: transparent;
+  border-radius: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  &:focus {
+    outline: none;
+  }
+}
+
+.button--large {
+  width: 250px;
+}
+
+.button {
+  background-color: black;
+  color: white;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all $default-timing;
+  &:hover {
+    background-color: lighten(black, 28%);
+  }
+}
+
+.button--squared {
+  border-radius: 0px;
+}
+
+.button--transparent {
+  background-color: rgba(0, 0, 0, 0);
+  color: black;
+
+  &:hover {
+    background-color: black;
+    color: #f5d8be;
+  }
+}
+
+.button--success {
+  background-color: #5aac44;
+  color: #fff;
+
+  &:hover {
+    color: #fff;
+    background-color: lighten(#5aac44, 7%);
+  }
+}
+
+.button--secondary {
+  background-color: $black;
+  color: $white;
+
+  &:hover {
+    color: $white;
+    background-color: lighten($black, 7%);
+  }
+}
+
+.button--gray {
+  background-color: rgba(9, 30, 66, 0.04);
+  color: black;
+
+  &:hover {
+    background-color: lighten(rgba(9, 30, 66, 0.04), 12%);
+  }
+}
+.button--red {
+  background-color: $red;
+  color: white;
+  &:hover {
+    background-color: lighten($red, 7%);
+  }
+}
+
+.button--disabled {
+  background-color: rgb(245, 245, 245);
+  color: rgb(139, 138, 138);
+  pointer-events: none;
+  cursor: none;
+}
+
+.button-reset {
+  @include button-reset();
+}
+
+.button-link {
+  @include button-reset();
+  cursor: pointer;
+  color: #0000FF;
+  &:hover {
+    color: lighten($red, 14%);
+  }
+}
+
+.button--gold {
+  background-color: $gold;
+  color: $purple;
+  &:hover {
+    background-color: lighten($gold, 14%);
+  }
+}
+
+.button--purple {
+  background-color: $purple;
+  color: $white;
+  &:hover {
+    background-color: lighten($purple, 12%);
+  }
+}

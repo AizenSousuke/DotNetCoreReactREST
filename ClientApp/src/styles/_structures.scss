@@ -1,0 +1,31 @@
+.w-100 {
+  width: 100%;
+}
+.h-100 {
+  height: 100%;
+}
+.d-block {
+  display: block;
+}
+
+.d-i-block {
+  display: inline-block;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.center-flex-v-h {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.center-flex-h {
+  display: flex;
+  justify-content: center;
+}
+.center-flex-v {
+  display: flex;
+  align-items: center;
+}
