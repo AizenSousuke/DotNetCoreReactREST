@@ -19,7 +19,7 @@ const Navigation = () => {
   const toggle = () => setIsOpen(!isOpen);
   return (
     <Container>
-      {registerModal && <Register />}
+      {registerModal && <Register toggle={setRegisterModal} />}
       {loginModal && <Login />}
       <Navbar color="light" light expand="md">
         <NavbarBrand>Blog App</NavbarBrand>
