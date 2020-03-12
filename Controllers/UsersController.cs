@@ -2,6 +2,7 @@
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -133,36 +134,49 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         [HttpPost("register")]
-        // [ValidateAntiForgeryToken]
         public async Task<IActionResult> RegisterUserAsync([FromBody] UserForCreationDto registerModel)
         {
             try
             {
-                if (!_userRepo.UserExistsByName(registerModel.UserName))
+                // Register user
+                ApplicationUser user = new ApplicationUser { UserName = registerModel.UserName, Email = registerModel.Email };
+
+                var existingUser = await _userManager.FindByNameAsync(user.UserName);
+
+                if (existingUser != null)
                 {
-                    // Register user
-                    ApplicationUser user = new ApplicationUser { UserName = registerModel.UserName, Email = registerModel.Email };
-
-                    var existingUser = await _userManager.FindByNameAsync(user.UserName);
-
-                    if (existingUser != null)
-                    {
-                        return Ok("User already exists!");
-                    }
-
-                    var result = await _userManager.CreateAsync(user, registerModel.PasswordHash);
-
-                    if (result.Succeeded)
-                    {
-                        return Ok("Result: " + result + ". User " + registerModel.UserName + " created. You may now log in.");
-                    }
-
-                    return Ok("Didn't succeed to create user. Please try again.");
+                    return Ok("User " + user.UserName + " already exists!");
                 }
-                return Ok("User " + registerModel.UserName + " exists.");
+
+                var result = await _userManager.CreateAsync(user, registerModel.PasswordHash);
+
+                if (result.Succeeded)
+                {
+                    return Ok("Result: " + result + ". User " + registerModel.UserName + " created. You may now log in.");
+                }
+
+                return Ok("Didn't succeed to create user. Please try again.");
             }
             catch (System.Exception)
             {
+                throw;
+            }
+        }
+
+        [HttpGet("login")]
+        public IActionResult IsLoggedIn()
+        {
+            try
+            {
+                if (_signInManager.IsSignedIn(HttpContext.User))
+                {
+                    return Ok("User is logged in.");
+                }
+                return Ok("No user is logged in.");
+            }
+            catch (System.Exception)
+            {
+
                 throw;
             }
         }
@@ -173,8 +187,28 @@ namespace DotNetCoreReactREST.Controllers
             try
             {
                 ApplicationUser convertedUser = _mapper.Map<ApplicationUser>(user);
-                await _signInManager.SignInAsync(convertedUser, rememberMe);
+                await _signInManager.SignInAsync(convertedUser, new AuthenticationProperties() {
+                    IsPersistent = true
+                });
                 return Ok("Logged in successfully!");
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> LogOutSync()
+        {
+            try
+            {
+                if (_signInManager.IsSignedIn(HttpContext.User))
+                {
+                    await _signInManager.SignOutAsync();
+                    return Ok("Successfully signed out!");
+                }
+                return Ok("No user is logged in.");
             }
             catch (System.Exception)
             {

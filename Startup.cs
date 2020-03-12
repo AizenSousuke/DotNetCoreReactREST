@@ -89,12 +89,7 @@ namespace DotNetCoreReactREST
            });
 
             // Authentication
-            services.AddAuthentication("CookieAuth")
-                .AddCookie("CookieAuth", config =>
-                {
-                    config.Cookie.Name = "Cookie";
-                    config.LoginPath = "/api/users/login";
-                });
+            services.AddAuthentication();
 
             // Authorization            
             services.AddAuthorization();
