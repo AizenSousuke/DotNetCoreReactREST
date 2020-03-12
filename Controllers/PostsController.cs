@@ -26,7 +26,6 @@ namespace DotNetCoreReactREST
         }
         //POST Api/Posts
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreatePostAsync([FromBody]Post post)
         {
             Post newPost = await _postRepository.CreatePostAsync(post);

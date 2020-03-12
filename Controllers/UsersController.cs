@@ -18,22 +18,25 @@ using System.Threading.Tasks;
 namespace DotNetCoreReactREST.Controllers
 {
     //TODO Add authentication
-    [Route("api/Users")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : Controller
     {
-        private IMapper _mapper;
-        private IUserRepository _userRepo;
-        private IUserClassManager _userManager;
+        private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepo;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public UsersController(
-            IMapper mapper, 
+            IMapper mapper,
             IUserRepository userRepository,
-            IUserClassManager userManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _mapper = mapper;
             _userRepo = userRepository;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
         // GET: Api/Users
         [HttpGet]
@@ -132,20 +135,23 @@ namespace DotNetCoreReactREST.Controllers
 
         [HttpPost("register")]
         // [ValidateAntiForgeryToken]
-        public ActionResult RegisterUserAsync([FromBody]UserForCreationDto registerModel)
+        public async Task<IActionResult> RegisterUserAsync([FromBody]UserForCreationDto registerModel)
         {
             try
             {
                 if (!_userRepo.UserExistsByName(registerModel.UserName))
                 {
                     // Register user
-                    // var result = await _userManager.RegisterAsync(new IdentityUser() { UserName = registerModel.UserName, PasswordHash = registerModel.PasswordHash, Email = registerModel.Email }); ;
-                    UserManager<IdentityUser> userManager = new UserManager();
-                    IdentityUser user = new IdentityUser { UserName = registerModel.UserName };
-                    userManager.CreateAsync(user, user.PasswordHash);
-
-                    Post(registerModel);
-                    return Ok();
+                    // var result = await _userManager.RegisterAsync(new IdentityUser() { UserName = registerModel.UserName, PasswordHash = registerModel.PasswordHash, Email = registerModel.Email });
+                    ApplicationUser user = new ApplicationUser { UserName = registerModel.UserName };
+                    user.PasswordHash = registerModel.PasswordHash;
+                    UserClassManager _userClassManager = new UserClassManager(_signInManager, _userManager);
+                    var result = await _userClassManager.RegisterAsync(user);
+                    if (result)
+                    {
+                        Post(registerModel);
+                    }
+                    return Ok(result);
 
                     // return Ok("Result: " + result + ". User " + registerModel.UserName + " created. You may now log in.");
                 }
@@ -153,6 +159,22 @@ namespace DotNetCoreReactREST.Controllers
             }
             catch (System.Exception)
             {
+                throw;
+            }
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginAsync([FromBody] ApplicationUser user, [FromQuery] bool rememberMe)
+        {
+            try
+            {
+                var userClassManager = new UserClassManager(_signInManager, _userManager);
+                var result = await userClassManager.SignInAsync(user, rememberMe);
+                return Ok("Logged in: " + result);
+            }
+            catch (System.Exception)
+            {
+
                 throw;
             }
         }
