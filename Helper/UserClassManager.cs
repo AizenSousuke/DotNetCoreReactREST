@@ -1,6 +1,5 @@
 ﻿using DotNetCoreReactREST.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Helper

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
-using DotNetCoreReactREST.Helper;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
@@ -135,27 +134,32 @@ namespace DotNetCoreReactREST.Controllers
 
         [HttpPost("register")]
         // [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RegisterUserAsync([FromBody]UserForCreationDto registerModel)
+        public async Task<IActionResult> RegisterUserAsync([FromBody] UserForCreationDto registerModel)
         {
             try
             {
                 if (!_userRepo.UserExistsByName(registerModel.UserName))
                 {
                     // Register user
-                    // var result = await _userManager.RegisterAsync(new IdentityUser() { UserName = registerModel.UserName, PasswordHash = registerModel.PasswordHash, Email = registerModel.Email });
-                    ApplicationUser user = new ApplicationUser { UserName = registerModel.UserName };
-                    user.PasswordHash = registerModel.PasswordHash;
-                    UserClassManager _userClassManager = new UserClassManager(_signInManager, _userManager);
-                    var result = await _userClassManager.RegisterAsync(user);
-                    if (result)
-                    {
-                        Post(registerModel);
-                    }
-                    return Ok(result);
+                    ApplicationUser user = new ApplicationUser { UserName = registerModel.UserName, Email = registerModel.Email };
 
-                    // return Ok("Result: " + result + ". User " + registerModel.UserName + " created. You may now log in.");
+                    var existingUser = await _userManager.FindByNameAsync(user.UserName);
+
+                    if (existingUser != null)
+                    {
+                        return Ok("User already exists!");
+                    }
+
+                    var result = await _userManager.CreateAsync(user, registerModel.PasswordHash);
+
+                    if (result.Succeeded)
+                    {
+                        return Ok("Result: " + result + ". User " + registerModel.UserName + " created. You may now log in.");
+                    }
+
+                    return Ok("Didn't succeed to create user. Please try again.");
                 }
-                return BadRequest("User " + registerModel.UserName + " exists.");
+                return Ok("User " + registerModel.UserName + " exists.");
             }
             catch (System.Exception)
             {
@@ -164,13 +168,13 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync([FromBody] ApplicationUser user, [FromQuery] bool rememberMe)
+        public async Task<IActionResult> LoginAsync([FromBody] UserForCreationDto user, [FromQuery] bool rememberMe)
         {
             try
             {
-                var userClassManager = new UserClassManager(_signInManager, _userManager);
-                var result = await userClassManager.SignInAsync(user, rememberMe);
-                return Ok("Logged in: " + result);
+                ApplicationUser convertedUser = _mapper.Map<ApplicationUser>(user);
+                await _signInManager.SignInAsync(convertedUser, rememberMe);
+                return Ok("Logged in successfully!");
             }
             catch (System.Exception)
             {
