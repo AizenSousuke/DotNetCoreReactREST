@@ -3,7 +3,7 @@ using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Helper;
 using DotNetCoreReactREST.Repositories;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -11,32 +11,32 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DotNetCoreReactREST.Controllers
 {
     //TODO Add authentication
-    [Route("api/Users")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : Controller
     {
-        private IMapper _mapper;
-        private IUserRepository _userRepo;
-        private IUserClassManager _userManager;
+        private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepo;
+        private readonly IUserClassManager _userClassManager;
 
         public UsersController(
-            IMapper mapper, 
+            IMapper mapper,
             IUserRepository userRepository,
-            IUserClassManager userManager)
+            IUserClassManager userClassManager)
         {
             _mapper = mapper;
             _userRepo = userRepository;
-            _userManager = userManager;
+            _userClassManager = userClassManager;
         }
         // GET: Api/Users
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "CookieAuth")]
         public ActionResult<IEnumerable<UserDto>> GetUsers()
         {
             var userEntities = _userRepo.GetAllUsers();
@@ -139,13 +139,12 @@ namespace DotNetCoreReactREST.Controllers
                 if (!_userRepo.UserExistsByName(registerModel.UserName))
                 {
                     // Register user
-                    // var result = await _userManager.RegisterAsync(new IdentityUser() { UserName = registerModel.UserName, PasswordHash = registerModel.PasswordHash, Email = registerModel.Email }); ;
-                    UserManager<IdentityUser> userManager = new UserManager();
-                    IdentityUser user = new IdentityUser { UserName = registerModel.UserName };
-                    userManager.CreateAsync(user, user.PasswordHash);
+                    // var result = await _userManager.RegisterAsync(new IdentityUser() { UserName = registerModel.UserName, PasswordHash = registerModel.PasswordHash, Email = registerModel.Email });
+                    ApplicationUser user = new ApplicationUser { UserName = registerModel.UserName };
+                    var result = _userClassManager.RegisterAsync(user);
 
                     Post(registerModel);
-                    return Ok();
+                    return Ok(result);
 
                     // return Ok("Result: " + result + ". User " + registerModel.UserName + " created. You may now log in.");
                 }
@@ -153,6 +152,20 @@ namespace DotNetCoreReactREST.Controllers
             }
             catch (System.Exception)
             {
+                throw;
+            }
+        }
+
+        [HttpGet("login")]
+        public IActionResult LoginAsync()
+        {
+            try
+            {
+                return Ok("Logged in");
+            }
+            catch (System.Exception)
+            {
+
                 throw;
             }
         }
