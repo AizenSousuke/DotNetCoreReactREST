@@ -1,6 +1,7 @@
 using AutoMapper;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
+using DotNetCoreReactREST.Helper;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +39,8 @@ namespace DotNetCoreReactREST
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ILikeRepository, LikeRepository>();
+
+            // services.AddScoped<IUserManager, UserManager>();
 
             // Add AutoMapper to map object to object
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
+using DotNetCoreReactREST.Helper;
 using DotNetCoreReactREST.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -9,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,11 +24,16 @@ namespace DotNetCoreReactREST.Controllers
     {
         private IMapper _mapper;
         private IUserRepository _userRepo;
+        private IUserClassManager _userManager;
 
-        public UsersController(IMapper mapper, IUserRepository userRepository)
+        public UsersController(
+            IMapper mapper, 
+            IUserRepository userRepository,
+            IUserClassManager userManager)
         {
             _mapper = mapper;
             _userRepo = userRepository;
+            _userManager = userManager;
         }
         // GET: Api/Users
         [HttpGet]
@@ -124,14 +132,22 @@ namespace DotNetCoreReactREST.Controllers
 
         [HttpPost("register")]
         // [ValidateAntiForgeryToken]
-        public ActionResult RegisterUser([FromBody]UserForCreationDto registerModel)
+        public ActionResult RegisterUserAsync([FromBody]UserForCreationDto registerModel)
         {
             try
             {
                 if (!_userRepo.UserExistsByName(registerModel.UserName))
                 {
+                    // Register user
+                    // var result = await _userManager.RegisterAsync(new IdentityUser() { UserName = registerModel.UserName, PasswordHash = registerModel.PasswordHash, Email = registerModel.Email }); ;
+                    UserManager<IdentityUser> userManager = new UserManager();
+                    IdentityUser user = new IdentityUser { UserName = registerModel.UserName };
+                    userManager.CreateAsync(user, user.PasswordHash);
+
                     Post(registerModel);
-                    return Ok("User " + registerModel.UserName + " created. You may now log in.");
+                    return Ok();
+
+                    // return Ok("Result: " + result + ". User " + registerModel.UserName + " created. You may now log in.");
                 }
                 return BadRequest("User " + registerModel.UserName + " exists.");
             }
