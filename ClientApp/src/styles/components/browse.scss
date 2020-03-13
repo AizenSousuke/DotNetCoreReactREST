@@ -1,9 +1,15 @@
 .browse {
+    h3 {
+        color: #3E3E3E;
+        font: Regular 48px/58px Roboto;
+    }
+
     .card {
         height: 200px;
         width: 95%;
         animation: fade-in 1s;
         position: relative;
+        border-radius: 20px;
         &:hover {
             .card-overlay {
                 height: 100%;
@@ -21,16 +27,17 @@
     .card-overlay {
         color: white;
         position: absolute;
-        z-index:999;
+        z-index: 2;
         background-color: rgba(0, 0, 0, 0.808);
+        border-radius: 20px;
         height: 0px;
         bottom: 0px;
         left:0;
         opacity: 1;
-        transition: all .5s ease-in-out;
+        transition: all .3s ease-in-out;
         overflow: hidden;
         .button {
-            width: 200px !important;
+            width: 150px !important;
             box-shadow: none;
         }
     }
