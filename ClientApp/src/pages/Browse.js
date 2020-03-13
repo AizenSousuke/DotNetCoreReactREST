@@ -18,17 +18,23 @@ const Browse = () => {
                   className="mb-3"
                   style={{
                     backgroundImage:
-                      "url(https://picsum.photos/seed/picsum/200/300)",
-                    backgroundSize: "cover"
+                      "url(https://i.picsum.photos/id/1025/4951/3301.jpg)",
+                    backgroundSize: "cover",
+                    backgroundPosition: "50%"
                   }}
                 >
                   <div className="card-overlay">
                     <Container>
-                    <h3 className="text-center">{blog.name}</h3>
-                    <p>{blog.title} Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt voluptas quas blanditiis ea voluptate possimus similique quos commodi delectus nobis.</p>
-                    <div className="text-center d-flex justify-content-center">
-                      <div className="button button--primary">View Blog</div>
-                    </div>
+                      <h3 className="text-center">{blog.name}</h3>
+                      <p>
+                        {blog.title} Lorem ipsum dolor, sit amet consectetur
+                        adipisicing elit. Incidunt voluptas quas blanditiis ea
+                        voluptate possimus similique quos commodi delectus
+                        nobis.
+                      </p>
+                      <div className="text-center d-flex justify-content-center">
+                        <div className="button button--primary">View Blog</div>
+                      </div>
                     </Container>
                   </div>
                 </Card>
