@@ -8,36 +8,37 @@ const Browse = () => {
 
   return (
     <Layout>
-      <div className="browse mt-4">
+      <div className="browse mt-5">
         {blogs.length ? (
           <>
             <div className="d-flex flex-wrap justify-content-center">
               {blogs.map(blog => (
-                <Card
-                  key={blog.title}
-                  className="mb-3"
-                  style={{
-                    backgroundImage:
-                      "url(https://i.picsum.photos/id/1025/4951/3301.jpg)",
-                    backgroundSize: "cover",
-                    backgroundPosition: "50%"
-                  }}
-                >
-                  <div className="card-overlay">
-                    <Container>
-                      <h3 className="text-center">{blog.name}</h3>
-                      <p>
-                        {blog.title} Lorem ipsum dolor, sit amet consectetur
-                        adipisicing elit. Incidunt voluptas quas blanditiis ea
-                        voluptate possimus similique quos commodi delectus
-                        nobis.
-                      </p>
-                      <div className="text-center d-flex justify-content-center">
-                        <div className="button button--primary">View Blog</div>
-                      </div>
-                    </Container>
-                  </div>
-                </Card>
+                <div className="m-5" key={blog.title}>
+                    <h3>{blog.name}</h3>
+                    <Card
+                        style={{
+                            backgroundImage:
+                                "url(https://i.picsum.photos/id/1025/4951/3301.jpg)",
+                            backgroundSize: "cover",
+                            backgroundPosition: "50%",
+                        }}
+                        className="m-0"
+                    >
+                        <div className="card-overlay text-center ">
+                            <Container className="mt-3">
+                                <p>
+                                    {blog.title} Lorem ipsum dolor, sit amet consectetur
+                                    adipisicing elit. Incidunt voluptas quas blanditiis ea
+                                    voluptate possimus similique quos commodi delectus
+                                    nobis.
+                                </p>
+                                <div className="d-flex justify-content-center">
+                                    <div className="button button--primary">View Blog</div>
+                                </div>
+                            </Container>
+                        </div>
+                    </Card>
+                </div>
               ))}
             </div>
           </>
