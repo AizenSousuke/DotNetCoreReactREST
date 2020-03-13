@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Button, Modal, ModalBody, ModalFooter } from "reactstrap";
 import { setModal } from "../../actions/auth";
 // modalName is a must so that the reducer can recognize what modal to open
 const CommonModal = ({ bodyContent, buttonTitle, title, modalName, defaultButtons }) => {
