@@ -5,8 +5,8 @@
     }
 
     .card {
-        height: 200px;
-        width: 95%;
+        height: 230px;
+        width: 295px;
         animation: fade-in 1s;
         position: relative;
         border-radius: 20px;
@@ -17,9 +17,12 @@
                 transform: translateY(0);
             }
         }
-        @include xlarge {
-            width: 500px;
+        @include medium("up") {
+            width: 410px;
             height: 250px;
+        }
+        @include xlarge("up") {
+            width: 500px;
             margin-left: 50px;
             margin-right: 50px;
         }
