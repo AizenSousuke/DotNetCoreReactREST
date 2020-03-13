@@ -1,39 +1,45 @@
-import React, { useState } from 'react';
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import React, { useState } from "react";
+import { Form } from "reactstrap";
 
 const RegisterForm = () => {
-    return (
-      <Form>
-        <FormGroup>
-          <Label for="username">Username</Label>
-          <Input
-            type="text"
-            name="username"
-            id="username"
-            placeholder="Enter Your Username"
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label for="email">Email</Label>
-          <Input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Enter Your Email"
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label for="password">Password</Label>
-          <Input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Enter Your Password"
-          />
-        </FormGroup>
-        <Button>Sign Up</Button>
-      </Form>
-    );
-}
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  return (
+    <Form>
+      <div>
+        <input
+          type="text"
+          className="default-input"
+          name="username"
+          placeholder="Username"
+          value={userName}
+          onChange={e => setUserName(e.target.value)}
+        />
+        <input
+          type="email"
+          className="default-input"
+          name="email"
+          placeholder="E-mail"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        />
+      </div>
+      <div>
+        <input
+          type="password"
+          className="default-input"
+          name="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
+      </div>
+      <div className="text-center">
+        <button className="button button--primary">Sign up</button>
+      </div>
+    </Form>
+  );
+};
 
 export default RegisterForm;

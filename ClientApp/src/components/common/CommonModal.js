@@ -12,7 +12,7 @@ const CommonModal = ({ bodyContent, buttonTitle, title, modalName, defaultButton
   return (
     <div>
       <Modal isOpen={getModal.type && getModal.type === modalName} toggle={() => close()}>
-        <ModalHeader toggle={() => close()}>{title}</ModalHeader>
+        <h1 className="text-center mt-5">{title}</h1>
         <ModalBody>{bodyContent}</ModalBody>
         { defaultButtons && <ModalFooter>
           <Button color="primary" onClick={() => close()}>
