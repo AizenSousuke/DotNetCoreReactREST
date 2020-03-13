@@ -1,0 +1,37 @@
+.browse {
+    .card {
+        height: 200px;
+        width: 95%;
+        animation: fade-in 1s;
+        &:hover {
+            .card-overlay {
+                height: 100%;
+                opacity: 1;
+                .button {
+                    animation: fade-in 1.5s;
+                }
+            }
+        }
+        @include xlarge {
+            width: 500px;
+            height: 250px;
+            margin-left: 50px;
+            margin-right: 50px;
+        }
+    }
+    .card-overlay {
+        color: white;
+        position: absolute;
+        z-index:999;
+        background-color: rgba(0, 0, 0, 0.808);
+        height: 0;
+        top: 0;
+        left:0;
+        opacity: 0;
+        transition: all .6s;
+        .button {
+            width: 200px !important;
+            box-shadow: none;
+        }
+    }
+}
