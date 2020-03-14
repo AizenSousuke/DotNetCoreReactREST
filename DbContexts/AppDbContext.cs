@@ -14,7 +14,7 @@ namespace DotNetCoreReactREST.DbContexts
         //ApplicationUser DbSet is inherited
         public DbSet<Category> Categories { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<UpVote> UpVotes { get; set; }
+        public DbSet<Like> Likes { get; set; }
         public DbSet<Comment> Comments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,8 +22,8 @@ namespace DotNetCoreReactREST.DbContexts
 
             // Seed data
             modelBuilder.Entity<ApplicationUser>().HasData(
-                new ApplicationUser { Id = "1", UserName = "JohnDoe", PasswordHash = "password" },
-                new ApplicationUser { Id = "2", UserName = "Jane", PasswordHash = "password2" });
+                    new ApplicationUser { Id = "1", UserName = "JohnDoe", PasswordHash = "password" },
+                    new ApplicationUser { Id = "2", UserName = "Jane", PasswordHash = "password2" });
             modelBuilder.Entity<Category>().HasData(new Category()
             {
                 Id = 1,
@@ -70,9 +70,69 @@ namespace DotNetCoreReactREST.DbContexts
                 Id = 3,
                 CategoryId = 1,
                 ApplicationUserId = "2",
+                Title = "Eos dolores suscipsetetur dolores sadipscing eos lorem",
+                Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
+                DateTime = DateTime.Now.AddMinutes(46)
+            });
+
+            modelBuilder.Entity<Post>().HasData(new Post()
+            {
+                Id = 4,
+                CategoryId = 1,
+                ApplicationUserId = "2",
                 Title = "Eos dolores suscipit consetetur dolores sadipscing eos lorem",
                 Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                DateTime = DateTime.Now.AddMinutes(6)
+                DateTime = DateTime.Now.AddMinutes(86)
+            });
+
+            modelBuilder.Entity<Post>().HasData(new Post()
+            {
+                Id = 5,
+                CategoryId = 1,
+                ApplicationUserId = "2",
+                Title = "Eos dolors sadipscing eos lorem",
+                Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
+                DateTime = DateTime.Now.AddMinutes(56)
+            });
+
+            modelBuilder.Entity<Post>().HasData(new Post()
+            {
+                Id = 6,
+                CategoryId = 1,
+                ApplicationUserId = "2",
+                Title = "Eos dolores suscipit consetos lorem",
+                Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
+                DateTime = DateTime.Now.AddMinutes(46)
+            });
+
+            modelBuilder.Entity<Post>().HasData(new Post()
+            {
+                Id = 7,
+                CategoryId = 1,
+                ApplicationUserId = "2",
+                Title = "Eotetur dolores sadipscing eos lorem",
+                Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
+                DateTime = DateTime.Now.AddMinutes(36)
+            });
+
+            modelBuilder.Entity<Post>().HasData(new Post()
+            {
+                Id = 8,
+                CategoryId = 1,
+                ApplicationUserId = "2",
+                Title = "Eos dolores suscMisakaipscing eos lorem",
+                Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
+                DateTime = DateTime.Now.AddMinutes(26)
+            });
+
+            modelBuilder.Entity<Post>().HasData(new Post()
+            {
+                Id = 9,
+                CategoryId = 1,
+                ApplicationUserId = "2",
+                Title = "Eos doloAJAJAJcing eos lorem",
+                Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
+                DateTime = DateTime.Now.AddMinutes(16)
             });
         }
 

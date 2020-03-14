@@ -91,13 +91,13 @@ namespace DotNetCoreReactREST.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "28131d44-608d-4e33-ba2f-e8ee2fb80810",
+                            ConcurrencyStamp = "f37dc7a4-9b11-4d8f-8ec2-2fd226c9ccb1",
                             EmailConfirmed = false,
                             IsAdmin = false,
                             LockoutEnabled = false,
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b52af01a-3312-48ea-ad32-060bc650e60d",
+                            SecurityStamp = "ac75cac2-50ef-40df-b861-f6f9fe6920af",
                             TwoFactorEnabled = false,
                             UserName = "JohnDoe"
                         },
@@ -105,13 +105,13 @@ namespace DotNetCoreReactREST.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b2645202-4cff-4f43-b1d3-b413442aa22a",
+                            ConcurrencyStamp = "ee61c13f-9a3a-4d38-b142-f20b4ca9717d",
                             EmailConfirmed = false,
                             IsAdmin = false,
                             LockoutEnabled = false,
                             PasswordHash = "password2",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7c1dd85c-9628-4646-956f-92c629dd34fb",
+                            SecurityStamp = "1ec6b47b-33eb-4017-a610-468c92419a35",
                             TwoFactorEnabled = false,
                             UserName = "Jane"
                         });
@@ -188,6 +188,28 @@ namespace DotNetCoreReactREST.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("DotNetCoreReactREST.Entities.Like", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CommentId");
+
+                    b.ToTable("Likes");
+                });
+
             modelBuilder.Entity("DotNetCoreReactREST.Entities.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -235,7 +257,7 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 1,
                             Content = "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 6, 16, 17, 15, 151, DateTimeKind.Local).AddTicks(6477),
+                            DateTime = new DateTime(2020, 3, 9, 22, 11, 23, 859, DateTimeKind.Local).AddTicks(6364),
                             Title = "Autem nibh nulla nonumy lorem"
                         },
                         new
@@ -244,7 +266,7 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 1,
                             Content = "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 6, 16, 20, 15, 152, DateTimeKind.Local).AddTicks(1297),
+                            DateTime = new DateTime(2020, 3, 9, 22, 14, 23, 860, DateTimeKind.Local).AddTicks(1073),
                             Title = "Vero ipsum kasd in dolor"
                         },
                         new
@@ -253,35 +275,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 1,
                             Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
-                            DateTime = new DateTime(2020, 3, 6, 16, 23, 15, 152, DateTimeKind.Local).AddTicks(1398),
+                            DateTime = new DateTime(2020, 3, 9, 22, 17, 23, 860, DateTimeKind.Local).AddTicks(1170),
                             Title = "Eos dolores suscipit consetetur dolores sadipscing eos lorem"
                         });
-                });
-
-            modelBuilder.Entity("DotNetCoreReactREST.Entities.UpVote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsLiked")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("UpVotes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -430,6 +426,19 @@ namespace DotNetCoreReactREST.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DotNetCoreReactREST.Entities.Like", b =>
+                {
+                    b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("DotNetCoreReactREST.Entities.Comment", "Comment")
+                        .WithMany("Likes")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DotNetCoreReactREST.Entities.Post", b =>
                 {
                     b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", "ApplicationUser")
@@ -439,21 +448,6 @@ namespace DotNetCoreReactREST.Migrations
                     b.HasOne("DotNetCoreReactREST.Entities.Category", "Category")
                         .WithMany("Posts")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("DotNetCoreReactREST.Entities.UpVote", b =>
-                {
-                    b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DotNetCoreReactREST.Entities.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

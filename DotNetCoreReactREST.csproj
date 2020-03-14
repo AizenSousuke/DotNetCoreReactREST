@@ -9,6 +9,10 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
@@ -25,6 +29,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,32 +40,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200229054006_RemovedVoteClass.cs" />
-    <Compile Remove="Migrations\20200229054006_RemovedVoteClass.Designer.cs" />
-    <Compile Remove="Migrations\20200304042350_CategoryMigration.cs" />
-    <Compile Remove="Migrations\20200304042350_CategoryMigration.Designer.cs" />
-    <Compile Remove="Migrations\20200305114144_UpdatedMigration.cs" />
-    <Compile Remove="Migrations\20200305114144_UpdatedMigration.Designer.cs" />
-    <Compile Remove="Migrations\20200305114336_Initial.cs" />
-    <Compile Remove="Migrations\20200305114336_Initial.Designer.cs" />
-    <Compile Remove="Migrations\20200305114725_NewMigration.cs" />
-    <Compile Remove="Migrations\20200305114725_NewMigration.Designer.cs" />
-    <Compile Remove="Migrations\20200305115106_FixAutomapper.cs" />
-    <Compile Remove="Migrations\20200305115106_FixAutomapper.Designer.cs" />
-    <Compile Remove="Migrations\20200305115331_Initial.cs" />
-    <Compile Remove="Migrations\20200305115331_Initial.Designer.cs" />
-    <Compile Remove="Migrations\20200305115918_Initial.cs" />
-    <Compile Remove="Migrations\20200305115918_Initial.Designer.cs" />
-    <Compile Remove="Migrations\20200305120605_Initial.cs" />
-    <Compile Remove="Migrations\20200305120605_Initial.Designer.cs" />
-    <Compile Remove="Migrations\20200305121349_Initial.cs" />
-    <Compile Remove="Migrations\20200305121349_Initial.Designer.cs" />
-    <Compile Remove="Migrations\20200305121951_AddedKey.cs" />
-    <Compile Remove="Migrations\20200305121951_AddedKey.Designer.cs" />
-    <Compile Remove="Migrations\20200306063007_initial.cs" />
-    <Compile Remove="Migrations\20200306063007_initial.Designer.cs" />
-    <Compile Remove="Migrations\20200306072312_Update.cs" />
-    <Compile Remove="Migrations\20200306072312_Update.Designer.cs" />
+    <Compile Remove="Migrations\20200309091413_initial.cs" />
+    <Compile Remove="Migrations\20200309091413_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200309140844_Initial2.cs" />
+    <Compile Remove="Migrations\20200309140844_Initial2.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

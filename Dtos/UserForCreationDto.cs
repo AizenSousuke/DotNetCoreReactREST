@@ -1,4 +1,4 @@
-﻿namespace DotNetCoreReactREST.Dtos.User
+﻿namespace DotNetCoreReactREST.Dtos
 {
     public class UserForCreationDto : UserForManipulationDto
     {

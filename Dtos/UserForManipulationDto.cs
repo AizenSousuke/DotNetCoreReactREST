@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DotNetCoreReactREST.Dtos.User
+namespace DotNetCoreReactREST.Dtos
 {
     public abstract class UserForManipulationDto
     {
@@ -13,5 +13,8 @@ namespace DotNetCoreReactREST.Dtos.User
 
         [Required(ErrorMessage = "Please type a password")]
         public string PasswordHash { get; set; }
+
+        [Required]
+        public bool IsAdmin { get; set; }
     }
 }

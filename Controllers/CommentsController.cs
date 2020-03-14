@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DotNetCoreReactREST.Dtos.Comment;
+using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.JsonPatch;
@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace DotNetCoreReactREST.Controllers
 {
-    [Route("api/users/{userId}/comments")]
+    [Route("api")]
     [ApiController]
     public class CommentsController : Controller
     {
@@ -25,16 +25,23 @@ namespace DotNetCoreReactREST.Controllers
             _mapper = mapper;
         }
         // GET: api/users/{userId}/comments
-        [HttpGet]
-        public ActionResult<IEnumerable<Comment>> GetComments()
+        [HttpGet("users/{userId}/comments")]
+        public ActionResult<IEnumerable<Comment>> GetCommentsForUser(string userId)
         {
-            var commentsFromRepo = _commentRepo.GetAllComments();
+            var commentsFromRepo = _commentRepo.GetCommentsForUser(userId);
             return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
         }
 
-        // GET api//users/{userId}/comments/{commentId}
-        [HttpGet("{commentId}", Name = "GetComment")]
-        public ActionResult Comment(int commentId)
+        [HttpGet("posts/{postId}/comments")]
+        public ActionResult<IEnumerable<Comment>> GetCommentsForPost(int postId)
+        {
+            var commentsFromRepo = _commentRepo.GetCommentsForPost(postId);
+            return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
+        }
+
+        // GET api/comments/{commentId}
+        [HttpGet("Comments/{commentId}", Name = "GetComment")]
+        public ActionResult GetCommentForUser(int commentId)
         {
             var commentFromRepo = _commentRepo.GetCommentById(commentId);
             if (commentFromRepo == null)
@@ -44,8 +51,8 @@ namespace DotNetCoreReactREST.Controllers
             return Ok(_mapper.Map<CommentDto>(commentFromRepo));
         }
 
-        // POST api/users/{userId}/comments
-        [HttpPost]
+        // POST api/comments
+        [HttpPost("comments")]
         public ActionResult<CommentDto> CreateComment(CommentForCreationDto comment)
         {
             var commentToAdd = _mapper.Map<Comment>(comment);
@@ -58,8 +65,8 @@ namespace DotNetCoreReactREST.Controllers
                 commentToReturn);
         }
 
-        // PUT api/users/{userId}/comments/{commentId}
-        [HttpPut("{commentId}")]
+        // PUT comments/{commentId}
+        [HttpPut("comments/{commentId}")]
         public ActionResult UpdateComment(int commentId, CommentForUpdateDto comment)
         {
             var commentToUpdate = _commentRepo.GetCommentById(commentId);
@@ -75,7 +82,8 @@ namespace DotNetCoreReactREST.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{commentId}")]
+        //api/comments/commentId
+        [HttpPatch("comments/{commentId}")]
         public ActionResult UpdateCommentPartially(int commentId,
             JsonPatchDocument<CommentForUpdateDto> patchDocument)
         {
@@ -104,8 +112,8 @@ namespace DotNetCoreReactREST.Controllers
         }
 
 
-        // DELETE api/users/{userid}/comments/{commentId}
-        [HttpDelete("{commentId}")]
+        // DELETE api/comments/{commentId}
+        [HttpDelete("comments/{commentId}")]
         public ActionResult Delete(int commentId)
         {
             var commentFromRepo = _commentRepo.GetCommentById(commentId);

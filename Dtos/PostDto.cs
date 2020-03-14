@@ -14,6 +14,8 @@ namespace DotNetCoreReactREST.Dtos
         public string Description { get; set; }
         public string Content { get; set; }
         public DateTime DateTime { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public string ApplicationUserId { get; set; }
+
+
     }
 }

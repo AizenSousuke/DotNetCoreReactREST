@@ -1,10 +1,12 @@
 using AutoMapper;
+using Microsoft.OpenApi.Models;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -36,11 +38,23 @@ namespace DotNetCoreReactREST
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<ILikeRepository, LikeRepository>();
 
             // Add AutoMapper to map object to object
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            // Identity
             services.AddIdentityCore<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
+            {
+                // Password requirements
+                opt.Password.RequiredLength = 8;
+            })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddRoles<IdentityRole>();
+            services.AddScoped<UserManager<ApplicationUser>>();
+            services.AddScoped<SignInManager<ApplicationUser>>();
+
             services.AddControllers(setupAction =>
             {
                 setupAction.ReturnHttpNotAcceptable = true;
@@ -74,6 +88,25 @@ namespace DotNetCoreReactREST
                    };
                };
            });
+
+            // Swashbuckle
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Blog API",
+                    Description = "All the endpoints documentation.",
+                    Version = "v1"
+                });
+            });
+
+            // Authentication
+            services.AddAuthentication();
+
+            // Authorization            
+            services.AddAuthorization();
+
             //Cross Origin Requests
             //AddPolicy("Name of policy")
             services.AddCors(options => options.AddPolicy("AllowOpenOrigin", builder =>
@@ -112,7 +145,20 @@ namespace DotNetCoreReactREST
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            // Swashbuckle Swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog API v1");
+                // To serve the Swagger UI at the app's root (http://localhost:<port>/), set the RoutePrefix property to an empty string:
+                // c.RoutePrefix = string.Empty;
+            });
+
             app.UseRouting();
+
+            // Use authentication and authorization - who are you vs are you allowed
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

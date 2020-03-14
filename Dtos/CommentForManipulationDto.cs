@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DotNetCoreReactREST.Dtos.Comment
+namespace DotNetCoreReactREST.Dtos
 {
     public abstract class CommentForManipulationDto
     {
@@ -10,7 +10,8 @@ namespace DotNetCoreReactREST.Dtos.Comment
         [Required]
         public int PostId { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public int ApplicationUserId { get; set; }
+
 
     }
 }

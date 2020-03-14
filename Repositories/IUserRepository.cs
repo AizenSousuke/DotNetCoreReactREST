@@ -5,12 +5,14 @@ namespace DotNetCoreReactREST.Repositories
 {
     public interface IUserRepository
     {
-        public IEnumerable<ApplicationUser> GetUsers();
-        public ApplicationUser GetUserById(string userId);
-        public void AddUser(ApplicationUser user);
-        public void UpdateUser(ApplicationUser user);
-        public void DeleteUser(ApplicationUser user);
-        public bool UserExists(string userId);
-        public bool Save();
+        IEnumerable<ApplicationUser> GetAllUsers();
+        IEnumerable<ApplicationUser> GetAllAdmins();
+        ApplicationUser GetUserById(string userId);
+        void AddUser(ApplicationUser user);
+        void UpdateUser(ApplicationUser user);
+        void DeleteUser(ApplicationUser user);
+        bool UserExists(string userId);
+        bool UserExistsByName(string userName);
+        bool Save();
     }
 }
