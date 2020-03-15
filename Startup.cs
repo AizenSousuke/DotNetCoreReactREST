@@ -155,7 +155,9 @@ namespace DotNetCoreReactREST
             {
                 app.UseHttpsRedirection();
             }
+
             app.UseStaticFiles();
+
             if (env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
