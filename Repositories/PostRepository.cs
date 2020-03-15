@@ -39,7 +39,11 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(postResourceParameters));
             }
-            
+            if (string.IsNullOrWhiteSpace(postResourceParameters.Category)
+                && string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery))
+            {
+                return GetPosts();
+            }
             var collection = _appDbContext.Posts as IQueryable<Post>;
 
             if (!string.IsNullOrWhiteSpace(postResourceParameters.Category))
@@ -54,11 +58,8 @@ namespace DotNetCoreReactREST.Repositories
                 var searchQuery = postResourceParameters.SearchQuery.Trim();
                 collection = collection.Where(a => a.Title.Contains(searchQuery));
             }
-            return collection.
-                //if page# is requested in query, skip until that page 
-                Skip(postResourceParameters.PageSize * (postResourceParameters.PageNumber - 1))
-                .Take(postResourceParameters.PageSize)
-                .ToList();
+
+            return collection.ToList();
         }
 
         public async Task<Post> UpdatePost(int postId, JsonPatchDocument post)

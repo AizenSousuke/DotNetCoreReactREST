@@ -2,6 +2,8 @@
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -9,23 +11,32 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DotNetCoreReactREST.Controllers
 {
     //TODO Add authentication
-    [Route("api/Users")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : Controller
     {
-        private IMapper _mapper;
-        private IUserRepository _userRepo;
+        private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepo;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public UsersController(IMapper mapper, IUserRepository userRepository)
+        public UsersController(
+            IMapper mapper,
+            IUserRepository userRepository,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _mapper = mapper;
             _userRepo = userRepository;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
         // GET: Api/Users
         [HttpGet]
@@ -123,20 +134,85 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         [HttpPost("register")]
-        // [ValidateAntiForgeryToken]
-        public ActionResult RegisterUser([FromBody]UserForCreationDto registerModel)
+        public async Task<IActionResult> RegisterUserAsync([FromBody] UserForCreationDto registerModel)
         {
             try
             {
-                if (!_userRepo.UserExistsByName(registerModel.UserName))
+                // Register user
+                ApplicationUser user = new ApplicationUser { UserName = registerModel.UserName, Email = registerModel.Email };
+
+                var existingUser = await _userManager.FindByNameAsync(user.UserName);
+
+                if (existingUser != null)
                 {
-                    Post(registerModel);
-                    return Ok("User " + registerModel.UserName + " created. You may now log in.");
+                    return Ok("User " + user.UserName + " already exists!");
                 }
-                return BadRequest("User " + registerModel.UserName + " exists.");
+
+                var result = await _userManager.CreateAsync(user, registerModel.PasswordHash);
+
+                if (result.Succeeded)
+                {
+                    return Ok("Result: " + result + ". User " + registerModel.UserName + " created. You may now log in.");
+                }
+
+                return Ok("Didn't succeed to create user. Please try again.");
             }
             catch (System.Exception)
             {
+                throw;
+            }
+        }
+
+        [HttpGet("login")]
+        public IActionResult IsLoggedIn()
+        {
+            try
+            {
+                if (_signInManager.IsSignedIn(HttpContext.User))
+                {
+                    return Ok("User is logged in.");
+                }
+                return Ok("No user is logged in.");
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginAsync([FromBody] UserForCreationDto user, [FromQuery] bool rememberMe)
+        {
+            try
+            {
+                ApplicationUser convertedUser = _mapper.Map<ApplicationUser>(user);
+                await _signInManager.SignInAsync(convertedUser, new AuthenticationProperties() {
+                    IsPersistent = true
+                });
+                return Ok("Logged in successfully!");
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> LogOutSync()
+        {
+            try
+            {
+                if (_signInManager.IsSignedIn(HttpContext.User))
+                {
+                    await _signInManager.SignOutAsync();
+                    return Ok("Successfully signed out!");
+                }
+                return Ok("No user is logged in.");
+            }
+            catch (System.Exception)
+            {
+
                 throw;
             }
         }
