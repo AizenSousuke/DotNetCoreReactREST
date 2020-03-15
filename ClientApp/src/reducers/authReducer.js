@@ -20,7 +20,11 @@ export const authReducer = (state = initialState, {type, payload}) => {
                 message: 'User successfully registered!'
             }
         case 'SET_USER':
-            localStorage.setItem('user', JSON.stringify(payload))
+            if (payload) {
+                localStorage.setItem('user', JSON.stringify(payload))
+            } else {
+                localStorage.removeItem('user')
+            }
             return {
                 ...state,
                 user: payload,

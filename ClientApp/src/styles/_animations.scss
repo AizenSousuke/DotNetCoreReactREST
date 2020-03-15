@@ -39,3 +39,35 @@ $default-timing: 0.2s;
     transform: translateY(0px);
   }
 }
+
+.roll-appear{
+  opacity:0;
+}
+.roll-enter{
+  opacity:0;
+}
+.roll-enter-done{
+  transform: rotate(720deg) scale(3);
+  opacity:1;
+  transition: transform 1000ms, opacity 1000ms;
+}
+.roll-exit{
+  transform: rotate(720deg) scale(3);
+  opacity:1;
+}
+
+
+.fade-enter-done, .fade-exit {
+  transition: opacity $default-timing;
+}
+.fade-appear, .fade-enter /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity $default-timing;
+}

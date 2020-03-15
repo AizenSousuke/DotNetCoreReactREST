@@ -1,0 +1,30 @@
+.small-panel {
+    background-color: white;
+    box-shadow: $darkBoxShadow;
+    border-radius: 5px;
+    width: 170px;
+    padding: 3px 5px 0px 0;
+    position: absolute;
+    right: 0;
+    top: 110%;
+    height: 65px;
+    a {
+        margin: 0;
+    }
+    ul {
+        display: flex;
+        flex-direction: column;
+    }
+    li {
+        list-style: none;
+        text-align: right;
+        margin: 3px 2px 3px 0;
+        color: rgba(0, 0, 0, 0.705);
+        span {
+            cursor: pointer;
+            &:hover {
+                color: black;
+            }
+        }
+    }
+}

@@ -1,42 +1,50 @@
 $navItemMargins: 0 12px;
-$ctaColor: #00BAFF;
+$ctaColor: #00baff;
 
 .navbar {
-    width: 100%;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    box-shadow: 0px 5px 50px #00000033;
-    margin-bottom: 15px;
-   .nav-item a, a {
-        color: rgba(0, 0, 0, 0.705);
-        margin: $navItemMargins;
-        &:hover {
-            color: black;
-            text-decoration: none;
-        }
+  width: 100%;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: $darkBoxShadow;
+  margin-bottom: 15px;
+  @include roboto-mono();
+  .nav-item a,
+  a {
+    color: rgba(0, 0, 0, 0.705);
+    margin: $navItemMargins;
+    &:hover {
+      color: black;
+      text-decoration: none;
     }
-    .navbar__cta {
-        margin: $navItemMargins;
+  }
+  .navbar__cta {
+    margin: $navItemMargins;
+    cursor: pointer;
+    color: $ctaColor;
+    font-weight: 500;
+    word-spacing: 3px;
+    &:hover {
+      color: darken($ctaColor, 6%);
+    }
+  }
+  img {
+    border-radius: 50%;
+    width: 45px;
+    margin: $navItemMargins;
+    cursor: pointer;
+    transition: transform $default-timing;
+  }
+  .navbar__avatar {
+    display: flex;
+    align-items: center;
+    i {
         cursor: pointer;
-        color: $ctaColor;
-        font-weight: 500;
-        word-spacing: 3px;
-        &:hover {
-            color: darken($ctaColor, 6%);
-        }
+        color: lighten(black, 8%);
     }
-    img {
-        border-radius: 50%;
-        width: 45px;
-        margin: $navItemMargins;
-    }
-    .navbar__avatar {
-        display: flex;
-        align-items: center;
-    }
+  }
 }
 
 .active {
-    color: black;
-    font-weight: bold;
+  color: black;
+  font-weight: bold;
 }
