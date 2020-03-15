@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.OpenApi.Models;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
@@ -88,6 +89,18 @@ namespace DotNetCoreReactREST
                };
            });
 
+            // Swashbuckle
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Blog API",
+                    Description = "All the endpoints documentation.",
+                    Version = "v1"
+                });
+            });
+
             // Authentication
             services.AddAuthentication();
 
@@ -131,6 +144,15 @@ namespace DotNetCoreReactREST
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            // Swashbuckle Swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog API v1");
+                // To serve the Swagger UI at the app's root (http://localhost:<port>/), set the RoutePrefix property to an empty string:
+                // c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 
