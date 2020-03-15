@@ -1,0 +1,22 @@
+version: '3.7'
+services: 
+    app:
+        build:
+            context: .
+            args: 
+                APPNAME: "DotNetCoreReactREST"
+        depends_on: 
+            - sql
+        ports: 
+            - 5001:80
+        restart: always
+    sql:
+        image: mcr.microsoft.com/mssql/server
+        environment: 
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=P@ssw0rd
+        volumes: 
+            - ./data:/var/opt/mssql/data
+        ports: 
+            - 1433:1433
+        restart: always

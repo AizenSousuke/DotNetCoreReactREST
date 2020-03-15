@@ -20,18 +20,27 @@ namespace DotNetCoreReactREST
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Environment = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            if (Environment.IsDevelopment())
+            {
+                services.AddDbContext<AppDbContext>(options =>
+                   options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            } else
+            {
+                services.AddDbContext<AppDbContext>(options =>
+                   options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
+            }
 
             // Add Repositories
             services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -141,9 +150,19 @@ namespace DotNetCoreReactREST
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // Temporarily disable https for prod
+            if (env.IsDevelopment())
+            {
+                app.UseHttpsRedirection();
+            }
             app.UseStaticFiles();
-            app.UseSpaStaticFiles();
+            if (env.IsDevelopment())
+            {
+                app.UseSpaStaticFiles();
+            } else
+            {
+                app.UseSpaStaticFiles(new StaticFileOptions { RequestPath = "/ClientApp/build" });
+            }
 
             // Swashbuckle Swagger
             app.UseSwagger();
