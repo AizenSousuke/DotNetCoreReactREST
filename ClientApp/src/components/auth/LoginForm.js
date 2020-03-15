@@ -1,19 +1,57 @@
 import React, { useState } from "react";
 import { Form } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { login, setMessage, setErrors } from "../../actions/auth";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const errors = useSelector(state => state.auth.errors);
+  const loginUser = () => {
+    dispatch(setMessage(""));
+    dispatch(setErrors(null));
+    const userObj = {
+      email,
+      password
+    };
+    dispatch(login(userObj));
+  };
   return (
-    <Form className="login-form">
+    <Form
+      onSubmit={e => {
+        e.preventDefault();
+        loginUser();
+      }}
+      className="login-form"
+    >
+      {errors && errors.credentials ? (
+        <p className="text-danger text-center">{errors.credentials.message}</p>
+      ) : (
+        ""
+      )}
       <div>
-      <input type="email" className="default-input" name="email" placeholder="E-mail" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input
+          type="email"
+          className="default-input"
+          name="email"
+          placeholder="E-mail"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        />
       </div>
       <div>
-      <input type="password" className="default-input" name="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input
+          type="password"
+          className="default-input"
+          name="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
       </div>
       <div className="text-center">
-      <button className="button button--primary">Login</button>
+        <button className="button button--primary">Login</button>
       </div>
     </Form>
   );

@@ -1,20 +1,44 @@
 import React, { useState } from "react";
 import { Form } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { register, setMessage, setErrors } from "../../actions/auth";
 
 const RegisterForm = () => {
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const errors = useSelector(state => state.auth.errors);
+  const registerUser = () => {
+    dispatch(setMessage(''));
+    dispatch(setErrors(null));
+    const userObj = {
+      username,
+      email,
+      password
+    };
+    dispatch(register(userObj));
+  };
   return (
-    <Form>
+    <Form
+      onSubmit={e => {
+        e.preventDefault();
+        registerUser(e);
+      }}
+    >
+      {errors && errors.credentials ? (
+        <p className="text-danger text-center">{errors.credentials.message}</p>
+      ) : (
+        ""
+      )}
       <div>
         <input
           type="text"
           className="default-input"
           name="username"
           placeholder="Username"
-          value={userName}
-          onChange={e => setUserName(e.target.value)}
+          value={username}
+          onChange={e => setUsername(e.target.value)}
         />
         <input
           type="email"

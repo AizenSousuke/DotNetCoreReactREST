@@ -12,7 +12,7 @@ import {
 } from "reactstrap";
 import Register from "../auth/Register";
 import Login from "../auth/Login";
-import { setModal } from "../../actions/auth";
+import { setModal } from "../../actions/modal";
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch()
