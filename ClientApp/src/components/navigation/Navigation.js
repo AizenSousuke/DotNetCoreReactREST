@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import {
   Collapse,
@@ -15,9 +15,48 @@ import Login from "../auth/Login";
 import { setModal } from "../../actions/modal";
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch();
   const toggle = () => setIsOpen(!isOpen);
+  const user = useSelector(state => state.auth.user);
+  const authCheck = () => {
+    if (!user) {
+      return (
+        <>
+          <span
+            onClick={() => dispatch(setModal("login"))}
+            className="navbar__cta"
+          >
+            Log in
+          </span>
+          <span
+            onClick={() => dispatch(setModal("register"))}
+            className="navbar__cta"
+          >
+            Sign up
+          </span>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <span
+            onClick={() => dispatch(setModal("login"))}
+            className="navbar__cta"
+          >
+            Write a blog
+          </span>
+          <NavLink to="/browse">My blogs</NavLink>
+          <div className="navbar__avatar">
+            <img
+              src="https://www.w3schools.com/howto/img_avatar.png"
+              alt="avatar"
+            />
+            <i class="fas fa-angle-down"></i>
+          </div>
+        </>
+      );
+    }
+  };
   return (
     <Container>
       <Register />
@@ -36,18 +75,7 @@ const Navigation = () => {
               <NavLink to="/browse">Browse</NavLink>
             </NavItem>
           </Nav>
-          <span
-            onClick={() => dispatch(setModal('login'))}
-            className="navbar__cta"
-          >
-            Log in
-          </span>
-          <span
-            onClick={() => dispatch(setModal('register'))}
-            className="navbar__cta"
-          >
-            Sign up
-          </span>
+          {authCheck()}
         </Collapse>
       </Navbar>
     </Container>

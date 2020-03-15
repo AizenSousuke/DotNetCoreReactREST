@@ -9,6 +9,7 @@ const RegisterForm = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const errors = useSelector(state => state.auth.errors);
+  const message = useSelector(state => state.auth.message);
   const registerUser = () => {
     dispatch(setMessage(''));
     dispatch(setErrors(null));
@@ -28,6 +29,11 @@ const RegisterForm = () => {
     >
       {errors && errors.credentials ? (
         <p className="text-danger text-center">{errors.credentials.message}</p>
+      ) : (
+        ""
+      )}
+      {message ? (
+        <p className="text-success text-center">{message}</p>
       ) : (
         ""
       )}

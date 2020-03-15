@@ -31,17 +31,28 @@ export const register = ({ username, email, password }) => {
     credentials: { message: "That email already exists" }
   };
   let users = JSON.parse(localStorage.getItem("users"));
-  const emailExists = users.find(user => user.email === email);
-  if (emailExists) {
-      type = "SET_AUTH_ERRORS";
-      payload = invalid;
+  if (users) {
+      const emailExists = users.find(user => user.email === email);
+      if (emailExists) {
+          type = "SET_AUTH_ERRORS";
+          payload = invalid;
+      } else {
+        users = [...users, {username, email, password}]
+        type = "ADD_USER";
+        payload = {
+            user: username, email, password,
+            users
+        };
+  }
   } else {
-      users = [...users, {username, email, password}]
-    type = "ADD_USER";
-    payload = {
-        user: username, email, password,
+      users = [{username, email, password}]
+      type = "ADD_USER";
+      payload = {
+        user: username,
+        email,
+        password,
         users
-    };
+      };
   }
   return {
     type,
@@ -59,5 +70,12 @@ export const setMessage = message => {
     return {
         type: "SET_AUTH_MESSAGE",
         payload: message
+    }
+}
+
+export const setUser = user => {
+    return {
+        type: "SET_USER",
+        payload: user
     }
 }

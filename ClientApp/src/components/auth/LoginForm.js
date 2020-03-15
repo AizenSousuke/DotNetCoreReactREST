@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Form } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { login, setMessage, setErrors } from "../../actions/auth";
+import { setModal } from "../../actions/modal";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const errors = useSelector(state => state.auth.errors);
+  const user = useSelector(state => state.auth.user);
   const loginUser = () => {
     dispatch(setMessage(""));
     dispatch(setErrors(null));
@@ -16,6 +18,9 @@ const LoginForm = () => {
       password
     };
     dispatch(login(userObj));
+    if (user) {
+      dispatch(setModal(false));
+    }
   };
   return (
     <Form

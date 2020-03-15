@@ -7,7 +7,7 @@ $ctaColor: #00BAFF;
     border-bottom-right-radius: 20px;
     box-shadow: 0px 5px 50px #00000033;
     margin-bottom: 15px;
-   .nav-item a {
+   .nav-item a, a {
         color: rgba(0, 0, 0, 0.705);
         margin: $navItemMargins;
         &:hover {
@@ -24,6 +24,15 @@ $ctaColor: #00BAFF;
         &:hover {
             color: darken($ctaColor, 6%);
         }
+    }
+    img {
+        border-radius: 50%;
+        width: 45px;
+        margin: $navItemMargins;
+    }
+    .navbar__avatar {
+        display: flex;
+        align-items: center;
     }
 }
 
