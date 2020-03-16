@@ -67,7 +67,7 @@ namespace DotNetCoreReactREST.Controllers
 
         // POST Api/Users
         [HttpPost]
-        public ActionResult<UserDto> Post([FromBody]UserForCreationDto user)
+        public ActionResult<UserDto> CreateUser([FromBody]UserForCreationDto user)
         {
             var userToAdd = _mapper.Map<ApplicationUser>(user);
             _userRepo.AddUser(userToAdd);

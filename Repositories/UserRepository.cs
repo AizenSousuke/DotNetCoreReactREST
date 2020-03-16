@@ -31,7 +31,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            _context.Users.Remove(user);
+            _context.Users.Remove(user);            
         }
 
         public ApplicationUser GetUserById(string userId)
@@ -58,7 +58,7 @@ namespace DotNetCoreReactREST.Repositories
 
         public bool Save()
         {
-            return (_context.SaveChanges() >= 0);
+       return (_context.SaveChanges() >= 0);
         }
 
         public void UpdateUser(ApplicationUser user)

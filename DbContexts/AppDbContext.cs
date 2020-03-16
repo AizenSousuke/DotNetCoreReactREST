@@ -20,6 +20,7 @@ namespace DotNetCoreReactREST.DbContexts
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<ApplicationUser>().HasMany(u => u.Posts).WithOne(p => p.ApplicationUser).HasForeignKey(p => p.ApplicationUserId).OnDelete(DeleteBehavior.Cascade);
             // Seed data
             modelBuilder.Entity<ApplicationUser>().HasData(
                     new ApplicationUser { Id = "1", UserName = "JohnDoe", PasswordHash = "password" },
