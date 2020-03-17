@@ -165,7 +165,7 @@ namespace DotNetCoreReactREST
             } else
             {
                 // In production, the React files will be served from this directory
-                app.UseSpaStaticFiles(new StaticFileOptions { RequestPath = "ClientApp/build" });
+                app.UseSpaStaticFiles(new StaticFileOptions { RequestPath = "/ClientApp/build" });
             }
 
             // Swashbuckle Swagger
