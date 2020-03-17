@@ -128,6 +128,7 @@ namespace DotNetCoreReactREST
                       .AllowAnyHeader();
 
             }));
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -163,7 +164,8 @@ namespace DotNetCoreReactREST
                 app.UseSpaStaticFiles();
             } else
             {
-                app.UseSpaStaticFiles(new StaticFileOptions { RequestPath = "/ClientApp/build" });
+                // In production, the React files will be served from this directory
+                app.UseSpaStaticFiles(new StaticFileOptions { RequestPath = "ClientApp/build" });
             }
 
             // Swashbuckle Swagger
