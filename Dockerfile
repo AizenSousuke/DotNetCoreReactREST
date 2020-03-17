@@ -7,6 +7,7 @@ RUN apt-get update -yq \
     && apt-get install curl gnupg -yq \
     && curl -sL https://deb.nodesource.com/setup_13.x | bash \
     && apt-get install nodejs -yq
+# RUN cd ClientApp && npm install
 RUN dotnet publish -c Release -o output
 WORKDIR /stage/output
 RUN ls -l
