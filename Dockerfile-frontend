@@ -2,3 +2,4 @@
 WORKDIR /usr/share/nginx/html
 RUN rm *
 RUN ls -l
+EXPOSE 80
