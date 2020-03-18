@@ -11,7 +11,7 @@ namespace DotNetCoreReactREST.Repositories
     {
         private AppDbContext _context;
 
-        public UserRepository(AppDbContext context, UserManager<ApplicationUser> userManager)
+        public UserRepository(AppDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

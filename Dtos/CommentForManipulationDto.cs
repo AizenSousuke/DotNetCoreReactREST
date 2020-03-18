@@ -11,6 +11,9 @@ namespace DotNetCoreReactREST.Dtos
         public int PostId { get; set; }
         [Required]
         public int ApplicationUserId { get; set; }
+        public bool IsAnonymous { get; set; }
+
+        
 
 
     }

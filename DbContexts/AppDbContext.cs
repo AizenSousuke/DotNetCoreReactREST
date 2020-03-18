@@ -20,7 +20,30 @@ namespace DotNetCoreReactREST.DbContexts
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ApplicationUser>().HasMany(u => u.Posts).WithOne(p => p.ApplicationUser).HasForeignKey(p => p.ApplicationUserId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.Posts)
+                .WithOne(p => p.ApplicationUser)
+                .HasForeignKey(p => p.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.Comments)
+                .WithOne(c => c.ApplicationUser)
+                .HasForeignKey(c => c.ApplicationUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Post>()
+               .HasMany(p => p.Comments)
+               .WithOne(c => c.Post)
+               .HasForeignKey(c => c.PostId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Comment>()
+               .HasOne(c => c.Post)
+               .WithMany(p => p.Comments)
+               .HasForeignKey(c => c.PostId)
+               .OnDelete(DeleteBehavior.NoAction);
+
             // Seed data
             modelBuilder.Entity<ApplicationUser>().HasData(
                     new ApplicationUser { Id = "1", UserName = "JohnDoe", PasswordHash = "password" },
@@ -134,6 +157,31 @@ namespace DotNetCoreReactREST.DbContexts
                 Title = "Eos doloAJAJAJcing eos lorem",
                 Content = "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam",
                 DateTime = DateTime.Now.AddMinutes(16)
+            });
+            modelBuilder.Entity<Comment>().HasData(new Comment()
+            {
+                Id = 1,
+                ApplicationUserId = "1",
+                PostId = 1,
+                Content = "I think this post rocks but i'm known for bad judgement"
+
+            },
+            new Comment()
+            {
+                Id = 2,
+                ApplicationUserId = "2",
+                PostId = 1,
+                Content = "Your post sucks go home"
+
+            },
+            new Comment()
+            {
+                Id = 3,
+                ApplicationUserId = "1",
+                PostId = 4,
+                Content = "Cool Beans!",
+                IsAnonymous = true
+
             });
         }
 

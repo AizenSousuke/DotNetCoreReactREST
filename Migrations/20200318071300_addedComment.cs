@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DotNetCoreReactREST.Migrations
 {
-    public partial class second : Migration
+    public partial class addedComment : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,157 +12,167 @@ namespace DotNetCoreReactREST.Migrations
                 keyColumn: "Id",
                 keyValue: "1",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "c1a1818d-6342-4cd5-be36-6de660fa0a3a", "48c0b81f-fc68-4d07-adc3-cb3739047409" });
+                values: new object[] { "dda94582-9a74-42ff-a0a4-5e9e5c8efc55", "9198f46b-ac4c-4de1-b6b5-f182499fe218" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "2",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "7ff4ced5-1446-4b32-bcbe-7e65cca45d14", "77b03375-059c-416e-a1b0-973969d56c86" });
+                values: new object[] { "36d7e544-44d2-4f28-894f-df520ed185de", "b930f51a-b5d2-4081-9416-2c0150a11674" });
+
+            migrationBuilder.InsertData(
+                table: "Comments",
+                columns: new[] { "Id", "ApplicationUserId", "Content", "DateTime", "IsAnonymous", "PostId" },
+                values: new object[] { 3, "1", "Cool Beans!", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), true, 4 });
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 16, 32, 8, 968, DateTimeKind.Local).AddTicks(8470));
+                value: new DateTime(2020, 3, 18, 3, 13, 0, 40, DateTimeKind.Local).AddTicks(472));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 16, 35, 8, 971, DateTimeKind.Local).AddTicks(5628));
+                value: new DateTime(2020, 3, 18, 3, 16, 0, 42, DateTimeKind.Local).AddTicks(6660));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 17, 18, 8, 971, DateTimeKind.Local).AddTicks(5750));
+                value: new DateTime(2020, 3, 18, 3, 59, 0, 42, DateTimeKind.Local).AddTicks(6781));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 4,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 17, 58, 8, 971, DateTimeKind.Local).AddTicks(5786));
+                value: new DateTime(2020, 3, 18, 4, 39, 0, 42, DateTimeKind.Local).AddTicks(6816));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 5,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 17, 28, 8, 971, DateTimeKind.Local).AddTicks(5816));
+                value: new DateTime(2020, 3, 18, 4, 9, 0, 42, DateTimeKind.Local).AddTicks(6845));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 6,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 17, 18, 8, 971, DateTimeKind.Local).AddTicks(5850));
+                value: new DateTime(2020, 3, 18, 3, 59, 0, 42, DateTimeKind.Local).AddTicks(6877));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 7,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 17, 8, 8, 971, DateTimeKind.Local).AddTicks(5878));
+                value: new DateTime(2020, 3, 18, 3, 49, 0, 42, DateTimeKind.Local).AddTicks(6905));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 8,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 16, 58, 8, 971, DateTimeKind.Local).AddTicks(5908));
+                value: new DateTime(2020, 3, 18, 3, 39, 0, 42, DateTimeKind.Local).AddTicks(6953));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 9,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 16, 48, 8, 971, DateTimeKind.Local).AddTicks(5937));
+                value: new DateTime(2020, 3, 18, 3, 29, 0, 42, DateTimeKind.Local).AddTicks(6982));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DeleteData(
+                table: "Comments",
+                keyColumn: "Id",
+                keyValue: 3);
+
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "1",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "4cf14146-5947-487e-8868-55a6d506c025", "f17eea44-f7d8-4007-a3b1-3e0fd730ef75" });
+                values: new object[] { "1bb9df3c-a786-4285-93a5-9fc13569bd5f", "f6240ce8-55cc-44b3-aebc-0f4eccbfca5d" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "2",
                 columns: new[] { "ConcurrencyStamp", "SecurityStamp" },
-                values: new object[] { "af0108a7-be05-4372-858c-7f7ef3ce4789", "749c8f01-088e-4053-bd2c-0d90392bc645" });
+                values: new object[] { "849dc3ab-acbc-4653-a7d8-5204f3b6f7fb", "730e3474-e093-4d4b-ba06-d0e88dc9af8c" });
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 16, 25, 30, 491, DateTimeKind.Local).AddTicks(6789));
+                value: new DateTime(2020, 3, 18, 2, 16, 32, 876, DateTimeKind.Local).AddTicks(5333));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 16, 28, 30, 494, DateTimeKind.Local).AddTicks(2924));
+                value: new DateTime(2020, 3, 18, 2, 19, 32, 880, DateTimeKind.Local).AddTicks(2061));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 17, 11, 30, 494, DateTimeKind.Local).AddTicks(3058));
+                value: new DateTime(2020, 3, 18, 3, 2, 32, 880, DateTimeKind.Local).AddTicks(2277));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 4,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 17, 51, 30, 494, DateTimeKind.Local).AddTicks(3096));
+                value: new DateTime(2020, 3, 18, 3, 42, 32, 880, DateTimeKind.Local).AddTicks(2335));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 5,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 17, 21, 30, 494, DateTimeKind.Local).AddTicks(3126));
+                value: new DateTime(2020, 3, 18, 3, 12, 32, 880, DateTimeKind.Local).AddTicks(2381));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 6,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 17, 11, 30, 494, DateTimeKind.Local).AddTicks(3159));
+                value: new DateTime(2020, 3, 18, 3, 2, 32, 880, DateTimeKind.Local).AddTicks(2435));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 7,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 17, 1, 30, 494, DateTimeKind.Local).AddTicks(3188));
+                value: new DateTime(2020, 3, 18, 2, 52, 32, 880, DateTimeKind.Local).AddTicks(2486));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 8,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 16, 51, 30, 494, DateTimeKind.Local).AddTicks(3217));
+                value: new DateTime(2020, 3, 18, 2, 42, 32, 880, DateTimeKind.Local).AddTicks(2538));
 
             migrationBuilder.UpdateData(
                 table: "Posts",
                 keyColumn: "Id",
                 keyValue: 9,
                 column: "DateTime",
-                value: new DateTime(2020, 3, 16, 16, 41, 30, 494, DateTimeKind.Local).AddTicks(3247));
+                value: new DateTime(2020, 3, 18, 2, 32, 32, 880, DateTimeKind.Local).AddTicks(2582));
         }
     }
 }

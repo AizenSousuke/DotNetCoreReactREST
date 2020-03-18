@@ -26,14 +26,14 @@ namespace DotNetCoreReactREST.Controllers
         }
         // GET: api/users/{userId}/comments
         [HttpGet("users/{userId}/comments")]
-        public ActionResult<IEnumerable<Comment>> GetCommentsForUser(string userId)
+        public ActionResult<IEnumerable<CommentDto>> GetCommentsForUser(string userId)
         {
             var commentsFromRepo = _commentRepo.GetCommentsForUser(userId);
             return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
         }
 
         [HttpGet("posts/{postId}/comments")]
-        public ActionResult<IEnumerable<Comment>> GetCommentsForPost(int postId)
+        public ActionResult<IEnumerable<CommentDto>> GetCommentsForPost(int postId)
         {
             var commentsFromRepo = _commentRepo.GetCommentsForPost(postId);
             return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));

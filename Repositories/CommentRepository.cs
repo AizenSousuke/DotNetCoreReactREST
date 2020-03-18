@@ -1,5 +1,6 @@
 ﻿using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,13 +57,15 @@ namespace DotNetCoreReactREST.Repositories
         {
             return _context.Comments
                 .Where(c => c.ApplicationUserId == userId)
+                .Include(c => c.ApplicationUser)
                 .OrderByDescending(c => c.DateTime)
                 .ToList();
         }
         public IEnumerable<Comment> GetCommentsForPost(int postId)
         {
-            return _context.Comments
+            return _context.Comments                
                 .Where(c => c.PostId == postId)
+                .Include(c=> c.ApplicationUser)
                 .OrderBy(c => c.Likes.Count())
                 .ThenByDescending(c => c.DateTime)
                 .ToList();
