@@ -20,8 +20,8 @@ namespace DotNetCoreReactREST.Repositories
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
-            }
-            ///for testing
+            }            
+            user.DateCreated = DateTime.Now;
             _context.Users.Add(user);
         }
 

@@ -18,7 +18,7 @@ namespace DotNetCoreReactREST.Entities
         
         [ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime DateCreated { get; set; }
         public bool IsAnonymous { get; set; }       
         public IEnumerable<Like> Likes { get; set; } = new List<Like>();
 

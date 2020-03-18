@@ -10,7 +10,7 @@ namespace DotNetCoreReactREST.Dtos
         public int PostId { get; set; }
         public int ApplicationUserId { get; set; }
         public bool IsAnonymous { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime DateCreated { get; set; }
         public int LikesCount { get; set; }
         public string UserName { get; set; } 
         

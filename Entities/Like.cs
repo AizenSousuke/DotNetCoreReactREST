@@ -7,7 +7,7 @@ namespace DotNetCoreReactREST.Entities
     {
         [Key]
         public int Id { get; set; }
-
+        public bool IsLiked { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
         [ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }

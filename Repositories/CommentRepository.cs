@@ -21,6 +21,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(comment));
             }
+            comment.DateCreated = DateTime.Now;
             _context.Comments.Add(comment);
         }
 
@@ -42,15 +43,16 @@ namespace DotNetCoreReactREST.Repositories
             _context.Comments.Remove(comment);
         }
 
-
-
         public Comment GetCommentById(int commentId)
         {
             if (String.IsNullOrWhiteSpace(commentId.ToString()))
             {
                 throw new ArgumentNullException(nameof(commentId));
             }
-            return _context.Comments.FirstOrDefault(c => c.Id == commentId);
+            return _context.Comments
+                .Include(c => c.ApplicationUser)
+                .Include(c => c.Likes)
+                .FirstOrDefault(c => c.Id == commentId);
         }
 
         public IEnumerable<Comment> GetCommentsForUser(string userId)
@@ -58,7 +60,8 @@ namespace DotNetCoreReactREST.Repositories
             return _context.Comments
                 .Where(c => c.ApplicationUserId == userId)
                 .Include(c => c.ApplicationUser)
-                .OrderByDescending(c => c.DateTime)
+                .Include(c => c.Likes)
+                .OrderByDescending(c => c.DateCreated)
                 .ToList();
         }
         public IEnumerable<Comment> GetCommentsForPost(int postId)
@@ -67,7 +70,7 @@ namespace DotNetCoreReactREST.Repositories
                 .Where(c => c.PostId == postId)
                 .Include(c=> c.ApplicationUser)
                 .OrderBy(c => c.Likes.Count())
-                .ThenByDescending(c => c.DateTime)
+                .ThenByDescending(c => c.DateCreated)
                 .ToList();
         }
 

@@ -14,7 +14,7 @@ namespace DotNetCoreReactREST.Profiles
             CreateMap<Comment, CommentDto>()
            .ForMember(
                     dest => dest.LikesCount,
-                    opt => opt.MapFrom(src => src.Likes.ToList().Count()))
+                    opt => opt.MapFrom(src => src.Likes.Count()))
            .ForMember(
 
                 dest => dest.UserName,
