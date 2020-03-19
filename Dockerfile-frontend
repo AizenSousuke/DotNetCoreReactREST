@@ -1,5 +1,6 @@
 ﻿FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
-RUN rm *
+# RUN rm *
 RUN ls -l
+RUN pwd
 EXPOSE 80
