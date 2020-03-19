@@ -23,12 +23,12 @@ const App = () => {
       <Route 
       exact
       path="/"
-      component={Home}
-      />
-      <Route 
-      path="/browse"
       component={Browse}
       />
+      {/* <Route 
+      path="/browse"
+      component={Browse}
+      /> */}
       <Route 
       path="/profile"
       component={Profile}

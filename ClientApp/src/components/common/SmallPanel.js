@@ -9,13 +9,13 @@ const SmallPanel = ({ closePanel, panel }) => {
   return (
     <OutsideClickHandler
       onOutsideClick={() => {
-        closePanel();
+              closePanel();
       }}
     >
       <div className="small-panel">
         <ul>
           <li>
-            <NavLink to="/edit">Edit Account</NavLink>
+            <NavLink to="/profile">Edit Account</NavLink>
           </li>
           <li onClick={() => { 
               dispatch(setUser(null)) 
