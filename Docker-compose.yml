@@ -7,8 +7,6 @@ services:
         ports:
             - 5001:80
         restart: always
-        volumes:
-            - ./nginx:/Code/ClientApp/build
     frontend:
         build:
             context: .
@@ -17,8 +15,6 @@ services:
             - backend
         ports:
             - 8080:80
-        volumes:
-            - ./nginx:/usr/share/nginx/html
         restart: always
     sql:
         image: mcr.microsoft.com/mssql/server
@@ -33,6 +29,3 @@ services:
         ports: 
             - 1433:1433
         restart: always
-#volumes:
-#    frontend-volume:
-#    backend-volume:
