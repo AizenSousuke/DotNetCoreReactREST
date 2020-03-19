@@ -20,26 +20,31 @@ namespace DotNetCoreReactREST
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
+
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             Environment = env;
         }
 
-        public IConfiguration Configuration { get; }
-        public IWebHostEnvironment Environment { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Configuration variables
+            //var host = Configuration["DBHOST"] ?? "localhost";
+            //var port = Configuration["DBPORT"] ?? "1433";
+            //var password = Configuration["DBPASSWORD"] ?? "password";
+
             if (Environment.IsDevelopment())
             {
                 services.AddDbContext<AppDbContext>(options =>
-                   options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             } else
             {
                 services.AddDbContext<AppDbContext>(options =>
-                   options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
+                    options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
             }
 
             // Add Repositories
@@ -137,7 +142,7 @@ namespace DotNetCoreReactREST
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext appDbContext)
         {
             if (env.IsDevelopment())
             {
@@ -182,6 +187,9 @@ namespace DotNetCoreReactREST
             // Use authentication and authorization - who are you vs are you allowed
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // Migrate the database (for docker use)
+            appDbContext.Database.Migrate();
 
             app.UseEndpoints(endpoints =>
             {
