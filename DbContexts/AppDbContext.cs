@@ -44,6 +44,11 @@ namespace DotNetCoreReactREST.DbContexts
                .HasForeignKey(c => c.PostId)
                .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Category>()
+               .HasMany(c => c.Posts)
+               .WithOne(p => p.Category)               
+               .OnDelete(DeleteBehavior.SetNull);
+
             // Seed data
             modelBuilder.Entity<ApplicationUser>().HasData(
                     new ApplicationUser { Id = "1", UserName = "JohnDoe", PasswordHash = "password" },
