@@ -6,8 +6,7 @@ namespace DotNetCoreReactREST.Dtos
     public class PostDto
     {
         // Public Facing Properties
-        public int Id { get; set; }
-        public Category Category { get; set; }
+        public int Id { get; set; }        
         public int CategoryId { get; set; }
         public string Title { get; set; }
         public string ImageUrl { get; set; }

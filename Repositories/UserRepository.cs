@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {
@@ -58,7 +59,7 @@ namespace DotNetCoreReactREST.Repositories
 
         public bool Save()
         {
-       return (_context.SaveChanges() >= 0);
+         return _context.SaveChanges() >= 0;
         }
 
         public void UpdateUser(ApplicationUser user)

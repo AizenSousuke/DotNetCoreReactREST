@@ -11,6 +11,6 @@ namespace DotNetCoreReactREST.Entities
         [MaxLength(250)]
         public string Name { get; set; }
         public string Description { get; set; }
-        public IEnumerable<Post> Posts { get; set; } = new List<Post>();
+        public ICollection<Post> Posts { get; set; } = new List<Post>();
     }
 }

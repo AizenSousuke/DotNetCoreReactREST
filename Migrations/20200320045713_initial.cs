@@ -196,7 +196,7 @@ namespace DotNetCoreReactREST.Migrations
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -218,8 +218,7 @@ namespace DotNetCoreReactREST.Migrations
                         name: "FK_Comments_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Comments_Posts_PostId",
                         column: x => x.PostId,
@@ -258,8 +257,8 @@ namespace DotNetCoreReactREST.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateCreated", "Email", "EmailConfirmed", "IsAdmin", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "10ed7375-01d1-438a-98ca-f9bf8c1acbd4", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, false, false, null, null, null, "password", null, false, "87ba8547-afed-476e-bfba-439b547e44a3", false, "JohnDoe" },
-                    { "2", 0, "03b162b6-0bf3-4bb8-ae84-9837f3106e3c", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, false, false, false, null, null, null, "password2", null, false, "5caf945f-afcd-4f4a-87d6-c236e6f6ced1", false, "Jane" }
+                    { "1", 0, "c3ae812c-2e54-40cb-ae72-cb8fbb31869c", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "johnDoe@gmail.com", false, false, false, null, null, null, "password", null, false, "a84b66d3-f683-4332-8ade-78aa2f36057b", false, "JohnDoe" },
+                    { "2", 0, "30cb9801-9d02-46ff-99c7-7be05d93a352", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jane_Doe@gmail.com", false, false, false, null, null, null, "password5", null, false, "93026f7b-01dd-459e-8380-6e8517075e6b", false, "Jane" }
                 });
 
             migrationBuilder.InsertData(
@@ -277,15 +276,15 @@ namespace DotNetCoreReactREST.Migrations
                 columns: new[] { "Id", "ApplicationUserId", "CategoryId", "Content", "DateTime", "Description", "ImageUrl", "Title" },
                 values: new object[,]
                 {
-                    { 1, "1", 1, "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 18, 3, 43, 31, 251, DateTimeKind.Local).AddTicks(4943), null, null, "Autem nibh nulla nonumy lorem" },
-                    { 2, "1", 1, "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 18, 3, 46, 31, 253, DateTimeKind.Local).AddTicks(9672), null, null, "Vero ipsum kasd in dolor" },
-                    { 3, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 18, 4, 29, 31, 253, DateTimeKind.Local).AddTicks(9784), null, null, "Eos dolores suscipsetetur dolores sadipscing eos lorem" },
-                    { 4, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 18, 5, 9, 31, 253, DateTimeKind.Local).AddTicks(9818), null, null, "Eos dolores suscipit consetetur dolores sadipscing eos lorem" },
-                    { 5, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 18, 4, 39, 31, 253, DateTimeKind.Local).AddTicks(9845), null, null, "Eos dolors sadipscing eos lorem" },
-                    { 6, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 18, 4, 29, 31, 253, DateTimeKind.Local).AddTicks(9876), null, null, "Eos dolores suscipit consetos lorem" },
-                    { 7, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 18, 4, 19, 31, 253, DateTimeKind.Local).AddTicks(9902), null, null, "Eotetur dolores sadipscing eos lorem" },
-                    { 8, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 18, 4, 9, 31, 253, DateTimeKind.Local).AddTicks(9928), null, null, "Eos dolores suscMisakaipscing eos lorem" },
-                    { 9, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 18, 3, 59, 31, 253, DateTimeKind.Local).AddTicks(9954), null, null, "Eos doloAJAJAJcing eos lorem" }
+                    { 1, "1", 1, "Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 20, 0, 57, 13, 187, DateTimeKind.Local).AddTicks(2188), null, null, "Autem nibh nulla nonumy lorem" },
+                    { 2, "1", 1, "Sea ullamcorper dolores tempor aliquyam sit sed diam elitr sed. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 20, 1, 0, 13, 190, DateTimeKind.Local).AddTicks(4241), null, null, "Vero ipsum kasd in dolor" },
+                    { 3, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 20, 1, 43, 13, 190, DateTimeKind.Local).AddTicks(4394), null, null, "Eos dolores suscipsetetur dolores sadipscing eos lorem" },
+                    { 4, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 20, 2, 23, 13, 190, DateTimeKind.Local).AddTicks(4429), null, null, "Eos dolores suscipit consetetur dolores sadipscing eos lorem" },
+                    { 5, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 20, 1, 53, 13, 190, DateTimeKind.Local).AddTicks(4458), null, null, "Eos dolors sadipscing eos lorem" },
+                    { 6, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 20, 1, 43, 13, 190, DateTimeKind.Local).AddTicks(4494), null, null, "Eos dolores suscipit consetos lorem" },
+                    { 7, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 20, 1, 33, 13, 190, DateTimeKind.Local).AddTicks(4522), null, null, "Eotetur dolores sadipscing eos lorem" },
+                    { 8, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 20, 1, 23, 13, 190, DateTimeKind.Local).AddTicks(4551), null, null, "Eos dolores suscMisakaipscing eos lorem" },
+                    { 9, "2", 1, "Nihil cum sit sanctus zzril. Consetetur ut lorem lorem imperdiet et nisl eos takimata te diam", new DateTime(2020, 3, 20, 1, 13, 13, 190, DateTimeKind.Local).AddTicks(4579), null, null, "Eos doloAJAJAJcing eos lorem" }
                 });
 
             migrationBuilder.InsertData(

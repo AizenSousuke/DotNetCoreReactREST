@@ -26,9 +26,9 @@ namespace DotNetCoreReactREST
         }
         //POST Api/Posts
         [HttpPost]
-        public async Task<IActionResult> CreatePostAsync([FromBody]Post post)
+        public async Task<IActionResult> CreatePostAsync([FromBody]PostDto post)
         {
-            Post newPost = await _postRepository.CreatePostAsync(post);
+            Post newPost = await _postRepository.CreatePostAsync(_mapper.Map<Post>(post));
             return Ok(_mapper.Map<PostDto>(newPost));
         }
         //GET Api/posts[category=string &| searchQuery=string]
