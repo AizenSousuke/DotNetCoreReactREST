@@ -7,6 +7,7 @@ import { getBlogs } from './actions/blogActions';
 import { setUser } from './actions/auth';
 import Profile from './pages/Profile';
 import Browse from './pages/Browse';
+import Blog from './pages/Blog';
 
 const App = () => {
   const dispatch = useDispatch()
@@ -31,6 +32,10 @@ const App = () => {
       <Route 
       path="/profile"
       component={Profile}
+      />
+      <Route 
+      path="/blog/:id"
+      component={Blog}
       />
     </div>
   );
