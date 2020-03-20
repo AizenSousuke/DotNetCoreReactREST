@@ -1,17 +1,21 @@
 .profile {
-  input {
+  form {
+    margin: 0;
+    padding: 0;
+  }
+  input, h1 {
+    height: 60px;
     font-size: 55px;
     font-weight: 1000;
+  }
+  input {
     outline: none;
     border: none;
+    margin-bottom: 5px;
   }
   img {
     width: 200px;
     border-radius: 50%;
-  }
-  h1 {
-    font-size: 55px;
-    font-weight: 1000;
   }
   span {
       font-size: 24px;

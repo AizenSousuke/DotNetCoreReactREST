@@ -2,14 +2,14 @@ import React from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUser } from '../../actions/auth'
+import { setUser } from "../../actions/auth";
 
 const SmallPanel = ({ closePanel, panel }) => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
   return (
     <OutsideClickHandler
       onOutsideClick={() => {
-              closePanel();
+        closePanel();
       }}
     >
       <div className="small-panel">
@@ -17,10 +17,12 @@ const SmallPanel = ({ closePanel, panel }) => {
           <li>
             <NavLink to="/profile">Edit Account</NavLink>
           </li>
-          <li onClick={() => { 
-              dispatch(setUser(null)) 
-              closePanel()
-        }}>
+          <li
+            onClick={() => {
+              dispatch(setUser(null));
+              closePanel();
+            }}
+          >
             <span>Log out</span>
           </li>
         </ul>

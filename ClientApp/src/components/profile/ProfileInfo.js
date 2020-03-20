@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container } from "reactstrap";
 import { useSelector } from "react-redux";
+import OutsideClickHandler from "react-outside-click-handler";
 const ProfileInfo = () => {
   const user = useSelector(state => state.auth.user);
   const [editing, setEditing] = useState(false);
@@ -22,20 +23,36 @@ const ProfileInfo = () => {
         </div>
         <div className="align-self-center">
           {!editing ? (
-            <h1 onClick={toggleEditing} className="ml-5">{user ? fake : ""}</h1>
+            <h1 onClick={toggleEditing} className="ml-5">
+              {user ? fake : ""}
+            </h1>
           ) : (
-            <form onSubmit={(e) => {
-              e.preventDefault()
-              toggleEditing()
-            }}>
-              <input autoFocus className="ml-5" type="text" value={fake} onChange={(e) => setFake(e.target.value)} />
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                toggleEditing();
+              }}
+            >
+              <OutsideClickHandler
+                onOutsideClick={() => {
+                  toggleEditing();
+                }}
+              >
+                <input
+                  autoFocus
+                  className="ml-5"
+                  type="text"
+                  value={fake}
+                  onChange={e => setFake(e.target.value)}
+                />
+              </OutsideClickHandler>
             </form>
           )}
           <div className="ml-5">
             <span className="mr-3">24 Blogs</span>
             <span className="mr-3">400 Likes</span>
             <button onClick={toggleEditing} className="button button--primary">
-              { !editing ? 'Edit Profile' : 'Save' }
+              {!editing ? "Edit Profile" : "Save"}
             </button>
           </div>
         </div>
