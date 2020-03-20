@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 using System;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace DotNetCoreReactREST
 {
@@ -115,6 +117,9 @@ namespace DotNetCoreReactREST
                 });
             });
 
+            // Development directory browser
+            services.AddDirectoryBrowser();
+
             // Authentication
             services.AddAuthentication();
 
@@ -148,6 +153,13 @@ namespace DotNetCoreReactREST
             {
                 app.UseDeveloperExceptionPage();
                 app.UseCors("AllowOpenOrigin");
+
+                // Development only directory browsing
+                app.UseDirectoryBrowser(new DirectoryBrowserOptions()
+                {
+                    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory())),
+                    RequestPath = "/dir"
+                });
             }
             else
             {
