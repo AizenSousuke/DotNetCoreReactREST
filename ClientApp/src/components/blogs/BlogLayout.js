@@ -1,5 +1,6 @@
 import React from 'react'
 import { Card, Container } from 'reactstrap';
+import { NavLink } from 'react-router-dom';
 const BlogLayout = ({blogs}) => {
     return (
       <div className="blogs">
@@ -27,9 +28,9 @@ const BlogLayout = ({blogs}) => {
                           nobis.
                         </p>
                         <div className="d-flex justify-content-center">
-                          <div className="button button--primary">
+                          <NavLink to={`/blog/${blog.name}`} className="button button--primary">
                             View Blog
-                          </div>
+                          </NavLink>
                         </div>
                       </Container>
                     </div>

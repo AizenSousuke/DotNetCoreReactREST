@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CSSTransition } from "react-transition-group";
 import { setModal } from "../../actions/modal";
 import { NavLink } from "react-router-dom";
 import {
@@ -14,7 +13,6 @@ import {
 } from "reactstrap";
 import Register from "../auth/Register";
 import Login from "../auth/Login";
-import SmallPanel from "../common/SmallPanel";
 import NavbarPanel from "./NavbarPanel";
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
