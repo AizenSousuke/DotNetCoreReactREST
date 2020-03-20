@@ -178,7 +178,11 @@ namespace DotNetCoreReactREST
 
             if (env.IsDevelopment())
             {
-                app.UseSpaStaticFiles();
+                app.UseSpaStaticFiles(new StaticFileOptions()
+                {
+                    DefaultContentType = "application/json",
+                    RequestPath = "/ClientApp/build"
+                });
             } else
             {
                 // In production, the React files will be served from this directory
