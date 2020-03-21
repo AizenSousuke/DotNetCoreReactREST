@@ -66,6 +66,14 @@
     <Compile Remove="Migrations\20200321111012_AddedCommentModelBuilder.Designer.cs" />
     <Compile Remove="Migrations\20200321111344_AddedCommentModelBuilder.cs" />
     <Compile Remove="Migrations\20200321111344_AddedCommentModelBuilder.Designer.cs" />
+    <Compile Remove="Migrations\20200321111719_Initial.cs" />
+    <Compile Remove="Migrations\20200321111719_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200321115724_Initial.cs" />
+    <Compile Remove="Migrations\20200321115724_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200321120514_Initial.cs" />
+    <Compile Remove="Migrations\20200321120514_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200321122008_Initial.cs" />
+    <Compile Remove="Migrations\20200321122008_Initial.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
