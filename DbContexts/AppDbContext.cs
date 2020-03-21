@@ -19,49 +19,54 @@ namespace DotNetCoreReactREST.DbContexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ApplicationUser>()
-                .HasMany(u => u.Posts)
-                .WithOne(p => p.ApplicationUser)
-                .HasForeignKey(p => p.ApplicationUserId)
-                .OnDelete(DeleteBehavior.Cascade);
+
+            // Set cascading for user so that when it gets deleted, everything else reference to this gets deleted. 
 
             modelBuilder.Entity<ApplicationUser>()
-                .HasMany(u => u.Comments)
-                .WithOne(c => c.ApplicationUser)
-                .HasForeignKey(c => c.ApplicationUserId)
+                .HasMany<Post>(p => p.Posts)
+                .WithOne(a => a.ApplicationUser)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Post>()
-               .HasMany(p => p.Comments)
-               .WithOne(c => c.Post)
-               .HasForeignKey(c => c.PostId)
-               .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<ApplicationUser>()
+            //    .HasMany(u => u.Posts)
+            //    .WithOne(p => p.ApplicationUser)
+            //    .HasForeignKey(p => p.ApplicationUserId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Category>()
-               .HasMany(c => c.Posts)
-               .WithOne(p => p.Category)
-               .HasForeignKey(p => p.CategoryId)
-               .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<ApplicationUser>()
+            //    .HasMany(u => u.Comments)
+            //    .WithOne(c => c.ApplicationUser)
+            //    .HasForeignKey(c => c.ApplicationUserId)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Comment>()
-             .HasOne(c => c.ApplicationUser)
-             .WithMany(u => u.Comments)
-             .HasForeignKey(c => c.ApplicationUserId)
-             .OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<Post>()
+            //   .HasMany(p => p.Comments)
+            //   .WithOne(c => c.Post)
+            //   .HasForeignKey(c => c.PostId)
+            //   .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Comment>()
-             .HasOne(c => c.Post)
-             .WithMany(p => p.Comments)
-             .HasForeignKey(c => c.PostId)
-             .OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<Category>()
+            //   .HasMany(c => c.Posts)
+            //   .WithOne(p => p.Category)
+            //   .HasForeignKey(p => p.CategoryId)
+            //   .OnDelete(DeleteBehavior.Restrict);
 
+            //modelBuilder.Entity<Comment>()
+            // .HasOne(c => c.ApplicationUser)
+            // .WithMany(u => u.Comments)
+            // .HasForeignKey(c => c.ApplicationUserId)
+            // .OnDelete(DeleteBehavior.NoAction);
 
-
+            //modelBuilder.Entity<Comment>()
+            // .HasOne(c => c.Post)
+            // .WithMany(p => p.Comments)
+            // .HasForeignKey(c => c.PostId)
+            // .OnDelete(DeleteBehavior.NoAction);
 
             // Seed data
             modelBuilder.Entity<ApplicationUser>().HasData(
-                    new ApplicationUser { Id = "1", UserName = "JohnDoe", Email="johnDoe@gmail.com", PasswordHash = "password" },
-                    new ApplicationUser { Id = "2", UserName = "Jane", Email="Jane_Doe@gmail.com", PasswordHash = "password5" });
+                    new ApplicationUser { Id = "1", UserName = "JohnDoe", Email = "johnDoe@gmail.com", PasswordHash = "password" },
+                    new ApplicationUser { Id = "2", UserName = "Jane", Email = "Jane_Doe@gmail.com", PasswordHash = "password5" });
             modelBuilder.Entity<Category>().HasData(new Category()
             {
                 Id = 1,
@@ -191,6 +196,15 @@ namespace DotNetCoreReactREST.DbContexts
             new Comment()
             {
                 Id = 3,
+                ApplicationUserId = "2",
+                PostId = 3,
+                Content = "Cool Misaka!",
+                IsAnonymous = false
+
+            },
+            new Comment()
+            {
+                Id = 4,
                 ApplicationUserId = "1",
                 PostId = 4,
                 Content = "Cool Beans!",

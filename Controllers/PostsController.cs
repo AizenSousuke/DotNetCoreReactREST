@@ -58,7 +58,6 @@ namespace DotNetCoreReactREST
         }
         //PATCH Api/Posts/{postId}
         [HttpPatch("{postId:int}", Name = "{postId:int}")]
-        [Authorize]
         public async Task<IActionResult> UpdatePost([FromRoute]int postId, [FromBody]JsonPatchDocument<Post> patchDocument)
         {
             if (!ModelState.IsValid)
@@ -92,14 +91,15 @@ namespace DotNetCoreReactREST
         }
         //DELETE Api/Posts/{PostId}
         [HttpDelete("{postId:int}")]
-        [Authorize]
         public async Task<IActionResult> DeletePost([FromRoute]int postId)
         {
-            if (await _postRepository.DeletePost(postId))
+            var post = await _postRepository.GetPostByIdAsync(postId);
+            if (post == null)
             {
-                return Ok("Post Deleted");
+                return NotFound("There is nothing to delete.");
             }
-            return NotFound("There is nothing to delete.");
+            
+            return Ok("Post Deleted: " + await _postRepository.DeletePost(postId));
         }
     }
 }

@@ -7,7 +7,7 @@ namespace DotNetCoreReactREST.Entities
 {
     public class Post
     {
-        
+        [Key]
         public int Id { get; set; }
         public Category Category { get; set; }        
         public int CategoryId { get; set; }

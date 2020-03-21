@@ -7,6 +7,7 @@ namespace DotNetCoreReactREST.Entities
 {
     public class Comment
     {
+        [Key]
         public int Id { get; set; }
         [Required]
         [MaxLength(1000)]

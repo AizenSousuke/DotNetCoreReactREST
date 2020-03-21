@@ -14,7 +14,6 @@ namespace DotNetCoreReactREST
         {
             var host = CreateHostBuilder(args).Build();
 
-           
 
             // run the web app
             host.Run();
