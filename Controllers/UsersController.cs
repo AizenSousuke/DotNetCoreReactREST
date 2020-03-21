@@ -127,7 +127,7 @@ namespace DotNetCoreReactREST.Controllers
 
         // DELETE api/<controller>/5
         [HttpDelete("{userId}")]
-        public async Task<ActionResult> DeleteAsync(string userId)
+        public async Task<ActionResult> DeleteAsync([FromRoute]string userId)
         {
             //var userFromRepo = _userRepo.GetUserById(userId);
             //if (userFromRepo == null)
