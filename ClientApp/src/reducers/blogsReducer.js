@@ -1,6 +1,11 @@
 const initialState = {
   all: [],
-  loading: true
+  loading: true,
+  single: {
+    id: 0,
+    title: "",
+    body: ""
+  }
 }
 
 export function blogsReducer(state = initialState, { type, payload }) {
@@ -10,6 +15,12 @@ export function blogsReducer(state = initialState, { type, payload }) {
         ...state,
         all: payload,
         loading: false
+      }
+    case "SET_SINGLE_BLOG":
+      return {
+        ...state,
+        loading: false,
+        single: payload
       }
     default:
       return state;
