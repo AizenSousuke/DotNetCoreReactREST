@@ -40,7 +40,7 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         // GET api/comments/{commentId}
-        [HttpGet("Comments/{commentId}", Name = "GetComment")]
+        [HttpGet("comments/{commentId}", Name = "GetComment")]
         public ActionResult GetCommentForUser(int commentId)
         {
             var commentFromRepo = _commentRepo.GetCommentById(commentId);
