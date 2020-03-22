@@ -127,29 +127,28 @@ namespace DotNetCoreReactREST.Controllers
 
         // DELETE api/<controller>/5
         [HttpDelete("{userId}")]
-        public async Task<ActionResult> DeleteAsync(string userId)
+        public async Task<ActionResult> DeleteAsync([FromRoute]string userId)
         {
-            //var userFromRepo = _userRepo.GetUserById(userId);
-            //if (userFromRepo == null)
-            //{
-            //    return NotFound();
-            //}
-            //foreach (var comment in _commentRepository.GetCommentsForUser(userId))
-            //{
-            //    _commentRepository.DeleteComment(comment);
-            //    _commentRepository.Save();
-            //}
-            //_userRepo.DeleteUser(userFromRepo);
-            //_userRepo.Save();
-
             ApplicationUser user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return NotFound();
             }
+
+            // Delete comments
+            IEnumerable<Comment> commentsToDelete = _commentRepository.GetCommentsForUser(user.Id);
+            foreach (var comment in commentsToDelete)
+            {
+                _commentRepository.DeleteComment(comment);
+            }
+
+            // Delete posts
+            // Seems like don't need to add as it does not error out
+
+            // Delete user
             await _userManager.DeleteAsync(user);
 
-            return NoContent();
+            return Ok("Deleted user and all his posts and comments");
         }
 
         [HttpPost("register")]

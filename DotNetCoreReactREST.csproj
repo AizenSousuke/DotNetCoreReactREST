@@ -48,8 +48,32 @@
     <Compile Remove="Migrations\20200321065125_AddFK.Designer.cs" />
     <Compile Remove="Migrations\20200321070435_Initial.cs" />
     <Compile Remove="Migrations\20200321070435_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200321080156_Initial.cs" />
+    <Compile Remove="Migrations\20200321080156_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200321101043_AddedKey.cs" />
+    <Compile Remove="Migrations\20200321101043_AddedKey.Designer.cs" />
+    <Compile Remove="Migrations\20200321102625_AddedCascade.cs" />
+    <Compile Remove="Migrations\20200321102625_AddedCascade.Designer.cs" />
     <Compile Remove="Migrations\20200321103611_AddedCommentFK.cs" />
     <Compile Remove="Migrations\20200321103611_AddedCommentFK.Designer.cs" />
+    <Compile Remove="Migrations\20200321105632_AddedCommentModelBuilder.cs" />
+    <Compile Remove="Migrations\20200321105632_AddedCommentModelBuilder.Designer.cs" />
+    <Compile Remove="Migrations\20200321110013_AddedCommentModelBuilder.cs" />
+    <Compile Remove="Migrations\20200321110013_AddedCommentModelBuilder.Designer.cs" />
+    <Compile Remove="Migrations\20200321110332_AddedCommentModelBuilder.cs" />
+    <Compile Remove="Migrations\20200321110332_AddedCommentModelBuilder.Designer.cs" />
+    <Compile Remove="Migrations\20200321111012_AddedCommentModelBuilder.cs" />
+    <Compile Remove="Migrations\20200321111012_AddedCommentModelBuilder.Designer.cs" />
+    <Compile Remove="Migrations\20200321111344_AddedCommentModelBuilder.cs" />
+    <Compile Remove="Migrations\20200321111344_AddedCommentModelBuilder.Designer.cs" />
+    <Compile Remove="Migrations\20200321111719_Initial.cs" />
+    <Compile Remove="Migrations\20200321111719_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200321115724_Initial.cs" />
+    <Compile Remove="Migrations\20200321115724_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200321120514_Initial.cs" />
+    <Compile Remove="Migrations\20200321120514_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200321122008_Initial.cs" />
+    <Compile Remove="Migrations\20200321122008_Initial.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -20,11 +20,21 @@ namespace DotNetCoreReactREST.DbContexts
         {
             base.OnModelCreating(modelBuilder);
 
-            // Set cascading for user so that when it gets deleted, everything else reference to this gets deleted. 
+            // Set cascading for user so that when it gets deleted, everything else reference to this gets deleted. Doesn't work. Error out on deleting comments which the user is deleted but the post is not created by the user. 
 
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany<Post>(p => p.Posts)
                 .WithOne(a => a.ApplicationUser)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Post>()
+                .HasMany<Comment>(c => c.Comments)
+                .WithOne(p => p.Post)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Comment>()
+                .HasMany<Like>(l => l.Likes)
+                .WithOne(c => c.Comment)
                 .OnDelete(DeleteBehavior.Cascade);
 
             //modelBuilder.Entity<ApplicationUser>()
