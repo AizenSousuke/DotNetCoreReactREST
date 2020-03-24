@@ -11,51 +11,65 @@ namespace DotNetCoreReactREST.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private readonly AppDbContext _appDbContext;
-        public CategoryRepository(AppDbContext appDbContext)
+        private readonly AppDbContext _context;
+        public CategoryRepository(AppDbContext context)
         {
-            _appDbContext = appDbContext;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public bool CategoryExists(int id)
+        public void AddCategory(Category category)
         {
-            return _appDbContext.Categories.Any(e => e.Id == id);
-        }
-
-        public async Task<int> DeleteCategory(int id)
-        {
-            if (CategoryExists(id))
+            if (category == null)
             {
-                _appDbContext.Categories.Remove(await _appDbContext.Categories.FirstOrDefaultAsync(p => p.Id == id));
-                return await SaveChangesAsync();
+                throw new ArgumentNullException(nameof(category));
+            }           
+            _context.Categories.Add(category);
+        }
+        public IEnumerable<Category> GetAllCategories()
+        {
+            return _context.Categories.OrderBy(c => c.Name).ToList();
+        }
+
+        public bool CategoryExists(int categoryId)
+        {
+            if (String.IsNullOrEmpty(categoryId.ToString()))
+            {
+                throw new ArgumentNullException(nameof(categoryId));
             }
-
-            return 0;
+            return _context.Categories.Any(c => c.Id == categoryId);
         }
 
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public void DeleteCategory(Category category)
         {
-            return await _appDbContext.Categories.ToListAsync();
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+            _context.Categories.Remove(category);
         }
 
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public Category GetCategoryById(int categoryId)
         {
-            return await _appDbContext.Categories.FindAsync(id);
+            if (String.IsNullOrWhiteSpace(categoryId.ToString()))
+            {
+                throw new ArgumentNullException(nameof(categoryId));
+            }
+            return _context.Categories
+                .FirstOrDefault(c => c.Id == categoryId);
+        }
+        
+        public bool Save()
+        {
+            return _context.SaveChanges() >= 0;
         }
 
-        public Task<ActionResult<Category>> PostCategory(Category category)
+        public void UpdateCategory(Category category)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IActionResult> PutCategory(int id, Category category)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<int> SaveChangesAsync()
-        {
-            return await _appDbContext.SaveChangesAsync();
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+            _context.Categories.Update(category);
         }
     }
 }

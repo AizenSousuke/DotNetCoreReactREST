@@ -7,12 +7,14 @@ namespace DotNetCoreReactREST.Repositories
 {
     public interface ICategoryRepository
     {
-        Task<ActionResult<IEnumerable<Category>>> GetCategories();
-        Task<ActionResult<Category>> GetCategory(int id);
-        Task<IActionResult> PutCategory(int id, Category category);
-        Task<ActionResult<Category>> PostCategory(Category category);
-        Task<int> DeleteCategory(int id);
-        bool CategoryExists(int id);
-        Task<int> SaveChangesAsync();
+        void AddCategory(Category category);
+        bool CategoryExists(int categoryId);
+        void DeleteCategory(Category category);
+        Category GetCategoryById(int categoryId);
+        bool Save();
+        void UpdateCategory(Category category);
+        IEnumerable<Category> GetAllCategories();
+
     }
 }
+

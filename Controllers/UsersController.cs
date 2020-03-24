@@ -24,12 +24,16 @@ namespace DotNetCoreReactREST.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepo;
+        private readonly IPostRepository _postRepository;
+        private readonly ICommentRepository _commentRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         public UsersController(
             IMapper mapper,
             IUserRepository userRepository,
+            IPostRepository postRepository,
+            ICommentRepository commentRepository,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
         {
@@ -37,6 +41,8 @@ namespace DotNetCoreReactREST.Controllers
             _userRepo = userRepository;
             _userManager = userManager;
             _signInManager = signInManager;
+            _postRepository = postRepository;
+            _commentRepository = commentRepository;
         }
         // GET: Api/Users
         [HttpGet]
@@ -67,7 +73,7 @@ namespace DotNetCoreReactREST.Controllers
 
         // POST Api/Users
         [HttpPost]
-        public ActionResult<UserDto> Post([FromBody]UserForCreationDto user)
+        public ActionResult<UserDto> CreateUser([FromBody]UserForCreationDto user)
         {
             var userToAdd = _mapper.Map<ApplicationUser>(user);
             _userRepo.AddUser(userToAdd);
@@ -121,16 +127,28 @@ namespace DotNetCoreReactREST.Controllers
 
         // DELETE api/<controller>/5
         [HttpDelete("{userId}")]
-        public ActionResult Delete(string userId)
+        public async Task<ActionResult> DeleteAsync([FromRoute]string userId)
         {
-            var userFromRepo = _userRepo.GetUserById(userId);
-            if (userFromRepo == null)
+            ApplicationUser user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
             {
                 return NotFound();
             }
-            _userRepo.DeleteUser(userFromRepo);
-            _userRepo.Save();
-            return NoContent();
+
+            // Delete comments
+            IEnumerable<Comment> commentsToDelete = _commentRepository.GetCommentsForUser(user.Id);
+            foreach (var comment in commentsToDelete)
+            {
+                _commentRepository.DeleteComment(comment);
+            }
+
+            // Delete posts
+            // Seems like don't need to add as it does not error out
+
+            // Delete user
+            await _userManager.DeleteAsync(user);
+
+            return Ok("Deleted user and all his posts and comments");
         }
 
         [HttpPost("register")]
