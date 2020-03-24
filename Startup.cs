@@ -149,6 +149,9 @@ namespace DotNetCoreReactREST
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext appDbContext)
         {
+            // Migrate the database if it is not already created (for docker use)
+            appDbContext.Database.Migrate();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -203,9 +206,6 @@ namespace DotNetCoreReactREST
             // Use authentication and authorization - who are you vs are you allowed
             app.UseAuthentication();
             app.UseAuthorization();
-
-            // Migrate the database (for docker use)
-            appDbContext.Database.Migrate();
 
             app.UseEndpoints(endpoints =>
             {
