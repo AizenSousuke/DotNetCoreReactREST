@@ -29,7 +29,7 @@ namespace DotNetCoreReactREST.Repositories
         public IEnumerable<Post> GetPosts()
         {
             IEnumerable<Post> Posts = _appDbContext.Posts
-                .OrderByDescending(p => p.DateTime);
+                .OrderByDescending(p => p.Id);
             return Posts;
         }
 
@@ -44,6 +44,8 @@ namespace DotNetCoreReactREST.Repositories
             {
                 return GetPosts();
             }
+
+            // Deferred Execution
             var collection = _appDbContext.Posts as IQueryable<Post>;
 
             if (!string.IsNullOrWhiteSpace(postResourceParameters.Category))
@@ -59,7 +61,7 @@ namespace DotNetCoreReactREST.Repositories
                 collection = collection.Where(a => a.Title.Contains(searchQuery));
             }
 
-            return collection.ToList();
+            return collection.OrderByDescending(p => p.Id).ToList();
         }
 
         public async Task<Post> UpdatePost(int postId, JsonPatchDocument post)

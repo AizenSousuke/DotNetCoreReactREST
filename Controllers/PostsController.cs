@@ -3,7 +3,7 @@ using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using DotNetCoreReactREST.ResourceParameters;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -29,12 +29,15 @@ namespace DotNetCoreReactREST
         public async Task<IActionResult> CreatePostAsync([FromBody]PostDto post)
         {
             Post newPost = await _postRepository.CreatePostAsync(_mapper.Map<Post>(post));
-            return Ok(_mapper.Map<PostDto>(newPost));
+            var baseURI = Request.GetDisplayUrl();
+            // Alternative way
+            // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
+            return Created(baseURI + newPost.Id, _mapper.Map<PostDto>(newPost));
         }
         //GET Api/posts[category=string &| searchQuery=string]
         [HttpGet]
         [HttpHead]
-        public IActionResult GetPost([FromQuery]PostResourceParameter postResourceParameter)
+        public IActionResult GetPosts([FromQuery]PostResourceParameter postResourceParameter)
         {
             IEnumerable<Post> postFromRepository = _postRepository.GetPosts(postResourceParameter);
             if (postFromRepository == null)
@@ -43,8 +46,8 @@ namespace DotNetCoreReactREST
             }
             return Ok(_mapper.Map<IEnumerable<PostDto>>(postFromRepository));
         }
-        //GET Api/Posts/{PostId}
-        [HttpGet]
+        //GET Api/Posts/{postId}
+        [HttpGet(Name = "GetPostByIdAsync")]
         // Route will only match if postId can be casted as a int
         [Route("{postId:int}")]
         public async Task<IActionResult> GetPostByIdAsync(int postId)
@@ -98,7 +101,7 @@ namespace DotNetCoreReactREST
             {
                 return NotFound("There is nothing to delete.");
             }
-            
+
             return Ok("Post Deleted: " + await _postRepository.DeletePost(postId));
         }
     }

@@ -15,6 +15,6 @@ namespace DotNetCoreReactREST.Entities
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
         public bool IsAdmin { get; set; }
         public DateTime DateCreated { get; set; }
-       
+
     }
 }

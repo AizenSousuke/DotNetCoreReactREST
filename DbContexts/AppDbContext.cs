@@ -94,7 +94,7 @@ namespace DotNetCoreReactREST.DbContexts
                 // postId is deterministic
                 .RuleFor(o => o.Id, f => commentId++)
                 .RuleFor(o => o.ApplicationUserId, f => f.Random.Int(1, 3).ToString())
-                .RuleFor(o => o.PostId, f => f.Random.Int(1,3))
+                .RuleFor(o => o.PostId, f => f.Random.Int(1, 3))
                 .RuleFor(o => o.Content, f => f.Random.Words())
                 .RuleFor(o => o.IsAnonymous, f => f.Random.Bool(0.5f));
 

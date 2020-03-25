@@ -66,9 +66,9 @@ namespace DotNetCoreReactREST.Repositories
         }
         public IEnumerable<Comment> GetCommentsForPost(int postId)
         {
-            return _context.Comments                
+            return _context.Comments
                 .Where(c => c.PostId == postId)
-                .Include(c=> c.ApplicationUser)
+                .Include(c => c.ApplicationUser)
                 .OrderBy(c => c.Likes.Count())
                 .ThenByDescending(c => c.DateCreated)
                 .ToList();

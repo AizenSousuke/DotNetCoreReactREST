@@ -1,5 +1,4 @@
 using AutoMapper;
-using Microsoft.OpenApi.Models;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
@@ -12,10 +11,11 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System;
-using Microsoft.Extensions.FileProviders;
 using System.IO;
 
 namespace DotNetCoreReactREST
@@ -43,7 +43,8 @@ namespace DotNetCoreReactREST
             {
                 services.AddDbContext<AppDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            } else
+            }
+            else
             {
                 services.AddDbContext<AppDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
@@ -186,7 +187,8 @@ namespace DotNetCoreReactREST
                     DefaultContentType = "application/json",
                     RequestPath = "/ClientApp/build"
                 });
-            } else
+            }
+            else
             {
                 // In production, the React files will be served from this directory
                 app.UseSpaStaticFiles(new StaticFileOptions { RequestPath = "/ClientApp/build" });

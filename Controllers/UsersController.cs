@@ -205,7 +205,8 @@ namespace DotNetCoreReactREST.Controllers
             try
             {
                 ApplicationUser convertedUser = _mapper.Map<ApplicationUser>(user);
-                await _signInManager.SignInAsync(convertedUser, new AuthenticationProperties() {
+                await _signInManager.SignInAsync(convertedUser, new AuthenticationProperties()
+                {
                     IsPersistent = true
                 });
                 return Ok("Logged in successfully!");

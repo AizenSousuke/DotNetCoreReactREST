@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
-using DotNetCoreReactREST.Repositories;
 using System.Linq;
 
 namespace DotNetCoreReactREST.Profiles
 {
     public class CommentProfile : Profile
     {
-        public CommentProfile()            
+        public CommentProfile()
         {
-            
+
             CreateMap<Comment, CommentDto>()
            .ForMember(
                     dest => dest.LikesCount,
@@ -18,7 +17,7 @@ namespace DotNetCoreReactREST.Profiles
            .ForMember(
 
                 dest => dest.UserName,
-                opt => opt.MapFrom(src => 
+                opt => opt.MapFrom(src =>
                 src.IsAnonymous == true ? "Anonymous" : src.ApplicationUser.UserName
                 ));
 
