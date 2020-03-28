@@ -34,11 +34,26 @@ namespace DotNetCoreReactREST
             // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
             return Created(baseURI + newPost.Id, _mapper.Map<PostDto>(newPost));
         }
-        //GET Api/posts[category=string &| searchQuery=string]
+        //[HttpGet]
+        //public IActionResult GetPosts()
+        //{
+        //    return Ok(_mapper.Map<IEnumerable<PostDto>>(_postRepository.GetPosts()));
+        //}
+
+        //GET Api/posts[category = string &| searchQuery = string]
         [HttpGet]
         [HttpHead]
         public IActionResult GetPosts([FromQuery]PostResourceParameter postResourceParameter)
         {
+            if (postResourceParameter == null)
+            {
+                IEnumerable<Post> posts = _postRepository.GetPosts();
+                if (posts == null)
+                {
+                    return NotFound();
+                }
+                return Ok(_mapper.Map<IEnumerable<PostDto>>(posts));
+            }
             IEnumerable<Post> postFromRepository = _postRepository.GetPosts(postResourceParameter);
             if (postFromRepository == null)
             {
@@ -47,7 +62,7 @@ namespace DotNetCoreReactREST
             return Ok(_mapper.Map<IEnumerable<PostDto>>(postFromRepository));
         }
         //GET Api/Posts/{postId}
-        [HttpGet(Name = "GetPostByIdAsync")]
+        [HttpGet]
         // Route will only match if postId can be casted as a int
         [Route("{postId:int}")]
         public async Task<IActionResult> GetPostByIdAsync(int postId)

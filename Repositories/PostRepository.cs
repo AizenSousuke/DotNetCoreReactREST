@@ -29,7 +29,7 @@ namespace DotNetCoreReactREST.Repositories
         public IEnumerable<Post> GetPosts()
         {
             IEnumerable<Post> Posts = _appDbContext.Posts
-                .OrderByDescending(p => p.Id);
+                .OrderByDescending(p => p.Id).ToList();
             return Posts;
         }
 
@@ -40,7 +40,9 @@ namespace DotNetCoreReactREST.Repositories
                 throw new ArgumentNullException(nameof(postResourceParameters));
             }
             if (string.IsNullOrWhiteSpace(postResourceParameters.Category)
-                && string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery))
+                && string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery)
+                && string.IsNullOrWhiteSpace(postResourceParameters.UserQuery)
+                )
             {
                 return GetPosts();
             }
@@ -51,17 +53,33 @@ namespace DotNetCoreReactREST.Repositories
             if (!string.IsNullOrWhiteSpace(postResourceParameters.Category))
             {
                 var category = postResourceParameters.Category.Trim();
-                collection = collection.Where(post => post.Category.Name == category);
+                collection = collection.Where(post => post.Category.Name.Contains(category));
             }
 
             if (!string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery))
             {
-
                 var searchQuery = postResourceParameters.SearchQuery.Trim();
-                collection = collection.Where(a => a.Title.Contains(searchQuery));
+                collection = collection.Where(post => post.Title.Contains(searchQuery));
             }
 
-            return collection.OrderByDescending(p => p.Id).ToList();
+            if (!string.IsNullOrWhiteSpace(postResourceParameters.UserQuery))
+            {
+                var userQuery = postResourceParameters.UserQuery.Trim();
+                collection = collection.Where(post => post.ApplicationUserId.Contains(userQuery));
+            }
+
+            if (postResourceParameters.PostId != 0)
+            {
+                int postId = postResourceParameters.PostId;
+                collection = collection.Where(post => post.Id == postId);
+            }
+
+            return collection;
+        }
+
+        public async Task<Post> GetPostByIdAsync(int postId)
+        {
+            return await _appDbContext.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
         }
 
         public async Task<Post> UpdatePost(int postId, JsonPatchDocument post)
@@ -81,11 +99,6 @@ namespace DotNetCoreReactREST.Repositories
                 return Save();
             }
             return Task.FromResult(false);
-        }
-
-        public async Task<Post> GetPostByIdAsync(int postId)
-        {
-            return await _appDbContext.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
         }
 
         public async Task<bool> Save()
