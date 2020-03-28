@@ -105,7 +105,7 @@ namespace DotNetCoreReactREST
                    };
                };
            });
-
+          
             // Swashbuckle
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -193,15 +193,6 @@ namespace DotNetCoreReactREST
                 // In production, the React files will be served from this directory
                 app.UseSpaStaticFiles(new StaticFileOptions { RequestPath = "/ClientApp/build" });
             }
-
-            // Swashbuckle Swagger
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog API v1");
-                // To serve the Swagger UI at the app's root (http://localhost:<port>/), set the RoutePrefix property to an empty string:
-                // c.RoutePrefix = string.Empty;
-            });
 
             app.UseRouting();
 
