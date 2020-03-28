@@ -22,18 +22,18 @@ namespace DotNetCoreReactREST.Repositories
             post.DateTime = DateTime.Now;
             await _appDbContext.Posts.AddAsync(post);
             await Save();
-            Post newPost = GetPosts().FirstOrDefault(p => p.Id == post.Id);
-            return newPost;
+            List<Post> newPost = await GetPostsAsync();
+            return newPost.FirstOrDefault(p => p.Id == post.Id);
         }
 
-        public IEnumerable<Post> GetPosts()
+        public async Task<List<Post>> GetPostsAsync()
         {
-            IEnumerable<Post> Posts = _appDbContext.Posts
-                .OrderByDescending(p => p.Id).ToList();
+            List<Post> Posts = await _appDbContext.Posts
+                .OrderByDescending(p => p.Id).ToListAsync();
             return Posts;
         }
 
-        public IEnumerable<Post> GetPosts(PostResourceParameter postResourceParameters)
+        public async Task<List<Post>> GetPostsAsync(PostResourceParameter postResourceParameters)
         {
             if (postResourceParameters == null)
             {
@@ -44,7 +44,7 @@ namespace DotNetCoreReactREST.Repositories
                 && string.IsNullOrWhiteSpace(postResourceParameters.UserQuery)
                 )
             {
-                return GetPosts();
+                return await GetPostsAsync();
             }
 
             // Deferred Execution
@@ -59,7 +59,10 @@ namespace DotNetCoreReactREST.Repositories
             if (!string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery))
             {
                 var searchQuery = postResourceParameters.SearchQuery.Trim();
-                collection = collection.Where(post => post.Title.Contains(searchQuery));
+                collection = collection.Where(post =>
+                    post.Title.Contains(searchQuery) ||
+                    post.Description.Contains(searchQuery) ||
+                    post.Content.Contains(searchQuery));
             }
 
             if (!string.IsNullOrWhiteSpace(postResourceParameters.UserQuery))
@@ -68,13 +71,14 @@ namespace DotNetCoreReactREST.Repositories
                 collection = collection.Where(post => post.ApplicationUserId.Contains(userQuery));
             }
 
-            if (postResourceParameters.PostId != 0)
-            {
-                int postId = postResourceParameters.PostId;
-                collection = collection.Where(post => post.Id == postId);
-            }
+            // Temporarily disabled because it does not work
+            //if (postResourceParameters.PostId != 0)
+            //{
+            //    int postId = postResourceParameters.PostId;
+            //    collection = collection.Where(post => post.Id == postId);
+            //}
 
-            return collection;
+            return await collection.OrderByDescending(p => p.Id).ToListAsync();
         }
 
         public async Task<Post> GetPostByIdAsync(int postId)
@@ -82,23 +86,23 @@ namespace DotNetCoreReactREST.Repositories
             return await _appDbContext.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
         }
 
-        public async Task<Post> UpdatePost(int postId, JsonPatchDocument post)
+        public async Task<Post> UpdatePostAsync(int postId, JsonPatchDocument post)
         {
-            Task<Post> oldPost = GetPostByIdAsync(postId);
+            Post oldPost = await GetPostByIdAsync(postId);
 
             await Save();
-            return GetPostByIdAsync(postId).Result;
+            return await GetPostByIdAsync(postId);
         }
 
-        public Task<bool> DeletePost(int postId)
+        public async Task<bool> DeletePostAsync(int postId)
         {
-            Post post = GetPostByIdAsync(postId).Result;
+            Post post = await GetPostByIdAsync(postId);
             if (post != null)
             {
                 _appDbContext.Posts.Remove(post);
-                return Save();
+                return await Save();
             }
-            return Task.FromResult(false);
+            return false;
         }
 
         public async Task<bool> Save()

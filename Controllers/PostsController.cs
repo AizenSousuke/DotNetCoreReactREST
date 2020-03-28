@@ -34,27 +34,21 @@ namespace DotNetCoreReactREST
             // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
             return Created(baseURI + newPost.Id, _mapper.Map<PostDto>(newPost));
         }
-        //[HttpGet]
-        //public IActionResult GetPosts()
-        //{
-        //    return Ok(_mapper.Map<IEnumerable<PostDto>>(_postRepository.GetPosts()));
-        //}
-
         //GET Api/posts[category = string &| searchQuery = string]
         [HttpGet]
         [HttpHead]
-        public IActionResult GetPosts([FromQuery]PostResourceParameter postResourceParameter)
+        public async Task<IActionResult> GetPostsAsync([FromQuery]PostResourceParameter postResourceParameter)
         {
             if (postResourceParameter == null)
             {
-                IEnumerable<Post> posts = _postRepository.GetPosts();
+                IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
                 if (posts == null)
                 {
                     return NotFound();
                 }
                 return Ok(_mapper.Map<IEnumerable<PostDto>>(posts));
             }
-            IEnumerable<Post> postFromRepository = _postRepository.GetPosts(postResourceParameter);
+            IEnumerable<Post> postFromRepository = await _postRepository.GetPostsAsync(postResourceParameter);
             if (postFromRepository == null)
             {
                 return NotFound();
@@ -117,7 +111,12 @@ namespace DotNetCoreReactREST
                 return NotFound("There is nothing to delete.");
             }
 
-            return Ok("Post Deleted: " + await _postRepository.DeletePost(postId));
+            bool result = await _postRepository.DeletePostAsync(postId);
+            if (result)
+            {
+                return Ok("Post Deleted.");
+            }
+            return Ok("Post not deleted.");
         }
     }
 }
