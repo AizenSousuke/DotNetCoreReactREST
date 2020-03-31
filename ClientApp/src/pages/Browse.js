@@ -5,7 +5,6 @@ import BlogLayout from "../components/blogs/BlogLayout";
 
 const Browse = () => {
   const blogs = useSelector(state => state.blogs.all);
-
   return (
     <Layout>
       <div className="browse mt-5">
