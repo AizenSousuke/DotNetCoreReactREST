@@ -6,7 +6,6 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Printer from "./Printer";
 import { Col, Row } from "reactstrap";
-import "../../styles/components/blog.scss";
 
 const SingleLayout = ({ markup, creating, editing }) => {
   const [liked, setLiked] = useState(false);
@@ -34,6 +33,22 @@ const SingleLayout = ({ markup, creating, editing }) => {
   return (
     <div>
       <div className="m-auto wrapper">
+        <div>
+          { !viewing ? <div>
+          <button
+            onClick={() => setShowingEditor(!showingEditor)}
+            className="button mt-3 mb-3"
+          >
+            {showingEditor ? "Hide Editor" : "Show Editor"}
+          </button>
+          { showingEditor ? <ReactQuill
+            theme="snow"
+            value={value}
+            onChange={setValue}
+            className="mb-4"
+          /> : '' }
+          </div> : '' }
+        </div>
         <Row xs="1">
           <Col>
             <section className="profile-card">
@@ -66,33 +81,41 @@ const SingleLayout = ({ markup, creating, editing }) => {
                 <button className="d-block">
                   <span>View John's other blogs</span>
                 </button>
-               { !viewing && title && value && value !== "<p><br></p>" ? <button>
-                  <span>{ creating ? 'Create Blog' : 'Save Blog' }</span>
-                </button> : '' }
+                {!viewing && title && value && value !== "<p><br></p>" ? (
+                  <button>
+                    <span>{creating ? "Create Blog" : "Save Blog"}</span>
+                  </button>
+                ) : (
+                  ""
+                )}
               </div>
             </section>
-            </Col>
-            <Col className="d-flex justify-content-center">
             {viewing ? (
-              <h1>{blog.title}</h1>
+              <div>
+                <h1>{blog.title}</h1>
+                <p>
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ea
+                  eum beatae quis est, voluptatem voluptas libero maiores quia
+                  enim nihil, itaque consequuntur unde? Dolorem enim id alias ea
+                  dignissimos! Neque.
+                </p>
+              </div>
             ) : (
-              <div className="mt-4 ml-5">
+              <div>
                 {!editingTitle ? (
                   <h1
-                    className="h1"
-                    style={{width: '400px'}}
+                    className={`h1 blog-creation-title ${!editingTitle ? 'blog-creation-editable' : ''}`}
                     onClick={() => setEditingTitle(!editingTitle)}
                   >
-                    {title ? title : "Untitled Blog"}
+                    <span>{title ? title : "Untitled Blog"}</span>
                   </h1>
                 ) : (
                   <form onSubmit={() => setEditingTitle(!editingTitle)}>
                     <input
-                      style={{color: 'black', width: '400px'}}
-                      onKeyPress={(e) => {
-                        if(e.which === 13) setEditingTitle(!editingTitle)
+                      onKeyPress={e => {
+                        if (e.which === 13) setEditingTitle(!editingTitle);
                       }}
-                      className="h1 text-black input--text d-block"
+                      className="h1 text-black input--text d-block blog-creation-title"
                       type="text"
                       value={title}
                       onChange={e => setTitle(e.target.value)}
@@ -101,31 +124,11 @@ const SingleLayout = ({ markup, creating, editing }) => {
                     />
                   </form>
                 )}
+                <Printer html={value} />
               </div>
             )}
           </Col>
-          <div>
-            {viewing ? (
-              <>
-                <h1>My Content</h1>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Quidem expedita ipsum nobis, fuga quasi debitis obcaecati
-                  quisquam labore assumenda consequatur amet quae quos!
-                  Similique ducimus quia, dolorem dolore aperiam ullam?
-                </p>
-              </>
-            ) : (
-              <div>
-              <button onClick={() => setShowingEditor(!showingEditor)} className="button mt-3 mb-3">{showingEditor ? 'Hide Editor' : 'Show Editor'}</button>
-              <ReactQuill className={!showingEditor ? 'd-none' : ''} theme="snow" value={value} onChange={setValue} />
-              </div>
-            )}
-          </div>
         </Row>
-      </div>
-      <div>
-        <Printer html={value} />
       </div>
     </div>
   );

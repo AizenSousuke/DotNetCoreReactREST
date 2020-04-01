@@ -64,4 +64,19 @@
             }
         }
     }
+    .blog-creation-title {
+        color: black;
+    }
+    input {
+        padding: 0px 5px;
+    }
+    .blog-creation-editable {
+        span {
+            padding: 0px 5px;
+            transition: background-color $default-timing ease-in;
+            &:hover {
+                background-color: lighten(gray, 44%);
+            }
+        }
+    }
 }
