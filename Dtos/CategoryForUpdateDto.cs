@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace DotNetCoreReactREST.Dtos
+﻿namespace DotNetCoreReactREST.Dtos
 {
-    public class CategoryForUpdateDto: CategoryForManipulationDto
+    public class CategoryForUpdateDto : CategoryForManipulationDto
     {
     }
 }

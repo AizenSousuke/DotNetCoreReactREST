@@ -1,10 +1,8 @@
 ﻿using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {
@@ -21,7 +19,7 @@ namespace DotNetCoreReactREST.Repositories
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
-            }            
+            }
             user.DateCreated = DateTime.Now;
             _context.Users.Add(user);
         }
@@ -32,7 +30,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            _context.Users.Remove(user);            
+            _context.Users.Remove(user);
         }
 
         public ApplicationUser GetUserById(string userId)
@@ -59,7 +57,7 @@ namespace DotNetCoreReactREST.Repositories
 
         public bool Save()
         {
-         return _context.SaveChanges() >= 0;
+            return _context.SaveChanges() >= 0;
         }
 
         public void UpdateUser(ApplicationUser user)

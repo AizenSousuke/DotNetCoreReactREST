@@ -1,24 +1,22 @@
 ﻿using AutoMapper;
-using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
-    {        
+    {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
 
         public CategoriesController(IMapper mapper, ICategoryRepository categoryRepository)
-        {            
+        {
             _categoryRepository = categoryRepository;
             _mapper = mapper;
         }
@@ -32,7 +30,7 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         // GET: api/Categories/5
-        [HttpGet("{categoryId}",Name ="GetCategories")]
+        [HttpGet("{categoryId}", Name = "GetCategories")]
         public ActionResult<CategoryDto> GetCategory(int categoryId)
         {
             var categoryFromRepo = _categoryRepository.GetCategoryById(categoryId);
@@ -44,7 +42,7 @@ namespace DotNetCoreReactREST.Controllers
 
             return Ok(_mapper.Map<CategoryDto>(categoryFromRepo));
         }
-               
+
         [HttpPut("{categoryId}")]
         public ActionResult<CategoryDto> EditCategory(int categoryId, CategoryForUpdateDto category)
         {
@@ -58,7 +56,7 @@ namespace DotNetCoreReactREST.Controllers
 
             return NoContent();
         }
-        
+
         [HttpPost]
         public ActionResult<CategoryDto> CreateCategory(CategoryForCreationDto category)
         {
@@ -66,9 +64,11 @@ namespace DotNetCoreReactREST.Controllers
             _categoryRepository.AddCategory(categoryToAdd);
             _categoryRepository.Save();
 
-            return CreatedAtAction("GetCategory",
-                new { id = categoryToAdd.Id },
-                _mapper.Map<CategoryDto>(categoryToAdd));
+
+            var baseURI = Request.GetDisplayUrl();
+            // Alternative way
+            // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
+            return Created(baseURI + categoryToAdd.Id, _mapper.Map<CategoryDto>(categoryToAdd));
         }
 
         // DELETE: api/Categories/5
@@ -79,13 +79,13 @@ namespace DotNetCoreReactREST.Controllers
             if (categoryToDelete == null)
             {
                 BadRequest();
-            }           
+            }
             _categoryRepository.DeleteCategory(categoryToDelete);
             _categoryRepository.Save();
 
             return NoContent();
         }
 
-       
+
     }
 }

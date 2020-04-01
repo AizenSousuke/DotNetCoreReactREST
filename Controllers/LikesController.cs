@@ -38,13 +38,13 @@ namespace DotNetCoreReactREST.Controllers
             return Ok(_mapper.Map<IEnumerable<LikeDto>>(likesFromRepo));
         }
 
-         //Authenticate to make sure userId is the same as logged user
-         //POST api/Comments/{commentId}/user/{userId}/Likes
+        //Authenticate to make sure userId is the same as logged user
+        //POST api/Comments/{commentId}/user/{userId}/Likes
         [HttpPost("comments/{commentId}/users/{userId}/Likes")]
         public ActionResult LikeComment(int commentId, string userId)
         {
             //like is unique to user, so none should exist
-            if (_likeRepo.LikeExists(commentId, userId))            
+            if (_likeRepo.LikeExists(commentId, userId))
             {
                 return BadRequest();
             }
@@ -53,8 +53,8 @@ namespace DotNetCoreReactREST.Controllers
             return NoContent();
         }
 
-         //Authenticate to make sure userId is the same as logged user
-         //DELETE api/likes/{likeId}
+        //Authenticate to make sure userId is the same as logged user
+        //DELETE api/likes/{likeId}
         [HttpDelete("likes/{LikeId}")]
         public ActionResult UnLike(int likeId)
         {

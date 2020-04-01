@@ -1,11 +1,8 @@
 ﻿using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {
@@ -22,7 +19,7 @@ namespace DotNetCoreReactREST.Repositories
             if (category == null)
             {
                 throw new ArgumentNullException(nameof(category));
-            }           
+            }
             _context.Categories.Add(category);
         }
         public IEnumerable<Category> GetAllCategories()
@@ -57,7 +54,7 @@ namespace DotNetCoreReactREST.Repositories
             return _context.Categories
                 .FirstOrDefault(c => c.Id == categoryId);
         }
-        
+
         public bool Save()
         {
             return _context.SaveChanges() >= 0;
