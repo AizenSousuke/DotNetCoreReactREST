@@ -9,7 +9,7 @@ const Blog = props => {
 
     return (
       <Layout>
-        <SingleLayout creating={true} />
+        <SingleLayout creating={false} />
       </Layout>
     );
 }

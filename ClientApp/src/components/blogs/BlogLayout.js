@@ -3,7 +3,7 @@ import { Card, Container } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 const BlogLayout = ({blogs}) => {
     return (
-      <div className="blogs">
+      <div className="blog-layout">
         {blogs.length ? (
           <>
             <div className="d-flex flex-wrap justify-content-center">
@@ -28,8 +28,11 @@ const BlogLayout = ({blogs}) => {
                           nobis.
                         </p>
                         <div className="d-flex justify-content-center">
-                          <NavLink to={`/blog/${blog.name}`} className="button button--primary">
+                          <NavLink to={`/blog/${blog.id}`} className="button button--primary mr-2">
                             View Blog
+                          </NavLink>
+                          <NavLink to={`/blog/edit/${blog.id}`} className="button button--primary">
+                            Edit
                           </NavLink>
                         </div>
                       </Container>

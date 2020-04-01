@@ -36,6 +36,16 @@ const App = () => {
       <Route 
       path="/blog/:id"
       component={Blog}
+      exact
+      />
+      <Route 
+      path="/blog/:action/:id"
+      component={Blog}
+      exact
+      />
+      <Route 
+      path="/create/"
+      component={Blog}
       />
     </div>
   );

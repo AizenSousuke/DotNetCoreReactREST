@@ -22,6 +22,11 @@ export function blogsReducer(state = initialState, { type, payload }) {
         loading: false,
         single: payload
       }
+    case "SET_BLOG_LOADING":
+      return {
+        ...state,
+        loading: payload,
+      }
     default:
       return state;
   }

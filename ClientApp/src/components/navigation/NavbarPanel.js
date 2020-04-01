@@ -13,12 +13,13 @@ const NavbarPanel = () => {
 
     return (
       <>
+      <NavLink to="/create">
         <span
-          onClick={() => dispatch(setModal("login"))}
           className="navbar__cta"
         >
           Write a blog
         </span>
+        </NavLink>
         <NavLink to="/browse">My blogs</NavLink>
         <div onClick={() => togglePanel()} className="navbar__avatar">
           <img
