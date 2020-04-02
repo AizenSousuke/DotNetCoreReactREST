@@ -83,28 +83,28 @@ namespace DotNetCoreReactREST
             })
             //add support for xml
             .AddXmlDataContractSerializerFormatters()
-           .ConfigureApiBehaviorOptions(setupAction =>
-           {
-               //if api modelstate is invalid, add problem details
-               setupAction.InvalidModelStateResponseFactory = context =>
-               {
-                   var problemDetails = new ValidationProblemDetails(context.ModelState)
-                   {
-                       Type = "",
-                       Title = "One or more model validation errors occurred.",
-                       Status = StatusCodes.Status422UnprocessableEntity,
-                       Detail = "See the errors property for details.",
-                       Instance = context.HttpContext.Request.Path
-                   };
+            .ConfigureApiBehaviorOptions(setupAction =>
+            {
+                //if api modelstate is invalid, add problem details
+                setupAction.InvalidModelStateResponseFactory = context =>
+                {
+                    var problemDetails = new ValidationProblemDetails(context.ModelState)
+                    {
+                        Type = "",
+                        Title = "One or more model validation errors occurred.",
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = "See the errors property for details.",
+                        Instance = context.HttpContext.Request.Path
+                    };
 
-                   problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
+                    problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
 
-                   return new UnprocessableEntityObjectResult(problemDetails)
-                   {
-                       ContentTypes = { "application/problem+json" }
-                   };
-               };
-           });
+                    return new UnprocessableEntityObjectResult(problemDetails)
+                    {
+                        ContentTypes = { "application/problem+json" }
+                    };
+                };
+            });
 
             // Swashbuckle
             // Register the Swagger generator, defining 1 or more Swagger documents
