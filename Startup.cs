@@ -1,5 +1,4 @@
 using AutoMapper;
-using Microsoft.OpenApi.Models;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
@@ -12,26 +11,44 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.IO;
 
 namespace DotNetCoreReactREST
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Environment = env;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            // Configuration variables
+            //var host = Configuration["DBHOST"] ?? "localhost";
+            //var port = Configuration["DBPORT"] ?? "1433";
+            //var password = Configuration["DBPASSWORD"] ?? "password";
+
+            if (Environment.IsDevelopment())
+            {
+                services.AddDbContext<AppDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            }
+            else
+            {
+                services.AddDbContext<AppDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
+            }
 
             // Add Repositories
             services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -66,28 +83,28 @@ namespace DotNetCoreReactREST
             })
             //add support for xml
             .AddXmlDataContractSerializerFormatters()
-           .ConfigureApiBehaviorOptions(setupAction =>
-           {
-               //if api modelstate is invalid, add problem details
-               setupAction.InvalidModelStateResponseFactory = context =>
-               {
-                   var problemDetails = new ValidationProblemDetails(context.ModelState)
-                   {
-                       Type = "",
-                       Title = "One or more model validation errors occurred.",
-                       Status = StatusCodes.Status422UnprocessableEntity,
-                       Detail = "See the errors property for details.",
-                       Instance = context.HttpContext.Request.Path
-                   };
+            .ConfigureApiBehaviorOptions(setupAction =>
+            {
+                //if api modelstate is invalid, add problem details
+                setupAction.InvalidModelStateResponseFactory = context =>
+                {
+                    var problemDetails = new ValidationProblemDetails(context.ModelState)
+                    {
+                        Type = "",
+                        Title = "One or more model validation errors occurred.",
+                        Status = StatusCodes.Status422UnprocessableEntity,
+                        Detail = "See the errors property for details.",
+                        Instance = context.HttpContext.Request.Path
+                    };
 
-                   problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
+                    problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
 
-                   return new UnprocessableEntityObjectResult(problemDetails)
-                   {
-                       ContentTypes = { "application/problem+json" }
-                   };
-               };
-           });
+                    return new UnprocessableEntityObjectResult(problemDetails)
+                    {
+                        ContentTypes = { "application/problem+json" }
+                    };
+                };
+            });
 
             // Swashbuckle
             // Register the Swagger generator, defining 1 or more Swagger documents
@@ -100,6 +117,9 @@ namespace DotNetCoreReactREST
                     Version = "v1"
                 });
             });
+
+            // Development directory browser
+            services.AddDirectoryBrowser();
 
             // Authentication
             services.AddAuthentication();
@@ -119,6 +139,7 @@ namespace DotNetCoreReactREST
                       .AllowAnyHeader();
 
             }));
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -127,12 +148,22 @@ namespace DotNetCoreReactREST
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppDbContext appDbContext)
         {
+            // Migrate the database if it is not already created (for docker use)
+            appDbContext.Database.Migrate();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseCors("AllowOpenOrigin");
+
+                // Development only directory browsing
+                app.UseDirectoryBrowser(new DirectoryBrowserOptions()
+                {
+                    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory())),
+                    RequestPath = "/dir"
+                });
             }
             else
             {
@@ -141,9 +172,27 @@ namespace DotNetCoreReactREST
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // Temporarily disable https for prod
+            if (env.IsDevelopment())
+            {
+                app.UseHttpsRedirection();
+            }
+
             app.UseStaticFiles();
-            app.UseSpaStaticFiles();
+
+            if (env.IsDevelopment())
+            {
+                app.UseSpaStaticFiles(new StaticFileOptions()
+                {
+                    DefaultContentType = "application/json",
+                    RequestPath = "/ClientApp/build"
+                });
+            }
+            else
+            {
+                // In production, the React files will be served from this directory
+                app.UseSpaStaticFiles(new StaticFileOptions { RequestPath = "/ClientApp/build" });
+            }
 
             // Swashbuckle Swagger
             app.UseSwagger();

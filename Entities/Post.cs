@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotNetCoreReactREST.Entities
 {
@@ -10,7 +9,6 @@ namespace DotNetCoreReactREST.Entities
         [Key]
         public int Id { get; set; }
         public Category Category { get; set; }
-        [Required]
         public int CategoryId { get; set; }
         [Required]
         [MaxLength(250)]
@@ -21,10 +19,9 @@ namespace DotNetCoreReactREST.Entities
         [MaxLength(1000)]
         public string Content { get; set; }
         public DateTime DateTime { get; set; }
-        [ForeignKey("ApplicationUser")]
-        public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
-        public IEnumerable<Comment> Comments { get; set; } = new List<Comment>();
+        public string ApplicationUserId { get; set; }
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     }
 }
