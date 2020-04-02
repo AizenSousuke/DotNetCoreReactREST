@@ -10,6 +10,11 @@ export const getBlogs = () => async dispatch => {
 
 export const getSingleBlog = id => async (dispatch, getState) => {
   dispatch({ type: "SET_BLOG_LOADING", payload: true });
+  if (!id) {
+    dispatch({ type: "SET_SINGLE_BLOG", payload: null });
+    return
+
+  }
   const blogs = getState().blogs.all;
   const blog = blogs.find(b => {
     if (b.id === id) return b;

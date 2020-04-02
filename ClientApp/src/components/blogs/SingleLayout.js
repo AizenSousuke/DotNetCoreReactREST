@@ -27,6 +27,7 @@ const SingleLayout = ({ markup, match }) => {
   useEffect(() => {
     const params = match.params
     if (!Object.keys(params).length) {
+      dispatch(getSingleBlog(null));
       setCreating(true)
       return
     }
@@ -117,7 +118,7 @@ const SingleLayout = ({ markup, match }) => {
 
               {viewing ? (
                 <div>
-                  <h1>{blog.title}</h1>
+                  <h1>{blog && blog.title}</h1>
                   <p>
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ea
                     eum beatae quis est, voluptatem voluptas libero maiores quia
