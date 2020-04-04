@@ -1,0 +1,6 @@
+﻿FROM nginx:alpine
+COPY ./ClientApp/build /usr/share/nginx/html
+WORKDIR /usr/share/nginx/html
+RUN ls -l
+RUN pwd
+EXPOSE 80

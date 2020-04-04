@@ -233,3 +233,7 @@ _Pvt_Extensions
 
 # Environment
 /environment
+
+# Docker-compose data folder for sql
+/data
+/output

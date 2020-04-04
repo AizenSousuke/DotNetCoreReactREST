@@ -1,10 +1,10 @@
-﻿using DotNetCoreReactREST.DbContexts;
+﻿using AutoMapper;
+using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Controllers
 {
@@ -12,99 +12,80 @@ namespace DotNetCoreReactREST.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly AppDbContext _context;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper _mapper;
 
-        public CategoriesController(AppDbContext context, ICategoryRepository categoryRepository)
+        public CategoriesController(IMapper mapper, ICategoryRepository categoryRepository)
         {
-            _context = context;
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public ActionResult<IEnumerable<CategoryDto>> GetCategories()
         {
-            return await _categoryRepository.GetCategories();
+            var categoriesFromRepo = _categoryRepository.GetAllCategories();
+            return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categoriesFromRepo));
         }
 
         // GET: api/Categories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        [HttpGet("{categoryId}", Name = "GetCategories")]
+        public ActionResult<CategoryDto> GetCategory(int categoryId)
         {
-            var category = await _categoryRepository.GetCategory(id);
+            var categoryFromRepo = _categoryRepository.GetCategoryById(categoryId);
 
-            if (category == null)
+            if (categoryFromRepo == null)
             {
                 return NotFound();
             }
 
-            return category;
+            return Ok(_mapper.Map<CategoryDto>(categoryFromRepo));
         }
 
-        // PUT: api/Categories/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
+        [HttpPut("{categoryId}")]
+        public ActionResult<CategoryDto> EditCategory(int categoryId, CategoryForUpdateDto category)
         {
-            if (id != category.Id)
+            var categoryFromRepo = _categoryRepository.GetCategoryById(categoryId);
+            if (categoryFromRepo == null)
             {
                 return BadRequest();
             }
-
-            _context.Entry(category).State = EntityState.Modified;
-
-            try
-            {
-                await _categoryRepository.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _mapper.Map(category, categoryFromRepo);
+            _categoryRepository.Save();
 
             return NoContent();
         }
 
-        // POST: api/Categories
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public ActionResult<CategoryDto> CreateCategory(CategoryForCreationDto category)
         {
-            _context.Categories.Add(category);
-            await _categoryRepository.SaveChangesAsync();
+            var categoryToAdd = _mapper.Map<Category>(category);
+            _categoryRepository.AddCategory(categoryToAdd);
+            _categoryRepository.Save();
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+
+            var baseURI = Request.GetDisplayUrl();
+            // Alternative way
+            // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
+            return Created(baseURI + categoryToAdd.Id, _mapper.Map<CategoryDto>(categoryToAdd));
         }
 
         // DELETE: api/Categories/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Category>> DeleteCategory(int id)
+        [HttpDelete("{categoryId}")]
+        public ActionResult DeleteCategory(int categoryId)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
+            var categoryToDelete = _categoryRepository.GetCategoryById(categoryId);
+            if (categoryToDelete == null)
             {
-                return NotFound();
+                BadRequest();
             }
+            _categoryRepository.DeleteCategory(categoryToDelete);
+            _categoryRepository.Save();
 
-            _context.Categories.Remove(category);
-            await _categoryRepository.SaveChangesAsync();
-
-            return category;
+            return NoContent();
         }
 
-        private bool CategoryExists(int id)
-        {
-            return _categoryRepository.CategoryExists(id);
-        }
+
     }
 }

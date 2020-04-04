@@ -1,61 +1,72 @@
 ﻿using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private readonly AppDbContext _appDbContext;
-        public CategoryRepository(AppDbContext appDbContext)
+        private readonly AppDbContext _context;
+        public CategoryRepository(AppDbContext context)
         {
-            _appDbContext = appDbContext;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public bool CategoryExists(int id)
+        public void AddCategory(Category category)
         {
-            return _appDbContext.Categories.Any(e => e.Id == id);
-        }
-
-        public async Task<int> DeleteCategory(int id)
-        {
-            if (CategoryExists(id))
+            if (category == null)
             {
-                _appDbContext.Categories.Remove(await _appDbContext.Categories.FirstOrDefaultAsync(p => p.Id == id));
-                return await SaveChangesAsync();
+                throw new ArgumentNullException(nameof(category));
             }
-
-            return 0;
+            _context.Categories.Add(category);
+        }
+        public IEnumerable<Category> GetAllCategories()
+        {
+            return _context.Categories.OrderBy(c => c.Name).ToList();
         }
 
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
+        public bool CategoryExists(int categoryId)
         {
-            return await _appDbContext.Categories.ToListAsync();
+            if (String.IsNullOrEmpty(categoryId.ToString()))
+            {
+                throw new ArgumentNullException(nameof(categoryId));
+            }
+            return _context.Categories.Any(c => c.Id == categoryId);
         }
 
-        public async Task<ActionResult<Category>> GetCategory(int id)
+        public void DeleteCategory(Category category)
         {
-            return await _appDbContext.Categories.FindAsync(id);
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+            _context.Categories.Remove(category);
         }
 
-        public Task<ActionResult<Category>> PostCategory(Category category)
+        public Category GetCategoryById(int categoryId)
         {
-            throw new NotImplementedException();
+            if (String.IsNullOrWhiteSpace(categoryId.ToString()))
+            {
+                throw new ArgumentNullException(nameof(categoryId));
+            }
+            return _context.Categories
+                .FirstOrDefault(c => c.Id == categoryId);
         }
 
-        public Task<IActionResult> PutCategory(int id, Category category)
+        public bool Save()
         {
-            throw new NotImplementedException();
+            return _context.SaveChanges() >= 0;
         }
 
-        public async Task<int> SaveChangesAsync()
+        public void UpdateCategory(Category category)
         {
-            return await _appDbContext.SaveChangesAsync();
+            if (category == null)
+            {
+                throw new ArgumentNullException(nameof(category));
+            }
+            _context.Categories.Update(category);
         }
     }
 }

@@ -9,7 +9,8 @@ namespace DotNetCoreReactREST.Profiles
         public CategoryProfile()
         {
             CreateMap<Category, CategoryDto>();
-            CreateMap<CategoryDto, Category>();
+            CreateMap<CategoryForCreationDto, Category>();
+            CreateMap<CategoryForUpdateDto, Category>();
         }
     }
 }
