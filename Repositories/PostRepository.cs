@@ -42,7 +42,8 @@ namespace DotNetCoreReactREST.Repositories
             if (string.IsNullOrWhiteSpace(postResourceParameters.Category)
                 && string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery)
                 && string.IsNullOrWhiteSpace(postResourceParameters.UserQuery)
-                )
+                && (postResourceParameters.PageNumber < 1)
+            )
             {
                 return await GetPostsAsync();
             }
@@ -77,6 +78,13 @@ namespace DotNetCoreReactREST.Repositories
             //    int postId = postResourceParameters.PostId;
             //    collection = collection.Where(post => post.Id == postId);
             //}
+            
+            // Pagination
+            if (postResourceParameters.PageNumber >= 1)
+            {
+                collection = collection.Skip(postResourceParameters.SkipOffset + (postResourceParameters.PageNumber - 1) * postResourceParameters.PageSize)
+                    .Take(postResourceParameters.PageSize);
+            }
 
             return await collection.OrderByDescending(p => p.Id).ToListAsync();
         }

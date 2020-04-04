@@ -7,15 +7,17 @@
         public string SearchQuery { get; set; }
         public string UserQuery { get; set; }
 
-        private int _pageSize = 10;
-        const int maxPageSize = 20;
+        // Pagination
+        private int _PageSize = 10;
+        const int MaxPageSize = 20;
         public int PageNumber { get; set; } = 1;
+        public int SkipOffset { get; set; } = 0;
         public int PageSize
         {
-            get => _pageSize;
+            get => _PageSize;
             //if requested page size is greater than our set max, return max; 
             //otherwise return requested value
-            set => _pageSize = (value > maxPageSize) ? maxPageSize : value;
+            set => _PageSize = (value > MaxPageSize) ? MaxPageSize : value;
         }
     }
 }
