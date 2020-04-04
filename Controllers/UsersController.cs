@@ -207,8 +207,7 @@ namespace DotNetCoreReactREST.Controllers
             try
             {
                 ApplicationUser convertedUser = _mapper.Map<ApplicationUser>(user);
-                // convertedUser.PasswordHash = _userManager.PasswordHasher.HashPassword(convertedUser, convertedUser.PasswordHash);
-                Log.Information("Password hash ================= " + convertedUser.PasswordHash);
+                Log.Information("Password hash sent to backend ================= " + convertedUser.PasswordHash);
                 var result = await _signInManager.PasswordSignInAsync(convertedUser.UserName, convertedUser.PasswordHash, rememberMe, false);
                 if (result.Succeeded)
                 {

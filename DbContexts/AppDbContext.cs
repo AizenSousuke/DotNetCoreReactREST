@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using DotNetCoreReactREST.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -45,6 +46,9 @@ namespace DotNetCoreReactREST.DbContexts
 
             var userId = 1;
 
+            var user = new ApplicationUser();
+            var hasher = new PasswordHasher<ApplicationUser>();
+
             // Users
             var fakeUsers = new Faker<ApplicationUser>()
                 // Ensure all properties have rules. By default, StrictMode is false
@@ -52,9 +56,9 @@ namespace DotNetCoreReactREST.DbContexts
                 // .StrictMode(true)
                 // postId is deterministic
                 .RuleFor(o => o.Id, f => userId++.ToString())
-                .RuleFor(o => o.UserName, f => f.Name.FirstName())
-                .RuleFor(o => o.Email, f => f.Internet.Email(f.Name.FirstName()))
-                .RuleFor(o => o.PasswordHash, f => "AQAAAAEAACcQAAAAEDFFfX9bi0MHwPv4j020hmd6jXY6mEymMjUxEaivHfLewtEWNXPocAwW6kcBWBRgTg==");
+                .RuleFor(o => o.UserName, f => f.Person.FirstName)
+                .RuleFor(o => o.Email, f => f.Internet.Email(f.Person.FirstName))
+                .RuleFor(o => o.PasswordHash, f => hasher.HashPassword(user, "P@ssw0rd1"));
 
             var categoryId = 1;
 
