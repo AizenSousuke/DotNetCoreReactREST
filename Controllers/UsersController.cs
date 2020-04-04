@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Serilog;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -160,10 +161,11 @@ namespace DotNetCoreReactREST.Controllers
                 ApplicationUser user = new ApplicationUser { UserName = registerModel.UserName, Email = registerModel.Email };
 
                 var existingUser = await _userManager.FindByNameAsync(user.UserName);
+                var existingEmail = await _userManager.FindByEmailAsync(user.Email);
 
-                if (existingUser != null)
+                if (existingUser != null && existingEmail != null)
                 {
-                    return Ok("User " + user.UserName + " already exists!");
+                    return Ok("User " + user.UserName + " or " + user.Email + " already exists!");
                 }
 
                 var result = await _userManager.CreateAsync(user, registerModel.PasswordHash);
@@ -200,19 +202,23 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync([FromBody] UserForCreationDto user, [FromQuery] bool rememberMe)
+        public async Task<IActionResult> LoginAsync([FromBody] UserForLoginDto user, [FromQuery] bool rememberMe)
         {
             try
             {
                 ApplicationUser convertedUser = _mapper.Map<ApplicationUser>(user);
-                await _signInManager.SignInAsync(convertedUser, new AuthenticationProperties()
+                // convertedUser.PasswordHash = _userManager.PasswordHasher.HashPassword(convertedUser, convertedUser.PasswordHash);
+                Log.Information("Password hash ================= " + convertedUser.PasswordHash);
+                var result = await _signInManager.PasswordSignInAsync(convertedUser.UserName, convertedUser.PasswordHash, rememberMe, false);
+                if (result.Succeeded)
                 {
-                    IsPersistent = true
-                });
-                return Ok("Logged in successfully!");
+                    return Ok("Logged in successfully!");
+                }
+                return BadRequest("Error while trying to log in. Please try again with the correct credentials. Error status: " + result.ToString());
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
+                Log.Error(ex, "Error logging in.");
                 throw;
             }
         }

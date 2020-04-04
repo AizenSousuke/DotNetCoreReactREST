@@ -103,6 +103,8 @@
     <Compile Remove="Migrations\20200323145551_BogusData.Designer.cs" />
     <Compile Remove="Migrations\20200323145847_BogusData.cs" />
     <Compile Remove="Migrations\20200323145847_BogusData.Designer.cs" />
+    <Compile Remove="Migrations\20200328103400_BogusData.cs" />
+    <Compile Remove="Migrations\20200328103400_BogusData.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

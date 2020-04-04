@@ -11,12 +11,12 @@ namespace DotNetCoreReactREST.Entities
         public Category Category { get; set; }
         public int CategoryId { get; set; }
         [Required]
-        [MaxLength(250)]
+        [MaxLength(500)]
         public string Title { get; set; }
         public string ImageUrl { get; set; }
-        [MaxLength(250)]
-        public string Description { get; set; }
         [MaxLength(1000)]
+        public string Description { get; set; }
+        [MaxLength(50000)]
         public string Content { get; set; }
         public DateTime DateTime { get; set; }
         public ApplicationUser ApplicationUser { get; set; }

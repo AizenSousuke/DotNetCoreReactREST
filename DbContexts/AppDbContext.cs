@@ -54,7 +54,7 @@ namespace DotNetCoreReactREST.DbContexts
                 .RuleFor(o => o.Id, f => userId++.ToString())
                 .RuleFor(o => o.UserName, f => f.Name.FirstName())
                 .RuleFor(o => o.Email, f => f.Internet.Email(f.Name.FirstName()))
-                .RuleFor(o => o.PasswordHash, f => "password");
+                .RuleFor(o => o.PasswordHash, f => "AQAAAAEAACcQAAAAEDFFfX9bi0MHwPv4j020hmd6jXY6mEymMjUxEaivHfLewtEWNXPocAwW6kcBWBRgTg==");
 
             var categoryId = 1;
 
