@@ -37,10 +37,11 @@ namespace DotNetCoreReactREST
         //GET Api/posts[category = string &| searchQuery = string]
         [HttpGet]
         [HttpHead]
-        public async Task<IActionResult> GetPostsAsync([FromQuery]PostResourceParameter postResourceParameter)
+        public async Task<IActionResult> GetPostsAsync([FromQuery]PostResourceParameter postResourceParameter = null)
         {
             if (postResourceParameter == null)
             {
+                // Code never went here
                 IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
                 if (posts == null)
                 {
@@ -48,12 +49,19 @@ namespace DotNetCoreReactREST
                 }
                 return Ok(_mapper.Map<IEnumerable<PostDto>>(posts));
             }
-            IEnumerable<Post> postFromRepository = await _postRepository.GetPostsAsync(postResourceParameter);
-            if (postFromRepository == null)
+            var query = await _postRepository.GetPostsAsync(postResourceParameter);
+            if (query == null) 
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<IEnumerable<PostDto>>(postFromRepository));
+            return Ok(query);
+
+            //IEnumerable<Post> postFromRepository = query.posts;
+            //if (postFromRepository == null)
+            //{
+            //    return NotFound();
+            //}
+            //return Ok(_mapper.Map<IEnumerable<PostDto>>(postFromRepository));
         }
         //GET Api/Posts/{postId}
         [HttpGet]

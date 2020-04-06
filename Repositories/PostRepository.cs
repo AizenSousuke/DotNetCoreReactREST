@@ -3,6 +3,7 @@ using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace DotNetCoreReactREST.Repositories
             return Posts;
         }
 
-        public async Task<List<Post>> GetPostsAsync(PostResourceParameter postResourceParameters)
+        public async Task<PostPagination> GetPostsAsync(PostResourceParameter postResourceParameters)
         {
             if (postResourceParameters == null)
             {
@@ -42,10 +43,16 @@ namespace DotNetCoreReactREST.Repositories
             if (string.IsNullOrWhiteSpace(postResourceParameters.Category)
                 && string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery)
                 && string.IsNullOrWhiteSpace(postResourceParameters.UserQuery)
-                && (postResourceParameters.PageNumber < 1)
+                && postResourceParameters.PageNumber <= 1
+                && postResourceParameters.PageSize < 1
             )
             {
-                return await GetPostsAsync();
+                Log.Information("Getting all posts! ================================");
+                return await this.GetPostsPaginationAsync(new PostPagination()
+                {
+                    // Assuming that nothing is set
+                });
+                // return await GetPostsAsync();
             }
 
             // Deferred Execution
@@ -78,15 +85,75 @@ namespace DotNetCoreReactREST.Repositories
             //    int postId = postResourceParameters.PostId;
             //    collection = collection.Where(post => post.Id == postId);
             //}
-            
+
             // Pagination
-            if (postResourceParameters.PageNumber >= 1)
+            //if (postResourceParameters.PageNumber >= 1)
+            //{
+            //    collection = collection.Skip(postResourceParameters.SkipOffset + (postResourceParameters.PageNumber - 1) * postResourceParameters.PageSize)
+            //        .Take(postResourceParameters.PageSize);
+            //}
+            // var jsonPagination = 
+            return await this.GetPostsPaginationAsync(new PostPagination() 
+            { 
+                // Assuming that nothing is set
+                currentPage = postResourceParameters.PageNumber,
+                totalNumberOfPostsPerPage = postResourceParameters.PageSize
+            }, collection);
+
+            // return await collection.OrderByDescending(p => p.Id).ToListAsync();
+        }
+
+        public async Task<PostPagination> GetPostsPaginationAsync(PostPagination postPagination, IQueryable<Post> collection = null) {
+            // Get all posts if it doesn't exist 
+            if (collection == null)
             {
-                collection = collection.Skip(postResourceParameters.SkipOffset + (postResourceParameters.PageNumber - 1) * postResourceParameters.PageSize)
-                    .Take(postResourceParameters.PageSize);
+                // Deferred execution
+                collection = _appDbContext.Posts as IQueryable<Post>;
             }
 
-            return await collection.OrderByDescending(p => p.Id).ToListAsync();
+            // Get pagination data and fill up the object as required
+            postPagination.totalNumberOfPosts = collection.Count();
+            Log.Information("postPagination.totalNumberOfPosts: " + postPagination.totalNumberOfPosts.ToString());
+            // Get total number of pages
+            double pageNeeded = (double)postPagination.totalNumberOfPosts / (double)postPagination.totalNumberOfPostsPerPage;
+            Log.Information("pageNeeded before ceil: " + pageNeeded.ToString());
+            // Round up to nearest int
+            pageNeeded = Convert.ToInt32(Math.Ceiling((decimal)pageNeeded));
+            Log.Information("pageNeeded before min: " + pageNeeded.ToString());
+            // Min of 1 page
+            if (pageNeeded < 1)
+            {
+                pageNeeded = 1;
+            }
+            Log.Information("pageNeeded: " + pageNeeded.ToString());
+            // For every page, add the number and url
+            for (int i = 1; i <= pageNeeded; i++)
+            {
+                postPagination.pages.Add(i);
+                postPagination.pagesURL.Add("/api/posts?PageNumber=" + i.ToString());
+            }
+
+            Log.Information("Post Pagination Object before calculations: \n {@0} \n", postPagination);
+            
+            // Do calculations
+            postPagination.firstPage = 1;
+            postPagination.firstPageURL = postPagination.pagesURL[0];
+            postPagination.lastPage = postPagination.pages.Last();
+            postPagination.lastPageURL = postPagination.pagesURL.Last();
+            postPagination.currentPage = postPagination.currentPage < postPagination.lastPage ? postPagination.currentPage : postPagination.lastPage;
+            postPagination.currentPageURL = postPagination.pagesURL[postPagination.currentPage - 1];
+            postPagination.prevPage = postPagination.currentPage > postPagination.firstPage ? postPagination.currentPage - 1 : postPagination.firstPage;
+            postPagination.prevPageURL = postPagination.pagesURL[postPagination.prevPage - 1];
+            postPagination.nextPage = postPagination.currentPage < postPagination.lastPage ? postPagination.currentPage + 1 : postPagination.lastPage;
+            postPagination.nextPageURL = postPagination.pagesURL[postPagination.nextPage - 1];
+
+            // Get the posts on this page only
+            postPagination.posts = await collection
+                .Skip((postPagination.currentPage - 1) * postPagination.totalNumberOfPostsPerPage)
+                .Take(postPagination.totalNumberOfPostsPerPage).ToListAsync();
+            Log.Information("Post Pagination Object: \n {@0}", postPagination);
+
+            return postPagination;
         }
 
         public async Task<Post> GetPostByIdAsync(int postId)
