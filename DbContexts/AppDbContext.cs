@@ -58,7 +58,8 @@ namespace DotNetCoreReactREST.DbContexts
                 .RuleFor(o => o.Id, f => userId++.ToString())
                 .RuleFor(o => o.UserName, f => f.Person.FirstName)
                 .RuleFor(o => o.Email, f => f.Internet.Email(f.Person.FirstName))
-                .RuleFor(o => o.PasswordHash, f => hasher.HashPassword(user, "P@ssw0rd1"));
+                .RuleFor(o => o.PasswordHash, f => hasher.HashPassword(user, "P@ssw0rd1"))
+                .RuleFor(o => o.SecurityStamp, f => Guid.NewGuid().ToString());
 
             var categoryId = 1;
 
@@ -103,9 +104,23 @@ namespace DotNetCoreReactREST.DbContexts
                 .RuleFor(o => o.IsAnonymous, f => f.Random.Bool(0.5f));
 
             // Generate the data
-            modelBuilder.Entity<ApplicationUser>().HasData(
-                fakeUsers.Generate(50)
-            );
+            //modelBuilder.Entity<ApplicationUser>().HasData(
+            //    fakeUsers.Generate(50)
+            //);
+
+            for (int i = 0; i < 50; i++)
+            {
+                var newUser = fakeUsers.Generate();
+                modelBuilder.Entity<ApplicationUser>().HasData(
+                    new ApplicationUser()
+                    {
+                        Id = newUser.Id,
+                        UserName = newUser.UserName,
+                        Email = newUser.Email,
+                        PasswordHash = newUser.PasswordHash,
+                    }
+                );
+            }
 
             modelBuilder.Entity<Category>().HasData(
                 fakeCategory.Generate(50)
@@ -120,6 +135,5 @@ namespace DotNetCoreReactREST.DbContexts
             );
             // ==============================
         }
-
     }
 }
