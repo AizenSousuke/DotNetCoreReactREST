@@ -53,7 +53,7 @@ namespace DotNetCoreReactREST.Repositories
                     // Assuming that nothing is set
                     PageNumber = 1,
                     PageSize = 999,
-                    totalNumberOfPostsPerPage = 999
+                    TotalNumberOfPostsPerPage = 999
                 });
             }
 
@@ -92,9 +92,9 @@ namespace DotNetCoreReactREST.Repositories
             return await this.GetPostsPaginationAsync(new PaginationResourceParameter<Post>()
             {
                 // Assuming that nothing is set
-                currentPage = paginationResourceParameter.PageNumber,
+                CurrentPage = paginationResourceParameter.PageNumber,
                 PageSize = paginationResourceParameter.PageSize,
-                totalNumberOfPostsPerPage = paginationResourceParameter.PageSize
+                TotalNumberOfPostsPerPage = paginationResourceParameter.PageSize
             }, collection);
         }
 
@@ -108,10 +108,10 @@ namespace DotNetCoreReactREST.Repositories
             }
 
             // Get pagination data and fill up the object as required
-            paginationResourceParameter.totalNumberOfPosts = collection.Count();
-            Log.Information("paginationResourceParameter.totalNumberOfPosts: " + paginationResourceParameter.totalNumberOfPosts.ToString());
+            paginationResourceParameter.TotalNumberOfPosts = collection.Count();
+            Log.Information("paginationResourceParameter.totalNumberOfPosts: " + paginationResourceParameter.TotalNumberOfPosts.ToString());
             // Get total number of pages
-            double pageNeeded = (double)paginationResourceParameter.totalNumberOfPosts / (double)paginationResourceParameter.totalNumberOfPostsPerPage;
+            double pageNeeded = (double)paginationResourceParameter.TotalNumberOfPosts / (double)paginationResourceParameter.TotalNumberOfPostsPerPage;
             Log.Information("pageNeeded before ceil: " + pageNeeded.ToString());
             // Round up to nearest int
             pageNeeded = Convert.ToInt32(Math.Ceiling((decimal)pageNeeded));
@@ -122,36 +122,36 @@ namespace DotNetCoreReactREST.Repositories
                 pageNeeded = 1;
             }
             // Min current page number
-            if (paginationResourceParameter.currentPage < 1)
+            if (paginationResourceParameter.CurrentPage < 1)
             {
-                paginationResourceParameter.currentPage = 1;
+                paginationResourceParameter.CurrentPage = 1;
             }
             Log.Information("pageNeeded: " + pageNeeded.ToString());
             // For every page, add the number and url
             for (int i = 1; i <= pageNeeded; i++)
             {
-                paginationResourceParameter.pages.Add(i);
-                paginationResourceParameter.pagesURL.Add("/api/posts?PageNumber=" + i.ToString());
+                paginationResourceParameter.Pages.Add(i);
+                paginationResourceParameter.PagesURL.Add("/api/posts?PageNumber=" + i.ToString());
             }
 
             Log.Information("Post Pagination Object before calculations: \n {@0} \n", paginationResourceParameter);
 
             // Do calculations
-            paginationResourceParameter.firstPage = 1;
-            paginationResourceParameter.firstPageURL = paginationResourceParameter.pagesURL[0];
-            paginationResourceParameter.lastPage = paginationResourceParameter.pages.Last();
-            paginationResourceParameter.lastPageURL = paginationResourceParameter.pagesURL.Last();
-            paginationResourceParameter.currentPage = paginationResourceParameter.currentPage < paginationResourceParameter.lastPage ? paginationResourceParameter.currentPage : paginationResourceParameter.lastPage;
-            paginationResourceParameter.currentPageURL = paginationResourceParameter.pagesURL[paginationResourceParameter.currentPage - 1];
-            paginationResourceParameter.prevPage = paginationResourceParameter.currentPage > paginationResourceParameter.firstPage ? paginationResourceParameter.currentPage - 1 : paginationResourceParameter.firstPage;
-            paginationResourceParameter.prevPageURL = paginationResourceParameter.pagesURL[paginationResourceParameter.prevPage - 1];
-            paginationResourceParameter.nextPage = paginationResourceParameter.currentPage < paginationResourceParameter.lastPage ? paginationResourceParameter.currentPage + 1 : paginationResourceParameter.lastPage;
-            paginationResourceParameter.nextPageURL = paginationResourceParameter.pagesURL[paginationResourceParameter.nextPage - 1];
+            paginationResourceParameter.FirstPage = 1;
+            paginationResourceParameter.FirstPageURL = paginationResourceParameter.PagesURL[0];
+            paginationResourceParameter.LastPage = paginationResourceParameter.Pages.Last();
+            paginationResourceParameter.LastPageURL = paginationResourceParameter.PagesURL.Last();
+            paginationResourceParameter.CurrentPage = paginationResourceParameter.CurrentPage < paginationResourceParameter.LastPage ? paginationResourceParameter.CurrentPage : paginationResourceParameter.LastPage;
+            paginationResourceParameter.CurrentPageURL = paginationResourceParameter.PagesURL[paginationResourceParameter.CurrentPage - 1];
+            paginationResourceParameter.PrevPage = paginationResourceParameter.CurrentPage > paginationResourceParameter.FirstPage ? paginationResourceParameter.CurrentPage - 1 : paginationResourceParameter.FirstPage;
+            paginationResourceParameter.PrevPageURL = paginationResourceParameter.PagesURL[paginationResourceParameter.PrevPage - 1];
+            paginationResourceParameter.NextPage = paginationResourceParameter.CurrentPage < paginationResourceParameter.LastPage ? paginationResourceParameter.CurrentPage + 1 : paginationResourceParameter.LastPage;
+            paginationResourceParameter.NextPageURL = paginationResourceParameter.PagesURL[paginationResourceParameter.NextPage - 1];
 
             // Get the posts on this page only
-            paginationResourceParameter.objList = await collection
-                .Skip((paginationResourceParameter.currentPage - 1) * paginationResourceParameter.totalNumberOfPostsPerPage)
-                .Take(paginationResourceParameter.totalNumberOfPostsPerPage).ToListAsync();
+            paginationResourceParameter.ObjList = await collection
+                .Skip((paginationResourceParameter.CurrentPage - 1) * paginationResourceParameter.TotalNumberOfPostsPerPage)
+                .Take(paginationResourceParameter.TotalNumberOfPostsPerPage).ToListAsync();
             Log.Information("Post Pagination Object: \n {@0}", paginationResourceParameter);
 
             return paginationResourceParameter;
