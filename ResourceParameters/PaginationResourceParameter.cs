@@ -1,23 +1,42 @@
-﻿using System.Collections.Generic;
+﻿using DotNetCoreReactREST.DbContexts;
+using System;
+using System.Collections.Generic;
 
 namespace DotNetCoreReactREST.ResourceParameters
 {
     public class PaginationResourceParameter<T>
     {
+        public PaginationResourceParameter()
+        {
+
+        }
+        public PaginationResourceParameter(AppDbContext context = null)
+        {
+            // Set context
+            if (context == null)
+            {
+                throw new ArgumentNullException("Context is null");
+            }
+            _context = context;
+            
+        }
+        // AppDbContext
+        private readonly AppDbContext _context;
+
         // Search Type
-        public int PostId { get; set; }
+        public int Id { get; set; }
         public string Category { get; set; }
         public string SearchQuery { get; set; }
         public string UserQuery { get; set; }
         public int PageNumber { get; set; } = 1;
-        public int PageSize { get; set; } = 999;
+        public int PageSize { get => _defaultNumberOfObjectsPerPage; set => _defaultNumberOfObjectsPerPage = value > 0 ? value : 1; }
 
         // Parameters
         private int _defaultNumberOfObjectsPerPage = 10;
         // Change the max number here in the code
         private const int _maxNumberOfObjectsPerPage = 999;
-        public int TotalNumberOfPosts { get; set; }
-        public int TotalNumberOfPostsPerPage
+        public int TotalNumberOfObjects { get; set; }
+        public int TotalNumberOfObjectsPerPage
         {
             get => _defaultNumberOfObjectsPerPage;
             set => _defaultNumberOfObjectsPerPage = (value > _maxNumberOfObjectsPerPage) ? _maxNumberOfObjectsPerPage : value;
@@ -40,7 +59,6 @@ namespace DotNetCoreReactREST.ResourceParameters
         public string LastPageURL { get; set; }
 
         // Objects for this page
-        public List<T> ObjList { get; set; } = new List<T>();
-
+        public IEnumerable<T> ObjList { get; set; } = new List<T>();
     }
 }

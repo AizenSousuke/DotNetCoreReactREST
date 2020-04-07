@@ -43,8 +43,8 @@ namespace DotNetCoreReactREST.Repositories
             if (string.IsNullOrWhiteSpace(paginationResourceParameter.Category)
                 && string.IsNullOrWhiteSpace(paginationResourceParameter.SearchQuery)
                 && string.IsNullOrWhiteSpace(paginationResourceParameter.UserQuery)
-                && paginationResourceParameter.PageNumber <= 1
-                && paginationResourceParameter.PageSize < 1
+                && string.IsNullOrWhiteSpace(paginationResourceParameter.PageNumber.ToString())
+                && string.IsNullOrWhiteSpace(paginationResourceParameter.PageSize.ToString())
             )
             {
                 Log.Information("Getting all posts! ================================");
@@ -53,7 +53,7 @@ namespace DotNetCoreReactREST.Repositories
                     // Assuming that nothing is set
                     PageNumber = 1,
                     PageSize = 999,
-                    TotalNumberOfPostsPerPage = 999
+                    TotalNumberOfObjectsPerPage = 999
                 });
             }
 
@@ -82,9 +82,9 @@ namespace DotNetCoreReactREST.Repositories
             }
 
             // Temporarily disabled because it does not work
-            if (paginationResourceParameter.PostId > 0)
+            if (paginationResourceParameter.Id > 0)
             {
-                int postId = paginationResourceParameter.PostId;
+                int postId = paginationResourceParameter.Id;
                 collection = collection.Where(post => post.Id == postId);
             }
 
@@ -94,7 +94,7 @@ namespace DotNetCoreReactREST.Repositories
                 // Assuming that nothing is set
                 CurrentPage = paginationResourceParameter.PageNumber,
                 PageSize = paginationResourceParameter.PageSize,
-                TotalNumberOfPostsPerPage = paginationResourceParameter.PageSize
+                TotalNumberOfObjectsPerPage = paginationResourceParameter.PageSize
             }, collection);
         }
 
@@ -104,14 +104,15 @@ namespace DotNetCoreReactREST.Repositories
             if (collection == null)
             {
                 // Deferred execution
+                Log.Information("Getting all posts from the database and putting it into a collection");
                 collection = _appDbContext.Posts as IQueryable<Post>;
             }
 
             // Get pagination data and fill up the object as required
-            paginationResourceParameter.TotalNumberOfPosts = collection.Count();
-            Log.Information("paginationResourceParameter.totalNumberOfPosts: " + paginationResourceParameter.TotalNumberOfPosts.ToString());
+            paginationResourceParameter.TotalNumberOfObjects = collection.Count();
+            Log.Information("paginationResourceParameter.totalNumberOfPosts: " + paginationResourceParameter.TotalNumberOfObjects.ToString());
             // Get total number of pages
-            double pageNeeded = (double)paginationResourceParameter.TotalNumberOfPosts / (double)paginationResourceParameter.TotalNumberOfPostsPerPage;
+            double pageNeeded = (double)paginationResourceParameter.TotalNumberOfObjects / (double)paginationResourceParameter.TotalNumberOfObjectsPerPage;
             Log.Information("pageNeeded before ceil: " + pageNeeded.ToString());
             // Round up to nearest int
             pageNeeded = Convert.ToInt32(Math.Ceiling((decimal)pageNeeded));
@@ -134,7 +135,7 @@ namespace DotNetCoreReactREST.Repositories
                 paginationResourceParameter.PagesURL.Add("/api/posts?PageNumber=" + i.ToString());
             }
 
-            Log.Information("Post Pagination Object before calculations: \n {@0} \n", paginationResourceParameter);
+            Log.Information("\n\nPost Pagination Object before calculations: \n {@0} \n\n", paginationResourceParameter);
 
             // Do calculations
             paginationResourceParameter.FirstPage = 1;
@@ -150,8 +151,8 @@ namespace DotNetCoreReactREST.Repositories
 
             // Get the posts on this page only
             paginationResourceParameter.ObjList = await collection
-                .Skip((paginationResourceParameter.CurrentPage - 1) * paginationResourceParameter.TotalNumberOfPostsPerPage)
-                .Take(paginationResourceParameter.TotalNumberOfPostsPerPage).ToListAsync();
+                .Skip((paginationResourceParameter.CurrentPage - 1) * paginationResourceParameter.TotalNumberOfObjectsPerPage)
+                .Take(paginationResourceParameter.TotalNumberOfObjectsPerPage).ToListAsync();
             Log.Information("Post Pagination Object: \n {@0}", paginationResourceParameter);
 
             return paginationResourceParameter;
