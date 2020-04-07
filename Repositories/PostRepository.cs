@@ -37,10 +37,11 @@ namespace DotNetCoreReactREST.Repositories
         public async Task<PaginationResourceParameter<Post>> GetPostsAsync(PaginationResourceParameter<Post> paginationResourceParameter)
         {
             // New pagination function test
-            var result = new PaginationResourceParameter<Post>(paginationResourceParameter, _appDbContext)
+            PaginationResourceParameter<Post> result = new PaginationResourceParameter<Post>(paginationResourceParameter, _appDbContext)
             {
                 // Add statements to modify the return json
             };
+            result.Init(paginationResourceParameter);
             result.ObjList = await result.UpdateObjList(result.collection.Cast<Post>());
             return result;
 
