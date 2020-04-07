@@ -1,21 +1,30 @@
-﻿using System;
+﻿using DotNetCoreReactREST.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace DotNetCoreReactREST.Entities
+namespace DotNetCoreReactREST.ResourceParameters
 {
-    public class PostPagination
+    public class PaginationResourceParameter<T>
     {
-        private int _defaultNumberOfPostsPerPage = 10;
-        private const int _maxNumberOfPostsPerPage = 999;
-        public int totalNumberOfPosts { get; set; }
-        public int totalNumberOfPostsPerPage { 
-            get => _defaultNumberOfPostsPerPage; 
-            set => _defaultNumberOfPostsPerPage = (value > _maxNumberOfPostsPerPage) ? _maxNumberOfPostsPerPage : value; 
-        }
-        // Pages
+        // Search Type
+        public int PostId { get; set; }
+        public string Category { get; set; }
+        public string SearchQuery { get; set; }
+        public string UserQuery { get; set; }
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 999;
 
+        // Parameters
+        private int _defaultNumberOfObjectsPerPage = 10;
+        // Change the max number here in the code
+        private const int _maxNumberOfObjectsPerPage = 999;
+        public int totalNumberOfPosts { get; set; }
+        public int totalNumberOfPostsPerPage
+        {
+            get => _defaultNumberOfObjectsPerPage;
+            set => _defaultNumberOfObjectsPerPage = (value > _maxNumberOfObjectsPerPage) ? _maxNumberOfObjectsPerPage : value;
+        }
+
+        // Pages
         public List<int> pages { get; set; } = new List<int>();
         public List<string> pagesURL { get; set; } = new List<string>();
 
@@ -31,7 +40,8 @@ namespace DotNetCoreReactREST.Entities
         public string nextPageURL { get; set; }
         public string lastPageURL { get; set; }
 
-        // Posts for this page
-        public List<Post> posts { get; set; } = new List<Post>();
+        // Objects for this page
+        public List<T> objList { get; set; } = new List<T>();
+
     }
 }

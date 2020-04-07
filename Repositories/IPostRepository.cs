@@ -10,9 +10,9 @@ namespace DotNetCoreReactREST.Repositories
     public interface IPostRepository
     {
         Task<List<Post>> GetPostsAsync();
-        Task<PostPagination> GetPostsAsync(PostResourceParameter postResourceParameter);
+        Task<PaginationResourceParameter<Post>> GetPostsAsync(PaginationResourceParameter<Post> paginationResourceParameter);
         // Task<List<Post>> GetPostsAsync(PostResourceParameter postResourceParameter);
-        Task<PostPagination> GetPostsPaginationAsync(PostPagination postPagination, IQueryable<Post> collection = null);
+        Task<PaginationResourceParameter<Post>> GetPostsPaginationAsync(PaginationResourceParameter<Post> paginationResourceParameter, IQueryable<Post> collection = null);
         Task<Post> GetPostByIdAsync(int postId);
         Task<Post> CreatePostAsync(Post post);
         Task<Post> UpdatePostAsync(int postId, JsonPatchDocument post);
