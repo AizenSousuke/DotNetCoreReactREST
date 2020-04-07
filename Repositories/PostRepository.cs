@@ -36,66 +36,77 @@ namespace DotNetCoreReactREST.Repositories
 
         public async Task<PaginationResourceParameter<Post>> GetPostsAsync(PaginationResourceParameter<Post> paginationResourceParameter)
         {
-            if (paginationResourceParameter == null)
+            // New pagination function test
+            var result = new PaginationResourceParameter<Post>(paginationResourceParameter, _appDbContext)
             {
-                throw new ArgumentNullException(nameof(paginationResourceParameter));
-            }
-            if (string.IsNullOrWhiteSpace(paginationResourceParameter.Category)
-                && string.IsNullOrWhiteSpace(paginationResourceParameter.SearchQuery)
-                && string.IsNullOrWhiteSpace(paginationResourceParameter.UserQuery)
-                && string.IsNullOrWhiteSpace(paginationResourceParameter.PageNumber.ToString())
-                && string.IsNullOrWhiteSpace(paginationResourceParameter.PageSize.ToString())
-            )
-            {
-                Log.Information("Getting all posts! ================================");
-                return await this.GetPostsPaginationAsync(new PaginationResourceParameter<Post>()
-                {
-                    // Assuming that nothing is set
-                    PageNumber = 1,
-                    PageSize = 999,
-                    TotalNumberOfObjectsPerPage = 999
-                });
-            }
+                // Add statements to modify the return json
+            };
+            result.ObjList = await result.UpdateObjList(result.collection.Cast<Post>());
+            return result;
 
-            // Deferred Execution
-            var collection = _appDbContext.Posts as IQueryable<Post>;
+            // ===========
 
-            if (!string.IsNullOrWhiteSpace(paginationResourceParameter.Category))
-            {
-                var category = paginationResourceParameter.Category.Trim();
-                collection = collection.Where(post => post.Category.Name.Contains(category));
-            }
 
-            if (!string.IsNullOrWhiteSpace(paginationResourceParameter.SearchQuery))
-            {
-                var searchQuery = paginationResourceParameter.SearchQuery.Trim();
-                collection = collection.Where(post =>
-                    post.Title.Contains(searchQuery) ||
-                    post.Description.Contains(searchQuery) ||
-                    post.Content.Contains(searchQuery));
-            }
+            //if (paginationResourceParameter == null)
+            //{
+            //    throw new ArgumentNullException(nameof(paginationResourceParameter));
+            //}
+            //if (string.IsNullOrWhiteSpace(paginationResourceParameter.Category)
+            //    && string.IsNullOrWhiteSpace(paginationResourceParameter.SearchQuery)
+            //    && string.IsNullOrWhiteSpace(paginationResourceParameter.UserQuery)
+            //    && string.IsNullOrWhiteSpace(paginationResourceParameter.PageNumber.ToString())
+            //    && string.IsNullOrWhiteSpace(paginationResourceParameter.PageSize.ToString())
+            //)
+            //{
+            //    Log.Information("Getting all posts! ================================");
+            //    return await this.GetPostsPaginationAsync(new PaginationResourceParameter<Post>()
+            //    {
+            //        // Assuming that nothing is set
+            //        PageNumber = 1,
+            //        PageSize = 999,
+            //        TotalNumberOfObjectsPerPage = 999
+            //    });
+            //}
 
-            if (!string.IsNullOrWhiteSpace(paginationResourceParameter.UserQuery))
-            {
-                var userQuery = paginationResourceParameter.UserQuery.Trim();
-                collection = collection.Where(post => post.ApplicationUserId.Contains(userQuery));
-            }
+            //// Deferred Execution
+            //var collection = _appDbContext.Posts as IQueryable<Post>;
 
-            // Temporarily disabled because it does not work
-            if (paginationResourceParameter.Id > 0)
-            {
-                int postId = paginationResourceParameter.Id;
-                collection = collection.Where(post => post.Id == postId);
-            }
+            //if (!string.IsNullOrWhiteSpace(paginationResourceParameter.Category))
+            //{
+            //    var category = paginationResourceParameter.Category.Trim();
+            //    collection = collection.Where(post => post.Category.Name.Contains(category));
+            //}
 
-            // Pagination
-            return await this.GetPostsPaginationAsync(new PaginationResourceParameter<Post>()
-            {
-                // Assuming that nothing is set
-                CurrentPage = paginationResourceParameter.PageNumber,
-                PageSize = paginationResourceParameter.PageSize,
-                TotalNumberOfObjectsPerPage = paginationResourceParameter.PageSize
-            }, collection);
+            //if (!string.IsNullOrWhiteSpace(paginationResourceParameter.SearchQuery))
+            //{
+            //    var searchQuery = paginationResourceParameter.SearchQuery.Trim();
+            //    collection = collection.Where(post =>
+            //        post.Title.Contains(searchQuery) ||
+            //        post.Description.Contains(searchQuery) ||
+            //        post.Content.Contains(searchQuery));
+            //}
+
+            //if (!string.IsNullOrWhiteSpace(paginationResourceParameter.UserQuery))
+            //{
+            //    var userQuery = paginationResourceParameter.UserQuery.Trim();
+            //    collection = collection.Where(post => post.ApplicationUserId.Contains(userQuery));
+            //}
+
+            //// Temporarily disabled because it does not work
+            //if (paginationResourceParameter.Id > 0)
+            //{
+            //    int postId = paginationResourceParameter.Id;
+            //    collection = collection.Where(post => post.Id == postId);
+            //}
+
+            //// Pagination
+            //return await this.GetPostsPaginationAsync(new PaginationResourceParameter<Post>()
+            //{
+            //    // Assuming that nothing is set
+            //    CurrentPage = paginationResourceParameter.PageNumber,
+            //    PageSize = paginationResourceParameter.PageSize,
+            //    TotalNumberOfObjectsPerPage = paginationResourceParameter.PageSize
+            //}, collection);
         }
 
         public async Task<PaginationResourceParameter<Post>> GetPostsPaginationAsync(PaginationResourceParameter<Post> paginationResourceParameter, IQueryable<Post> collection = null)
