@@ -118,6 +118,7 @@ namespace DotNetCoreReactREST.ResourceParameters
             }
 
             // Assuming that nothing is set
+            PageNumber = paginationResourceParameter.PageNumber;
             CurrentPage = paginationResourceParameter.PageNumber;
             PageSize = paginationResourceParameter.PageSize;
             TotalNumberOfObjectsPerPage = paginationResourceParameter.PageSize;
@@ -147,7 +148,25 @@ namespace DotNetCoreReactREST.ResourceParameters
             for (int i = 1; i <= pageNeeded; i++)
             {
                 Pages.Add(i);
-                PagesURL.Add("/api/posts?PageNumber=" + i.ToString());
+                // Compose the URL
+                string fullURL = "/api" + "/posts" + "?" + "PageNumber=" + i.ToString();
+
+                if (!string.IsNullOrWhiteSpace(Category))
+                {
+                    fullURL = fullURL + "&" + "Category=" + Category;
+                }
+
+                if (!string.IsNullOrWhiteSpace(SearchQuery))
+                {
+                    fullURL = fullURL + "&" + "SearchQuery=" + SearchQuery;
+                }
+
+                if (!string.IsNullOrWhiteSpace(UserQuery))
+                {
+                    fullURL = fullURL + "&" + "UserQuery=" + UserQuery;
+                }
+
+                PagesURL.Add(fullURL);
             }
 
             Log.Information("\n\nPost Pagination Object before calculations: \n {@0} \n\n", this);
