@@ -6,6 +6,7 @@ using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -55,13 +56,6 @@ namespace DotNetCoreReactREST
                 return NotFound();
             }
             return Ok(query);
-
-            //IEnumerable<Post> postFromRepository = query.posts;
-            //if (postFromRepository == null)
-            //{
-            //    return NotFound();
-            //}
-            //return Ok(_mapper.Map<IEnumerable<PostDto>>(postFromRepository));
         }
         //GET Api/Posts/{postId}
         [HttpGet]
@@ -70,6 +64,7 @@ namespace DotNetCoreReactREST
         public async Task<IActionResult> GetPostByIdAsync(int postId)
         {
             Post postFromRepository = await _postRepository.GetPostByIdAsync(postId);
+            Log.Information("Post from Repository when getting post by id: {@0}", postFromRepository);
             if (postFromRepository == null)
             {
                 return NotFound();

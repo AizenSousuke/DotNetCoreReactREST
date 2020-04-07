@@ -55,7 +55,6 @@ namespace DotNetCoreReactREST.Repositories
                     PageSize = 999,
                     totalNumberOfPostsPerPage = 999
                 });
-                // return await GetPostsAsync();
             }
 
             // Deferred Execution
@@ -83,19 +82,13 @@ namespace DotNetCoreReactREST.Repositories
             }
 
             // Temporarily disabled because it does not work
-            //if (postResourceParameters.PostId != 0)
-            //{
-            //    int postId = postResourceParameters.PostId;
-            //    collection = collection.Where(post => post.Id == postId);
-            //}
+            if (paginationResourceParameter.PostId > 0)
+            {
+                int postId = paginationResourceParameter.PostId;
+                collection = collection.Where(post => post.Id == postId);
+            }
 
             // Pagination
-            //if (postResourceParameters.PageNumber >= 1)
-            //{
-            //    collection = collection.Skip(postResourceParameters.SkipOffset + (postResourceParameters.PageNumber - 1) * postResourceParameters.PageSize)
-            //        .Take(postResourceParameters.PageSize);
-            //}
-            // var jsonPagination = 
             return await this.GetPostsPaginationAsync(new PaginationResourceParameter<Post>()
             {
                 // Assuming that nothing is set
@@ -103,8 +96,6 @@ namespace DotNetCoreReactREST.Repositories
                 PageSize = paginationResourceParameter.PageSize,
                 totalNumberOfPostsPerPage = paginationResourceParameter.PageSize
             }, collection);
-
-            // return await collection.OrderByDescending(p => p.Id).ToListAsync();
         }
 
         public async Task<PaginationResourceParameter<Post>> GetPostsPaginationAsync(PaginationResourceParameter<Post> paginationResourceParameter, IQueryable<Post> collection = null)
