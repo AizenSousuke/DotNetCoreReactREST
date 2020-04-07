@@ -11,17 +11,17 @@ namespace DotNetCoreReactREST.ResourceParameters
 {
     public class PaginationResourceParameter<T>
     {
+        // AppDbContext
+        private readonly AppDbContext _context;
+
         public PaginationResourceParameter()
         {
 
         }
-        public PaginationResourceParameter(PaginationResourceParameter<T> paginationResourceParameter, AppDbContext context)
+        public PaginationResourceParameter(AppDbContext context)
         {
             _context = context;
         }
-
-        // AppDbContext
-        private readonly AppDbContext _context;
 
         // Search Type
         public int Id { get; set; }
@@ -59,10 +59,9 @@ namespace DotNetCoreReactREST.ResourceParameters
         public string LastPageURL { get; set; }
 
         // Objects for this page
-        public IQueryable collection { get; set; }
-        public IEnumerable<T> ObjList { get; set; } = new List<T>();
+        public IEnumerable<T> ObjList { get; set; }
 
-        public void Init(PaginationResourceParameter<T> paginationResourceParameter)
+        public async Task<PaginationResourceParameter<T>> InitAsync(PaginationResourceParameter<T> paginationResourceParameter)
         {
             if (paginationResourceParameter == null)
             {
@@ -84,7 +83,7 @@ namespace DotNetCoreReactREST.ResourceParameters
             }
 
             // Deferred Execution
-            collection = _context.Posts as IQueryable<Post>;
+            IQueryable collection = _context.Posts as IQueryable<Post>;
 
             if (!string.IsNullOrWhiteSpace(paginationResourceParameter.Category))
             {
@@ -165,9 +164,17 @@ namespace DotNetCoreReactREST.ResourceParameters
             NextPage = CurrentPage < LastPage ? CurrentPage + 1 : LastPage;
             NextPageURL = PagesURL[NextPage - 1];
 
+            var result = await collection
+                .Cast<Post>()
+                .Skip((CurrentPage - 1) * TotalNumberOfObjectsPerPage)
+                .Take(TotalNumberOfObjectsPerPage).ToListAsync();
+            ObjList = (IEnumerable<T>) result;
+
             Log.Information("\nPost Pagination Object after calculation: \n {@0} \n\n", this);
 
             Log.Information("Done creating pagination resource");
+
+            return this;
         }
         public async Task<IEnumerable<T>> UpdateObjList(IQueryable<T> collection)
         {

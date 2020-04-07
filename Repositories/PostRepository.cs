@@ -37,13 +37,11 @@ namespace DotNetCoreReactREST.Repositories
         public async Task<PaginationResourceParameter<Post>> GetPostsAsync(PaginationResourceParameter<Post> paginationResourceParameter)
         {
             // New pagination function test
-            PaginationResourceParameter<Post> result = new PaginationResourceParameter<Post>(paginationResourceParameter, _appDbContext)
+            PaginationResourceParameter<Post> result = new PaginationResourceParameter<Post>(_appDbContext)
             {
                 // Add statements to modify the return json
             };
-            result.Init(paginationResourceParameter);
-            result.ObjList = await result.UpdateObjList(result.collection.Cast<Post>());
-            return result;
+            return await result.InitAsync(paginationResourceParameter);
 
             // ===========
 
@@ -177,7 +175,7 @@ namespace DotNetCoreReactREST.Repositories
 
         public async Task<Post> UpdatePostAsync(int postId, JsonPatchDocument post)
         {
-            Post oldPost = await GetPostByIdAsync(postId);
+            // Post oldPost = await GetPostByIdAsync(postId);
 
             await Save();
             return await GetPostByIdAsync(postId);
