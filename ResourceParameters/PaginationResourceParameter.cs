@@ -23,6 +23,8 @@ namespace DotNetCoreReactREST.ResourceParameters
             _context = context;
         }
 
+        public string URLName { get; set; }
+
         // Search Type
         public int Id { get; set; }
         public string Category { get; set; }
@@ -68,6 +70,12 @@ namespace DotNetCoreReactREST.ResourceParameters
                 throw new ArgumentNullException(nameof(paginationResourceParameter));
             }
 
+            // Assuming that nothing is set
+            PageNumber = paginationResourceParameter.PageNumber;
+            CurrentPage = paginationResourceParameter.PageNumber;
+            PageSize = paginationResourceParameter.PageSize;
+            TotalNumberOfObjectsPerPage = paginationResourceParameter.PageSize;
+
             // Deferred Execution
             IQueryable collection;
 
@@ -75,6 +83,8 @@ namespace DotNetCoreReactREST.ResourceParameters
 
             if (typeof(T) == typeof(Post))
             {
+                URLName = "posts";
+
                 collection = _context.Posts as IQueryable<Post>;
 
                 if (!string.IsNullOrWhiteSpace(paginationResourceParameter.Category))
@@ -107,10 +117,18 @@ namespace DotNetCoreReactREST.ResourceParameters
                     collection = collection.Cast<Post>().Where(obj => obj.Id == objId);
                     Id = paginationResourceParameter.Id;
                 }
+
+                // Get pagination data and fill up the object as required
+                TotalNumberOfObjects = collection.Cast<Post>().Count();
             }
             else if (typeof(T) == typeof(Category))
             {
+                URLName = "categories";
+
                 collection = _context.Categories as IQueryable<Category>;
+
+                // Get pagination data and fill up the object as required
+                TotalNumberOfObjects = collection.Cast<Category>().Count();
             }
             else
             {
@@ -118,15 +136,8 @@ namespace DotNetCoreReactREST.ResourceParameters
                 throw new ArgumentNullException();
             }
 
-            // Assuming that nothing is set
-            PageNumber = paginationResourceParameter.PageNumber;
-            CurrentPage = paginationResourceParameter.PageNumber;
-            PageSize = paginationResourceParameter.PageSize;
-            TotalNumberOfObjectsPerPage = paginationResourceParameter.PageSize;
-
-            // Get pagination data and fill up the object as required
-            TotalNumberOfObjects = collection.Cast<Post>().Count();
             Log.Information("paginationResourceParameter.totalNumberOfObjects: " + TotalNumberOfObjects.ToString());
+
             // Get total number of pages
             double pageNeeded = (double)TotalNumberOfObjects / (double)TotalNumberOfObjectsPerPage;
             // Round up to nearest int
@@ -148,7 +159,7 @@ namespace DotNetCoreReactREST.ResourceParameters
             {
                 Pages.Add(i);
                 // Compose the URL
-                string fullURL = "/api" + "/posts" + "?" + "PageNumber=" + i.ToString();
+                string fullURL = "/api" + "/" + URLName + "?" + "PageNumber=" + i.ToString();
 
                 if (!string.IsNullOrWhiteSpace(Category))
                 {
@@ -182,11 +193,30 @@ namespace DotNetCoreReactREST.ResourceParameters
             NextPage = CurrentPage < LastPage ? CurrentPage + 1 : LastPage;
             NextPageURL = PagesURL[NextPage - 1];
 
-            var result = await collection
-                .Cast<Post>()
-                .Skip((CurrentPage - 1) * TotalNumberOfObjectsPerPage)
-                .Take(TotalNumberOfObjectsPerPage).ToListAsync();
-            ObjList = (IEnumerable<T>) result;
+            // Calculate Results
+            IEnumerable<T> result = null;
+            if (typeof(T) == typeof(Post))
+            {
+                result = (IEnumerable<T>) await collection
+                    .Cast<Post>()
+                    .Skip((CurrentPage - 1) * TotalNumberOfObjectsPerPage)
+                    .Take(TotalNumberOfObjectsPerPage).ToListAsync();
+            }
+            else if (typeof(T) == typeof(Category))
+            {
+                result = (IEnumerable<T>)await collection
+                    .Cast<Category>()
+                    .Skip((CurrentPage - 1) * TotalNumberOfObjectsPerPage)
+                    .Take(TotalNumberOfObjectsPerPage).ToListAsync();
+            }
+            else
+            {
+                result = null;
+                Log.Error("Case break in Pagination Resource Parameter class: {@0}", typeof(T).ToString());
+                throw new ArgumentNullException();
+            }
+
+            ObjList = result;
 
             Log.Information("\n\n Pagination Object after calculation: \n {@0} \n\n", this);
 
