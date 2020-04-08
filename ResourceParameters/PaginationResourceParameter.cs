@@ -69,38 +69,53 @@ namespace DotNetCoreReactREST.ResourceParameters
             }
 
             // Deferred Execution
-            IQueryable collection = _context.Posts as IQueryable<Post>;
+            IQueryable collection;
 
-            if (!string.IsNullOrWhiteSpace(paginationResourceParameter.Category))
+            Log.Information("Type of T: {@0}", typeof(T).ToString());
+
+            if (typeof(T) == typeof(Post))
             {
-                var category = paginationResourceParameter.Category.Trim();
-                collection = collection.Cast<Post>().Where(post => post.Category.Name.Contains(category));
-                Category = paginationResourceParameter.Category;
+                collection = _context.Posts as IQueryable<Post>;
+
+                if (!string.IsNullOrWhiteSpace(paginationResourceParameter.Category))
+                {
+                    var category = paginationResourceParameter.Category.Trim();
+                    collection = collection.Cast<Post>().Where(post => post.Category.Name.Contains(category));
+                    Category = paginationResourceParameter.Category;
+                }
+
+                if (!string.IsNullOrWhiteSpace(paginationResourceParameter.SearchQuery))
+                {
+                    var searchQuery = paginationResourceParameter.SearchQuery.Trim();
+                    collection = collection.Cast<Post>().Where(post =>
+                        post.Title.Contains(searchQuery) ||
+                        post.Description.Contains(searchQuery) ||
+                        post.Content.Contains(searchQuery));
+                    SearchQuery = paginationResourceParameter.SearchQuery;
+                }
+
+                if (!string.IsNullOrWhiteSpace(paginationResourceParameter.UserQuery))
+                {
+                    var userQuery = paginationResourceParameter.UserQuery.Trim();
+                    collection = collection.Cast<Post>().Where(post => post.ApplicationUserId.Contains(userQuery));
+                    UserQuery = paginationResourceParameter.UserQuery;
+                }
+
+                if (paginationResourceParameter.Id > 0)
+                {
+                    int objId = paginationResourceParameter.Id;
+                    collection = collection.Cast<Post>().Where(obj => obj.Id == objId);
+                    Id = paginationResourceParameter.Id;
+                }
             }
-
-            if (!string.IsNullOrWhiteSpace(paginationResourceParameter.SearchQuery))
+            else if (typeof(T) == typeof(Category))
             {
-                var searchQuery = paginationResourceParameter.SearchQuery.Trim();
-                collection = collection.Cast<Post>().Where(post =>
-                    post.Title.Contains(searchQuery) ||
-                    post.Description.Contains(searchQuery) ||
-                    post.Content.Contains(searchQuery));
-                SearchQuery = paginationResourceParameter.SearchQuery;
+                collection = _context.Categories as IQueryable<Category>;
             }
-
-            if (!string.IsNullOrWhiteSpace(paginationResourceParameter.UserQuery))
+            else
             {
-                var userQuery = paginationResourceParameter.UserQuery.Trim();
-                collection = collection.Cast<Post>().Where(post => post.ApplicationUserId.Contains(userQuery));
-                UserQuery = paginationResourceParameter.UserQuery;
-            }
-
-            // Temporarily disabled because it does not work
-            if (paginationResourceParameter.Id > 0)
-            {
-                int postId = paginationResourceParameter.Id;
-                collection = collection.Cast<Post>().Where(post => post.Id == postId);
-                Id = paginationResourceParameter.Id;
+                Log.Error("Case break in Pagination Resource Parameter class: {@0}", typeof(T).ToString());
+                throw new ArgumentNullException();
             }
 
             // Assuming that nothing is set
@@ -111,7 +126,7 @@ namespace DotNetCoreReactREST.ResourceParameters
 
             // Get pagination data and fill up the object as required
             TotalNumberOfObjects = collection.Cast<Post>().Count();
-            Log.Information("paginationResourceParameter.totalNumberOfPosts: " + TotalNumberOfObjects.ToString());
+            Log.Information("paginationResourceParameter.totalNumberOfObjects: " + TotalNumberOfObjects.ToString());
             // Get total number of pages
             double pageNeeded = (double)TotalNumberOfObjects / (double)TotalNumberOfObjectsPerPage;
             // Round up to nearest int
@@ -153,7 +168,7 @@ namespace DotNetCoreReactREST.ResourceParameters
                 PagesURL.Add(fullURL);
             }
 
-            Log.Information("\n\nPost Pagination Object before calculations: \n {@0} \n\n", this);
+            Log.Information("\n\nPagination Object before calculations: \n {@0} \n\n", this);
 
             // Do calculations
             FirstPage = 1;
@@ -173,9 +188,7 @@ namespace DotNetCoreReactREST.ResourceParameters
                 .Take(TotalNumberOfObjectsPerPage).ToListAsync();
             ObjList = (IEnumerable<T>) result;
 
-            Log.Information("\n\nPost Pagination Object after calculation: \n {@0} \n\n", this);
-
-            Log.Information("Done creating pagination resource");
+            Log.Information("\n\n Pagination Object after calculation: \n {@0} \n\n", this);
 
             return this;
         }

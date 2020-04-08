@@ -1,5 +1,7 @@
 ﻿using DotNetCoreReactREST.Entities;
+using DotNetCoreReactREST.ResourceParameters;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {
@@ -11,7 +13,7 @@ namespace DotNetCoreReactREST.Repositories
         Category GetCategoryById(int categoryId);
         bool Save();
         void UpdateCategory(Category category);
-        IEnumerable<Category> GetAllCategories();
+        Task<PaginationResourceParameter<Category>> GetAllCategories(PaginationResourceParameter<Category> paginationResourceParameter);
 
     }
 }

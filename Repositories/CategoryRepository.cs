@@ -1,8 +1,10 @@
 ﻿using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
+using DotNetCoreReactREST.ResourceParameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {
@@ -22,9 +24,10 @@ namespace DotNetCoreReactREST.Repositories
             }
             _context.Categories.Add(category);
         }
-        public IEnumerable<Category> GetAllCategories()
+        public async Task<PaginationResourceParameter<Category>> GetAllCategories(PaginationResourceParameter<Category> paginationResourceParameter)
         {
-            return _context.Categories.OrderBy(c => c.Name).ToList();
+            PaginationResourceParameter<Category> result = new PaginationResourceParameter<Category>(_context);
+            return await result.InitAsync(paginationResourceParameter);
         }
 
         public bool CategoryExists(int categoryId)
