@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from "react";
 import propTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
- import {withRouter} from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 import { getSingleBlog } from "../../actions/blogActions";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Printer from "./Printer";
-import { Col, Row, Spinner } from "reactstrap";
+import { Container, Col, Row, Spinner } from "reactstrap";
+import Comment from "./Comment";
+import "../../styles/components/comment.scss";
 
 const SingleLayout = ({ markup, match }) => {
   const [liked, setLiked] = useState(false);
   const [title, setTitle] = useState("");
-  const [creating, setCreating] = useState(false)
-  const [editing, setEditing] = useState(false)
+  const [creating, setCreating] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [editingTitle, setEditingTitle] = useState(false);
   const [value, setValue] = useState("");
-  const [showingEditor, setShowingEditor] = useState(true)
+  const [showingEditor, setShowingEditor] = useState(true);
 
   const blog = useSelector(state => state.blogs.single);
+  const comments = useSelector(state => state.blogs.comments);
   const loading = useSelector(state => state.blogs.loading);
 
   const like_or_dislike = () => {
@@ -25,17 +28,17 @@ const SingleLayout = ({ markup, match }) => {
   };
   const dispatch = useDispatch();
   useEffect(() => {
-    const params = match.params
+    const params = match.params;
     if (!Object.keys(params).length) {
       dispatch(getSingleBlog(null));
-      setCreating(true)
-      return
+      setCreating(true);
+      return;
     }
-    const action = match.params.action
-    if (action === 'edit') {
+    const action = match.params.action;
+    if (action === "edit") {
       dispatch(getSingleBlog(match.params.id));
-      setEditing(true)
-      return
+      setEditing(true);
+      return;
     }
     dispatch(getSingleBlog(match.params.id));
   }, [dispatch, match.params]);
@@ -160,11 +163,25 @@ const SingleLayout = ({ markup, match }) => {
         </div>
       ) : (
         <div className="d-flex justify-content-center align-content-center h-100">
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
         </div>
       )}
+      <Container>
+        <div className="comments-wrapper">
+          {comments.map(c => {
+            return (
+              <Comment
+                key={c.id}
+                name={c.name}
+                content={c.content}
+                date={c.date}
+              />
+            );
+          })}
+        </div>
+      </Container>
     </div>
   );
 };
