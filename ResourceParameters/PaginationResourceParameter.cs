@@ -28,7 +28,7 @@ namespace DotNetCoreReactREST.ResourceParameters
         public string Category { get; set; }
         public string SearchQuery { get; set; }
         public string UserQuery { get; set; }
-        public int PageNumber { get; set; } = 1;
+        public int PageNumber { get; set; }
         public int PageSize { get => _defaultNumberOfObjectsPerPage; set => _defaultNumberOfObjectsPerPage = value > 0 ? value : 1; }
 
         // Parameters
@@ -66,20 +66,6 @@ namespace DotNetCoreReactREST.ResourceParameters
             if (paginationResourceParameter == null)
             {
                 throw new ArgumentNullException(nameof(paginationResourceParameter));
-            }
-            if (string.IsNullOrWhiteSpace(paginationResourceParameter.Category)
-                && string.IsNullOrWhiteSpace(paginationResourceParameter.SearchQuery)
-                && string.IsNullOrWhiteSpace(paginationResourceParameter.UserQuery)
-                && string.IsNullOrWhiteSpace(paginationResourceParameter.PageNumber.ToString())
-                && string.IsNullOrWhiteSpace(paginationResourceParameter.PageSize.ToString())
-            )
-            {
-                Log.Information("Getting all posts! ================================");
-
-                // Assuming that nothing is set
-                PageNumber = 1;
-                PageSize = 999;
-                TotalNumberOfObjectsPerPage = 999;
             }
 
             // Deferred Execution
@@ -128,10 +114,8 @@ namespace DotNetCoreReactREST.ResourceParameters
             Log.Information("paginationResourceParameter.totalNumberOfPosts: " + TotalNumberOfObjects.ToString());
             // Get total number of pages
             double pageNeeded = (double)TotalNumberOfObjects / (double)TotalNumberOfObjectsPerPage;
-            Log.Information("pageNeeded before ceil: " + pageNeeded.ToString());
             // Round up to nearest int
             pageNeeded = Convert.ToInt32(Math.Ceiling((decimal)pageNeeded));
-            Log.Information("pageNeeded before min: " + pageNeeded.ToString());
             // Min of 1 page
             if (pageNeeded < 1)
             {
@@ -189,7 +173,7 @@ namespace DotNetCoreReactREST.ResourceParameters
                 .Take(TotalNumberOfObjectsPerPage).ToListAsync();
             ObjList = (IEnumerable<T>) result;
 
-            Log.Information("\nPost Pagination Object after calculation: \n {@0} \n\n", this);
+            Log.Information("\n\nPost Pagination Object after calculation: \n {@0} \n\n", this);
 
             Log.Information("Done creating pagination resource");
 

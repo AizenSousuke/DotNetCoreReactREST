@@ -40,16 +40,6 @@ namespace DotNetCoreReactREST
         [HttpHead]
         public async Task<IActionResult> GetPostsAsync([FromQuery]PaginationResourceParameter<Post> paginationResourceParameter = null)
         {
-            if (paginationResourceParameter == null)
-            {
-                // Code never went here
-                IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
-                if (posts == null)
-                {
-                    return NotFound();
-                }
-                return Ok(_mapper.Map<IEnumerable<PostDto>>(posts));
-            }
             var query = await _postRepository.GetPostsAsync(paginationResourceParameter);
             if (query == null)
             {

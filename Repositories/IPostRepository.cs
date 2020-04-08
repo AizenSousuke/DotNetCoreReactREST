@@ -11,7 +11,6 @@ namespace DotNetCoreReactREST.Repositories
     {
         Task<List<Post>> GetPostsAsync();
         Task<PaginationResourceParameter<Post>> GetPostsAsync(PaginationResourceParameter<Post> paginationResourceParameter);
-        Task<PaginationResourceParameter<Post>> GetPostsPaginationAsync(PaginationResourceParameter<Post> paginationResourceParameter, IQueryable<Post> collection = null);
         Task<Post> GetPostByIdAsync(int postId);
         Task<Post> CreatePostAsync(Post post);
         Task<Post> UpdatePostAsync(int postId, JsonPatchDocument post);
