@@ -16,8 +16,8 @@ namespace DotNetCoreReactREST.Controllers
     [ApiController]
     public class CommentsController : Controller
     {
-        private ICommentRepository _commentRepo;
-        private IMapper _mapper;
+        private readonly ICommentRepository _commentRepo;
+        private readonly IMapper _mapper;
 
         public CommentsController(ICommentRepository commentRepo, IMapper mapper)
         {
@@ -32,7 +32,7 @@ namespace DotNetCoreReactREST.Controllers
             return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
         }
 
-        [HttpGet("posts/{postId}/comments")]
+        [HttpGet("posts/{postId:int}/comments")]
         public ActionResult<IEnumerable<CommentDto>> GetCommentsForPost(int postId)
         {
             var commentsFromRepo = _commentRepo.GetCommentsForPost(postId);
