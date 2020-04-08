@@ -27,6 +27,18 @@ export function blogsReducer(state = initialState, { type, payload }) {
         ...state,
         loading: payload,
       }
+    case "UPDATE_BLOG":
+      const temp = state.all.find(blog => blog.id === payload.id)
+      const index = state.all.indexOf(temp)
+      return {
+        ...state,
+        loading: false,
+        all: [
+          ...state.all.slice(0, index),
+          { title: payload.title, content: payload.description, categoryId: payload.categoryId },
+          ...state.all.slice(index + 1)
+        ]
+      };
     default:
       return state;
   }

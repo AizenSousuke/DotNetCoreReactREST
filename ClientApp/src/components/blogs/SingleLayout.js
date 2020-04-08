@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import propTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
  import {withRouter} from 'react-router-dom';
-import { getSingleBlog } from "../../actions/blogActions";
+import { getSingleBlog, editBlog } from "../../actions/blogActions";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Printer from "./Printer";
@@ -26,6 +26,7 @@ const SingleLayout = ({ markup, match }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     const params = match.params
+    // set blog to null if creating
     if (!Object.keys(params).length) {
       dispatch(getSingleBlog(null));
       setCreating(true)
@@ -33,12 +34,18 @@ const SingleLayout = ({ markup, match }) => {
     }
     const action = match.params.action
     if (action === 'edit') {
-      dispatch(getSingleBlog(match.params.id));
+      if (blog && !blog.title) {
+        dispatch(getSingleBlog(match.params.id));
+      }
       setEditing(true)
+      setTitle(blog.title)
+      setValue(`<div>${blog.content}</div>`)
       return
     }
-    dispatch(getSingleBlog(match.params.id));
-  }, [dispatch, match.params]);
+    // check if blog has been fetched for view, if not fetch it
+      dispatch(getSingleBlog(match.params.id));
+    
+  }, [match.params]);
   const viewing = !creating && !editing ? true : false;
 
   SingleLayout.propTypes = {
@@ -107,7 +114,19 @@ const SingleLayout = ({ markup, match }) => {
                     <span>View John's other blogs</span>
                   </button>
                   {!viewing && title && value && value !== "<p><br></p>" ? (
-                    <button>
+                    <button onClick={() => {
+                      if(creating) {
+                        // dispatch(createBlog(1, blog.title, value, 1))
+                        return
+                      }
+                      const batch = {
+                        id: blog.id,
+                        title: title,
+                        description: value,
+                        categoryId: blog.categoryId
+                      }
+                      dispatch(editBlog(batch))
+                    }}>
                       <span>{creating ? "Create Blog" : "Save Blog"}</span>
                     </button>
                   ) : (
@@ -160,8 +179,8 @@ const SingleLayout = ({ markup, match }) => {
         </div>
       ) : (
         <div className="d-flex justify-content-center align-content-center h-100">
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
+        <Spinner color="secondary" role="status">
+          Loading...
         </Spinner>
         </div>
       )}
