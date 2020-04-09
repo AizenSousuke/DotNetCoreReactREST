@@ -16,13 +16,13 @@ namespace DotNetCoreReactREST.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public void AddCategory(Category category)
+        public async Task AddCategory(Category category)
         {
             if (category == null)
             {
                 throw new ArgumentNullException(nameof(category));
             }
-            _context.Categories.Add(category);
+            await _context.Categories.AddAsync(category);
         }
 
         public async Task<IEnumerable<Category>> GetAllCategories()
@@ -45,7 +45,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(category));
             }
-            _context.Categories.Remove(category);            
+            _context.Categories.Remove(category);
         }
 
         public async Task<Category> GetCategoryById(int categoryId)
@@ -58,9 +58,9 @@ namespace DotNetCoreReactREST.Repositories
             return await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
         }
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            return _context.SaveChanges() >= 0;
+            return await _context.SaveChangesAsync() >= 0;
         }
 
         public void UpdateCategory(Category category)

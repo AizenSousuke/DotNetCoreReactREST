@@ -53,17 +53,17 @@ namespace DotNetCoreReactREST.Controllers
                 return BadRequest();
             }
             _mapper.Map(category, categoryFromRepo);
-            _categoryRepository.Save();
+            await _categoryRepository.Save();
 
             return NoContent();
         }
 
         [HttpPost]
-        public ActionResult<CategoryDto> CreateCategory(CategoryForCreationDto category)
+        public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryForCreationDto category)
         {
             var categoryToAdd = _mapper.Map<Category>(category);
-            _categoryRepository.AddCategory(categoryToAdd);
-            _categoryRepository.Save();
+            await _categoryRepository.AddCategory(categoryToAdd);
+            await _categoryRepository.Save();
 
 
             var baseURI = Request.GetDisplayUrl();
@@ -82,7 +82,7 @@ namespace DotNetCoreReactREST.Controllers
                 BadRequest();
             }
             _categoryRepository.DeleteCategory(categoryToDelete);
-            _categoryRepository.Save();
+            await _categoryRepository.Save();
 
             return NoContent();
         }
