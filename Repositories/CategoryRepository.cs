@@ -1,8 +1,10 @@
 ﻿using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {
@@ -14,26 +16,27 @@ namespace DotNetCoreReactREST.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public void AddCategory(Category category)
+        public async Task AddCategory(Category category)
         {
             if (category == null)
             {
                 throw new ArgumentNullException(nameof(category));
             }
-            _context.Categories.Add(category);
-        }
-        public IEnumerable<Category> GetAllCategories()
-        {
-            return _context.Categories.OrderBy(c => c.Name).ToList();
+            await _context.Categories.AddAsync(category);
         }
 
-        public bool CategoryExists(int categoryId)
+        public async Task<IEnumerable<Category>> GetAllCategories()
         {
-            if (String.IsNullOrEmpty(categoryId.ToString()))
+            return await _context.Categories.OrderBy(c => c.Name).ToListAsync();
+        }
+
+        public async Task<bool> CategoryExists(int categoryId)
+        {
+            if (string.IsNullOrEmpty(categoryId.ToString()))
             {
                 throw new ArgumentNullException(nameof(categoryId));
             }
-            return _context.Categories.Any(c => c.Id == categoryId);
+            return await _context.Categories.AnyAsync(c => c.Id == categoryId);
         }
 
         public void DeleteCategory(Category category)
@@ -45,19 +48,19 @@ namespace DotNetCoreReactREST.Repositories
             _context.Categories.Remove(category);
         }
 
-        public Category GetCategoryById(int categoryId)
+        public async Task<Category> GetCategoryById(int categoryId)
         {
-            if (String.IsNullOrWhiteSpace(categoryId.ToString()))
+            if (string.IsNullOrWhiteSpace(categoryId.ToString()))
             {
                 throw new ArgumentNullException(nameof(categoryId));
             }
-            return _context.Categories
-                .FirstOrDefault(c => c.Id == categoryId);
+
+            return await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
         }
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            return _context.SaveChanges() >= 0;
+            return await _context.SaveChangesAsync() >= 0;
         }
 
         public void UpdateCategory(Category category)

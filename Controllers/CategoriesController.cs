@@ -5,6 +5,7 @@ using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Controllers
 {
@@ -23,17 +24,17 @@ namespace DotNetCoreReactREST.Controllers
 
         // GET: api/Categories
         [HttpGet]
-        public ActionResult<IEnumerable<CategoryDto>> GetCategories()
+        public async Task<IActionResult> GetCategories()
         {
-            var categoriesFromRepo = _categoryRepository.GetAllCategories();
+            var categoriesFromRepo = await _categoryRepository.GetAllCategories();
             return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categoriesFromRepo));
         }
 
         // GET: api/Categories/5
         [HttpGet("{categoryId}", Name = "GetCategories")]
-        public ActionResult<CategoryDto> GetCategory(int categoryId)
+        public async Task<ActionResult<CategoryDto>> GetCategory(int categoryId)
         {
-            var categoryFromRepo = _categoryRepository.GetCategoryById(categoryId);
+            var categoryFromRepo = await _categoryRepository.GetCategoryById(categoryId);
 
             if (categoryFromRepo == null)
             {
@@ -44,25 +45,25 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         [HttpPut("{categoryId}")]
-        public ActionResult<CategoryDto> EditCategory(int categoryId, CategoryForUpdateDto category)
+        public async Task<ActionResult<CategoryDto>> EditCategory(int categoryId, CategoryForUpdateDto category)
         {
-            var categoryFromRepo = _categoryRepository.GetCategoryById(categoryId);
+            var categoryFromRepo = await _categoryRepository.GetCategoryById(categoryId);
             if (categoryFromRepo == null)
             {
                 return BadRequest();
             }
             _mapper.Map(category, categoryFromRepo);
-            _categoryRepository.Save();
+            await _categoryRepository.Save();
 
             return NoContent();
         }
 
         [HttpPost]
-        public ActionResult<CategoryDto> CreateCategory(CategoryForCreationDto category)
+        public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryForCreationDto category)
         {
             var categoryToAdd = _mapper.Map<Category>(category);
-            _categoryRepository.AddCategory(categoryToAdd);
-            _categoryRepository.Save();
+            await _categoryRepository.AddCategory(categoryToAdd);
+            await _categoryRepository.Save();
 
 
             var baseURI = Request.GetDisplayUrl();
@@ -73,15 +74,15 @@ namespace DotNetCoreReactREST.Controllers
 
         // DELETE: api/Categories/5
         [HttpDelete("{categoryId}")]
-        public ActionResult DeleteCategory(int categoryId)
+        public async Task<ActionResult> DeleteCategory(int categoryId)
         {
-            var categoryToDelete = _categoryRepository.GetCategoryById(categoryId);
+            var categoryToDelete = await _categoryRepository.GetCategoryById(categoryId);
             if (categoryToDelete == null)
             {
                 BadRequest();
             }
             _categoryRepository.DeleteCategory(categoryToDelete);
-            _categoryRepository.Save();
+            await _categoryRepository.Save();
 
             return NoContent();
         }
