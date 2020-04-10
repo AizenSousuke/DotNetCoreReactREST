@@ -27,8 +27,12 @@ namespace DotNetCoreReactREST.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategories([FromQuery] PaginationResourceParameter<Category> paginationResourceParameter)
         {
-            var query = await _categoryRepository.GetAllCategories(paginationResourceParameter);
-            return Ok(query);
+            var result = await _categoryRepository.GetAllCategories(paginationResourceParameter);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
         }
 
         // GET: api/Categories/5

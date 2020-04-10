@@ -38,14 +38,14 @@ namespace DotNetCoreReactREST
         //GET Api/posts[category = string &| searchQuery = string]
         [HttpGet]
         [HttpHead]
-        public async Task<IActionResult> GetPostsAsync([FromQuery]PaginationResourceParameter<Post> paginationResourceParameter = null)
+        public async Task<IActionResult> GetPostsAsync([FromQuery]PaginationResourceParameter<Post> paginationResourceParameter)
         {
-            var query = await _postRepository.GetPostsAsync(paginationResourceParameter);
-            if (query == null)
+            var result = await _postRepository.GetPostsAsync(paginationResourceParameter);
+            if (result == null)
             {
                 return NotFound();
             }
-            return Ok(query);
+            return Ok(result);
         }
         //GET Api/Posts/{postId}
         [HttpGet]

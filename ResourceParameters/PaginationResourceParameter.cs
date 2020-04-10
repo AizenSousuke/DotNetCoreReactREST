@@ -26,8 +26,9 @@ namespace DotNetCoreReactREST.ResourceParameters
         public string URLName { get; set; }
 
         // Search Type
-        public int Id { get; set; }
-        public string Category { get; set; }
+        public int IdQuery { get; set; }
+        public string NameQuery { get; set; }
+        public string CategoryQuery { get; set; }
         public string SearchQuery { get; set; }
         public string UserQuery { get; set; }
         public int PageNumber { get; set; }
@@ -87,11 +88,13 @@ namespace DotNetCoreReactREST.ResourceParameters
 
                 collection = _context.Posts as IQueryable<Post>;
 
-                if (!string.IsNullOrWhiteSpace(paginationResourceParameter.Category))
+                // Add possible search parameters
+
+                if (!string.IsNullOrWhiteSpace(paginationResourceParameter.CategoryQuery))
                 {
-                    var category = paginationResourceParameter.Category.Trim();
+                    var category = paginationResourceParameter.CategoryQuery.Trim();
                     collection = collection.Cast<Post>().Where(post => post.Category.Name.Contains(category));
-                    Category = paginationResourceParameter.Category;
+                    CategoryQuery = paginationResourceParameter.CategoryQuery;
                 }
 
                 if (!string.IsNullOrWhiteSpace(paginationResourceParameter.SearchQuery))
@@ -111,11 +114,11 @@ namespace DotNetCoreReactREST.ResourceParameters
                     UserQuery = paginationResourceParameter.UserQuery;
                 }
 
-                if (paginationResourceParameter.Id > 0)
+                if (paginationResourceParameter.IdQuery > 0)
                 {
-                    int objId = paginationResourceParameter.Id;
+                    int objId = paginationResourceParameter.IdQuery;
                     collection = collection.Cast<Post>().Where(obj => obj.Id == objId);
-                    Id = paginationResourceParameter.Id;
+                    IdQuery = paginationResourceParameter.IdQuery;
                 }
 
                 // Get pagination data and fill up the object as required
@@ -126,6 +129,22 @@ namespace DotNetCoreReactREST.ResourceParameters
                 URLName = "categories";
 
                 collection = _context.Categories as IQueryable<Category>;
+
+                // Add possible search parameters
+
+                if (paginationResourceParameter.IdQuery > 0)
+                {
+                    var objId = paginationResourceParameter.IdQuery;
+                    collection = collection.Cast<Category>().Where(category => category.Id == objId);
+                    IdQuery = paginationResourceParameter.IdQuery;
+                }
+
+                if (!string.IsNullOrWhiteSpace(paginationResourceParameter.NameQuery.Trim()))
+                {
+                    var catQuery = paginationResourceParameter.NameQuery.Trim();
+                    collection = collection.Cast<Category>().Where(category => category.Name.Contains(catQuery));
+                    NameQuery = paginationResourceParameter.NameQuery;
+                }
 
                 // Get pagination data and fill up the object as required
                 TotalNumberOfObjects = collection.Cast<Category>().Count();
@@ -161,9 +180,19 @@ namespace DotNetCoreReactREST.ResourceParameters
                 // Compose the URL
                 string fullURL = "/api" + "/" + URLName + "?" + "PageNumber=" + i.ToString();
 
-                if (!string.IsNullOrWhiteSpace(Category))
+                if (IdQuery > 0)
                 {
-                    fullURL = fullURL + "&" + "Category=" + Category;
+                    fullURL = fullURL + "&" + "IdQuery=" + IdQuery;
+                }
+
+                if (!string.IsNullOrWhiteSpace(CategoryQuery))
+                {
+                    fullURL = fullURL + "&" + "CategoryQuery=" + CategoryQuery;
+                }
+
+                if (!string.IsNullOrWhiteSpace(NameQuery))
+                {
+                    fullURL = fullURL + "&" + "NameQuery=" + NameQuery;
                 }
 
                 if (!string.IsNullOrWhiteSpace(SearchQuery))
