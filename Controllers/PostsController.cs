@@ -3,7 +3,7 @@ using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using DotNetCoreReactREST.ResourceParameters;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,24 +26,36 @@ namespace DotNetCoreReactREST
         }
         //POST Api/Posts
         [HttpPost]
-        public async Task<IActionResult> CreatePostAsync([FromBody]Post post)
+        public async Task<IActionResult> CreatePostAsync([FromBody]PostDto post)
         {
-            Post newPost = await _postRepository.CreatePostAsync(post);
-            return Ok(_mapper.Map<PostDto>(newPost));
+            Post newPost = await _postRepository.CreatePostAsync(_mapper.Map<Post>(post));
+            var baseURI = Request.GetDisplayUrl();
+            // Alternative way
+            // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
+            return Created(baseURI + newPost.Id, _mapper.Map<PostDto>(newPost));
         }
-        //GET Api/posts[category=string &| searchQuery=string]
+        //GET Api/posts[category = string &| searchQuery = string]
         [HttpGet]
         [HttpHead]
-        public IActionResult GetPost([FromQuery]PostResourceParameter postResourceParameter)
+        public async Task<IActionResult> GetPostsAsync([FromQuery]PostResourceParameter postResourceParameter)
         {
-            IEnumerable<Post> postFromRepository = _postRepository.GetPosts(postResourceParameter);
+            if (postResourceParameter == null)
+            {
+                IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
+                if (posts == null)
+                {
+                    return NotFound();
+                }
+                return Ok(_mapper.Map<IEnumerable<PostDto>>(posts));
+            }
+            IEnumerable<Post> postFromRepository = await _postRepository.GetPostsAsync(postResourceParameter);
             if (postFromRepository == null)
             {
                 return NotFound();
             }
             return Ok(_mapper.Map<IEnumerable<PostDto>>(postFromRepository));
         }
-        //GET Api/Posts/{PostId}
+        //GET Api/Posts/{postId}
         [HttpGet]
         // Route will only match if postId can be casted as a int
         [Route("{postId:int}")]
@@ -58,7 +70,6 @@ namespace DotNetCoreReactREST
         }
         //PATCH Api/Posts/{postId}
         [HttpPatch("{postId:int}", Name = "{postId:int}")]
-        [Authorize]
         public async Task<IActionResult> UpdatePost([FromRoute]int postId, [FromBody]JsonPatchDocument<Post> patchDocument)
         {
             if (!ModelState.IsValid)
@@ -92,14 +103,20 @@ namespace DotNetCoreReactREST
         }
         //DELETE Api/Posts/{PostId}
         [HttpDelete("{postId:int}")]
-        [Authorize]
         public async Task<IActionResult> DeletePost([FromRoute]int postId)
         {
-            if (await _postRepository.DeletePost(postId))
+            var post = await _postRepository.GetPostByIdAsync(postId);
+            if (post == null)
             {
-                return Ok("Post Deleted");
+                return NotFound("There is nothing to delete.");
             }
-            return NotFound("There is nothing to delete.");
+
+            bool result = await _postRepository.DeletePostAsync(postId);
+            if (result)
+            {
+                return Ok("Post Deleted.");
+            }
+            return Ok("Post not deleted.");
         }
     }
 }

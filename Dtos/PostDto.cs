@@ -1,5 +1,4 @@
-﻿using DotNetCoreReactREST.Entities;
-using System;
+﻿using System;
 
 namespace DotNetCoreReactREST.Dtos
 {
@@ -7,7 +6,6 @@ namespace DotNetCoreReactREST.Dtos
     {
         // Public Facing Properties
         public int Id { get; set; }
-        public Category Category { get; set; }
         public int CategoryId { get; set; }
         public string Title { get; set; }
         public string ImageUrl { get; set; }

@@ -22,68 +22,87 @@ namespace DotNetCoreReactREST.Repositories
             post.DateTime = DateTime.Now;
             await _appDbContext.Posts.AddAsync(post);
             await Save();
-            Post newPost = GetPosts().FirstOrDefault(p => p.Id == post.Id);
-            return newPost;
+            List<Post> newPost = await GetPostsAsync();
+            return newPost.FirstOrDefault(p => p.Id == post.Id);
         }
 
-        public IEnumerable<Post> GetPosts()
+        public async Task<List<Post>> GetPostsAsync()
         {
-            IEnumerable<Post> Posts = _appDbContext.Posts
-                .OrderByDescending(p => p.DateTime);
+            List<Post> Posts = await _appDbContext.Posts
+                .OrderByDescending(p => p.Id).ToListAsync();
             return Posts;
         }
 
-        public IEnumerable<Post> GetPosts(PostResourceParameter postResourceParameters)
+        public async Task<List<Post>> GetPostsAsync(PostResourceParameter postResourceParameters)
         {
             if (postResourceParameters == null)
             {
                 throw new ArgumentNullException(nameof(postResourceParameters));
             }
             if (string.IsNullOrWhiteSpace(postResourceParameters.Category)
-                && string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery))
+                && string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery)
+                && string.IsNullOrWhiteSpace(postResourceParameters.UserQuery)
+                )
             {
-                return GetPosts();
+                return await GetPostsAsync();
             }
+
+            // Deferred Execution
             var collection = _appDbContext.Posts as IQueryable<Post>;
 
             if (!string.IsNullOrWhiteSpace(postResourceParameters.Category))
             {
                 var category = postResourceParameters.Category.Trim();
-                collection = collection.Where(post => post.Category.Name == category);
+                collection = collection.Where(post => post.Category.Name.Contains(category));
             }
 
             if (!string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery))
             {
-
                 var searchQuery = postResourceParameters.SearchQuery.Trim();
-                collection = collection.Where(a => a.Title.Contains(searchQuery));
+                collection = collection.Where(post =>
+                    post.Title.Contains(searchQuery) ||
+                    post.Description.Contains(searchQuery) ||
+                    post.Content.Contains(searchQuery));
             }
 
-            return collection.ToList();
-        }
-
-        public async Task<Post> UpdatePost(int postId, JsonPatchDocument post)
-        {
-            Task<Post> oldPost = GetPostByIdAsync(postId);
-
-            await Save();
-            return GetPostByIdAsync(postId).Result;
-        }
-
-        public Task<bool> DeletePost(int postId)
-        {
-            Post post = GetPostByIdAsync(postId).Result;
-            if (post != null)
+            if (!string.IsNullOrWhiteSpace(postResourceParameters.UserQuery))
             {
-                _appDbContext.Posts.Remove(post);
-                return Save();
+                var userQuery = postResourceParameters.UserQuery.Trim();
+                collection = collection.Where(post => post.ApplicationUserId.Contains(userQuery));
             }
-            return Task.FromResult(false);
+
+            // Temporarily disabled because it does not work
+            //if (postResourceParameters.PostId != 0)
+            //{
+            //    int postId = postResourceParameters.PostId;
+            //    collection = collection.Where(post => post.Id == postId);
+            //}
+
+            return await collection.OrderByDescending(p => p.Id).ToListAsync();
         }
 
         public async Task<Post> GetPostByIdAsync(int postId)
         {
             return await _appDbContext.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
+        }
+
+        public async Task<Post> UpdatePostAsync(int postId, JsonPatchDocument post)
+        {
+            Post oldPost = await GetPostByIdAsync(postId);
+
+            await Save();
+            return await GetPostByIdAsync(postId);
+        }
+
+        public async Task<bool> DeletePostAsync(int postId)
+        {
+            Post post = await GetPostByIdAsync(postId);
+            if (post != null)
+            {
+                _appDbContext.Posts.Remove(post);
+                return await Save();
+            }
+            return false;
         }
 
         public async Task<bool> Save()

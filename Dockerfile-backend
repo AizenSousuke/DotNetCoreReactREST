@@ -1,0 +1,25 @@
+# Staging
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as stage
+WORKDIR /Stage
+COPY . .
+RUN dotnet restore
+# Install node so can call dotnet publish to publish the backend (Will remove later)
+RUN apt-get update -yq \
+    && apt-get install curl gnupg -yq \
+    && curl -sL https://deb.nodesource.com/setup_13.x | bash \
+    && apt-get install nodejs -yq
+RUN dotnet publish -c Release -o output
+WORKDIR /Stage/output
+RUN ls -l
+
+# Runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 as runtime
+WORKDIR /Code
+COPY --from=stage /Stage/output .
+# Copy script from local
+COPY ./wait-for-it.sh .
+CMD dos2unix wait-for-it.sh
+RUN chmod +x wait-for-it.sh
+RUN ls -l
+EXPOSE 80 5000 5001
+CMD [ "./wait-for-it.sh", "sql:1433", "-t", "0", "--", "dotnet",  "DotNetCoreReactREST.dll" ]
