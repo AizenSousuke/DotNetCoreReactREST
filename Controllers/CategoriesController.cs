@@ -2,6 +2,7 @@
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
+using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -24,10 +25,14 @@ namespace DotNetCoreReactREST.Controllers
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<IActionResult> GetCategories()
+        public async Task<IActionResult> GetCategories([FromQuery] PaginationResourceParameter<Category> paginationResourceParameter)
         {
-            var categoriesFromRepo = await _categoryRepository.GetAllCategories();
-            return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categoriesFromRepo));
+            var result = await _categoryRepository.GetAllCategories(paginationResourceParameter);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
         }
 
         // GET: api/Categories/5

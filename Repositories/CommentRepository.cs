@@ -9,7 +9,7 @@ namespace DotNetCoreReactREST.Repositories
 {
     public class CommentRepository : ICommentRepository
     {
-        private AppDbContext _context;
+        private readonly AppDbContext _context;
 
         public CommentRepository(AppDbContext context)
         {
