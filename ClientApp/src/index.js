@@ -18,6 +18,9 @@ const composeEnhancers =
 const enhancers = composeEnhancers(applyMiddleware(thunk));
 
 let store = createStore(allReducers, enhancers);
+// store.subscribe(() => {
+//   console.log("STORE:", JSON.stringify(store.getState()));
+// });
 
 ReactDOM.render(
   <Provider store={store}>
