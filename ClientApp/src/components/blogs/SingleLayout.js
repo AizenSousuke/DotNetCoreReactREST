@@ -9,6 +9,8 @@ import Printer from "./Printer";
 import { Container, Col, Row, Spinner } from "reactstrap";
 import Comment from "./Comment";
 import "../../styles/components/comment.scss";
+import AddComment from "./AddComment";
+// import CommonModal from "../common/CommonModal";
 
 const SingleLayout = ({ markup, match }) => {
   const [liked, setLiked] = useState(false);
@@ -169,6 +171,9 @@ const SingleLayout = ({ markup, match }) => {
         </div>
       )}
       <Container>
+        <div>
+          <AddComment />
+        </div>
         <div className="comments-wrapper">
           {comments.map(c => {
             return (

@@ -4,7 +4,8 @@ const initialState = {
   single: {
     id: 0,
     title: "",
-    body: ""
+    body: "",
+    comments: []
   },
   comments: []
 };
@@ -28,11 +29,12 @@ export function blogsReducer(state = initialState, { type, payload }) {
         ...state,
         loading: payload
       };
-    case "SET_COMMENTS":
+    case "CREATE_COMMENT":
       return {
         ...state,
         loading: false,
-        comments: payload
+        comments: [...state, payload]
+        // single: { ...state.single, comments: payload }
       };
     case "SET_DUMMY_COMMENTS":
       return {

@@ -40,6 +40,19 @@ export const getSingleBlog = id => async (dispatch, getState) => {
 //     });
 // };
 
+export const createComment = (id, name, content, date, isAnonymous) => {
+  return {
+    type: "CREATE_COMMENT",
+    payload: {
+      id,
+      name,
+      content,
+      date,
+      isAnonymous
+    }
+  };
+};
+
 export const setDummyComments = id => {
   return {
     type: "SET_DUMMY_COMMENTS",
