@@ -28,7 +28,8 @@ const SingleLayout = ({ markup, match }) => {
   const blog = useSelector(state => state.blogs.single);
   const comments = useSelector(state => state.blogs.comments);
   const loading = useSelector(state => state.blogs.loading);
-  const user = useSelector(state => state.auth.user);
+  // const user = useSelector(state => state.auth.user);
+  // console.log("user:", user);
   // pass user (appuserid) and blog (postid) as props to AddComment
 
   const like_or_dislike = () => {
@@ -62,11 +63,13 @@ const SingleLayout = ({ markup, match }) => {
   }, [match.params]);
   const viewing = !creating && !editing ? true : false;
 
+  console.log("singlecom:", comments);
   SingleLayout.propTypes = {
     creating: propTypes.bool,
     editing: propTypes.bool,
     markup: propTypes.string
   };
+
   return (
     <div>
       {/* <div>
@@ -205,7 +208,12 @@ const SingleLayout = ({ markup, match }) => {
       )}
       <Container>
         <div>
-          <AddComment />
+          <AddComment
+            // applicationUserId={user.applicationUserId}
+            // postId={blog.postId}
+            applicationUserId={99}
+            postId={99}
+          />
         </div>
         <div className="comments-wrapper">
           {comments.map(c => {

@@ -46,14 +46,22 @@ export const editBlog = blog => async dispatch => {
 };
 
 export const getSingleBlogComments = id => async dispatch => {
-  const responce = api
+  dispatch({ type: "SET_BLOG_LOADING", payload: true });
+  if (!id) {
+    dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: null });
+    return;
+  }
+  const response = await api
     .get(`/posts/${id}/comments`)
-    .then(data => dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data }))
+    .then(data => {
+      console.log("dataaa", data);
+      dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data });
+    })
     .catch(error => console.log(error));
 };
 
 export const getUsers = () => async dispatch => {
-  const response = api
+  const response = await api
     .get("/users")
     .then(data => dispatch({ type: "SET_USERS", payload: data }));
 };
@@ -72,21 +80,27 @@ export const getLikesForComment = id => async dispatch => {
   console.log("getlikesresponse:", response);
 };
 
-export const createComment = comment => async dispatch => {
+export const createComment = (
+  content,
+  postId,
+  applicationUserId,
+  isAnonymous
+) => async dispatch => {
   const response = await api
     .post(`/comments/`, {
-      content: comment.content,
-      postId: comment.postId,
-      applicationUserId: comment.applicationUserId,
-      isAnonymous: comment.isAnonymous
+      content: content,
+      postId: postId,
+      applicationUserId: applicationUserId,
+      isAnonymous: isAnonymous
     })
-    .then(data =>
+    .then(data => {
+      console.log("createcommentdata:", data);
       dispatch({
         // use local state instead to make new comment immediately visible to commenter?
         type: "SET_SINGLE_BLOG_COMMENTS",
         payload: data
-      }).catch(error => console.log(error))
-    );
+      }).catch(error => console.log(error));
+    });
 };
 
 export const deleteLike = id => async dispatch => {
@@ -113,3 +127,4 @@ export const setDummyComments = id => {
       isAnonymous: false
     }
   };
+};

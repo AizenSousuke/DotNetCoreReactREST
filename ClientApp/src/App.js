@@ -1,17 +1,14 @@
 import React, { useEffect } from "react";
-<<<<<<< HEAD
-import { useDispatch } from "react-redux";
-import { Route } from "react-router-dom";
-import "./styles/index.scss";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { getBlogs, setDummyComments } from "./actions/blogActions";
-=======
 import { useDispatch, useSelector } from "react-redux";
 import { Route } from "react-router-dom";
 import "./styles/index.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getBlogs, getUsers, getCategories } from "./actions/blogActions";
->>>>>>> testing/real-data
+import {
+  getBlogs,
+  getUsers,
+  getCategories
+  // setDummyComments
+} from "./actions/blogActions";
 import { setUser } from "./actions/auth";
 import Profile from "./pages/Profile";
 import Browse from "./pages/Browse";
@@ -21,24 +18,18 @@ const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getBlogs());
-<<<<<<< HEAD
-=======
     dispatch(getUsers());
     dispatch(getCategories());
->>>>>>> testing/real-data
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       dispatch(setUser(user));
     }
   });
-<<<<<<< HEAD
 
-  for (let i = 0; i < 10; i++) {
-    dispatch(setDummyComments(i));
-  }
+  // for (let i = 0; i < 10; i++) {
+  //   dispatch(setDummyComments(i));
+  // }
 
-=======
->>>>>>> testing/real-data
   return (
     <div className="app">
       <Route exact path="/" component={Browse} />

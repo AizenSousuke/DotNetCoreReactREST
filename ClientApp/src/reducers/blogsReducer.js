@@ -8,6 +8,7 @@ const initialState = {
     title: "",
     body: "",
     comments: []
+    // likeCount: 0
   },
   comments: []
 };
@@ -31,13 +32,13 @@ export function blogsReducer(state = initialState, { type, payload }) {
         ...state,
         loading: payload
       };
-    case "CREATE_COMMENT":
-      return {
-        ...state,
-        loading: false,
-        comments: [...state, payload]
-        // single: { ...state.single, comments: payload }
-      };
+    // case "CREATE_COMMENT":
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     comments: [...state, payload]
+    //     // single: { ...state.single, comments: payload }
+    //   };
     case "SET_DUMMY_COMMENTS":
       return {
         ...state,
@@ -81,13 +82,8 @@ export function blogsReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         loading: false,
-        single: { ...state, comments: [...state.comments, payload] }
-      };
-    case "DELETE_LIKE":
-      return {
-        ...state,
-        loading: false,
-        single: { ...state, likeCount: likeCount - 1 }
+        single: { ...state, comments: [...state.comments, payload] },
+        comments: payload
       };
     // case "DELETE_COMMENT":
     //   return {
@@ -95,7 +91,12 @@ export function blogsReducer(state = initialState, { type, payload }) {
     //     loading: false,
     //     single: { ...state, comments: } // filter / airth
     //   }
-
+    // case "DELETE_LIKE":
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     single: { ...state, likeCount: likeCount - 1 }
+    //   };
     // case "TOGGLE_BLOG_LIKE":
     //   return {
     //     ...state

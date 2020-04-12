@@ -40,11 +40,11 @@ const AddComment = props => {
               console.log("content: ", content);
               dispatch(
                 createComment(
-                  id,
-                  name,
                   content,
-                  moment().format("DD-MM-YYYY"),
+                  props.postId,
+                  props.applicationId,
                   false
+                  // moment().format("DD-MM-YYYY"),
                 )
               );
             }}
