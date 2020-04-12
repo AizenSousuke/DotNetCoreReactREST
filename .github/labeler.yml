@@ -1,0 +1,12 @@
+backend:
+  - Controllers/*
+  - Repositories/*
+  - Entities/*
+  - Dtos/*
+  - DbContexts/*
+  - Profiles/*
+  - Services/*
+  - Helpers/*
+frontend:
+  - ClientApp/*
+  
