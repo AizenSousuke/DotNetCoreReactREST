@@ -136,7 +136,7 @@ namespace DotNetCoreReactREST.Controllers
             }
 
             // Delete comments
-            IEnumerable<Comment> commentsToDelete = _commentRepository.GetCommentsForUser(user.Id);
+            IEnumerable<Comment> commentsToDelete = await _commentRepository.GetCommentsForUser(user.Id);
             foreach (var comment in commentsToDelete)
             {
                 _commentRepository.DeleteComment(comment);

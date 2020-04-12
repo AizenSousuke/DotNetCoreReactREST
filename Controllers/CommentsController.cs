@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Controllers
 {
@@ -24,26 +25,27 @@ namespace DotNetCoreReactREST.Controllers
             _commentRepo = commentRepo;
             _mapper = mapper;
         }
+
         // GET: api/users/{userId}/comments
         [HttpGet("users/{userId}/comments")]
-        public ActionResult<IEnumerable<CommentDto>> GetCommentsForUser(string userId)
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsForUser(string userId)
         {
-            var commentsFromRepo = _commentRepo.GetCommentsForUser(userId);
+            var commentsFromRepo = await _commentRepo.GetCommentsForUser(userId);
             return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
         }
 
         [HttpGet("posts/{postId:int}/comments")]
-        public ActionResult<IEnumerable<CommentDto>> GetCommentsForPost(int postId)
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsForPost(int postId)
         {
-            var commentsFromRepo = _commentRepo.GetCommentsForPost(postId);
+            var commentsFromRepo = await _commentRepo.GetCommentsForPost(postId);
             return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
         }
 
         // GET api/comments/{commentId}
         [HttpGet("comments/{commentId}", Name = "GetComment")]
-        public ActionResult GetCommentForUser(int commentId)
+        public async Task<ActionResult> GetCommentForUser(int commentId)
         {
-            var commentFromRepo = _commentRepo.GetCommentById(commentId);
+            var commentFromRepo = await _commentRepo.GetCommentById(commentId);
             if (commentFromRepo == null)
             {
                 return NotFound();
@@ -53,11 +55,11 @@ namespace DotNetCoreReactREST.Controllers
 
         // POST api/comments
         [HttpPost("comments")]
-        public ActionResult<CommentDto> CreateComment(CommentForCreationDto comment)
+        public async Task<ActionResult<CommentDto>> CreateComment(CommentForCreationDto comment)
         {
             var commentToAdd = _mapper.Map<Comment>(comment);
-            _commentRepo.AddComment(commentToAdd);
-            _commentRepo.Save();
+            await _commentRepo.AddComment(commentToAdd);
+            await _commentRepo.Save();
 
             var commentToReturn = _mapper.Map<CommentDto>(commentToAdd);
             return CreatedAtRoute("GetComment",
@@ -67,9 +69,9 @@ namespace DotNetCoreReactREST.Controllers
 
         // PUT comments/{commentId}
         [HttpPut("comments/{commentId}")]
-        public ActionResult UpdateComment(int commentId, CommentForUpdateDto comment)
+        public async Task<ActionResult> UpdateComment(int commentId, CommentForUpdateDto comment)
         {
-            var commentToUpdate = _commentRepo.GetCommentById(commentId);
+            var commentToUpdate = await _commentRepo.GetCommentById(commentId);
             if (commentToUpdate == null)
             {
                 return BadRequest();
@@ -77,17 +79,17 @@ namespace DotNetCoreReactREST.Controllers
             _mapper.Map(comment, commentToUpdate);
 
             _commentRepo.UpdateComment(commentToUpdate);
-            _commentRepo.Save();
+            await _commentRepo.Save();
 
             return NoContent();
         }
 
         //api/comments/commentId
         [HttpPatch("comments/{commentId}")]
-        public ActionResult UpdateCommentPartially(int commentId,
+        public async Task<ActionResult> UpdateCommentPartially(int commentId,
             JsonPatchDocument<CommentForUpdateDto> patchDocument)
         {
-            var commentFromRepo = _commentRepo.GetCommentById(commentId);
+            var commentFromRepo = await _commentRepo.GetCommentById(commentId);
             if (commentFromRepo == null)
             {
                 return BadRequest();
@@ -106,7 +108,7 @@ namespace DotNetCoreReactREST.Controllers
             //does nothing, just following convention
             _mapper.Map(commentToPatch, commentFromRepo);
             _commentRepo.UpdateComment(commentFromRepo);
-            _commentRepo.Save();
+            await _commentRepo.Save();
 
             return NoContent();
         }
@@ -114,15 +116,15 @@ namespace DotNetCoreReactREST.Controllers
 
         // DELETE api/comments/{commentId}
         [HttpDelete("comments/{commentId}")]
-        public ActionResult Delete(int commentId)
+        public async Task<ActionResult> Delete(int commentId)
         {
-            var commentFromRepo = _commentRepo.GetCommentById(commentId);
+            var commentFromRepo = await _commentRepo.GetCommentById(commentId);
             if (commentFromRepo == null)
             {
                 return NotFound();
             }
             _commentRepo.DeleteComment(commentFromRepo);
-            _commentRepo.Save();
+            await _commentRepo.Save();
             return NoContent();
         }
 
