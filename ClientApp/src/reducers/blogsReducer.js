@@ -7,7 +7,8 @@ const initialState = {
     id: 0,
     title: "",
     body: "",
-    comments: []
+    comments: [],
+    likeCount: 0
 
     // postId and dateCreated are strings in the JSON response
   }
@@ -72,6 +73,18 @@ export function blogsReducer(state = initialState, { type, payload }) {
         loading: false,
         single: { ...state, comments: [...state.comments, payload] }
       };
+    case "DELETE_LIKE":
+      return {
+        ...state,
+        loading: false,
+        single: { ...state, likeCount: likeCount - 1 }
+      };
+    case "DELETE_COMMENT":
+      return {
+        ...state, 
+        loading: false, 
+        single: { ...state, comments: } // filter / airth 
+      }
 
     // case "TOGGLE_BLOG_LIKE":
     //   return {

@@ -23,8 +23,9 @@ const SingleLayout = ({ markup, match }) => {
   const [showingEditor, setShowingEditor] = useState(true);
 
   const blog = useSelector(state => state.blogs.single);
-  const cat = useSelector(state => state.blogs.simple);
   const loading = useSelector(state => state.blogs.loading);
+  const user = useSelector(state => state.auth.user);
+  // pass user (appuserid) and blog (postid) as props to AddComment
 
   const like_or_dislike = () => {
     setLiked(prev => !prev);

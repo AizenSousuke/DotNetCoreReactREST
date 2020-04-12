@@ -74,13 +74,11 @@ export const getLikesForComment = id => async dispatch => {
 
 export const createComment = comment => async dispatch => {
   const response = await api
-    .post(`/comments/${comment.id}`, {
-      id: comment.id,
+    .post(`/comments/`, {
       content: comment.content,
       postId: comment.postId,
-      applicationUserId: user.applicationUserId,
-      dateCreated: comment.date,
-      isAnonymous: comment.IsAnonymous
+      applicationUserId: comment.applicationUserId,
+      isAnonymous: comment.isAnonymous
     })
     .then(data =>
       dispatch({
@@ -89,6 +87,12 @@ export const createComment = comment => async dispatch => {
         payload: data
       }).catch(error => console.log(error))
     );
+};
+
+export const deleteLike = id => async dispatch => {
+  const response = await api
+    .delete(`/likes/${id}`)
+    .then(data => dispatch({ type: "DELETE_LIKE", payload: data }));
 };
 
 // export const toggleLiked = (id, target) => async dispatch => {
