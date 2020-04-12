@@ -2,7 +2,11 @@
   top: 100px;
   padding: none;
   margin-top: 100px;
-  margin-left: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  // display: block;
+  white-space: nowrap;
+  overflow-x: auto;
 
   h3 {
     padding-left: 15px;
@@ -28,8 +32,21 @@
       font-weight: bold;
     }
 
+    .like-container {
+      display: inline-block;
+    }
+
     .like-button {
       cursor: pointer;
+      padding-left: 10px;
+    }
+
+    .btn-primary {
+      background-color: #00baff;
+      border-color: #00baff;
+      display: block;
+      margin-top: 15px;
+      margin-left: -10px;
     }
   }
 }

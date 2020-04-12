@@ -12,26 +12,29 @@ const Comment = props => {
           alt="avatar"
         />
       </Col>
-      <Col md="10">
+      <Col md="9">
         <a>{!props.isAnonmyous ? props.name : null}</a>
         <div>
           <i className="far fa-clock"></i>
           <span> {props.date}</span>
         </div>
         <p>{props.content}</p>
-        <div>
+      </Col>
+      <Col xs="1">
+        <div className="like-container">
           {!liked ? (
             <i
               onClick={() => setLiked(true)}
-              className="far fa-thumbs-up like-button"
+              className="far fa-lg fa-thumbs-up like-button"
             />
           ) : (
             <i
               onClick={() => setLiked(false)}
-              className="fas fa-thumbs-up like-button"
+              className="fas fa-lg fa-thumbs-up like-button"
             />
           )}
         </div>
+        <button className="btn-primary">Reply</button>
       </Col>
     </Row>
   );
