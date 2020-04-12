@@ -1,11 +1,28 @@
-backend:
-  - Controllers/*
-  - Repositories/*
-  - Entities/*
-  - Dtos/*
-  - DbContexts/*
-  - Profiles/*
-  - Services/*
-  - Helpers/*
-frontend:
-  - ClientApp/*
+name: "Pull Request Labeler"
+on:
+- pull_request
+
+jobs:
+  backend:
+    - Controllers/*
+    - Repositories/*
+    - Entities/*
+    - Dtos/*
+    - DbContexts/*
+    - Profiles/*
+    - Services/*
+    - Helpers/*
+  
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/labeler@v2
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+  frontend:
+    - ClientApp/*
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/labeler@v2
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
