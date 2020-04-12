@@ -10,17 +10,6 @@ on: [pull_request]
 
 jobs:
   label:
-    backend:
-      - Controllers/*
-      - Repositories/*
-      - Entities/*
-      - Dtos/*
-      - DbContexts/*
-      - Profiles/*
-      - Services/*
-      - Helpers/*
-    frontend:
-      - ClientApp/*
 
     runs-on: ubuntu-latest
 
