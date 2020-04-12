@@ -1,10 +1,8 @@
-import axios from "axios";
+import api from "../api";
 
 export const getBlogs = () => async dispatch => {
-  const response = await axios.get(
-    "https://jsonplaceholder.typicode.com/posts"
-  );
-  response.data.forEach((blog, i) => (blog.name = `My Blog ${i + 1}`));
+  const response = await api.get("/posts");
+  console.log("getblogsresponse:", response);
   dispatch({ type: "SET_BLOGS", payload: response.data });
 };
 
@@ -15,43 +13,93 @@ export const getSingleBlog = id => async (dispatch, getState) => {
     return;
   }
   const blogs = getState().blogs.all;
-  const blog = blogs.find(b => {
-    if (b.id === id) return b;
-  });
+  const blog = blogs.find(b => b.id === id);
   if (blog) {
     dispatch({ type: "SET_SINGLE_BLOG", payload: blog });
     return;
   }
-  console.log(blogs);
-  const response = await axios.get(
-    `https://jsonplaceholder.typicode.com/posts/${id}`
-  );
+  const response = await api.get(`/posts/${id}`);
+  console.log(response);
   dispatch({ type: "SET_SINGLE_BLOG", payload: response.data });
 };
 
-// export const getComments = id => async dispatch => {
-//   const response = await axios
-//     .get("https://localhost:5001/api/comments")
-//     .then(dispatch({ type: "SET_COMMENTS", payload: response.data }))
-//     .catch(err => {
-//       console.log;
-//       "Error: ", err;
-//       return null;
-//     });
-// };
-
-export const createComment = (id, name, content, date, isAnonymous) => {
-  return {
-    type: "CREATE_COMMENT",
-    payload: {
-      id,
-      name,
-      content,
-      date,
-      isAnonymous
+export const editBlog = blog => async dispatch => {
+  console.log(blog);
+  await api.patch("/posts/" + blog.id, [
+    {
+      value: blog.title,
+      path: "/title",
+      op: "replace"
+    },
+    {
+      value: blog.description,
+      path: "/content",
+      op: "replace"
+    },
+    {
+      path: "/categoryId",
+      value: blog.categoryId,
+      op: "replace"
     }
-  };
+  ]);
+  dispatch({ type: "UPDATE_BLOG", payload: blog });
 };
+
+export const getSingleBlogComments = id => async dispatch => {
+  const responce = api
+    .get(`/posts/${id}/comments`)
+    .then(data => dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data }))
+    .catch(error => console.log(error));
+};
+
+export const getUsers = () => async dispatch => {
+  const response = api
+    .get("/users")
+    .then(data => dispatch({ type: "SET_USERS", payload: data }));
+};
+
+// get all categories, useful for filtering by category
+export const getCategories = () => async dispatch => {
+  const response = await api.get("/categories");
+  console.log("categories response: ", response);
+  dispatch({ type: "SET_CATEGORIES", payload: response.data });
+};
+
+export const getLikesForComment = id => async dispatch => {
+  const response = await api
+    .get(`/comments/${id}/comments/likes`)
+    .then(data => dispatch({ type: "SET_LIKES_FOR_COMMENT", payload: data }));
+  console.log("getlikesresponse:", response);
+};
+
+export const createComment = comment => async dispatch => {
+  const response = await api
+    .post(`/comments/`, {
+      content: comment.content,
+      postId: comment.postId,
+      applicationUserId: comment.applicationUserId,
+      isAnonymous: comment.isAnonymous
+    })
+    .then(data =>
+      dispatch({
+        // use local state instead to make new comment immediately visible to commenter?
+        type: "SET_SINGLE_BLOG_COMMENTS",
+        payload: data
+      }).catch(error => console.log(error))
+    );
+};
+
+export const deleteLike = id => async dispatch => {
+  const response = await api
+    .delete(`/likes/${id}`)
+    .then(data => dispatch({ type: "DELETE_LIKE", payload: data }));
+};
+
+// export const toggleLiked = (id, target) => async dispatch => {
+//   target === "blog"
+//     ? dispatch({ type: "TOGGLE_BLOG_LIKE" })
+//     : dispatch({ type: "TOGGLE_COMMENT_LIKE" });
+// };
 
 export const setDummyComments = id => {
   return {
@@ -65,4 +113,3 @@ export const setDummyComments = id => {
       isAnonymous: false
     }
   };
-};

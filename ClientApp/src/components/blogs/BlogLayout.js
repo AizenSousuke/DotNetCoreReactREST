@@ -9,7 +9,7 @@ const BlogLayout = ({blogs}) => {
             <div className="d-flex flex-wrap justify-content-center">
               {blogs.map(blog => (
                 <div className="m-5" key={blog.title}>
-                  <h3>{blog.name}</h3>
+                  <h3>{blog.title}</h3>
                   <Card
                     style={{
                       backgroundImage:
@@ -22,10 +22,7 @@ const BlogLayout = ({blogs}) => {
                     <div className="card-overlay text-center ">
                       <Container className="mt-3">
                         <p>
-                          {blog.title} Lorem ipsum dolor, sit amet consectetur
-                          adipisicing elit. Incidunt voluptas quas blanditiis ea
-                          voluptate possimus similique quos commodi delectus
-                          nobis.
+                          {blog.content}
                         </p>
                         <div className="d-flex justify-content-center">
                           <NavLink to={`/blog/${blog.id}`} className="button button--primary mr-2">

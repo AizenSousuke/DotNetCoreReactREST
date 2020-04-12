@@ -9,10 +9,17 @@ namespace DotNetCoreReactREST.Profiles
     {
         public CommentProfile()
         {
+
             CreateMap<Comment, CommentDto>()
            .ForMember(
                     dest => dest.LikesCount,
-                    opt => opt.MapFrom(src => src.Likes.Count()));
+                    opt => opt.MapFrom(src => src.Likes.Count()))
+           .ForMember(
+
+                dest => dest.UserName,
+                opt => opt.MapFrom(src =>
+                src.IsAnonymous == true ? "Anonymous" : src.ApplicationUser.UserName
+                ));
 
             CreateMap<CommentForCreationDto, Comment>();
             CreateMap<CommentForUpdateDto, Comment>();

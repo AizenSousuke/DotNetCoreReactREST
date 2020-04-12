@@ -2,15 +2,19 @@ import React, { useState, useEffect } from "react";
 import propTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { getSingleBlog } from "../../actions/blogActions";
+import {
+  getSingleBlog,
+  editBlog,
+  getSingleBlogComments
+} from "../../actions/blogActions";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Printer from "./Printer";
 import { Container, Col, Row, Spinner } from "reactstrap";
+import { act } from "react-dom/test-utils";
 import Comment from "./Comment";
 import "../../styles/components/comment.scss";
 import AddComment from "./AddComment";
-// import CommonModal from "../common/CommonModal";
 
 const SingleLayout = ({ markup, match }) => {
   const [liked, setLiked] = useState(false);
@@ -24,6 +28,8 @@ const SingleLayout = ({ markup, match }) => {
   const blog = useSelector(state => state.blogs.single);
   const comments = useSelector(state => state.blogs.comments);
   const loading = useSelector(state => state.blogs.loading);
+  const user = useSelector(state => state.auth.user);
+  // pass user (appuserid) and blog (postid) as props to AddComment
 
   const like_or_dislike = () => {
     setLiked(prev => !prev);
@@ -31,19 +37,29 @@ const SingleLayout = ({ markup, match }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     const params = match.params;
+
+    // set blog to null if creating
     if (!Object.keys(params).length) {
       dispatch(getSingleBlog(null));
       setCreating(true);
       return;
     }
     const action = match.params.action;
+    console.log(action);
     if (action === "edit") {
-      dispatch(getSingleBlog(match.params.id));
+      if (blog && !blog.title) {
+        dispatch(getSingleBlog(match.params.id));
+      }
       setEditing(true);
+      setTitle(blog.title);
+      setValue(`<div>${blog.content}</div>`);
       return;
     }
+    // check if blog has been fetched for view, if not fetch it
     dispatch(getSingleBlog(match.params.id));
-  }, [dispatch, match.params]);
+    dispatch(getSingleBlogComments(match.params.id));
+    // dispatch(getLikesForComment(match.params.id));
+  }, [match.params]);
   const viewing = !creating && !editing ? true : false;
 
   SingleLayout.propTypes = {
@@ -53,6 +69,9 @@ const SingleLayout = ({ markup, match }) => {
   };
   return (
     <div>
+      {/* <div>
+        <h1>Comments: {blog.comments}</h1>
+      </div> */}
       {!loading ? (
         <div className="m-auto wrapper">
           <div>
@@ -112,7 +131,21 @@ const SingleLayout = ({ markup, match }) => {
                     <span>View John's other blogs</span>
                   </button>
                   {!viewing && title && value && value !== "<p><br></p>" ? (
-                    <button>
+                    <button
+                      onClick={() => {
+                        if (creating) {
+                          // dispatch(createBlog(1, blog.title, value, 1))
+                          return;
+                        }
+                        const batch = {
+                          id: blog.id,
+                          title: title,
+                          description: value,
+                          categoryId: blog.categoryId
+                        };
+                        dispatch(editBlog(batch));
+                      }}
+                    >
                       <span>{creating ? "Create Blog" : "Save Blog"}</span>
                     </button>
                   ) : (

@@ -8,12 +8,12 @@ namespace DotNetCoreReactREST.Repositories
 {
     public interface IPostRepository
     {
-        IEnumerable<Post> GetPosts();
-        IEnumerable<Post> GetPosts(PostResourceParameter postResourceParameter);
+        Task<List<Post>> GetPostsAsync();
+        Task<List<Post>> GetPostsAsync(PostResourceParameter postResourceParameter);
         Task<Post> GetPostByIdAsync(int postId);
         Task<Post> CreatePostAsync(Post post);
-        Task<Post> UpdatePost(int postId, JsonPatchDocument post);
-        Task<bool> DeletePost(int postId);
+        Task<Post> UpdatePostAsync(int postId, JsonPatchDocument post);
+        Task<bool> DeletePostAsync(int postId);
         Task<bool> Save();
     }
 }
