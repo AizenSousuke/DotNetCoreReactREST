@@ -1,7 +1,44 @@
-export function blogsReducer(state = [], { type, payload }) {
+const initialState = {
+  all: [],
+  loading: true,
+  single: {
+    id: 0,
+    title: "",
+    body: ""
+  },
+  comments: []
+};
+
+export function blogsReducer(state = initialState, { type, payload }) {
   switch (type) {
     case "SET_BLOGS":
-      return payload;
+      return {
+        ...state,
+        all: payload,
+        loading: false
+      };
+    case "SET_SINGLE_BLOG":
+      return {
+        ...state,
+        loading: false,
+        single: payload
+      };
+    case "SET_BLOG_LOADING":
+      return {
+        ...state,
+        loading: payload
+      };
+    case "SET_COMMENTS":
+      return {
+        ...state,
+        loading: false,
+        comments: payload
+      };
+    case "SET_DUMMY_COMMENTS":
+      return {
+        ...state,
+        comments: [...state.comments, payload]
+      };
     default:
       return state;
   }

@@ -5,12 +5,14 @@
   box-shadow: inset 0 0 0 2px #dfe1e6;
   color: $black;
   box-sizing: border-box;
-  border-radius: 3px;
+  border-radius: 30px;
   display: block;
   line-height: 20px;
-  padding: 12px 12px;
+  padding: 3px 12px;
   transition-duration: 0.15s;
   transition-timing-function: ease;
+  border: 1px solid #707070;
+  color: #707070;
 }
 textarea {
   resize: none;
@@ -40,3 +42,15 @@ textarea {
   }
 }
 
+.input--text {
+  border: none;
+  outline: none;
+  color: inherit;
+  background-color: unset;
+  padding: 0;
+  margin: 0;
+  width: auto;
+  &::placeholder {
+    color: inherit;
+  }
+}

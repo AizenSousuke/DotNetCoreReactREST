@@ -1,0 +1,9 @@
+.blog-layout {
+    a {
+        color: $white;
+        &:hover {
+            color: $white;
+            text-decoration: none;
+        }
+    }
+}

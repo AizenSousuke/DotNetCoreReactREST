@@ -1,4 +1,6 @@
 // define default text-styling here
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 .text-center {
     text-align: center;
 }
@@ -12,10 +14,23 @@
 .text-purple {
     color: $purple;
 }
+.text-black {
+    color: black;
+}
 .bold {
     font-weight: bold;
 }
 
 .w-no-wrap {
     white-space: nowrap;
+}
+
+@mixin roboto() {
+font-family: 'Roboto', sans-serif !important;
+}
+@mixin roboto-mono() {
+font-family: 'Roboto Mono', monospace !important;
+}
+body {
+    @include roboto();
 }
