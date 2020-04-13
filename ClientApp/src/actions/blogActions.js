@@ -1,4 +1,6 @@
 import api from "../api";
+import axios from "axios";
+// import APIDispatch from
 
 export const getBlogs = () => async dispatch => {
   const response = await api.get("/posts");
@@ -45,16 +47,26 @@ export const editBlog = blog => async dispatch => {
   dispatch({ type: "UPDATE_BLOG", payload: blog });
 };
 
+// export const getSingleBlogComments = id => async dispatch => {
+//   dispatch({ type: "SET_BLOG_LOADING", payload: true });
+//   if (!id) {
+//     dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: null });
+//     return;
+//   }
+//   const response = await api
+//     .get(`/posts/${id}/comments`)
+//     .then(data => {
+//       console.log("data", data);
+//       dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data });
+//     })
+//     .catch(error => console.log(error));
+// };
+
 export const getSingleBlogComments = id => async dispatch => {
-  dispatch({ type: "SET_BLOG_LOADING", payload: true });
-  if (!id) {
-    dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: null });
-    return;
-  }
   const response = await api
     .get(`/posts/${id}/comments`)
     .then(data => {
-      console.log("dataaa", data);
+      console.log("data", data);
       dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data });
     })
     .catch(error => console.log(error));
@@ -103,6 +115,16 @@ export const createComment = (
     });
 };
 
+export const likeComment = (commentId, userId) => async dispatch => {
+  const response = await api
+    .post(`/api/comments/${commentId}/users/${userId}/likes`)
+    .then(data => {
+      console.log(data);
+      dispatch({ type: "SET_LIKES_FOR_COMMENT", payload: data });
+    })
+    .catch(error => console.log("likeComment error:", error));
+};
+
 export const deleteLike = id => async dispatch => {
   const response = await api
     .delete(`/likes/${id}`)
@@ -128,3 +150,26 @@ export const setDummyComments = id => {
     }
   };
 };
+
+// export function APIDispatch(data) {
+//   return {
+//     type: "SET_SINGLE_BLOG_COMMENTS",
+//     payload: data
+//   };
+// }
+
+// export function callAPI() {
+//   return function (dispatch) {
+//     axios({
+//       method: "post",
+//       url: "https://localhost:5001/api:",
+//       contentType: "application/json; charset=utf-8",
+//       dataType: "json",
+//       data: userData
+//     }).then(function (response) {
+//       state.error = response.data.errors;
+//       state.success = response.data.success;
+//       dispatch(APIDispatch(state));
+//     });
+//   };
+// }

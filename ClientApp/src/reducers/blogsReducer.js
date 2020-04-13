@@ -11,6 +11,7 @@ const initialState = {
     // likeCount: 0
   },
   comments: []
+  // likes: [],
 };
 
 export function blogsReducer(state = initialState, { type, payload }) {
@@ -76,14 +77,15 @@ export function blogsReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         loading: false,
-        single: { ...state.single, comments: payload }
+        // single: { ...state.single, comments: payload },
+        comments: payload
       };
     case "SET_LIKES_FOR_COMMENT":
       return {
         ...state,
         loading: false,
-        single: { ...state, comments: [...state.comments, payload] },
-        comments: payload
+        // single: { ...state, comments: [...state.comments, payload] },
+        likes: payload
       };
     // case "DELETE_COMMENT":
     //   return {

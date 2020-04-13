@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Row, Col, Container } from "reactstrap";
 import "../../styles/components/comment.scss";
+import { useDispatch } from "react-redux";
+import { likeComment, deleteLike } from "../../actions/blogActions";
 
 const Comment = props => {
   const [liked, setLiked] = useState(false);
+  const dispatch = useDispatch();
   return (
     <Row className="comment" key={props.id}>
       <Col xs="2">
@@ -24,12 +27,18 @@ const Comment = props => {
         <div className="like-container">
           {!liked ? (
             <i
-              onClick={() => setLiked(true)}
+              onClick={() => {
+                setLiked(true);
+                // dispatch(likeComment(1, 1));
+              }}
               className="far fa-lg fa-thumbs-up like-button"
             />
           ) : (
             <i
-              onClick={() => setLiked(false)}
+              onClick={() => {
+                setLiked(false);
+                // dispatch(deleteLike(1, 1));
+              }}
               className="fas fa-lg fa-thumbs-up like-button"
             />
           )}

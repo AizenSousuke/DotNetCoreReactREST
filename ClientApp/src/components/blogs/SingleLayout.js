@@ -5,7 +5,8 @@ import { withRouter } from "react-router-dom";
 import {
   getSingleBlog,
   editBlog,
-  getSingleBlogComments
+  getSingleBlogComments,
+  getLikesForComment
 } from "../../actions/blogActions";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -15,6 +16,7 @@ import { act } from "react-dom/test-utils";
 import Comment from "./Comment";
 import "../../styles/components/comment.scss";
 import AddComment from "./AddComment";
+import moment from "moment";
 
 const SingleLayout = ({ markup, match }) => {
   const [liked, setLiked] = useState(false);
@@ -59,6 +61,7 @@ const SingleLayout = ({ markup, match }) => {
     // check if blog has been fetched for view, if not fetch it
     dispatch(getSingleBlog(match.params.id));
     dispatch(getSingleBlogComments(match.params.id));
+    dispatch(getLikesForComment());
     // dispatch(getLikesForComment(match.params.id));
   }, [match.params]);
   const viewing = !creating && !editing ? true : false;
@@ -211,22 +214,22 @@ const SingleLayout = ({ markup, match }) => {
           <AddComment
             // applicationUserId={user.applicationUserId}
             // postId={blog.postId}
-            applicationUserId={99}
-            postId={99}
+            applicationUserId={1}
+            postId={match.params.id}
           />
         </div>
-        <div className="comments-wrapper">
+        {/* <div className="comments-wrapper">
           {comments.map(c => {
             return (
               <Comment
                 key={c.id}
-                name={c.name}
+                name={c.userName}
                 content={c.content}
                 date={c.date}
               />
             );
           })}
-        </div>
+        </div> */}
       </Container>
     </div>
   );
