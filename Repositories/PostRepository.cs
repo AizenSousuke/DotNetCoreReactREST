@@ -3,7 +3,6 @@ using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
