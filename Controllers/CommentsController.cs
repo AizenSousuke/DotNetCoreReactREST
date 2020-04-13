@@ -15,7 +15,7 @@ namespace DotNetCoreReactREST.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class CommentsController : Controller
+    public class CommentsController : ControllerBase
     {
         private readonly ICommentRepository _commentRepo;
         private readonly IMapper _mapper;

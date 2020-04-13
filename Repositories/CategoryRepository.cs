@@ -3,8 +3,6 @@ using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
@@ -25,7 +23,7 @@ namespace DotNetCoreReactREST.Repositories
             }
             await _context.Categories.AddAsync(category);
         }
-        
+
         public async Task<PaginationResourceParameter<Category>> GetAllCategories(PaginationResourceParameter<Category> paginationResourceParameter)
         {
             PaginationResourceParameter<Category> result = new PaginationResourceParameter<Category>(_context);

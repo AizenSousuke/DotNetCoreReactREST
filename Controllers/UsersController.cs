@@ -20,7 +20,7 @@ namespace DotNetCoreReactREST.Controllers
     //TODO Add authentication
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : Controller
+    public class UsersController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepo;
@@ -207,7 +207,7 @@ namespace DotNetCoreReactREST.Controllers
                 ApplicationUser convertedUser = _mapper.Map<ApplicationUser>(user);
                 await _signInManager.SignInAsync(convertedUser, new AuthenticationProperties()
                 {
-                    IsPersistent = true
+                    IsPersistent = rememberMe ? true : false
                 });
                 return Ok("Logged in successfully!");
             }
