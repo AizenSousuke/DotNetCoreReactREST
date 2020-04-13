@@ -20,7 +20,7 @@ namespace DotNetCoreReactREST.Controllers
     //TODO Add authentication
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : Controller
+    public class UsersController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepo;

@@ -12,7 +12,7 @@ namespace DotNetCoreReactREST.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class LikesController : Controller
+    public class LikesController : ControllerBase
     {
         private ILikeRepository _likeRepo;
         private ICommentRepository _commentRepo;
