@@ -3,6 +3,7 @@ using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,52 +34,10 @@ namespace DotNetCoreReactREST.Repositories
             return Posts;
         }
 
-        public async Task<List<Post>> GetPostsAsync(PostResourceParameter postResourceParameters)
+        public async Task<PaginationResourceParameter<Post>> GetPostsAsync(PaginationResourceParameter<Post> paginationResourceParameter)
         {
-            if (postResourceParameters == null)
-            {
-                throw new ArgumentNullException(nameof(postResourceParameters));
-            }
-            if (string.IsNullOrWhiteSpace(postResourceParameters.Category)
-                && string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery)
-                && string.IsNullOrWhiteSpace(postResourceParameters.UserQuery)
-                )
-            {
-                return await GetPostsAsync();
-            }
-
-            // Deferred Execution
-            var collection = _appDbContext.Posts as IQueryable<Post>;
-
-            if (!string.IsNullOrWhiteSpace(postResourceParameters.Category))
-            {
-                var category = postResourceParameters.Category.Trim();
-                collection = collection.Where(post => post.Category.Name.Contains(category));
-            }
-
-            if (!string.IsNullOrWhiteSpace(postResourceParameters.SearchQuery))
-            {
-                var searchQuery = postResourceParameters.SearchQuery.Trim();
-                collection = collection.Where(post =>
-                    post.Title.Contains(searchQuery) ||
-                    post.Description.Contains(searchQuery) ||
-                    post.Content.Contains(searchQuery));
-            }
-
-            if (!string.IsNullOrWhiteSpace(postResourceParameters.UserQuery))
-            {
-                var userQuery = postResourceParameters.UserQuery.Trim();
-                collection = collection.Where(post => post.ApplicationUserId.Contains(userQuery));
-            }
-
-            // Temporarily disabled because it does not work
-            //if (postResourceParameters.PostId != 0)
-            //{
-            //    int postId = postResourceParameters.PostId;
-            //    collection = collection.Where(post => post.Id == postId);
-            //}
-
-            return await collection.OrderByDescending(p => p.Id).ToListAsync();
+            PaginationResourceParameter<Post> result = new PaginationResourceParameter<Post>(_appDbContext);
+            return await result.InitAsync(paginationResourceParameter);
         }
 
         public async Task<Post> GetPostByIdAsync(int postId)
@@ -88,7 +47,7 @@ namespace DotNetCoreReactREST.Repositories
 
         public async Task<Post> UpdatePostAsync(int postId, JsonPatchDocument post)
         {
-            Post oldPost = await GetPostByIdAsync(postId);
+            // Post oldPost = await GetPostByIdAsync(postId);
 
             await Save();
             return await GetPostByIdAsync(postId);

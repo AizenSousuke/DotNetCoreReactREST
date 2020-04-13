@@ -1,0 +1,17 @@
+Repo:
+  - .github/*
+Backend:
+  - Controllers/*
+  - DbContexts/*
+  - Dtos/*
+  - Entities/*
+  - Helpers/*
+  - Migrations/*
+  - Profiles/*
+  - Repositories/*
+  - ResourceParameters/*
+  - Services/*
+Frontend:
+  - ClientApp/*
+Others:
+  - Dockerfile*
