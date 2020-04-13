@@ -4,6 +4,7 @@ using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,9 +29,10 @@ namespace DotNetCoreReactREST.Controllers
         }
         // GET: Api/Comments/{CommentId}/likes
         [HttpGet("comments/{commentId}/likes")]
-        public ActionResult<IEnumerable<LikeDto>> GetLikesForComment(int commentId)
+        public async Task<ActionResult<IEnumerable<LikeDto>>> GetLikesForComment(int commentId)
         {
-            if (!_commentRepo.CommentExists(commentId))
+            var commentExists = await _commentRepo.CommentExists(commentId);
+            if (!commentExists)
             {
                 return BadRequest();
             }
