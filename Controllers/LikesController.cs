@@ -12,12 +12,12 @@ namespace DotNetCoreReactREST.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class LikesController : Controller
+    public class LikesController : ControllerBase
     {
-        private ILikeRepository _likeRepo;
-        private ICommentRepository _commentRepo;
-        private IUserRepository _userRepo;
-        private IMapper _mapper;
+        private readonly ILikeRepository _likeRepo;
+        private readonly ICommentRepository _commentRepo;
+        private readonly IUserRepository _userRepo;
+        private readonly IMapper _mapper;
         public LikesController(ILikeRepository likeRepo,
             ICommentRepository commentRepo, IUserRepository userRepo, IMapper mapper)
         {
@@ -34,7 +34,7 @@ namespace DotNetCoreReactREST.Controllers
             var commentExists = await _commentRepo.CommentExists(commentId);
             if (!commentExists)
             {
-                return BadRequest();
+                return BadRequest("Comment doesn't exist.");
             }
             var likesFromRepo = _likeRepo.GetLikesForComment(commentId);
             return Ok(_mapper.Map<IEnumerable<LikeDto>>(likesFromRepo));
@@ -48,11 +48,11 @@ namespace DotNetCoreReactREST.Controllers
             //like is unique to user, so none should exist
             if (_likeRepo.LikeExists(commentId, userId))
             {
-                return BadRequest();
+                return BadRequest("Comment has been liked.");
             }
             _likeRepo.LikeComment(new Like { CommentId = commentId, ApplicationUserId = userId });
             _likeRepo.Save();
-            return NoContent();
+            return Ok("Comment has been liked.");
         }
 
         //Authenticate to make sure userId is the same as logged user
@@ -63,11 +63,11 @@ namespace DotNetCoreReactREST.Controllers
             var commentFromRepo = _likeRepo.GetLikeById(likeId);
             if (commentFromRepo == null)
             {
-                return BadRequest();
+                return BadRequest("No likes on comment.");
             }
             _likeRepo.UnlikeComment(commentFromRepo);
             _likeRepo.Save();
-            return NoContent();
+            return Ok("Likes has been removed.");
         }
     }
 }

@@ -182,6 +182,7 @@ namespace DotNetCoreReactREST
 
             if (env.IsDevelopment())
             {
+                // In development, the React files will be served from this directory
                 app.UseSpaStaticFiles(new StaticFileOptions()
                 {
                     DefaultContentType = "application/json",
@@ -191,7 +192,11 @@ namespace DotNetCoreReactREST
             else
             {
                 // In production, the React files will be served from this directory
-                app.UseSpaStaticFiles(new StaticFileOptions { RequestPath = "/ClientApp/build" });
+                app.UseSpaStaticFiles(new StaticFileOptions
+                {
+                    DefaultContentType = "application/json",
+                    RequestPath = "/wwwroot"
+                });
             }
 
             // Swashbuckle Swagger
@@ -208,6 +213,15 @@ namespace DotNetCoreReactREST
             // Use authentication and authorization - who are you vs are you allowed
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // Automatically add required content-type headers in case client forgot about it or used the text/plain, for example
+            app.Use(async (context, nextMiddleware) =>
+            {
+                // Remove existing headers and add the required ones
+                context.Request.Headers.Remove("Content-Type");
+                context.Request.Headers.Add("Content-Type", "application/json");
+                await nextMiddleware();
+            });
 
             app.UseEndpoints(endpoints =>
             {

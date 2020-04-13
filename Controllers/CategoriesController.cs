@@ -5,7 +5,6 @@ using DotNetCoreReactREST.Repositories;
 using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Controllers
