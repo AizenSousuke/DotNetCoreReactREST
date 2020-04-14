@@ -4,6 +4,8 @@ services:
         build:
             context: .
             dockerfile: Dockerfile-backend
+        volumes:
+            - ./Logs:/Code/Logs
         ports:
             - "5001:80"
         restart: always

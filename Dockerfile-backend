@@ -9,6 +9,7 @@ RUN apt-get update -yq \
     && curl -sL https://deb.nodesource.com/setup_13.x | bash \
     && apt-get install nodejs -yq
 RUN dotnet publish -c Release -o output
+RUN ls output
 WORKDIR /Stage/output
 RUN ls -l
 
@@ -22,6 +23,10 @@ ENV ASPNETCORE_URLS=http://*:$PORT
 COPY ./wait-for-it.sh .
 CMD dos2unix wait-for-it.sh
 RUN chmod +x wait-for-it.sh
+# Transfer to wwwroot folder
+RUN mv ClientApp/build wwwroot
 RUN ls -l
-EXPOSE 80 5000 5001
+# RUN ls ClientApp/build
+RUN ls wwwroot
+EXPOSE 80
 CMD [ "./wait-for-it.sh", "sql:1433", "-t", "0", "--", "dotnet",  "DotNetCoreReactREST.dll" ]
