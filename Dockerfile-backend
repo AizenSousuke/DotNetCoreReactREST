@@ -16,6 +16,8 @@ RUN ls -l
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 as runtime
 WORKDIR /Code
 COPY --from=stage /Stage/output .
+# Env
+ENV ASPNETCORE_URLS=http://*:$PORT
 # Copy script from local
 COPY ./wait-for-it.sh .
 CMD dos2unix wait-for-it.sh

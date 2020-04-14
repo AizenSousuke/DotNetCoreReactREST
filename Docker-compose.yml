@@ -5,17 +5,17 @@ services:
             context: .
             dockerfile: Dockerfile-backend
         ports:
-            - 5001:80
+            - "5001:80"
         restart: always
-    frontend:
-        build:
-            context: .
-            dockerfile: Dockerfile-frontend
-        depends_on:
-            - backend
-        ports:
-            - 8080:80
-        restart: always
+    #frontend:
+    #    build:
+    #        context: .
+    #        dockerfile: Dockerfile-frontend
+    #    depends_on:
+    #        - backend
+    #    ports:
+    #        - 8080:80
+    #    restart: always
     sql:
         image: mcr.microsoft.com/mssql/server
         environment: 
@@ -23,7 +23,7 @@ services:
             - SA_PASSWORD=P@ssw0rd
         depends_on: 
             - backend
-            - frontend
+        #    - frontend
         volumes: 
             - ./data:/var/opt/mssql/data
         ports: 
