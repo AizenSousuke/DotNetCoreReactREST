@@ -20,6 +20,7 @@
     padding: 20px;
     float: left;
     margin-left: 10px;
+    width: 75%;
 
     img {
       border-radius: 50%;
@@ -34,11 +35,17 @@
 
     .like-container {
       display: inline-block;
+
+      .like-button {
+        cursor: pointer;
+        padding-left: 10px;
+      }
     }
 
-    .like-button {
-      cursor: pointer;
-      padding-left: 10px;
+    .reply-button {
+      padding-left: 5px;
+      margin-top: 20px;
+      margin-left: 20px;
     }
 
     .btn-primary {

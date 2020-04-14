@@ -28,11 +28,14 @@ const SingleLayout = ({ markup, match }) => {
   const [showingEditor, setShowingEditor] = useState(true);
 
   const blog = useSelector(state => state.blogs.single);
-  const comments = useSelector(state => state.blogs.comments);
   const loading = useSelector(state => state.blogs.loading);
+  const comments = useSelector(state => state.blogs.single.comments);
+  // const singleBlogComments = comments;
+  // const comments = blog.comments;
+  const likes = blog.likes;
+
   // const user = useSelector(state => state.auth.user);
   // console.log("user:", user);
-  // pass user (appuserid) and blog (postid) as props to AddComment
 
   const like_or_dislike = () => {
     setLiked(prev => !prev);
@@ -61,17 +64,21 @@ const SingleLayout = ({ markup, match }) => {
     // check if blog has been fetched for view, if not fetch it
     dispatch(getSingleBlog(match.params.id));
     dispatch(getSingleBlogComments(match.params.id));
-    dispatch(getLikesForComment());
+    // dispatch(getLikesForComment());
     // dispatch(getLikesForComment(match.params.id));
   }, [match.params]);
   const viewing = !creating && !editing ? true : false;
 
-  console.log("singlecom:", comments);
+  // console.log("singlecomlikes:", likes);
   SingleLayout.propTypes = {
     creating: propTypes.bool,
     editing: propTypes.bool,
     markup: propTypes.string
   };
+
+  console.log("paramId:", match.params.id);
+  console.log("singlecom:", comments);
+  // console.log("singlecom:", singleBlogComments);
 
   return (
     <div>
@@ -218,18 +225,22 @@ const SingleLayout = ({ markup, match }) => {
             postId={match.params.id}
           />
         </div>
-        {/* <div className="comments-wrapper">
-          {comments.map(c => {
-            return (
-              <Comment
-                key={c.id}
-                name={c.userName}
-                content={c.content}
-                date={c.date}
-              />
-            );
-          })}
-        </div> */}
+        <div className="comments-wrapper">
+          {comments
+            ? comments.map(c => {
+                return (
+                  <Comment
+                    key={c.id}
+                    content={c.content}
+                    postId={c.postId}
+                    userId={c.applicationUserId}
+                    isAnonymous={c.isAnonymous}
+                    date="Just now"
+                  />
+                );
+              })
+            : null}
+        </div>
       </Container>
     </div>
   );

@@ -62,12 +62,22 @@ export const editBlog = blog => async dispatch => {
 //     .catch(error => console.log(error));
 // };
 
+// export const getSingleBlogComments = id => async dispatch => {
+//   const response = await api
+//     .get(`/posts/${id}/comments`)
+//     .then(data => {
+//       console.log("data", data);
+//       dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data });
+//     })
+//     .catch(error => console.log(error));
+// };
+
 export const getSingleBlogComments = id => async dispatch => {
   const response = await api
     .get(`/posts/${id}/comments`)
-    .then(data => {
-      console.log("data", data);
-      dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data });
+    .then(response => {
+      console.log("singlecomdata:", response.data);
+      dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: response.data });
     })
     .catch(error => console.log(error));
 };
@@ -87,9 +97,11 @@ export const getCategories = () => async dispatch => {
 
 export const getLikesForComment = id => async dispatch => {
   const response = await api
-    .get(`/comments/${id}/comments/likes`)
-    .then(data => dispatch({ type: "SET_LIKES_FOR_COMMENT", payload: data }));
-  console.log("getlikesresponse:", response);
+    .get(`/comments/${id}/likes`)
+    .then(response =>
+      dispatch({ type: "SET_LIKES_FOR_COMMENT", payload: response.data })
+    );
+  console.log("getlikesresponse:", response.data);
 };
 
 export const createComment = (
@@ -105,15 +117,42 @@ export const createComment = (
       applicationUserId: applicationUserId,
       isAnonymous: isAnonymous
     })
-    .then(data => {
-      console.log("createcommentdata:", data);
+    .then(response => {
+      console.log("createcommentdata:", response.data);
       dispatch({
         // use local state instead to make new comment immediately visible to commenter?
         type: "SET_SINGLE_BLOG_COMMENTS",
-        payload: data
+        payload: response.data
       }).catch(error => console.log(error));
     });
 };
+
+// export const createComment = comment => async dispatch => {
+//   console.log("createcomment");
+//   await api.patch("/posts/" + comment.id, [
+//     {
+//       value: comment.content,
+//       path: "/content",
+//       op: "replace"
+//     },
+//     {
+//       value: comment.postId,
+//       path: "/postId",
+//       op: "replace"
+//     },
+//     {
+//       path: "/applicationUserId",
+//       value: comment.applicationUserId,
+//       op: "replace"
+//     },
+//     {
+//       value: comment.isAnonymous,
+//       path: "/isAnonymous",
+//       op: "replace"
+//     }
+//   ]);
+//   dispatch({ type: "CREATE_COMMENT", payload: comment });
+// };
 
 export const likeComment = (commentId, userId) => async dispatch => {
   const response = await api

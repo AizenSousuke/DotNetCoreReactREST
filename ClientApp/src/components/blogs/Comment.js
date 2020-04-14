@@ -16,7 +16,7 @@ const Comment = props => {
         />
       </Col>
       <Col md="9">
-        <a>{!props.isAnonmyous ? props.name : null}</a>
+        {!props.isAnonmyous ? <a>User ID: {props.userId}</a> : null}
         <div>
           <i className="far fa-clock"></i>
           <span> {props.date}</span>
@@ -43,7 +43,8 @@ const Comment = props => {
             />
           )}
         </div>
-        <button className="btn-primary">Reply</button>
+        <Row>{<i className="fas fa-lg fa-reply reply-button"></i>}</Row>
+        {/* <button className="btn-primary">Reply</button> */}
       </Col>
     </Row>
   );

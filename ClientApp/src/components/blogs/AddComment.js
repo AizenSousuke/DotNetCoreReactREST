@@ -27,11 +27,10 @@ const AddComment = props => {
         toggle={toggle}
         className="comments-modal"
       >
-        <ModalHeader toggle={toggle}>Leave a comment</ModalHeader>
+        <ModalHeader className="comment-modal-header" toggle={toggle}>
+          Leave a comment
+        </ModalHeader>
         <ModalBody className="comment-modal">
-          {/* <div className="comment-box-wrapper">
-            <textarea form="comment-box" onChange={setContent} />
-          </div> */}
           <textarea form="comment-box" onChange={setContent} />
           <form
             id="comment-form"
@@ -42,7 +41,7 @@ const AddComment = props => {
                 createComment(
                   content,
                   props.postId,
-                  props.applicationId,
+                  props.applicationUserId,
                   false
                   // moment().format("DD-MM-YYYY"),
                 )

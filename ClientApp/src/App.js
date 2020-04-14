@@ -6,7 +6,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import {
   getBlogs,
   getUsers,
-  getCategories
+  getCategories,
+  getSingleBlogComments,
+  getLikesForComment
   // setDummyComments
 } from "./actions/blogActions";
 import { setUser } from "./actions/auth";
@@ -16,10 +18,14 @@ import Blog from "./pages/Blog";
 
 const App = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getBlogs());
-    dispatch(getUsers());
-    dispatch(getCategories());
+    dispatch(getSingleBlogComments(1));
+    // dispatch(getLikesForComment(1));
+    // dispatch(getUsers());
+    // dispatch(getCategories());
+
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       dispatch(setUser(user));

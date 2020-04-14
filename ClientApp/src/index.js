@@ -17,6 +17,10 @@ const composeEnhancers =
 
 const enhancers = composeEnhancers(applyMiddleware(thunk));
 
+// const apiCall = store => next => action => {
+//   next(action);
+// };
+
 let store = createStore(allReducers, enhancers);
 // store.subscribe(() => {
 //   console.log("STORE:", JSON.stringify(store.getState()));

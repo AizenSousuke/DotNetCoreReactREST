@@ -7,11 +7,15 @@ const initialState = {
     id: 0,
     title: "",
     body: "",
-    comments: []
+    comments: [
+      // {
+      //   isLiked: false
+      // }
+    ]
     // likeCount: 0
-  },
-  comments: []
-  // likes: [],
+  }
+  // comments: [],
+  // likes: []
 };
 
 export function blogsReducer(state = initialState, { type, payload }) {
@@ -78,15 +82,31 @@ export function blogsReducer(state = initialState, { type, payload }) {
         ...state,
         loading: false,
         // single: { ...state.single, comments: payload },
-        comments: payload
+        single: {
+          ...state.single,
+          comments: payload
+          // comments: [...state.single.comments, payload]
+        }
       };
-    case "SET_LIKES_FOR_COMMENT":
+    case "CREATE_COMMENT":
       return {
         ...state,
         loading: false,
-        // single: { ...state, comments: [...state.comments, payload] },
-        likes: payload
+        single: {
+          ...state.single,
+          comments: [...state.single.comments, { payload }]
+        }
       };
+    // case "SET_LIKES_FOR_COMMENT":
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     // single: { ...state, comments: [...state.comments, payload] },
+    //     single: {
+    //       ...state.single,
+    //       likes: [...state.single.likes, payload]
+    //     }
+    //   };
     // case "DELETE_COMMENT":
     //   return {
     //     ...state,
