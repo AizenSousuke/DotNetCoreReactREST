@@ -1,12 +1,17 @@
 const initialState = {
   all: [],
+  users: [],
+  categories: [],
   loading: true,
   single: {
     id: 0,
     title: "",
-    body: ""
-  },
-  comments: []
+    body: "",
+    comments: []
+    // likeCount: 0
+  }
+  // comments: [],
+  // likes: []
 };
 
 export function blogsReducer(state = initialState, { type, payload }) {
@@ -28,17 +33,95 @@ export function blogsReducer(state = initialState, { type, payload }) {
         ...state,
         loading: payload
       };
-    case "SET_COMMENTS":
-      return {
-        ...state,
-        loading: false,
-        comments: payload
-      };
+    // case "CREATE_COMMENT":
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     comments: [...state, payload]
+    //     // single: { ...state.single, comments: payload }
+    //   };
     case "SET_DUMMY_COMMENTS":
       return {
         ...state,
         comments: [...state.comments, payload]
       };
+    case "UPDATE_BLOG":
+      const temp = state.all.find(blog => blog.id === payload.id);
+      const index = state.all.indexOf(temp);
+      return {
+        ...state,
+        loading: false,
+        all: [
+          ...state.all.slice(0, index),
+          {
+            title: payload.title,
+            content: payload.description,
+            categoryId: payload.categoryId
+          },
+          ...state.all.slice(index + 1)
+        ]
+      };
+    case "SET_USERS":
+      return {
+        ...state,
+        loading: false,
+        users: payload
+      };
+    case "SET_CATEGORIES":
+      return {
+        ...state,
+        loading: false,
+        categories: payload
+      };
+    case "SET_SINGLE_BLOG_COMMENTS":
+      return {
+        ...state,
+        loading: false,
+        single: {
+          ...state.single,
+          comments: payload
+        }
+      };
+    case "CREATE_COMMENT":
+      console.log("reducerhit");
+      return {
+        ...state,
+        loading: false,
+        single: {
+          ...state.single,
+          comments: [...state.single.comments, payload]
+          // ...state,
+          // loading: false,
+          // state.single.comments: [...state.single.comments, payload]
+        }
+      };
+    // case "SET_LIKES_FOR_COMMENT":
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     // single: { ...state, comments: [...state.comments, payload] },
+    //     single: {
+    //       ...state.single,
+    //       likes: [...state.single.likes, payload]
+    //     }
+    //   };
+    // case "DELETE_COMMENT":
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     single: { ...state, comments: } // filter / airth
+    //   }
+    // case "DELETE_LIKE":
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     single: { ...state, likeCount: likeCount - 1 }
+    //   };
+    // case "TOGGLE_BLOG_LIKE":
+    //   return {
+    //     ...state
+    //   };
+
     default:
       return state;
   }

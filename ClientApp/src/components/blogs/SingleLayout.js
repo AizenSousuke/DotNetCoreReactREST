@@ -2,13 +2,21 @@ import React, { useState, useEffect } from "react";
 import propTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { getSingleBlog } from "../../actions/blogActions";
+import {
+  getSingleBlog,
+  editBlog,
+  getSingleBlogComments,
+  getLikesForComment
+} from "../../actions/blogActions";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Printer from "./Printer";
 import { Container, Col, Row, Spinner } from "reactstrap";
+import { act } from "react-dom/test-utils";
 import Comment from "./Comment";
 import "../../styles/components/comment.scss";
+import AddComment from "./AddComment";
+import moment from "moment";
 
 const SingleLayout = ({ markup, match }) => {
   const [liked, setLiked] = useState(false);
@@ -20,8 +28,14 @@ const SingleLayout = ({ markup, match }) => {
   const [showingEditor, setShowingEditor] = useState(true);
 
   const blog = useSelector(state => state.blogs.single);
-  const comments = useSelector(state => state.blogs.comments);
   const loading = useSelector(state => state.blogs.loading);
+  const comments = useSelector(state => state.blogs.single.comments);
+  // const singleBlogComments = comments;
+  // const comments = blog.comments;
+  const likes = blog.likes;
+
+  // const user = useSelector(state => state.auth.user);
+  // console.log("user:", user);
 
   const like_or_dislike = () => {
     setLiked(prev => !prev);
@@ -29,28 +43,49 @@ const SingleLayout = ({ markup, match }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     const params = match.params;
+
+    // set blog to null if creating
     if (!Object.keys(params).length) {
       dispatch(getSingleBlog(null));
       setCreating(true);
       return;
     }
     const action = match.params.action;
+    console.log(action);
     if (action === "edit") {
-      dispatch(getSingleBlog(match.params.id));
+      if (blog && !blog.title) {
+        dispatch(getSingleBlog(match.params.id));
+      }
       setEditing(true);
+      setTitle(blog.title);
+      setValue(`<div>${blog.content}</div>`);
       return;
     }
+    // check if blog has been fetched for view, if not fetch it
     dispatch(getSingleBlog(match.params.id));
-  }, [dispatch, match.params]);
+    dispatch(getSingleBlogComments(match.params.id));
+    // dispatch(getLikesForComment());
+    // dispatch(getLikesForComment(match.params.id));
+  }, [match.params]);
   const viewing = !creating && !editing ? true : false;
 
+  // console.log("singlecomlikes:", likes);
   SingleLayout.propTypes = {
     creating: propTypes.bool,
     editing: propTypes.bool,
     markup: propTypes.string
   };
+
+  console.log("paramId:", match.params.id);
+  console.log("singlecom:", comments);
+  // console.log("singlecom:", singleBlogComments);
+
   return (
     <div>
+      {JSON.stringify(comments)}
+      {/* <div>
+        <h1>Comments: {blog.comments}</h1>
+      </div> */}
       {!loading ? (
         <div className="m-auto wrapper">
           <div>
@@ -110,7 +145,21 @@ const SingleLayout = ({ markup, match }) => {
                     <span>View John's other blogs</span>
                   </button>
                   {!viewing && title && value && value !== "<p><br></p>" ? (
-                    <button>
+                    <button
+                      onClick={() => {
+                        if (creating) {
+                          // dispatch(createBlog(1, blog.title, value, 1))
+                          return;
+                        }
+                        const batch = {
+                          id: blog.id,
+                          title: title,
+                          description: value,
+                          categoryId: blog.categoryId
+                        };
+                        dispatch(editBlog(batch));
+                      }}
+                    >
                       <span>{creating ? "Create Blog" : "Save Blog"}</span>
                     </button>
                   ) : (
@@ -169,17 +218,29 @@ const SingleLayout = ({ markup, match }) => {
         </div>
       )}
       <Container>
+        <div>
+          <AddComment
+            // applicationUserId={user.applicationUserId}
+            // postId={blog.postId}
+            applicationUserId={1}
+            postId={match.params.id}
+          />
+        </div>
         <div className="comments-wrapper">
-          {comments.map(c => {
-            return (
-              <Comment
-                key={c.id}
-                name={c.name}
-                content={c.content}
-                date={c.date}
-              />
-            );
-          })}
+          {comments
+            ? comments.map(c => {
+                return (
+                  <Comment
+                    key={c.id}
+                    content={c.content}
+                    postId={c.postId}
+                    userId={c.applicationUserId}
+                    isAnonymous={c.isAnonymous}
+                    date="Just now"
+                  />
+                );
+              })
+            : null}
         </div>
       </Container>
     </div>
