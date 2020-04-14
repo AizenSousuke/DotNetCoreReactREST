@@ -1,0 +1,35 @@
+.comments-wrapper {
+  top: 100px;
+  padding: none;
+  margin-top: 100px;
+  margin-left: 0px;
+
+  h3 {
+    padding-left: 15px;
+  }
+
+  .comment {
+    margin-left: 0px;
+    margin-bottom: 15px;
+    box-shadow: 0px 5px 50px #00000033;
+    border-radius: 20px;
+    padding: 20px;
+    float: left;
+    margin-left: 10px;
+
+    img {
+      border-radius: 50%;
+      flex: 1;
+      width: 50px;
+    }
+
+    a {
+      color: purple;
+      font-weight: bold;
+    }
+
+    .like-button {
+      cursor: pointer;
+    }
+  }
+}
