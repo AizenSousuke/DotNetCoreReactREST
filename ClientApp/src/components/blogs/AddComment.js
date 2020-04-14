@@ -31,11 +31,15 @@ const AddComment = props => {
           Leave a comment
         </ModalHeader>
         <ModalBody className="comment-modal">
-          <textarea form="comment-box" onChange={setContent} />
+          <textarea
+            form="comment-box"
+            onChange={e => setContent(e.target.value)}
+          />
           <form
             id="comment-form"
             onSubmit={e => {
               e.preventDefault();
+
               console.log("content: ", content);
               dispatch(
                 createComment(
@@ -47,13 +51,13 @@ const AddComment = props => {
                 )
               );
             }}
-          />
+          >
+            <Button type="submit" color="primary" onClick={toggle}>
+              Send
+            </Button>
+          </form>
         </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={toggle}>
-            Send
-          </Button>
-        </ModalFooter>
+        <ModalFooter></ModalFooter>
       </Modal>
     </>
 

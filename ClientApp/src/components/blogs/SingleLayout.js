@@ -82,6 +82,7 @@ const SingleLayout = ({ markup, match }) => {
 
   return (
     <div>
+      {JSON.stringify(comments)}
       {/* <div>
         <h1>Comments: {blog.comments}</h1>
       </div> */}

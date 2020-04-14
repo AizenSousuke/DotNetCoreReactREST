@@ -110,21 +110,23 @@ export const createComment = (
   applicationUserId,
   isAnonymous
 ) => async dispatch => {
+  console.log("working");
   const response = await api
     .post(`/comments/`, {
-      content: content,
-      postId: postId,
-      applicationUserId: applicationUserId,
-      isAnonymous: isAnonymous
+      content,
+      postId,
+      applicationUserId,
+      isAnonymous
     })
-    .then(response => {
-      console.log("createcommentdata:", response.data);
+    .then(({ data }) => {
+      console.log("createcommentdata:", data);
       dispatch({
         // use local state instead to make new comment immediately visible to commenter?
-        type: "SET_SINGLE_BLOG_COMMENTS",
-        payload: response.data
-      }).catch(error => console.log(error));
-    });
+        type: "CREATE_COMMENT",
+        payload: data
+      });
+    })
+    .catch(error => console.log(error));
 };
 
 // export const createComment = comment => async dispatch => {

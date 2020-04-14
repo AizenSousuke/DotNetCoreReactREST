@@ -7,11 +7,7 @@ const initialState = {
     id: 0,
     title: "",
     body: "",
-    comments: [
-      // {
-      //   isLiked: false
-      // }
-    ]
+    comments: []
     // likeCount: 0
   }
   // comments: [],
@@ -81,20 +77,22 @@ export function blogsReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         loading: false,
-        // single: { ...state.single, comments: payload },
         single: {
           ...state.single,
           comments: payload
-          // comments: [...state.single.comments, payload]
         }
       };
     case "CREATE_COMMENT":
+      console.log("reducerhit");
       return {
         ...state,
         loading: false,
         single: {
           ...state.single,
-          comments: [...state.single.comments, { payload }]
+          comments: [...state.single.comments, payload]
+          // ...state,
+          // loading: false,
+          // state.single.comments: [...state.single.comments, payload]
         }
       };
     // case "SET_LIKES_FOR_COMMENT":
