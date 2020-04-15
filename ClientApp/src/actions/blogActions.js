@@ -1,10 +1,8 @@
 import api from "../api";
 import axios from "axios";
-// import APIDispatch from
 
 export const getBlogs = () => async dispatch => {
   const response = await api.get("/posts");
-  console.log("getblogsresponse:", response);
   dispatch({ type: "SET_BLOGS", payload: response.data });
 };
 
@@ -21,12 +19,10 @@ export const getSingleBlog = id => async (dispatch, getState) => {
     return;
   }
   const response = await api.get(`/posts/${id}`);
-  console.log(response);
   dispatch({ type: "SET_SINGLE_BLOG", payload: response.data });
 };
 
 export const editBlog = blog => async dispatch => {
-  console.log(blog);
   await api.patch("/posts/" + blog.id, [
     {
       value: blog.title,
@@ -47,37 +43,11 @@ export const editBlog = blog => async dispatch => {
   dispatch({ type: "UPDATE_BLOG", payload: blog });
 };
 
-// export const getSingleBlogComments = id => async dispatch => {
-//   dispatch({ type: "SET_BLOG_LOADING", payload: true });
-//   if (!id) {
-//     dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: null });
-//     return;
-//   }
-//   const response = await api
-//     .get(`/posts/${id}/comments`)
-//     .then(data => {
-//       console.log("data", data);
-//       dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data });
-//     })
-//     .catch(error => console.log(error));
-// };
-
-// export const getSingleBlogComments = id => async dispatch => {
-//   const response = await api
-//     .get(`/posts/${id}/comments`)
-//     .then(data => {
-//       console.log("data", data);
-//       dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data });
-//     })
-//     .catch(error => console.log(error));
-// };
-
 export const getSingleBlogComments = id => async dispatch => {
   const response = await api
     .get(`/posts/${id}/comments`)
-    .then(response => {
-      console.log("singlecomdata:", response.data);
-      dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: response.data });
+    .then(({ data }) => {
+      dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data });
     })
     .catch(error => console.log(error));
 };
@@ -101,7 +71,6 @@ export const getLikesForComment = id => async dispatch => {
     .then(response =>
       dispatch({ type: "SET_LIKES_FOR_COMMENT", payload: response.data })
     );
-  console.log("getlikesresponse:", response.data);
 };
 
 export const createComment = (
@@ -110,7 +79,6 @@ export const createComment = (
   applicationUserId,
   isAnonymous
 ) => async dispatch => {
-  console.log("working");
   const response = await api
     .post(`/comments/`, {
       content,
@@ -119,7 +87,6 @@ export const createComment = (
       isAnonymous
     })
     .then(({ data }) => {
-      console.log("createcommentdata:", data);
       dispatch({
         // use local state instead to make new comment immediately visible to commenter?
         type: "CREATE_COMMENT",
@@ -129,38 +96,19 @@ export const createComment = (
     .catch(error => console.log(error));
 };
 
-// export const createComment = comment => async dispatch => {
-//   console.log("createcomment");
-//   await api.patch("/posts/" + comment.id, [
-//     {
-//       value: comment.content,
-//       path: "/content",
-//       op: "replace"
-//     },
-//     {
-//       value: comment.postId,
-//       path: "/postId",
-//       op: "replace"
-//     },
-//     {
-//       path: "/applicationUserId",
-//       value: comment.applicationUserId,
-//       op: "replace"
-//     },
-//     {
-//       value: comment.isAnonymous,
-//       path: "/isAnonymous",
-//       op: "replace"
-//     }
-//   ]);
-//   dispatch({ type: "CREATE_COMMENT", payload: comment });
-// };
+export const setIsLikedForComment = id => async dispatch => {
+  const response = await api
+    .get(`/comments/${id}/likes`)
+    .then(({ data }) => {
+      dispatch({ type: "SET_ISLIKED_FOR_COMMENT", payload: data });
+    })
+    .catch(error => console.log(error));
+};
 
 export const likeComment = (commentId, userId) => async dispatch => {
   const response = await api
     .post(`/api/comments/${commentId}/users/${userId}/likes`)
     .then(data => {
-      console.log(data);
       dispatch({ type: "SET_LIKES_FOR_COMMENT", payload: data });
     })
     .catch(error => console.log("likeComment error:", error));
@@ -191,26 +139,3 @@ export const setDummyComments = id => {
     }
   };
 };
-
-// export function APIDispatch(data) {
-//   return {
-//     type: "SET_SINGLE_BLOG_COMMENTS",
-//     payload: data
-//   };
-// }
-
-// export function callAPI() {
-//   return function (dispatch) {
-//     axios({
-//       method: "post",
-//       url: "https://localhost:5001/api:",
-//       contentType: "application/json; charset=utf-8",
-//       dataType: "json",
-//       data: userData
-//     }).then(function (response) {
-//       state.error = response.data.errors;
-//       state.success = response.data.success;
-//       dispatch(APIDispatch(state));
-//     });
-//   };
-// }

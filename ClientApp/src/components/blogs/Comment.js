@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Row, Col, Container } from "reactstrap";
 import "../../styles/components/comment.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, useEffect } from "react-redux";
 import { likeComment, deleteLike } from "../../actions/blogActions";
 
 const Comment = props => {
   const [liked, setLiked] = useState(false);
+  // const isLiked = useSelector(state => state.blogs.single.comments.isLiked);
   const dispatch = useDispatch();
+  // useEffect(() => {
+  //   const
+  // });
   return (
     <Row className="comment" key={props.id}>
       <Col xs="2">
