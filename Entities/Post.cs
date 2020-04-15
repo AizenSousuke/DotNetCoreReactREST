@@ -22,6 +22,6 @@ namespace DotNetCoreReactREST.Entities
         public ApplicationUser ApplicationUser { get; set; }
         public string ApplicationUserId { get; set; }
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
-
+        public ICollection<PostLike> PostLike { get; set; } = new List<PostLike>();
     }
 }
