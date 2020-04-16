@@ -4,10 +4,18 @@ services:
         build:
             context: .
             dockerfile: Dockerfile-backend
+            args:
+                runnpm: false
         volumes:
             - ./Logs:/Code/Logs
+            - ./Certs:/Code/Certs
         ports:
             - "5001:80"
+        environment:
+            - ASPNETCORE_URLS=https://+;http://+
+            - ASPNETCORE_HTTPS_PORT=5001
+            - APNETCORE_Kestrel__Certificates__Default__Path=/Code/Certs/dotnetcorereactrest.pfx
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=dotnetcorereactrest
         restart: always
     #frontend:
     #    build:
