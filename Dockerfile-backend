@@ -30,7 +30,7 @@ WORKDIR /Code
 # Copy Certs
 # RUN mkdir Certs
 # RUN ls -l
-# COPY ./Certs ./Certs
+# COPY ./Certs Certs
 # RUN ls Certs
 
 # Copy build folder from frontend
@@ -52,5 +52,5 @@ RUN chmod +x wait-for-it.sh
 RUN mv build wwwroot
 RUN ls -l
 RUN ls wwwroot
-EXPOSE 80
+EXPOSE 80 443
 CMD [ "./wait-for-it.sh", "sql:1433", "-t", "0", "--", "dotnet",  "DotNetCoreReactREST.dll" ]

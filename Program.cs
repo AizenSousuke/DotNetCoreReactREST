@@ -39,7 +39,8 @@ namespace DotNetCoreReactREST
                 Log.Information("Application starting up on {MachineName}");
 
                 // Create host
-                var host = CreateHostBuilder(args).Build();
+                var host = CreateHostBuilder(args)
+                    .Build();
 
                 // run the web app
                 host.Run();
