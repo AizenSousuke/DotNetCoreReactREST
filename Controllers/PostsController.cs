@@ -3,6 +3,7 @@ using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using DotNetCoreReactREST.ResourceParameters;
+using DotNetCoreReactREST.Services;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -29,8 +30,16 @@ namespace DotNetCoreReactREST
         [HttpPost]
         public async Task<IActionResult> CreatePostAsync([FromBody]PostDto post)
         {
+            // Take client's path to image file and upload image to imgur
+            ImageUpload imgUpload = new ImageUpload();
+            var url = await imgUpload.Upload(post.ImageUrl);
+
+            // Replace ImageUrl with imgur link of image
+            post.ImageUrl = url;
+            
             Post newPost = await _postRepository.CreatePostAsync(_mapper.Map<Post>(post));
             var baseURI = Request.GetDisplayUrl();
+
             // Alternative way
             // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
             return Created(baseURI + newPost.Id, _mapper.Map<PostDto>(newPost));
