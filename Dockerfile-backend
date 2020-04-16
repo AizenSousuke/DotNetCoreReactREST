@@ -3,10 +3,9 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as stage
 WORKDIR /Stage
 COPY . .
 RUN dotnet restore
-ENV UsingDocker true
-ARG runnpm
+ENV USINGDOCKER true
 # Install node so can call dotnet publish to publish the backend (Will remove later)
-RUN if [ "$runnpm"="false" ]; then echo '================= runnpm has been set to false ===================='; else apt-get update -yq \
+RUN if [ "$USINGDOCKER"="false" ]; then echo '================= USINGDOCKER has been set to false ===================='; else apt-get update -yq \
     && apt-get install curl gnupg -yq \
     && curl -sL https://deb.nodesource.com/setup_13.x | bash \
     && apt-get install nodejs -yq; fi

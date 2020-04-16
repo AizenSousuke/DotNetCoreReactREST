@@ -4,8 +4,6 @@ services:
         build:
             context: .
             dockerfile: Dockerfile-backend
-            args:
-                runnpm: "false"
         volumes:
             - type: bind
               source: ./Logs
@@ -18,6 +16,7 @@ services:
             - "5001:443"
             - "5000:80"
         environment:
+            - USINGDOCKER=true
             - ASPNETCORE_URLS=https://+;http://+
             - ASPNETCORE_HTTPS_PORT=5001
             - APNETCORE_Kestrel__Certificates__Default__Path=/Code/Certs/dotnetcorereactrest.pfx

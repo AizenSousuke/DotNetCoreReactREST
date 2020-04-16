@@ -63,6 +63,8 @@ namespace DotNetCoreReactREST
                 .UseSerilog() // <-- Add this line for serilog;
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseKestrel();
+                    webBuilder.UseWebRoot("wwwroot");
                     webBuilder.UseStartup<Startup>();
                 });
     }
