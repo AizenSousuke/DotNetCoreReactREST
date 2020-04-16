@@ -12,7 +12,7 @@ namespace DotNetCoreReactREST
     {
         public static void Main(string[] args)
         {
-            // Add Serilog for logging through new configuration
+            // Add Serilog for logging through new configuration before the CreateHostBuilder function.
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
@@ -28,11 +28,11 @@ namespace DotNetCoreReactREST
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 .Enrich.WithMachineName()
-                .WriteTo.Console()
+                .WriteTo.Console(outputTemplate: "{Timestamp:HH:mm} [{Level}] {Message}{NewLine}{Exception}")
                 .WriteTo.File(new CompactJsonFormatter(), logfile)
                 .CreateLogger();
 
-            Log.Information("Added logging to Program.cs");
+            Log.Information("Added logging to Program.cs before CreateHostBuilder so can log the try catch.");
 
             try
             {
