@@ -5,7 +5,7 @@ services:
             context: .
             dockerfile: Dockerfile-backend
             args:
-                runnpm: false
+                runnpm: "false"
         volumes:
             - ./Logs:/Code/Logs
             - ./Certs:/Code/Certs
