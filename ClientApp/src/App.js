@@ -22,8 +22,7 @@ const App = () => {
   useEffect(() => {
     dispatch(getBlogs());
     dispatch(getCategories());
-    // dispatch(getLikesForComment(1));
-    // dispatch(getUsers());
+    dispatch(getUsers());
 
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {

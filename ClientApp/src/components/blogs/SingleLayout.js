@@ -16,7 +16,7 @@ import { act } from "react-dom/test-utils";
 import Comment from "./Comment";
 import "../../styles/components/comment.scss";
 import AddComment from "./AddComment";
-import moment from "moment";
+// import moment from "moment";
 
 const SingleLayout = ({ markup, match }) => {
   const [liked, setLiked] = useState(false);
@@ -28,9 +28,22 @@ const SingleLayout = ({ markup, match }) => {
   const [showingEditor, setShowingEditor] = useState(true);
 
   const blog = useSelector(state => state.blogs.single);
+  const users = useSelector(state => state.blogs.users);
   const loading = useSelector(state => state.blogs.loading);
   const comments = blog.comments;
   const likes = blog.likes;
+
+  // const usernames = comments.map(c => {
+  //   if (users[c.id].applicationUserId === c.applicationUserId) {
+  //     c.append(users[]);
+  //   }
+  // });
+
+  // const usernames = comments.map(function (c) {
+  //   function(u) {
+  //     if(u.)
+  //   }
+  // });
 
   // const user = useSelector(state => state.auth.user);
   // console.log("user:", user);

@@ -58,6 +58,10 @@ export const getUsers = () => async dispatch => {
     .then(data => dispatch({ type: "SET_USERS", payload: data }));
 };
 
+export const addUsernamesToComments = users => {
+  return { type: "ADD_USERNAMES_TO_COMMENTS", payload: users.userName };
+};
+
 // get all categories, useful for filtering by category
 export const getCategories = () => async dispatch => {
   const response = await api.get("/categories");

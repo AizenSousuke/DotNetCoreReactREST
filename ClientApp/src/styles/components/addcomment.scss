@@ -8,11 +8,18 @@
   margin-left: 30px;
 }
 
-.comment-box {
-  // display: inline-block;
-  position: absolute;
-  width: 100%;
+.comment-modal {
+  margin: auto;
+  background-color: #00baff;
+  // backgroundImage: "url(" + imgUrl + ")");
+
+  .comment-box {
+    // display: inline-block;
+    position: absolute;
+    width: 100%;
+  }
 }
+
 .comment-box-wrapper {
   border: 1px solid #999999;
   margin: 5px 0;

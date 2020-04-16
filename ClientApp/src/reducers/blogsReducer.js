@@ -88,6 +88,15 @@ export function blogsReducer(state = initialState, { type, payload }) {
             loading: false,
             single: { ...state.single, comments: [] }
           };
+    case "ADD_USERNAMES_TO_COMMENTS":
+      return {
+        ...state,
+        loading: false,
+        single: {
+          ...state,
+          comments: { ...state.single.comments, usernames: payload }
+        }
+      };
     case "CREATE_COMMENT":
       // console.log("reducerhit");
       return {

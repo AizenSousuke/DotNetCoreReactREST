@@ -10,7 +10,7 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 const BlogLayout = ({ blogs }) => {
   const categories = useSelector(state => state.blogs.categories); // pass as props?
-  const [filteredBlogs, setFilteredBlogs] = useState(...blogs);
+  const [filteredBlogs, setFilteredBlogs] = useState();
   const [showFiltered, setShowFiltered] = useState(false);
 
   let blogCategories = [];
@@ -28,23 +28,32 @@ const BlogLayout = ({ blogs }) => {
         <ButtonToolbar>
           {/* <h3 className="toolbar-header">Sort by category</h3> */}
           <ButtonGroup>
-            {catlist.map(c => {
+            {catlist.map(cat => {
               return (
                 <Button
                   onClick={() => {
                     setFilteredBlogs(
-                      [...blogs].filter(b => b.categoryId === c.id)
+                      [...blogs].filter(b => b.categoryId === cat.id)
                     );
                     if (!showFiltered) {
                       setShowFiltered(true);
                     }
                   }}
                 >
-                  {c.name}
+                  {cat.name}
                 </Button>
               );
             })}
           </ButtonGroup>
+          {/* <Button
+            onClick={() => {
+              if (showFiltered) {
+                setShowFiltered(false);
+              }
+            }}
+          >
+            Show All
+          </Button> */}
         </ButtonToolbar>
       </div>
       <div className="blog-layout">

@@ -6,6 +6,7 @@ import { likeComment, deleteLike } from "../../actions/blogActions";
 
 const Comment = props => {
   const [liked, setLiked] = useState(false);
+  const users = useSelector(state => state.blogs.users);
   // const isLiked = useSelector(state => state.blogs.single.comments.isLiked);
   const dispatch = useDispatch();
   // useEffect(() => {
