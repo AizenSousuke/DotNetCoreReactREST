@@ -28,7 +28,8 @@ namespace DotNetCoreReactREST
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 .Enrich.WithMachineName()
-                .WriteTo.Console(outputTemplate: "{Timestamp:HH:mm} [{Level}] {Message}{NewLine}{Exception}")
+                .WriteTo.Console(
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} UTC [{Level}] {Message}{NewLine}{Exception}")
                 .WriteTo.File(new CompactJsonFormatter(), logfile)
                 .CreateLogger();
 
