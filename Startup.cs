@@ -140,10 +140,17 @@ namespace DotNetCoreReactREST
 
             }));
 
-            // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/build";
+                if (Environment.IsDevelopment())
+                {
+                    configuration.RootPath = "ClientApp/build";
+                }
+                else
+                {
+                    // In production, the React files will be served from this directory
+                    configuration.RootPath = "wwwroot";
+                }
             });
         }
 
@@ -172,28 +179,8 @@ namespace DotNetCoreReactREST
                 app.UseHsts();
             }
 
-            // Temporarily disable https for prod
-            if (env.IsDevelopment())
-            {
-                app.UseHttpsRedirection();
-            }
-
-            app.UseStaticFiles();
-
-            if (env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles(new StaticFileOptions()
-                {
-                    DefaultContentType = "application/json",
-                    RequestPath = "/ClientApp/build"
-                });
-            }
-            else
-            {
-                // In production, the React files will be served from this directory
-                app.UseSpaStaticFiles(new StaticFileOptions { RequestPath = "/ClientApp/build" });
-            }
-
+            app.UseHttpsRedirection();
+            
             // Swashbuckle Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -209,6 +196,15 @@ namespace DotNetCoreReactREST
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // Automatically add required content-type headers in case client forgot about it or used the text/plain, for example
+            app.Use(async (context, nextMiddleware) =>
+            {
+                // Remove existing headers and add the required ones
+                context.Request.Headers.Remove("Content-Type");
+                context.Request.Headers.Add("Content-Type", "application/json");
+                await nextMiddleware();
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -216,13 +212,18 @@ namespace DotNetCoreReactREST
                     pattern: "{controller}/{action=Index}/{id?}");
             });
 
+            app.UseStaticFiles();
+
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
-
                 if (env.IsDevelopment())
                 {
+                    spa.Options.SourcePath = "ClientApp";
                     spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+                else
+                {
+                    spa.Options.SourcePath = "wwwroot";
                 }
             });
         }
