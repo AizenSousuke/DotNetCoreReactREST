@@ -74,25 +74,37 @@ export function blogsReducer(state = initialState, { type, payload }) {
         categories: payload
       };
     case "SET_SINGLE_BLOG_COMMENTS":
-      return {
-        ...state,
-        loading: false,
-        single: {
-          ...state.single,
-          comments: payload
-        }
-      };
+      return payload.length > 0
+        ? {
+            ...state,
+            loading: false,
+            single: {
+              ...state.single,
+              comments: payload
+            }
+          }
+        : {
+            ...state,
+            loading: false,
+            single: { ...state.single, comments: [] }
+          };
     case "CREATE_COMMENT":
-      console.log("reducerhit");
+      // console.log("reducerhit");
       return {
         ...state,
         loading: false,
         single: {
           ...state.single,
           comments: [...state.single.comments, payload]
-          // ...state,
-          // loading: false,
-          // state.single.comments: [...state.single.comments, payload]
+        }
+      };
+    case "SET_IS_COMMENT_LIKED":
+      return {
+        ...state,
+        loading: false,
+        single: {
+          ...state.single,
+          comments: [{ ...state.single.comments, isLiked: payload }]
         }
       };
     // case "SET_LIKES_FOR_COMMENT":

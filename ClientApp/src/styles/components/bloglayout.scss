@@ -1,9 +1,19 @@
 .blog-layout {
-    a {
-        color: $white;
-        &:hover {
-            color: $white;
-            text-decoration: none;
-        }
+  a {
+    color: $white;
+    &:hover {
+      color: $white;
+      text-decoration: none;
     }
+  }
+}
+
+.categories-filter {
+  margin: auto;
+  width: 50%;
+
+  //   & .toolbar-header {
+  //     position: relative;
+  //     margin: auto;
+  //   }
 }

@@ -29,9 +29,7 @@ const SingleLayout = ({ markup, match }) => {
 
   const blog = useSelector(state => state.blogs.single);
   const loading = useSelector(state => state.blogs.loading);
-  const comments = useSelector(state => state.blogs.single.comments);
-  // const singleBlogComments = comments;
-  // const comments = blog.comments;
+  const comments = blog.comments;
   const likes = blog.likes;
 
   // const user = useSelector(state => state.auth.user);
@@ -51,7 +49,6 @@ const SingleLayout = ({ markup, match }) => {
       return;
     }
     const action = match.params.action;
-    console.log(action);
     if (action === "edit") {
       if (blog && !blog.title) {
         dispatch(getSingleBlog(match.params.id));
@@ -76,13 +73,11 @@ const SingleLayout = ({ markup, match }) => {
     markup: propTypes.string
   };
 
-  console.log("paramId:", match.params.id);
-  console.log("singlecom:", comments);
   // console.log("singlecom:", singleBlogComments);
 
   return (
     <div>
-      {JSON.stringify(comments)}
+      {/* {JSON.stringify(comments)} */}
       {/* <div>
         <h1>Comments: {blog.comments}</h1>
       </div> */}

@@ -8,11 +8,11 @@ const Browse = () => {
   // const comments = useSelector(state => state.blogs.single.comments);
   // const likes = useSelector(state => state.blogs.likes);
 
-  const dispatchAndLog = (store, action) => {
-    console.log(`dispatching ${action}`);
-    store.dispatch(action);
-    console.log("updated state:", store.getState());
-  };
+  // const dispatchAndLog = (store, action) => {
+  //   console.log(`dispatching ${action}`);
+  //   store.dispatch(action);
+  //   console.log("updated state:", store.getState());
+  // };
 
   // dispatch(getSingleBlogComments(1));
   // dispatch(getLikesForComment(1));
