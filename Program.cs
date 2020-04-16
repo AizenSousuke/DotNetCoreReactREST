@@ -63,8 +63,16 @@ namespace DotNetCoreReactREST
                 .UseSerilog() // <-- Add this line for serilog;
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseKestrel();
-                    webBuilder.UseWebRoot("wwwroot");
+                    // Set defaults here
+
+                    // If Environment is Production
+                    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+                    {
+                        IConfigurationRoot configuration = new ConfigurationBuilder()
+                        .AddJsonFile("appsettings.Production.json")
+                        .Build();
+                        webBuilder.UseConfiguration(configuration);
+                    }
                     webBuilder.UseStartup<Startup>();
                 });
     }
