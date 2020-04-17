@@ -3,6 +3,7 @@ using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -29,50 +30,59 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         [HttpGet("posts/{postId}/postlikes")]
-        public async Task<ActionResult<IEnumerable<PostLikeDto>>> GetPostLikesForPost(int postId)
+        public async Task<IActionResult> GetPostLikesForPost(int postId)
         {
             var postExists = await _postRepository.GetPostByIdAsync(postId);
             if (postExists == null)
             {
-                return BadRequest("Post doesn't exist.");
+                return NotFound("Post doesn't exist.");
             }
-            var postLikesFromRepo = _postLikeRepository.GetLikesForPost(postId);
-            return Ok(_mapper.Map<IEnumerable<PostLikeDto>>(postLikesFromRepo));
+            var postLikesFromRepo = await _postLikeRepository.GetLikesForPost(postId);
+            return Ok(_mapper.Map<List<PostLikeDto>>(postLikesFromRepo));
         }
 
         //Authenticate to make sure userId is the same as logged user
 
-        [HttpPost("posts/{postId}/users/{userId}/postlikes")]
-        public ActionResult LikePost(int postId, string userId)
+        [HttpPost("posts/{postId:int}/users/{userId}/postlikes")]
+        public async Task<IActionResult> LikePostAsync([FromRoute]int postId, [FromRoute]string userId)
         {
-            //like is unique to user, so none should exist
-            if (_postLikeRepository.PostLikeExists(postId, userId))
+            Log.Information("PostId: {@PostId}, UserId: {@UserId}", postId, userId);
+            // Check if post exists
+            if (await _postRepository.GetPostByIdAsync(postId) == null)
             {
-                return BadRequest("Post has already been liked.");
+                return NotFound("Post doesn't exists.");
+            };
+            // PostLike is unique to user, so none should exist
+            bool exists = await _postLikeRepository.PostLikeExists(postId, userId);
+            if (exists)
+            {
+                return Ok("Post has already been liked.");
             }
-            _postLikeRepository.LikePost(
-                new PostLike { 
-                    PostId = postId, 
+            var results = await _postLikeRepository.LikePostAsync(
+                new PostLike
+                {
+                    PostId = postId,
                     ApplicationUserId = userId,
                     IsLiked = true
                 });
-            _postLikeRepository.Save();
-            return Ok("Post has been liked.");
+            await _postLikeRepository.SaveAsync();
+            return Ok(results);
         }
 
         //Authenticate to make sure userId is the same as logged user
 
         [HttpDelete("postlikes/{postLikeId}")]
-        public ActionResult UnlikePost(int postLikeId)
+        public async Task<IActionResult> UnlikePostAsync(int postLikeId)
         {
             var postFromRepo = _postLikeRepository.GetPostLikeById(postLikeId);
             if (postFromRepo == null)
             {
-                return BadRequest("No likes on post.");
+                return NotFound("No likes on post.");
             }
             _postLikeRepository.UnlikePost(postFromRepo);
-            _postLikeRepository.Save();
-            return Ok("Likes has been removed.");
+            await _postLikeRepository.SaveAsync();
+            var result = await _postLikeRepository.GetLikesForPost(postFromRepo.PostId);
+            return Ok(result);
         }
     }
 }
