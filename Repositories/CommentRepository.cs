@@ -4,34 +4,36 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {
     public class CommentRepository : ICommentRepository
     {
-        private AppDbContext _context;
+        private readonly AppDbContext _context;
 
         public CommentRepository(AppDbContext context)
         {
             _context = context ?? throw new ArgumentException(nameof(context));
         }
-        public void AddComment(Comment comment)
+
+        public async Task AddComment(Comment comment)
         {
             if (comment == null)
             {
                 throw new ArgumentNullException(nameof(comment));
             }
             comment.DateCreated = DateTime.Now;
-            _context.Comments.Add(comment);
+            await _context.Comments.AddAsync(comment);
         }
 
-        public bool CommentExists(int commentId)
+        public async Task<bool> CommentExists(int commentId)
         {
-            if (String.IsNullOrEmpty(commentId.ToString()))
+            if (string.IsNullOrEmpty(commentId.ToString()))
             {
                 throw new ArgumentNullException(nameof(commentId));
             }
-            return _context.Comments.Any(c => c.Id == commentId);
+            return await _context.Comments.AnyAsync(c => c.Id == commentId);
         }
 
         public void DeleteComment(Comment comment)
@@ -43,40 +45,40 @@ namespace DotNetCoreReactREST.Repositories
             _context.Comments.Remove(comment);
         }
 
-        public Comment GetCommentById(int commentId)
+        public async Task<Comment> GetCommentById(int commentId)
         {
-            if (String.IsNullOrWhiteSpace(commentId.ToString()))
+            if (string.IsNullOrWhiteSpace(commentId.ToString()))
             {
                 throw new ArgumentNullException(nameof(commentId));
             }
-            return _context.Comments
+            return await _context.Comments
                 .Include(c => c.ApplicationUser)
                 .Include(c => c.Likes)
-                .FirstOrDefault(c => c.Id == commentId);
+                .FirstOrDefaultAsync(c => c.Id == commentId);
         }
 
-        public IEnumerable<Comment> GetCommentsForUser(string userId)
+        public async Task<IEnumerable<Comment>> GetCommentsForUser(string userId)
         {
-            return _context.Comments
+            return await _context.Comments
                 .Where(c => c.ApplicationUserId == userId)
                 .Include(c => c.ApplicationUser)
                 .Include(c => c.Likes)
                 .OrderByDescending(c => c.DateCreated)
-                .ToList();
+                .ToListAsync();
         }
-        public IEnumerable<Comment> GetCommentsForPost(int postId)
+        public async Task<IEnumerable<Comment>> GetCommentsForPost(int postId)
         {
-            return _context.Comments
+            return await _context.Comments
                 .Where(c => c.PostId == postId)
                 .Include(c => c.ApplicationUser)
                 .OrderBy(c => c.Likes.Count())
                 .ThenByDescending(c => c.DateCreated)
-                .ToList();
+                .ToListAsync();
         }
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            return _context.SaveChanges() >= 0;
+            return await _context.SaveChangesAsync() >= 0;
         }
 
         public void UpdateComment(Comment comment)
