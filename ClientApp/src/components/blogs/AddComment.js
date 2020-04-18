@@ -14,8 +14,6 @@ const AddComment = props => {
   const [content, setContent] = useState("");
   const toggle = () => setModal(!modal);
 
-  // let id = 51;
-  // let name = "JB";
   return (
     <>
       <Button className="comment-modal-btn" onClick={toggle}>
@@ -40,7 +38,7 @@ const AddComment = props => {
             onSubmit={e => {
               e.preventDefault();
 
-              console.log("content: ", content);
+              // console.log("content: ", content);
               dispatch(
                 createComment(
                   content,

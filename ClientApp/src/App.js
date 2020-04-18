@@ -9,7 +9,6 @@ import {
   getCategories,
   getSingleBlogComments,
   getLikesForComment
-  // setDummyComments
 } from "./actions/blogActions";
 import { setUser } from "./actions/auth";
 import Profile from "./pages/Profile";
@@ -29,10 +28,6 @@ const App = () => {
       dispatch(setUser(user));
     }
   });
-
-  // for (let i = 0; i < 10; i++) {
-  //   dispatch(setDummyComments(i));
-  // }
 
   return (
     <div className="app">

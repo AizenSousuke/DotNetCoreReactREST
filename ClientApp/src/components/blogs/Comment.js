@@ -6,12 +6,10 @@ import { likeComment, deleteLike } from "../../actions/blogActions";
 
 const Comment = props => {
   const [liked, setLiked] = useState(false);
-  const users = useSelector(state => state.blogs.users);
+  // const users = useSelector(state => state.blogs.users);
   // const isLiked = useSelector(state => state.blogs.single.comments.isLiked);
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   const
-  // });
+
   return (
     <Row className="comment" key={props.id}>
       <Col xs="2">
@@ -21,7 +19,7 @@ const Comment = props => {
         />
       </Col>
       <Col md="9">
-        {!props.isAnonmyous ? <a>User ID: {props.userId}</a> : null}
+        <a>{props.name}</a>
         <div>
           <i className="far fa-clock"></i>
           <span> {props.date}</span>

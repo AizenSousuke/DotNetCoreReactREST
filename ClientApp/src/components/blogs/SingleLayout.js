@@ -237,8 +237,10 @@ const SingleLayout = ({ markup, match }) => {
                     content={c.content}
                     postId={c.postId}
                     userId={c.applicationUserId}
+                    name={c.userName}
                     isAnonymous={c.isAnonymous}
-                    date="Just now"
+                    date={c.dateCreated}
+                    // likeCount=
                   />
                 );
               })

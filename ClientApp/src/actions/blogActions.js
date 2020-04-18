@@ -2,8 +2,9 @@ import api from "../api";
 import axios from "axios";
 
 export const getBlogs = () => async dispatch => {
-  const response = await api.get("/posts");
-  dispatch({ type: "SET_BLOGS", payload: response.data });
+  const response = await api.get("/posts").then(({ data }) => {
+    dispatch({ type: "SET_BLOGS", payload: data.objList });
+  });
 };
 
 export const getSingleBlog = id => async (dispatch, getState) => {
@@ -47,6 +48,7 @@ export const getSingleBlogComments = id => async dispatch => {
   const response = await api
     .get(`/posts/${id}/comments`)
     .then(({ data }) => {
+      // console.log("singcomm", data);
       dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data });
     })
     .catch(error => console.log(error));
@@ -94,9 +96,10 @@ export const addUsernamesToComments = users => {
 
 // get all categories, useful for filtering by category
 export const getCategories = () => async dispatch => {
-  const response = await api.get("/categories");
-  console.log("categories response: ", response);
-  dispatch({ type: "SET_CATEGORIES", payload: response.data });
+  const response = await api.get("/categories").then(({ data }) => {
+    console.log("categories response: ", data.objList);
+    dispatch({ type: "SET_CATEGORIES", payload: data.objList });
+  });
 };
 
 export const getLikesForComment = id => async dispatch => {
