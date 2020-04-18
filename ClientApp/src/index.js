@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { createStore, applyMiddleware, compose } from "redux";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import thunk from "redux-thunk";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
@@ -17,7 +17,14 @@ const composeEnhancers =
 
 const enhancers = composeEnhancers(applyMiddleware(thunk));
 
+// const apiCall = store => next => action => {
+//   next(action);
+// };
+
 let store = createStore(allReducers, enhancers);
+// store.subscribe(() => {
+//   console.log("STORE:", JSON.stringify(store.getState()));
+// });
 
 ReactDOM.render(
   <Provider store={store}>

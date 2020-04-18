@@ -1,0 +1,50 @@
+.browse {
+    h3 {
+        color: #3E3E3E;
+        font: Regular 48px/58px Roboto;
+    }
+}
+
+.card {
+        height: 230px;
+        width: 295px;
+        animation: fade-in 1s;
+        position: relative;
+        border-radius: 20px;
+        &:hover {
+            .card-overlay {
+                height: 100.1%;
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @include medium("up") {
+            width: 410px;
+            height: 250px;
+        }
+        @include xlarge("up") {
+            width: 500px;
+            margin-left: 50px;
+            margin-right: 50px;
+        }
+        @include xxlarge("up") {
+            width: 600px;
+        }
+    }
+    .card-overlay {
+        color: white;
+        position: absolute;
+        z-index: 2;
+        background-color: rgba(0, 0, 0, 0.808);
+        height: 0px;
+        bottom: 0px;
+        left:0;
+        opacity: 1;
+        transition: all .3s ease-in-out;
+        overflow: hidden;
+        width: 100%;
+        .button {
+            width: 150px !important;
+            box-shadow: none;
+        }
+    }

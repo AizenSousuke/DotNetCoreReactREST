@@ -1,0 +1,59 @@
+.comments-wrapper {
+  top: 100px;
+  padding: none;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  // display: block;
+  white-space: nowrap;
+  overflow-x: auto;
+
+  h3 {
+    padding-left: 15px;
+  }
+
+  .comment {
+    margin-left: 0px;
+    margin-bottom: 15px;
+    box-shadow: 0px 5px 50px #00000033;
+    border-radius: 20px;
+    padding: 20px;
+    float: left;
+    margin-left: 10px;
+    width: 75%;
+
+    img {
+      border-radius: 50%;
+      flex: 1;
+      width: 50px;
+    }
+
+    a {
+      color: purple;
+      font-weight: bold;
+    }
+
+    .like-container {
+      display: inline-block;
+
+      .like-button {
+        cursor: pointer;
+        padding-left: 10px;
+      }
+    }
+
+    .reply-button {
+      padding-left: 5px;
+      margin-top: 20px;
+      margin-left: 20px;
+    }
+
+    .btn-primary {
+      background-color: #00baff;
+      border-color: #00baff;
+      display: block;
+      margin-top: 15px;
+      margin-left: -10px;
+    }
+  }
+}

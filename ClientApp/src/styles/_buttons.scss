@@ -13,17 +13,13 @@
   }
 }
 
-.button--large {
-  width: 250px;
-}
-
 .button {
   background-color: black;
   color: white;
-  padding: 8px;
-  border-radius: 8px;
+  padding: 8px 17px;
+  border-radius: 30px;
   border: none;
-  font-weight: 700;
+  font-weight: normal;
   white-space: nowrap;
   cursor: pointer;
   transition: all $default-timing;
@@ -34,6 +30,14 @@
 
 .button--squared {
   border-radius: 0px;
+}
+
+.button--primary {
+ background-color: #00BAFF;
+   box-shadow: 0px 5px 20px #87DEFFD9;
+ &:hover {
+   background-color: lighten(#00BAFF, 9%);
+ }
 }
 
 .button--transparent {
@@ -116,4 +120,8 @@
   &:hover {
     background-color: lighten($purple, 12%);
   }
+}
+
+button {
+    @include roboto-mono();
 }

@@ -139,7 +139,7 @@ namespace DotNetCoreReactREST.ResourceParameters
                     IdQuery = paginationResourceParameter.IdQuery;
                 }
 
-                if (!string.IsNullOrWhiteSpace(paginationResourceParameter.NameQuery.Trim()))
+                if (!string.IsNullOrWhiteSpace(paginationResourceParameter.NameQuery))
                 {
                     var catQuery = paginationResourceParameter.NameQuery.Trim();
                     collection = collection.Cast<Category>().Where(category => category.Name.Contains(catQuery));

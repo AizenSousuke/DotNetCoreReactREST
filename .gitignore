@@ -237,3 +237,7 @@ _Pvt_Extensions
 # Docker-compose data folder for sql
 /data
 /output
+
+# SSL Certificates
+/Certs
+/generate-ssl-certificate.ps1

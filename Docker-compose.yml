@@ -4,18 +4,33 @@ services:
         build:
             context: .
             dockerfile: Dockerfile-backend
+        volumes:
+            - type: bind
+              source: ./Logs
+              target: /Code/Logs
+            - type: bind
+              source: ./Certs
+              target: /Code/Certs
+
         ports:
-            - 5001:80
+            - "5001:443"
+            - "5000:80"
+        environment:
+            - USINGDOCKER=true
+            - ASPNETCORE_URLS=https://+;http://+
+            - ASPNETCORE_HTTPS_PORT=5001
+            - APNETCORE_Kestrel__Certificates__Default__Path=/Code/Certs/dotnetcorereactrest.pfx
+            - ASPNETCORE_Kestrel__Certificates__Default__Password=dotnetcorereactrest
         restart: always
-    frontend:
-        build:
-            context: .
-            dockerfile: Dockerfile-frontend
-        depends_on:
-            - backend
-        ports:
-            - 8080:80
-        restart: always
+    #frontend:
+    #    build:
+    #        context: .
+    #        dockerfile: Dockerfile-frontend
+    #    depends_on:
+    #        - backend
+    #    ports:
+    #        - 8080:80
+    #    restart: always
     sql:
         image: mcr.microsoft.com/mssql/server
         environment: 
@@ -23,7 +38,7 @@ services:
             - SA_PASSWORD=P@ssw0rd
         depends_on: 
             - backend
-            - frontend
+        #    - frontend
         volumes: 
             - ./data:/var/opt/mssql/data
         ports: 
