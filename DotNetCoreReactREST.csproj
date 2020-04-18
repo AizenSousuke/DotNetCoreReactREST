@@ -103,6 +103,8 @@
     <Compile Remove="Migrations\20200323145551_BogusData.Designer.cs" />
     <Compile Remove="Migrations\20200323145847_BogusData.cs" />
     <Compile Remove="Migrations\20200323145847_BogusData.Designer.cs" />
+    <Compile Remove="Migrations\20200415153730_AddedPostLikes.cs" />
+    <Compile Remove="Migrations\20200415153730_AddedPostLikes.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
@@ -115,7 +117,8 @@
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
   </Target>
 
-  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+  <!-- Also check if docker is not being used. Skip npm part if environment variable USINGDOCKER is being used. -->
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish" Condition="'$(USINGDOCKER)' == ''">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />

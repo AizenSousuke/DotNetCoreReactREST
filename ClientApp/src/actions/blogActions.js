@@ -1,11 +1,10 @@
+import api from "../api";
 import axios from "axios";
 
 export const getBlogs = () => async dispatch => {
-  const response = await axios.get(
-    "https://jsonplaceholder.typicode.com/posts"
-  );
-  response.data.forEach((blog, i) => (blog.name = `My Blog ${i + 1}`));
-  dispatch({ type: "SET_BLOGS", payload: response.data });
+  const response = await api.get("/posts").then(({ data }) => {
+    dispatch({ type: "SET_BLOGS", payload: data.objList });
+  });
 };
 
 export const getSingleBlog = id => async (dispatch, getState) => {
@@ -15,29 +14,153 @@ export const getSingleBlog = id => async (dispatch, getState) => {
     return;
   }
   const blogs = getState().blogs.all;
-  const blog = blogs.find(b => {
-    if (b.id === id) return b;
-  });
+  const blog = blogs.find(b => b.id === id);
   if (blog) {
     dispatch({ type: "SET_SINGLE_BLOG", payload: blog });
     return;
   }
-  console.log(blogs);
-  const response = await axios.get(
-    `https://jsonplaceholder.typicode.com/posts/${id}`
-  );
+  const response = await api.get(`/posts/${id}`);
   dispatch({ type: "SET_SINGLE_BLOG", payload: response.data });
 };
 
-// export const getComments = id => async dispatch => {
-//   const response = await axios
-//     .get("https://localhost:5001/api/comments")
-//     .then(dispatch({ type: "SET_COMMENTS", payload: response.data }))
-//     .catch(err => {
-//       console.log;
-//       "Error: ", err;
-//       return null;
-//     });
+export const editBlog = blog => async dispatch => {
+  await api.patch("/posts/" + blog.id, [
+    {
+      value: blog.title,
+      path: "/title",
+      op: "replace"
+    },
+    {
+      value: blog.description,
+      path: "/content",
+      op: "replace"
+    },
+    {
+      path: "/categoryId",
+      value: blog.categoryId,
+      op: "replace"
+    }
+  ]);
+  dispatch({ type: "UPDATE_BLOG", payload: blog });
+};
+
+export const getSingleBlogComments = id => async dispatch => {
+  const response = await api
+    .get(`/posts/${id}/comments`)
+    .then(({ data }) => {
+      // console.log("singcomm", data);
+      dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data });
+    })
+    .catch(error => console.log(error));
+};
+
+export const getSingleBlogLikes = id => async dispatch => {
+  const response = await api
+    .get(`/posts/${id}/postlikes`)
+    .then(({ data }) => {
+      dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data });
+    })
+    .catch(error => console.log(error));
+};
+
+export const incrementSingleBlogLikes = id => async dispatch => {
+  const response = await api
+    .post(`posts/${id}/postlikes`)
+    .then(({ data }) =>
+      dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data })
+    );
+};
+
+// export const LikeOrUnlikeSingleBlog = (id, like = true) => async dispatch => {
+//   const response = await api;
+//   like
+//     ? response
+//         .post(`posts/${id}/postlikes`)
+//         .then(({ data }) =>
+//           dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data })
+//         )
+//     : response.delete(`posts/postlikes/${id}`).then(({ data }) => {
+//         dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data });
+//       });
+// };
+
+export const getUsers = () => async dispatch => {
+  const response = await api
+    .get("/users")
+    .then(data => dispatch({ type: "SET_USERS", payload: data }));
+};
+
+export const addUsernamesToComments = users => {
+  return { type: "ADD_USERNAMES_TO_COMMENTS", payload: users.userName };
+};
+
+// get all categories, useful for filtering by category
+export const getCategories = () => async dispatch => {
+  const response = await api.get("/categories").then(({ data }) => {
+    console.log("categories response: ", data.objList);
+    dispatch({ type: "SET_CATEGORIES", payload: data.objList });
+  });
+};
+
+export const getLikesForComment = id => async dispatch => {
+  const response = await api
+    .get(`/comments/${id}/likes`)
+    .then(response =>
+      dispatch({ type: "SET_LIKES_FOR_COMMENT", payload: response.data })
+    );
+};
+
+export const createComment = (
+  content,
+  postId,
+  applicationUserId,
+  isAnonymous
+) => async dispatch => {
+  const response = await api
+    .post(`/comments/`, {
+      content,
+      postId,
+      applicationUserId,
+      isAnonymous
+    })
+    .then(({ data }) => {
+      dispatch({
+        // use local state instead to make new comment immediately visible to commenter?
+        type: "CREATE_COMMENT",
+        payload: data
+      });
+    })
+    .catch(error => console.log(error));
+};
+
+export const setIsLikedForComment = id => async dispatch => {
+  const response = await api
+    .get(`/comments/${id}/likes`)
+    .then(({ data }) => {
+      dispatch({ type: "SET_ISLIKED_FOR_COMMENT", payload: data });
+    })
+    .catch(error => console.log(error));
+};
+
+export const likeComment = (commentId, userId) => async dispatch => {
+  const response = await api
+    .post(`/api/comments/${commentId}/users/${userId}/likes`)
+    .then(data => {
+      dispatch({ type: "SET_LIKES_FOR_COMMENT", payload: data });
+    })
+    .catch(error => console.log("likeComment error:", error));
+};
+
+export const deleteLike = id => async dispatch => {
+  const response = await api
+    .delete(`/likes/${id}`)
+    .then(data => dispatch({ type: "DELETE_LIKE", payload: data }));
+};
+
+// export const toggleLiked = (id, target) => async dispatch => {
+//   target === "blog"
+//     ? dispatch({ type: "TOGGLE_BLOG_LIKE" })
+//     : dispatch({ type: "TOGGLE_COMMENT_LIKE" });
 // };
 
 export const setDummyComments = id => {

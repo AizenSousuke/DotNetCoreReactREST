@@ -27,6 +27,9 @@
             margin-left: 50px;
             margin-right: 50px;
         }
+        @include xxlarge("up") {
+            width: 600px;
+        }
     }
     .card-overlay {
         color: white;
@@ -39,6 +42,7 @@
         opacity: 1;
         transition: all .3s ease-in-out;
         overflow: hidden;
+        width: 100%;
         .button {
             width: 150px !important;
             box-shadow: none;

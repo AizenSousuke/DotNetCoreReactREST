@@ -4,14 +4,15 @@ import ProfileInfo from "../components/profile/ProfileInfo";
 import { useSelector } from "react-redux";
 import BlogLayout from "../components/blogs/BlogLayout";
 const Profile = () => {
-    const blogs = useSelector(state => state.blogs.all)
-    const fakeBlogs = blogs.slice(0, 4)
+  const blogs = useSelector(state => state.blogs.all);
+  // const comments = useSelector(state => state.blogs.comments);
+  const fakeBlogs = blogs.slice(0, 4);
   return (
     <Layout>
-        <div className="profile">
-          <ProfileInfo />
-          <BlogLayout blogs={fakeBlogs} />
-        </div>
+      <div className="profile">
+        <ProfileInfo />
+        <BlogLayout blogs={fakeBlogs} />
+      </div>
     </Layout>
   );
 };

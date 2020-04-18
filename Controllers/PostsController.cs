@@ -6,8 +6,8 @@ using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST
@@ -37,23 +37,14 @@ namespace DotNetCoreReactREST
         //GET Api/posts[category = string &| searchQuery = string]
         [HttpGet]
         [HttpHead]
-        public async Task<IActionResult> GetPostsAsync([FromQuery]PostResourceParameter postResourceParameter)
+        public async Task<IActionResult> GetPostsAsync([FromQuery]PaginationResourceParameter<Post> paginationResourceParameter)
         {
-            if (postResourceParameter == null)
-            {
-                IEnumerable<Post> posts = await _postRepository.GetPostsAsync();
-                if (posts == null)
-                {
-                    return NotFound();
-                }
-                return Ok(_mapper.Map<IEnumerable<PostDto>>(posts));
-            }
-            IEnumerable<Post> postFromRepository = await _postRepository.GetPostsAsync(postResourceParameter);
-            if (postFromRepository == null)
+            var result = await _postRepository.GetPostsAsync(paginationResourceParameter);
+            if (result == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<IEnumerable<PostDto>>(postFromRepository));
+            return Ok(result);
         }
         //GET Api/Posts/{postId}
         [HttpGet]
@@ -62,6 +53,7 @@ namespace DotNetCoreReactREST
         public async Task<IActionResult> GetPostByIdAsync(int postId)
         {
             Post postFromRepository = await _postRepository.GetPostByIdAsync(postId);
+            Log.Information("Post from Repository when getting post by id: {@0}", postFromRepository);
             if (postFromRepository == null)
             {
                 return NotFound();

@@ -8,7 +8,7 @@ namespace DotNetCoreReactREST.Repositories
 {
     public class LikeRepository : ILikeRepository
     {
-        private AppDbContext _context;
+        private readonly AppDbContext _context;
 
         public LikeRepository(AppDbContext context)
         {
