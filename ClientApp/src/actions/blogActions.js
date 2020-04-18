@@ -52,6 +52,36 @@ export const getSingleBlogComments = id => async dispatch => {
     .catch(error => console.log(error));
 };
 
+export const getSingleBlogLikes = id => async dispatch => {
+  const response = await api
+    .get(`/posts/${id}/postlikes`)
+    .then(({ data }) => {
+      dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data });
+    })
+    .catch(error => console.log(error));
+};
+
+export const incrementSingleBlogLikes = id => async dispatch => {
+  const response = await api
+    .post(`posts/${id}/postlikes`)
+    .then(({ data }) =>
+      dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data })
+    );
+};
+
+// export const LikeOrUnlikeSingleBlog = (id, like = true) => async dispatch => {
+//   const response = await api;
+//   like
+//     ? response
+//         .post(`posts/${id}/postlikes`)
+//         .then(({ data }) =>
+//           dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data })
+//         )
+//     : response.delete(`posts/postlikes/${id}`).then(({ data }) => {
+//         dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data });
+//       });
+// };
+
 export const getUsers = () => async dispatch => {
   const response = await api
     .get("/users")

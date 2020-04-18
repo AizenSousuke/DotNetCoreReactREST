@@ -7,7 +7,8 @@ const initialState = {
     id: 0,
     title: "",
     body: "",
-    comments: []
+    comments: [],
+    likes: 0
     // likeCount: 0
   }
   // comments: [],
@@ -88,6 +89,15 @@ export function blogsReducer(state = initialState, { type, payload }) {
             loading: false,
             single: { ...state.single, comments: [] }
           };
+    case "SET_SINGLE_BLOG_LIKES":
+      return {
+        ...state,
+        loading: false,
+        single: {
+          ...state.single,
+          likes: payload
+        }
+      };
     case "ADD_USERNAMES_TO_COMMENTS":
       return {
         ...state,

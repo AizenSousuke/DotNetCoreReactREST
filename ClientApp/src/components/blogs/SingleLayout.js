@@ -6,6 +6,8 @@ import {
   getSingleBlog,
   editBlog,
   getSingleBlogComments,
+  getSingleBlogLikes,
+  incrementSingleBlogLikes,
   getLikesForComment
 } from "../../actions/blogActions";
 import ReactQuill from "react-quill";
@@ -28,25 +30,10 @@ const SingleLayout = ({ markup, match }) => {
   const [showingEditor, setShowingEditor] = useState(true);
 
   const blog = useSelector(state => state.blogs.single);
-  const users = useSelector(state => state.blogs.users);
+  // const users = useSelector(state => state.blogs.users);
   const loading = useSelector(state => state.blogs.loading);
   const comments = blog.comments;
   const likes = blog.likes;
-
-  // const usernames = comments.map(c => {
-  //   if (users[c.id].applicationUserId === c.applicationUserId) {
-  //     c.append(users[]);
-  //   }
-  // });
-
-  // const usernames = comments.map(function (c) {
-  //   function(u) {
-  //     if(u.)
-  //   }
-  // });
-
-  // const user = useSelector(state => state.auth.user);
-  // console.log("user:", user);
 
   const like_or_dislike = () => {
     setLiked(prev => !prev);
@@ -74,6 +61,7 @@ const SingleLayout = ({ markup, match }) => {
     // check if blog has been fetched for view, if not fetch it
     dispatch(getSingleBlog(match.params.id));
     dispatch(getSingleBlogComments(match.params.id));
+    dispatch(getSingleBlogLikes(match.params.id));
     // dispatch(getLikesForComment());
     // dispatch(getLikesForComment(match.params.id));
   }, [match.params]);
@@ -133,13 +121,19 @@ const SingleLayout = ({ markup, match }) => {
                     <div>
                       <span>24 blogs</span>
                       <i className="fas fa-newspaper"></i>
-                      <span>420 likes</span>
+                      <span>{likes} likes</span>
                       <i className="fas fa-thumbs-up"></i>
                     </div>
                   </div>
                 </div>
                 <div className="profile-card-btns">
-                  <button className="d-block" onClick={like_or_dislike}>
+                  <button
+                    className="d-block"
+                    onClick={() => {
+                      like_or_dislike();
+                      // dispatch(incrementSingleBlogLikes(match.params.id));
+                    }}
+                  >
                     {liked ? (
                       "Liked"
                     ) : (
