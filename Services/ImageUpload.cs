@@ -1,17 +1,16 @@
-﻿using System.Threading.Tasks;
-using Imgur.API.Authentication.Impl;
+﻿using Imgur.API.Authentication.Impl;
 using Imgur.API.Endpoints.Impl;
 using Imgur.API.Models;
-using Imgur.API;
-using Serilog;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Services
 {
     public class ImageUpload
     {
-        private readonly string ClientID = "ea30be65cb915f5";
-        private readonly string ClientSecret = "508f84defc102be0c5696692e37cd172f9676fab";
+        private readonly string placeholder = "https://via.placeholder.com/150";
+
+        private readonly string clientId = "ea30be65cb915f5";
 
         public async Task<string> Upload(string clientPathToImage)
         {
@@ -19,25 +18,19 @@ namespace DotNetCoreReactREST.Services
             {
                 using (WebClient webclient = new WebClient())
                 {
-                    var client = new ImgurClient(ClientID, ClientSecret);
+                    var client = new ImgurClient(clientId);
                     var endpoint = new ImageEndpoint(client);
-                    IImage image;
 
                     using (var stream = await webclient.OpenReadTaskAsync(clientPathToImage))
                     {
-                        image = await endpoint.UploadImageStreamAsync(stream);
+                        IImage image = await endpoint.UploadImageStreamAsync(stream);
+                        return image.Link;
                     }
-                    Log.Information($"Image uploaded. Url: {image.Link}");
-                    return image.Link;
                 }
             }
-            catch (ImgurException imgurEx)
-            {
-                Log.Information($"ImageUpload Exception: {imgurEx}");
-            }
-            return "https://via.placeholder.com/150";
+            catch { }
+
+            return placeholder;
         }
-
-
     }
 }
