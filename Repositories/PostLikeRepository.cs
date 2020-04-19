@@ -24,7 +24,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(postId));
             }
-            return await _appDbContext.PostLikes.OrderByDescending(pl => pl.Id).ToListAsync();
+            return await _appDbContext.PostLikes.Where(pl => pl.PostId == postId).OrderByDescending(pl => pl.Id).ToListAsync();
         }
 
         public async Task<List<PostLike>> LikePostAsync(PostLike postLike)

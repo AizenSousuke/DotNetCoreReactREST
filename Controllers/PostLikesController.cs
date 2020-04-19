@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace DotNetCoreReactREST.Controllers
+namespace DotNetCoreReactREST
 {
-    [Route("api")]
     [ApiController]
+    [Route("api/")]
     public class PostLikesController : ControllerBase
     {
         private readonly IPostLikeRepository _postLikeRepository;
@@ -29,7 +29,8 @@ namespace DotNetCoreReactREST.Controllers
 
         }
 
-        [HttpGet("posts/{postId}/postlikes")]
+        [HttpGet]
+        [Route("posts/{postId}/postlikes")]
         public async Task<IActionResult> GetPostLikesForPost(int postId)
         {
             var postExists = await _postRepository.GetPostByIdAsync(postId);
@@ -42,8 +43,8 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         //Authenticate to make sure userId is the same as logged user
-
-        [HttpPost("posts/{postId:int}/users/{userId}/postlikes")]
+        [HttpPost]
+        [Route("posts/{postId:int}/users/{userId}/postlikes")]
         public async Task<IActionResult> LikePostAsync([FromRoute]int postId, [FromRoute]string userId)
         {
             Log.Information("PostId: {@PostId}, UserId: {@UserId}", postId, userId);
@@ -70,8 +71,8 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         //Authenticate to make sure userId is the same as logged user
-
-        [HttpDelete("postlikes/{postLikeId}")]
+        [HttpDelete]
+        [Route("postlikes/{postLikeId:int}")]
         public async Task<IActionResult> UnlikePostAsync(int postLikeId)
         {
             var postFromRepo = _postLikeRepository.GetPostLikeById(postLikeId);
