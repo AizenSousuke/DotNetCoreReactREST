@@ -24,7 +24,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(postId));
             }
-            return await _appDbContext.PostLikes.OrderByDescending(pl => pl.Id).ToListAsync();
+            return await _appDbContext.PostLikes.Where(pl => pl.PostId == postId).OrderByDescending(pl => pl.Id).ToListAsync();
         }
 
         public async Task<List<PostLike>> LikePostAsync(PostLike postLike)
@@ -34,6 +34,7 @@ namespace DotNetCoreReactREST.Repositories
                 throw new ArgumentNullException(nameof(postLike));
             }
             await _appDbContext.PostLikes.AddAsync(postLike);
+            await SaveAsync();
             return await GetLikesForPost(postLike.PostId);
         }
 
@@ -53,7 +54,11 @@ namespace DotNetCoreReactREST.Repositories
                 l.ApplicationUserId == userId
                 && l.PostId == postId);
             Log.Information("PostLikeExists: {@PostLikeExists}", result);
-            return (result);
+            if (result)
+            {
+                return (result);
+            }
+            return false;
         }
 
         public async Task<bool> SaveAsync()
