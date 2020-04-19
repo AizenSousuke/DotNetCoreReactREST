@@ -9,7 +9,7 @@ import moment from "moment";
 
 const AddComment = props => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.auth.user);
+  // const user = useSelector(state => state.auth.user);
   const [modal, setModal] = useState(false);
   const [content, setContent] = useState("");
   const toggle = () => setModal(!modal);

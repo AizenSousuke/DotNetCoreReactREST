@@ -1,4 +1,11 @@
 .blog-layout {
+  overflow: visible;
+
+  .blog-container {
+    width: 40vw;
+    // need to wrap header or resize this
+  }
+
   a {
     color: $white;
     &:hover {

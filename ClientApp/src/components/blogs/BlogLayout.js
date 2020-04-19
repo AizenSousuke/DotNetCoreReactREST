@@ -4,7 +4,8 @@ import {
   Container,
   Button,
   ButtonGroup,
-  ButtonToolbar
+  ButtonToolbar,
+  Progress
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -62,7 +63,7 @@ const BlogLayout = ({ blogs }) => {
             <>
               <div className="d-flex flex-wrap justify-content-center">
                 {blogs.map(blog => (
-                  <div className="m-5" key={blog.title}>
+                  <div className="m-5 blog-container" key={blog.title}>
                     <h3>{blog.title}</h3>
                     <Card
                       style={{
@@ -138,7 +139,10 @@ const BlogLayout = ({ blogs }) => {
             </>
           )
         ) : (
-          <h1 className="text-center">Getting Blogs...</h1>
+          <div className="loading">
+            {/* <Progress /> */}
+            <h1 className="text-center">Getting Blogs...</h1>
+          </div>
         )}
       </div>
     </>
