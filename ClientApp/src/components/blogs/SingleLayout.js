@@ -5,8 +5,10 @@ import { withRouter } from "react-router-dom";
 import {
   getSingleBlog,
   editBlog,
+  likeBlog,
   getSingleBlogComments,
   getSingleBlogLikes,
+  getSingleBlogLikeCount,
   incrementSingleBlogLikes,
   getLikesForComment
 } from "../../actions/blogActions";
@@ -34,10 +36,13 @@ const SingleLayout = ({ markup, match }) => {
   const loading = useSelector(state => state.blogs.loading);
   const comments = blog.comments;
   const likes = blog.likes;
+  const likeCount = blog.likeCount;
 
   const like_or_dislike = () => {
     setLiked(prev => !prev);
+    likeCount++;
   };
+
   const dispatch = useDispatch();
   useEffect(() => {
     const params = match.params;
@@ -62,19 +67,18 @@ const SingleLayout = ({ markup, match }) => {
     dispatch(getSingleBlog(match.params.id));
     dispatch(getSingleBlogComments(match.params.id));
     dispatch(getSingleBlogLikes(match.params.id));
-    // dispatch(getLikesForComment());
+    dispatch(getSingleBlogLikeCount(match.params.id));
     // dispatch(getLikesForComment(match.params.id));
   }, [match.params]);
   const viewing = !creating && !editing ? true : false;
 
-  // console.log("singlecomlikes:", likes);
   SingleLayout.propTypes = {
     creating: propTypes.bool,
     editing: propTypes.bool,
     markup: propTypes.string
   };
 
-  // console.log("singlecom:", singleBlogComments);
+  console.log("paramvalue:", match.params.id);
 
   return (
     <div>
@@ -121,7 +125,7 @@ const SingleLayout = ({ markup, match }) => {
                     <div>
                       <span>24 blogs</span>
                       <i className="fas fa-newspaper"></i>
-                      <span>{likes} likes</span>
+                      <span>{likeCount} likes</span>
                       <i className="fas fa-thumbs-up"></i>
                     </div>
                   </div>
@@ -131,7 +135,9 @@ const SingleLayout = ({ markup, match }) => {
                     className="d-block"
                     onClick={() => {
                       like_or_dislike();
-                      // dispatch(incrementSingleBlogLikes(match.params.id));
+                      // !liked
+                      //   ? dispatch(likeBlog(1, 1))
+                      //   : dispatch(unlikeBlog(1, 1));
                     }}
                   >
                     {liked ? (

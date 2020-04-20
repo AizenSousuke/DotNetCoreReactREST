@@ -58,7 +58,20 @@ export const getSingleBlogLikes = id => async dispatch => {
   const response = await api
     .get(`/posts/${id}/postlikes`)
     .then(({ data }) => {
+      // console.log("likesresponse", data);
       dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data });
+    })
+    .catch(error => console.log(error));
+};
+
+export const getSingleBlogLikeCount = id => async dispatch => {
+  const response = await api
+    .get(`/posts/${id}/postlikes`)
+    .then(({ data }) => {
+      // console.log("singlikedata", data);
+      const likeCount = data.filter(d => d.isLiked).length;
+      // console.log("filteredcount:", likeCount);
+      dispatch({ type: "SET_SINGLE_BLOG_LIKE_COUNT", payload: likeCount });
     })
     .catch(error => console.log(error));
 };
@@ -69,6 +82,21 @@ export const incrementSingleBlogLikes = id => async dispatch => {
     .then(({ data }) =>
       dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data })
     );
+};
+
+// current
+export const likeBlog = (postId, userId) => async dispatch => {
+  const response = await api
+    .post(`posts/${postId}/users/${userId}/postlikes`)
+    .then(({ data }) => {
+      dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data });
+    });
+};
+
+export const unlikeBlog = id => async dispatch => {
+  const response = await api.delete(`postlikes/${id}`).then(({ data }) => {
+    dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data });
+  });
 };
 
 // export const LikeOrUnlikeSingleBlog = (id, like = true) => async dispatch => {
