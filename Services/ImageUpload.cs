@@ -12,7 +12,13 @@ namespace DotNetCoreReactREST.Services
 
         private readonly string clientId = "ea30be65cb915f5";
 
-        public async Task<string> Upload(string clientPathToImage)
+
+        /// <summary>
+        /// Uploads image to Imgur using Imgur API. Returns The URL of uploaded image file on Imgur; returns placeholder URL if filepath is null or Imgur API failed.
+        /// </summary>
+        /// <param name="filepath">File path of image to upload.</param>
+        /// <returns>The URL of uploaded image file on Imgur.</returns>
+        public async Task<string> Upload(string filepath)
         {
             try
             {
@@ -21,7 +27,7 @@ namespace DotNetCoreReactREST.Services
                     var client = new ImgurClient(clientId);
                     var endpoint = new ImageEndpoint(client);
 
-                    using (var stream = await webclient.OpenReadTaskAsync(clientPathToImage))
+                    using (var stream = await webclient.OpenReadTaskAsync(filepath))
                     {
                         IImage image = await endpoint.UploadImageStreamAsync(stream);
                         return image.Link;
