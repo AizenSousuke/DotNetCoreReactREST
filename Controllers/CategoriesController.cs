@@ -22,46 +22,6 @@ namespace DotNetCoreReactREST.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Categories
-        [HttpGet]
-        public async Task<IActionResult> GetCategories([FromQuery] PaginationResourceParameter<Category> paginationResourceParameter)
-        {
-            var result = await _categoryRepository.GetAllCategories(paginationResourceParameter);
-            if (result == null)
-            {
-                return NotFound();
-            }
-            return Ok(result);
-        }
-
-        // GET: api/Categories/5
-        [HttpGet("{categoryId}", Name = "GetCategories")]
-        public async Task<ActionResult<CategoryDto>> GetCategory(int categoryId)
-        {
-            var categoryFromRepo = await _categoryRepository.GetCategoryById(categoryId);
-
-            if (categoryFromRepo == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<CategoryDto>(categoryFromRepo));
-        }
-
-        [HttpPut("{categoryId}")]
-        public async Task<ActionResult<CategoryDto>> EditCategory(int categoryId, CategoryForUpdateDto category)
-        {
-            var categoryFromRepo = await _categoryRepository.GetCategoryById(categoryId);
-            if (categoryFromRepo == null)
-            {
-                return BadRequest();
-            }
-            _mapper.Map(category, categoryFromRepo);
-            await _categoryRepository.Save();
-
-            return NoContent();
-        }
-
         [HttpPost]
         public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryForCreationDto category)
         {
@@ -91,6 +51,44 @@ namespace DotNetCoreReactREST.Controllers
             return NoContent();
         }
 
+        [HttpPut("{categoryId}")]
+        public async Task<ActionResult<CategoryDto>> EditCategory(int categoryId, CategoryForUpdateDto category)
+        {
+            var categoryFromRepo = await _categoryRepository.GetCategoryById(categoryId);
+            if (categoryFromRepo == null)
+            {
+                return BadRequest();
+            }
+            _mapper.Map(category, categoryFromRepo);
+            await _categoryRepository.Save();
 
+            return NoContent();
+        }
+
+        // GET: api/Categories
+        [HttpGet]
+        public async Task<IActionResult> GetCategories([FromQuery] PaginationResourceParameter<Category> paginationResourceParameter)
+        {
+            var result = await _categoryRepository.GetAllCategories(paginationResourceParameter);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+
+        // GET: api/Categories/5
+        [HttpGet("{categoryId}", Name = "GetCategories")]
+        public async Task<ActionResult<CategoryDto>> GetCategory(int categoryId)
+        {
+            var categoryFromRepo = await _categoryRepository.GetCategoryById(categoryId);
+
+            if (categoryFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<CategoryDto>(categoryFromRepo));
+        }
     }
 }

@@ -15,10 +15,10 @@ namespace DotNetCoreReactREST
     [Route("api/")]
     public class PostLikesController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IPostLikeRepository _postLikeRepository;
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepo;
-        private readonly IMapper _mapper;
         public PostLikesController(IPostLikeRepository postLikeRepo,
             IPostRepository postRepository, IUserRepository userRepo, IMapper mapper)
         {

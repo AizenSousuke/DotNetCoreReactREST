@@ -17,9 +17,8 @@ namespace DotNetCoreReactREST
     [Route("api/[controller]")]
     public class PostsController : ControllerBase
     {
-        private readonly IPostRepository _postRepository;
         private readonly IMapper _mapper;
-
+        private readonly IPostRepository _postRepository;
         public PostsController(IPostRepository postRepository, IMapper mapper)
         {
             _postRepository = postRepository;
@@ -43,18 +42,24 @@ namespace DotNetCoreReactREST
             // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
             return Created(baseURI + newPost.Id, _mapper.Map<PostDto>(newPost));
         }
-        //GET Api/posts[category = string &| searchQuery = string]
-        [HttpGet]
-        [HttpHead]
-        public async Task<IActionResult> GetPostsAsync([FromQuery]PaginationResourceParameter<Post> paginationResourceParameter)
+        //DELETE Api/Posts/{PostId}
+        [HttpDelete("{postId:int}")]
+        public async Task<IActionResult> DeletePost([FromRoute]int postId)
         {
-            var result = await _postRepository.GetPostsAsync(paginationResourceParameter);
-            if (result == null)
+            var post = await _postRepository.GetPostByIdAsync(postId);
+            if (post == null)
             {
-                return NotFound();
+                return NotFound("There is nothing to delete.");
             }
-            return Ok(result);
+
+            bool result = await _postRepository.DeletePostAsync(postId);
+            if (result)
+            {
+                return Ok("Post Deleted.");
+            }
+            return Ok("Post not deleted.");
         }
+
         //GET Api/Posts/{postId}
         [HttpGet]
         // Route will only match if postId can be casted as a int
@@ -68,6 +73,19 @@ namespace DotNetCoreReactREST
                 return NotFound();
             }
             return Ok(_mapper.Map<PostDto>(postFromRepository));
+        }
+
+        //GET Api/posts[category = string &| searchQuery = string]
+        [HttpGet]
+        [HttpHead]
+        public async Task<IActionResult> GetPostsAsync([FromQuery]PaginationResourceParameter<Post> paginationResourceParameter)
+        {
+            var result = await _postRepository.GetPostsAsync(paginationResourceParameter);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
         }
         //PATCH Api/Posts/{postId}
         [HttpPatch("{postId:int}", Name = "{postId:int}")]
@@ -101,23 +119,6 @@ namespace DotNetCoreReactREST
 
                 return Ok(oldPost);
             };
-        }
-        //DELETE Api/Posts/{PostId}
-        [HttpDelete("{postId:int}")]
-        public async Task<IActionResult> DeletePost([FromRoute]int postId)
-        {
-            var post = await _postRepository.GetPostByIdAsync(postId);
-            if (post == null)
-            {
-                return NotFound("There is nothing to delete.");
-            }
-
-            bool result = await _postRepository.DeletePostAsync(postId);
-            if (result)
-            {
-                return Ok("Post Deleted.");
-            }
-            return Ok("Post not deleted.");
         }
     }
 }
