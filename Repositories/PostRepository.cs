@@ -26,6 +26,22 @@ namespace DotNetCoreReactREST.Repositories
             return newPost.FirstOrDefault(p => p.Id == post.Id);
         }
 
+        public async Task<bool> DeletePostAsync(int postId)
+        {
+            Post post = await GetPostByIdAsync(postId);
+            if (post != null)
+            {
+                _appDbContext.Posts.Remove(post);
+                return await Save();
+            }
+            return false;
+        }
+
+        public async Task<Post> GetPostByIdAsync(int postId)
+        {
+            return await _appDbContext.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
+        }
+
         public async Task<List<Post>> GetPostsAsync()
         {
             List<Post> Posts = await _appDbContext.Posts
@@ -38,10 +54,10 @@ namespace DotNetCoreReactREST.Repositories
             PaginationResourceParameter<Post> result = new PaginationResourceParameter<Post>(_appDbContext);
             return await result.InitAsync(paginationResourceParameter);
         }
-
-        public async Task<Post> GetPostByIdAsync(int postId)
+        public async Task<bool> Save()
         {
-            return await _appDbContext.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
+            int result = await _appDbContext.SaveChangesAsync();
+            return (result >= 0);
         }
 
         public async Task<Post> UpdatePostAsync(int postId, JsonPatchDocument post)
@@ -50,23 +66,6 @@ namespace DotNetCoreReactREST.Repositories
 
             await Save();
             return await GetPostByIdAsync(postId);
-        }
-
-        public async Task<bool> DeletePostAsync(int postId)
-        {
-            Post post = await GetPostByIdAsync(postId);
-            if (post != null)
-            {
-                _appDbContext.Posts.Remove(post);
-                return await Save();
-            }
-            return false;
-        }
-
-        public async Task<bool> Save()
-        {
-            int result = await _appDbContext.SaveChangesAsync();
-            return (result >= 0);
         }
     }
 }

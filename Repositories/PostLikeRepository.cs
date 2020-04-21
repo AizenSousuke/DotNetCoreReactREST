@@ -27,6 +27,15 @@ namespace DotNetCoreReactREST.Repositories
             return await _appDbContext.PostLikes.Where(pl => pl.PostId == postId).OrderByDescending(pl => pl.Id).ToListAsync();
         }
 
+        public PostLike GetPostLikeById(int postLikeId)
+        {
+            if (String.IsNullOrWhiteSpace(postLikeId.ToString()))
+            {
+                throw new ArgumentNullException(nameof(postLikeId));
+            }
+            return _appDbContext.PostLikes.FirstOrDefault(l => l.Id == postLikeId);
+        }
+
         public async Task<List<PostLike>> LikePostAsync(PostLike postLike)
         {
             if (postLike == null)
@@ -38,19 +47,11 @@ namespace DotNetCoreReactREST.Repositories
             return await GetLikesForPost(postLike.PostId);
         }
 
-        public void UnlikePost(PostLike postLike)
-        {
-            if (postLike == null)
-            {
-                throw new ArgumentNullException(nameof(postLike));
-            }
-            _appDbContext.PostLikes.Remove(postLike);
-        }
         public async Task<bool> PostLikeExists(int postId, string userId)
         {
             Log.Information("PostId: {@PostId}, UserId: {@UserId}", postId, userId);
             var result = await _appDbContext.PostLikes
-                .AnyAsync(l => 
+                .AnyAsync(l =>
                 l.ApplicationUserId == userId
                 && l.PostId == postId);
             Log.Information("PostLikeExists: {@PostLikeExists}", result);
@@ -67,13 +68,13 @@ namespace DotNetCoreReactREST.Repositories
             return (result >= 0);
         }
 
-        public PostLike GetPostLikeById(int postLikeId)
+        public void UnlikePost(PostLike postLike)
         {
-            if (String.IsNullOrWhiteSpace(postLikeId.ToString()))
+            if (postLike == null)
             {
-                throw new ArgumentNullException(nameof(postLikeId));
+                throw new ArgumentNullException(nameof(postLike));
             }
-            return _appDbContext.PostLikes.FirstOrDefault(l => l.Id == postLikeId);
+            _appDbContext.PostLikes.Remove(postLike);
         }
     }
 }

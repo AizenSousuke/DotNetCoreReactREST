@@ -33,20 +33,6 @@ namespace DotNetCoreReactREST.Repositories
             _context.Users.Remove(user);
         }
 
-        public ApplicationUser GetUserById(string userId)
-        {
-            if (String.IsNullOrWhiteSpace(userId))
-            {
-                throw new ArgumentNullException(nameof(userId));
-            }
-            return _context.Users.FirstOrDefault(u => u.Id == userId);
-        }
-        public IEnumerable<ApplicationUser> GetAllUsers()
-        {
-            return _context.Users.
-                OrderBy(u => u.UserName)
-                .ToList();
-        }
         public IEnumerable<ApplicationUser> GetAllAdmins()
         {
             return _context.Users
@@ -55,6 +41,21 @@ namespace DotNetCoreReactREST.Repositories
                 .ToList();
         }
 
+        public IEnumerable<ApplicationUser> GetAllUsers()
+        {
+            return _context.Users.
+                OrderBy(u => u.UserName)
+                .ToList();
+        }
+
+        public ApplicationUser GetUserById(string userId)
+        {
+            if (String.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+            return _context.Users.FirstOrDefault(u => u.Id == userId);
+        }
         public bool Save()
         {
             return _context.SaveChanges() >= 0;

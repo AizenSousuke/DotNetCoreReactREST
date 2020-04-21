@@ -8,8 +8,10 @@ namespace DotNetCoreReactREST.Repositories
         Like GetLikeById(int likeId);
         IEnumerable<Like> GetLikesForComment(int commentId);
         void LikeComment(Like like);
-        void UnlikeComment(Like like);
         bool LikeExists(int commentId, string userId);
+
         bool Save();
+
+        void UnlikeComment(Like like);
     }
 }

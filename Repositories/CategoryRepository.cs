@@ -24,12 +24,6 @@ namespace DotNetCoreReactREST.Repositories
             await _context.Categories.AddAsync(category);
         }
 
-        public async Task<PaginationResourceParameter<Category>> GetAllCategories(PaginationResourceParameter<Category> paginationResourceParameter)
-        {
-            PaginationResourceParameter<Category> result = new PaginationResourceParameter<Category>(_context);
-            return await result.InitAsync(paginationResourceParameter);
-        }
-
         public async Task<bool> CategoryExists(int categoryId)
         {
             if (string.IsNullOrEmpty(categoryId.ToString()))
@@ -48,6 +42,11 @@ namespace DotNetCoreReactREST.Repositories
             _context.Categories.Remove(category);
         }
 
+        public async Task<PaginationResourceParameter<Category>> GetAllCategories(PaginationResourceParameter<Category> paginationResourceParameter)
+        {
+            PaginationResourceParameter<Category> result = new PaginationResourceParameter<Category>(_context);
+            return await result.InitAsync(paginationResourceParameter);
+        }
         public async Task<Category> GetCategoryById(int categoryId)
         {
             if (string.IsNullOrWhiteSpace(categoryId.ToString()))
