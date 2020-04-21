@@ -1,6 +1,7 @@
 ﻿using Imgur.API.Authentication.Impl;
 using Imgur.API.Endpoints.Impl;
 using Imgur.API.Models;
+using Serilog;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -22,6 +23,7 @@ namespace DotNetCoreReactREST.Services
         {
             try
             {
+                Log.Information("Filepath: {@FilePath}", filepath);
                 using (WebClient webclient = new WebClient())
                 {
                     var client = new ImgurClient(clientId);
