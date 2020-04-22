@@ -30,12 +30,8 @@ namespace DotNetCoreReactREST
         [HttpPost]
         public async Task<IActionResult> CreatePostAsync([FromBody]PostDto post)
         {
-            // Take client's path to image file and upload image to imgur
-            ImageUpload imgUpload = new ImageUpload();
-            var url = await imgUpload.Upload(post.ImageUrl);
-
-            // Replace ImageUrl with imgur link of image
-            post.ImageUrl = url;
+            // Replace with Imgur URL of the image
+            post.ImageUrl = await new ImageUpload().Upload(post.ImageUrl);
 
             Post newPost = await _postRepository.CreatePostAsync(_mapper.Map<Post>(post));
             var baseURI = Request.GetDisplayUrl();
@@ -102,6 +98,8 @@ namespace DotNetCoreReactREST
 
             // Post to update
             Post oldPost = await _postRepository.GetPostByIdAsync(postId);
+            string prePatchImageUrl = oldPost.ImageUrl;
+
             if (oldPost == null)
             {
                 return NotFound();
@@ -109,6 +107,7 @@ namespace DotNetCoreReactREST
             else
             {
                 patchDocument.ApplyTo(oldPost, ModelState);
+                string postPatchImageUrl = oldPost.ImageUrl;
 
                 if (!ModelState.IsValid)
                 {
@@ -117,6 +116,12 @@ namespace DotNetCoreReactREST
 
                 // Update time
                 oldPost.DateTime = DateTime.Now;
+
+                // Replace with Imgur URL of the updated image
+                if (prePatchImageUrl != postPatchImageUrl)
+                {
+                    oldPost.ImageUrl = await new ImageUpload().Upload(oldPost.ImageUrl);
+                }
 
                 // Save
                 await _postRepository.Save();
