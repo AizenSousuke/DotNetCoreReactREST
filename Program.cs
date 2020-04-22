@@ -1,10 +1,10 @@
+using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
-using System;
 
 namespace DotNetCoreReactREST
 {
@@ -45,7 +45,6 @@ namespace DotNetCoreReactREST
 
                 // run the web app
                 host.Run();
-
             }
             catch (Exception ex)
             {

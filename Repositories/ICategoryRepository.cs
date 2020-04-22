@@ -1,6 +1,6 @@
+using System.Threading.Tasks;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.ResourceParameters;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {

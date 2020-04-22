@@ -1,5 +1,5 @@
-﻿using DotNetCoreReactREST.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using DotNetCoreReactREST.Entities;
 
 namespace DotNetCoreReactREST.Repositories
 {

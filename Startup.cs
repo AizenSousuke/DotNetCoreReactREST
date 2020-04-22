@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using AutoMapper;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
@@ -15,8 +17,6 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.IO;
 
 namespace DotNetCoreReactREST
 {
@@ -76,7 +76,6 @@ namespace DotNetCoreReactREST
             services.AddControllers(setupAction =>
             {
                 setupAction.ReturnHttpNotAcceptable = true;
-
             }).AddNewtonsoftJson(setupAction =>
             {
                 setupAction.SerializerSettings.ContractResolver =
@@ -125,20 +124,18 @@ namespace DotNetCoreReactREST
             // Authentication
             services.AddAuthentication();
 
-            // Authorization            
+            // Authorization
             services.AddAuthorization();
 
             //Cross Origin Requests
             //AddPolicy("Name of policy")
             services.AddCors(options => options.AddPolicy("AllowOpenOrigin", builder =>
             {
-
                 builder.AllowAnyOrigin()
                       //for specific origins - builder.WithOrigins("http://example.com",
                       //"http://www.contoso.com");
                       .AllowAnyMethod()
                       .AllowAnyHeader();
-
             }));
 
             services.AddSpaStaticFiles(configuration =>
@@ -181,7 +178,7 @@ namespace DotNetCoreReactREST
             }
 
             app.UseHttpsRedirection();
-            
+
             // Swashbuckle Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>

@@ -1,13 +1,13 @@
-﻿using DotNetCoreReactREST.DbContexts;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {

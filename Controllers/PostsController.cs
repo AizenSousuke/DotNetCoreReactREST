@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Threading.Tasks;
+using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
@@ -8,8 +10,6 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using System;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST
 {

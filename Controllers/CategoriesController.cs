@@ -1,11 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Controllers
 {
