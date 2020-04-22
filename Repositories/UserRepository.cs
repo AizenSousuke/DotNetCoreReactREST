@@ -65,9 +65,8 @@ namespace DotNetCoreReactREST.Repositories
 
         public void UpdateUser(ApplicationUser user)
         {
-            //no code needed here using ef core.
-            //Call to this method is just in line with
-            //loose coupling and persistance agnostic
+            // No code needed here using ef core.
+            // Call to this method is just in line with loose coupling and persistance agnostic
         }
 
         public bool UserExists(string userId)

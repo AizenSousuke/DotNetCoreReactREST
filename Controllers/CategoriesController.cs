@@ -22,6 +22,7 @@ namespace DotNetCoreReactREST.Controllers
             _mapper = mapper;
         }
 
+        // POST: Api/Categories
         [HttpPost]
         public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryForCreationDto category)
         {
@@ -35,7 +36,7 @@ namespace DotNetCoreReactREST.Controllers
             return Created(baseURI + categoryToAdd.Id, _mapper.Map<CategoryDto>(categoryToAdd));
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: Api/Categories/{CategoryId}
         [HttpDelete("{categoryId}")]
         public async Task<ActionResult> DeleteCategory(int categoryId)
         {
@@ -50,6 +51,7 @@ namespace DotNetCoreReactREST.Controllers
             return NoContent();
         }
 
+        // PUT: Api/Categories/{CategoryId}
         [HttpPut("{categoryId}")]
         public async Task<ActionResult<CategoryDto>> EditCategory(int categoryId, CategoryForUpdateDto category)
         {
@@ -64,7 +66,7 @@ namespace DotNetCoreReactREST.Controllers
             return NoContent();
         }
 
-        // GET: api/Categories
+        // GET: Api/Categories
         [HttpGet]
         public async Task<IActionResult> GetCategories([FromQuery] PaginationResourceParameter<Category> paginationResourceParameter)
         {
@@ -76,7 +78,7 @@ namespace DotNetCoreReactREST.Controllers
             return Ok(result);
         }
 
-        // GET: api/Categories/5
+        // GET: Api/Categories/{CategoryId}
         [HttpGet("{categoryId}", Name = "GetCategories")]
         public async Task<ActionResult<CategoryDto>> GetCategory(int categoryId)
         {

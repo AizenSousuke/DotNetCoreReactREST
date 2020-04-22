@@ -29,6 +29,7 @@ namespace DotNetCoreReactREST
             _mapper = mapper;
         }
 
+        // GET: Api/Posts/{PostId}/PostLikes
         [HttpGet]
         [Route("posts/{postId}/postlikes")]
         public async Task<IActionResult> GetPostLikesForPost(int postId)
@@ -42,7 +43,8 @@ namespace DotNetCoreReactREST
             return Ok(_mapper.Map<List<PostLikeDto>>(postLikesFromRepo));
         }
 
-        //Authenticate to make sure userId is the same as logged user
+        // POST: Api/Posts/{PostId}/Users/{UserId}/PostLikes
+        // Authenticate to make sure userId is the same as logged user
         [HttpPost]
         [Route("posts/{postId:int}/users/{userId}/postlikes")]
         public async Task<IActionResult> LikePostAsync([FromRoute]int postId, [FromRoute]string userId)
@@ -76,7 +78,8 @@ namespace DotNetCoreReactREST
             return Problem("Problem with Database.");
         }
 
-        //Authenticate to make sure userId is the same as logged user
+        // DELETE: Api/PostLikes/{PostLikeId}
+        // Authenticate to make sure userId is the same as logged user
         [HttpDelete]
         [Route("postlikes/{postLikeId:int}")]
         public async Task<IActionResult> UnlikePostAsync(int postLikeId)

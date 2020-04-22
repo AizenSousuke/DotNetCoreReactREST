@@ -26,7 +26,7 @@ namespace DotNetCoreReactREST
             _mapper = mapper;
         }
 
-        //POST Api/Posts
+        // POST: Api/Posts
         [HttpPost]
         public async Task<IActionResult> CreatePostAsync([FromBody]PostDto post)
         {
@@ -41,7 +41,7 @@ namespace DotNetCoreReactREST
             return Created(baseURI + newPost.Id, _mapper.Map<PostDto>(newPost));
         }
 
-        //DELETE Api/Posts/{PostId}
+        // DELETE: Api/Posts/{PostId}
         [HttpDelete("{postId:int}")]
         public async Task<IActionResult> DeletePost([FromRoute]int postId)
         {
@@ -59,7 +59,7 @@ namespace DotNetCoreReactREST
             return Ok("Post not deleted.");
         }
 
-        //GET Api/Posts/{postId}
+        // GET: Api/Posts/{PostId}
         [HttpGet]
         // Route will only match if postId can be casted as a int
         [Route("{postId:int}")]
@@ -74,7 +74,7 @@ namespace DotNetCoreReactREST
             return Ok(_mapper.Map<PostDto>(postFromRepository));
         }
 
-        //GET Api/posts[category = string &| searchQuery = string]
+        // GET: Api/Posts[category = string &| searchQuery = string]
         [HttpGet]
         [HttpHead]
         public async Task<IActionResult> GetPostsAsync([FromQuery]PaginationResourceParameter<Post> paginationResourceParameter)
@@ -87,7 +87,7 @@ namespace DotNetCoreReactREST
             return Ok(result);
         }
 
-        //PATCH Api/Posts/{postId}
+        // PATCH: Api/Posts/{PostId}
         [HttpPatch("{postId:int}", Name = "{postId:int}")]
         public async Task<IActionResult> UpdatePost([FromRoute]int postId, [FromBody]JsonPatchDocument<Post> patchDocument)
         {
