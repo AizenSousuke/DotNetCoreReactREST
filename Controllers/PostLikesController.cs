@@ -19,6 +19,7 @@ namespace DotNetCoreReactREST
         private readonly IPostLikeRepository _postLikeRepository;
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepo;
+
         public PostLikesController(IPostLikeRepository postLikeRepo,
             IPostRepository postRepository, IUserRepository userRepo, IMapper mapper)
         {
@@ -26,7 +27,6 @@ namespace DotNetCoreReactREST
             _postRepository = postRepository;
             _userRepo = userRepo;
             _mapper = mapper;
-
         }
 
         [HttpGet]
@@ -97,5 +97,3 @@ namespace DotNetCoreReactREST
         }
     }
 }
-
-

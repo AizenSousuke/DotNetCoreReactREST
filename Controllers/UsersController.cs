@@ -28,6 +28,7 @@ namespace DotNetCoreReactREST.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepo;
+
         public UsersController(
             IMapper mapper,
             IUserRepository userRepository,
@@ -43,6 +44,7 @@ namespace DotNetCoreReactREST.Controllers
             _postRepository = postRepository;
             _commentRepository = commentRepository;
         }
+
         // POST Api/Users
         [HttpPost]
         public ActionResult<UserDto> CreateUser([FromBody]UserForCreationDto user)
@@ -108,6 +110,7 @@ namespace DotNetCoreReactREST.Controllers
             var userEntities = _userRepo.GetAllUsers();
             return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
         }
+
         [HttpGet("login")]
         public IActionResult IsLoggedIn()
         {
@@ -121,7 +124,6 @@ namespace DotNetCoreReactREST.Controllers
             }
             catch (System.Exception)
             {
-
                 throw;
             }
         }
@@ -158,7 +160,6 @@ namespace DotNetCoreReactREST.Controllers
             }
             catch (System.Exception)
             {
-
                 throw;
             }
         }
@@ -234,6 +235,7 @@ namespace DotNetCoreReactREST.Controllers
 
             return NoContent();
         }
+
         public override ActionResult ValidationProblem(
             [ActionResultObjectValue] ModelStateDictionary modelStateDictionary)
         {

@@ -29,7 +29,6 @@ namespace DotNetCoreReactREST.Controllers
             await _categoryRepository.AddCategory(categoryToAdd);
             await _categoryRepository.Save();
 
-
             var baseURI = Request.GetDisplayUrl();
             // Alternative way
             // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;

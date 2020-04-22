@@ -10,6 +10,7 @@ namespace DotNetCoreReactREST.Repositories
     public class CategoryRepository : ICategoryRepository
     {
         private readonly AppDbContext _context;
+
         public CategoryRepository(AppDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -47,6 +48,7 @@ namespace DotNetCoreReactREST.Repositories
             PaginationResourceParameter<Category> result = new PaginationResourceParameter<Category>(_context);
             return await result.InitAsync(paginationResourceParameter);
         }
+
         public async Task<Category> GetCategoryById(int categoryId)
         {
             if (string.IsNullOrWhiteSpace(categoryId.ToString()))

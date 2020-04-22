@@ -14,6 +14,7 @@ namespace DotNetCoreReactREST.Repositories
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+
         public void AddUser(ApplicationUser user)
         {
             if (user == null)
@@ -56,6 +57,7 @@ namespace DotNetCoreReactREST.Repositories
             }
             return _context.Users.FirstOrDefault(u => u.Id == userId);
         }
+
         public bool Save()
         {
             return _context.SaveChanges() >= 0;
@@ -63,8 +65,8 @@ namespace DotNetCoreReactREST.Repositories
 
         public void UpdateUser(ApplicationUser user)
         {
-            //no code needed here using ef core. 
-            //Call to this method is just in line with 
+            //no code needed here using ef core.
+            //Call to this method is just in line with
             //loose coupling and persistance agnostic
         }
 

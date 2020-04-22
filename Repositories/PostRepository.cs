@@ -13,10 +13,12 @@ namespace DotNetCoreReactREST.Repositories
     public class PostRepository : IPostRepository
     {
         private readonly AppDbContext _appDbContext;
+
         public PostRepository(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
         }
+
         public async Task<Post> CreatePostAsync(Post post)
         {
             post.DateTime = DateTime.Now;
@@ -54,6 +56,7 @@ namespace DotNetCoreReactREST.Repositories
             PaginationResourceParameter<Post> result = new PaginationResourceParameter<Post>(_appDbContext);
             return await result.InitAsync(paginationResourceParameter);
         }
+
         public async Task<bool> Save()
         {
             int result = await _appDbContext.SaveChangesAsync();

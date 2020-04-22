@@ -40,7 +40,6 @@ namespace DotNetCoreReactREST.Repositories
                 throw new ArgumentNullException(nameof(like));
             }
             _context.Likes.Add(like);
-
         }
 
         public bool LikeExists(int commentId, string userId)

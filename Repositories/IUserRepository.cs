@@ -12,11 +12,15 @@ namespace DotNetCoreReactREST.Repositories
         IEnumerable<ApplicationUser> GetAllAdmins();
 
         IEnumerable<ApplicationUser> GetAllUsers();
+
         ApplicationUser GetUserById(string userId);
+
         bool Save();
 
         void UpdateUser(ApplicationUser user);
+
         bool UserExists(string userId);
+
         bool UserExistsByName(string userName);
     }
 }

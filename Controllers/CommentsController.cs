@@ -80,6 +80,7 @@ namespace DotNetCoreReactREST.Controllers
             var commentsFromRepo = await _commentRepo.GetCommentsForUser(userId);
             return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
         }
+
         // PUT comments/{commentId}
         [HttpPut("comments/{commentId}")]
         public async Task<ActionResult> UpdateComment(int commentId, CommentForUpdateDto comment)
@@ -125,7 +126,8 @@ namespace DotNetCoreReactREST.Controllers
 
             return NoContent();
         }
-        //this overrides validation behavior in patch to show 
+
+        //this overrides validation behavior in patch to show
         //more detailed error info if model is invalid
         public override ActionResult ValidationProblem(
            [ActionResultObjectValue] ModelStateDictionary modelStateDictionary)

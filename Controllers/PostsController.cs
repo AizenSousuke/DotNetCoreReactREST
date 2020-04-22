@@ -19,11 +19,13 @@ namespace DotNetCoreReactREST
     {
         private readonly IMapper _mapper;
         private readonly IPostRepository _postRepository;
+
         public PostsController(IPostRepository postRepository, IMapper mapper)
         {
             _postRepository = postRepository;
             _mapper = mapper;
         }
+
         //POST Api/Posts
         [HttpPost]
         public async Task<IActionResult> CreatePostAsync([FromBody]PostDto post)
@@ -34,7 +36,7 @@ namespace DotNetCoreReactREST
 
             // Replace ImageUrl with imgur link of image
             post.ImageUrl = url;
-            
+
             Post newPost = await _postRepository.CreatePostAsync(_mapper.Map<Post>(post));
             var baseURI = Request.GetDisplayUrl();
 
@@ -42,6 +44,7 @@ namespace DotNetCoreReactREST
             // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
             return Created(baseURI + newPost.Id, _mapper.Map<PostDto>(newPost));
         }
+
         //DELETE Api/Posts/{PostId}
         [HttpDelete("{postId:int}")]
         public async Task<IActionResult> DeletePost([FromRoute]int postId)
@@ -87,6 +90,7 @@ namespace DotNetCoreReactREST
             }
             return Ok(result);
         }
+
         //PATCH Api/Posts/{postId}
         [HttpPatch("{postId:int}", Name = "{postId:int}")]
         public async Task<IActionResult> UpdatePost([FromRoute]int postId, [FromBody]JsonPatchDocument<Post> patchDocument)

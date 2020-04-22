@@ -17,6 +17,7 @@ namespace DotNetCoreReactREST.Repositories
         Task<IEnumerable<Comment>> GetCommentsForPost(int postId);
 
         Task<IEnumerable<Comment>> GetCommentsForUser(string userId);
+
         Task<bool> Save();
 
         void UpdateComment(Comment comment);
