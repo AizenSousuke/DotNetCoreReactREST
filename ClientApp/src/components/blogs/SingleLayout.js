@@ -20,7 +20,6 @@ import { act } from "react-dom/test-utils";
 import Comment from "./Comment";
 import "../../styles/components/comment.scss";
 import AddComment from "./AddComment";
-// import moment from "moment";
 
 const SingleLayout = ({ markup, match }) => {
   const [liked, setLiked] = useState(false);
@@ -70,6 +69,7 @@ const SingleLayout = ({ markup, match }) => {
     dispatch(getSingleBlogLikeCount(match.params.id));
     // dispatch(getLikesForComment(match.params.id));
   }, [match.params]);
+
   const viewing = !creating && !editing ? true : false;
 
   SingleLayout.propTypes = {
@@ -78,7 +78,7 @@ const SingleLayout = ({ markup, match }) => {
     markup: propTypes.string
   };
 
-  console.log("paramvalue:", match.params.id);
+  // console.log("paramvalue:", match.params.id);
 
   return (
     <div>
