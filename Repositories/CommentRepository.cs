@@ -57,15 +57,6 @@ namespace DotNetCoreReactREST.Repositories
                 .FirstOrDefaultAsync(c => c.Id == commentId);
         }
 
-        public async Task<IEnumerable<Comment>> GetCommentsForUser(string userId)
-        {
-            return await _context.Comments
-                .Where(c => c.ApplicationUserId == userId)
-                .Include(c => c.ApplicationUser)
-                .Include(c => c.Likes)
-                .OrderByDescending(c => c.DateCreated)
-                .ToListAsync();
-        }
         public async Task<IEnumerable<Comment>> GetCommentsForPost(int postId)
         {
             return await _context.Comments
@@ -73,6 +64,16 @@ namespace DotNetCoreReactREST.Repositories
                 .Include(c => c.ApplicationUser)
                 .OrderBy(c => c.Likes.Count())
                 .ThenByDescending(c => c.DateCreated)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Comment>> GetCommentsForUser(string userId)
+        {
+            return await _context.Comments
+                .Where(c => c.ApplicationUserId == userId)
+                .Include(c => c.ApplicationUser)
+                .Include(c => c.Likes)
+                .OrderByDescending(c => c.DateCreated)
                 .ToListAsync();
         }
 

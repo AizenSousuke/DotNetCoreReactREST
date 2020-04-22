@@ -22,6 +22,48 @@ namespace DotNetCoreReactREST.Controllers
             _mapper = mapper;
         }
 
+        [HttpPost]
+        public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryForCreationDto category)
+        {
+            var categoryToAdd = _mapper.Map<Category>(category);
+            await _categoryRepository.AddCategory(categoryToAdd);
+            await _categoryRepository.Save();
+
+            var baseURI = Request.GetDisplayUrl();
+            // Alternative way
+            // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
+            return Created(baseURI + categoryToAdd.Id, _mapper.Map<CategoryDto>(categoryToAdd));
+        }
+
+        // DELETE: api/Categories/5
+        [HttpDelete("{categoryId}")]
+        public async Task<ActionResult> DeleteCategory(int categoryId)
+        {
+            var categoryToDelete = await _categoryRepository.GetCategoryById(categoryId);
+            if (categoryToDelete == null)
+            {
+                BadRequest();
+            }
+            _categoryRepository.DeleteCategory(categoryToDelete);
+            await _categoryRepository.Save();
+
+            return NoContent();
+        }
+
+        [HttpPut("{categoryId}")]
+        public async Task<ActionResult<CategoryDto>> EditCategory(int categoryId, CategoryForUpdateDto category)
+        {
+            var categoryFromRepo = await _categoryRepository.GetCategoryById(categoryId);
+            if (categoryFromRepo == null)
+            {
+                return BadRequest();
+            }
+            _mapper.Map(category, categoryFromRepo);
+            await _categoryRepository.Save();
+
+            return NoContent();
+        }
+
         // GET: api/Categories
         [HttpGet]
         public async Task<IActionResult> GetCategories([FromQuery] PaginationResourceParameter<Category> paginationResourceParameter)
@@ -47,50 +89,5 @@ namespace DotNetCoreReactREST.Controllers
 
             return Ok(_mapper.Map<CategoryDto>(categoryFromRepo));
         }
-
-        [HttpPut("{categoryId}")]
-        public async Task<ActionResult<CategoryDto>> EditCategory(int categoryId, CategoryForUpdateDto category)
-        {
-            var categoryFromRepo = await _categoryRepository.GetCategoryById(categoryId);
-            if (categoryFromRepo == null)
-            {
-                return BadRequest();
-            }
-            _mapper.Map(category, categoryFromRepo);
-            await _categoryRepository.Save();
-
-            return NoContent();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryForCreationDto category)
-        {
-            var categoryToAdd = _mapper.Map<Category>(category);
-            await _categoryRepository.AddCategory(categoryToAdd);
-            await _categoryRepository.Save();
-
-
-            var baseURI = Request.GetDisplayUrl();
-            // Alternative way
-            // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
-            return Created(baseURI + categoryToAdd.Id, _mapper.Map<CategoryDto>(categoryToAdd));
-        }
-
-        // DELETE: api/Categories/5
-        [HttpDelete("{categoryId}")]
-        public async Task<ActionResult> DeleteCategory(int categoryId)
-        {
-            var categoryToDelete = await _categoryRepository.GetCategoryById(categoryId);
-            if (categoryToDelete == null)
-            {
-                BadRequest();
-            }
-            _categoryRepository.DeleteCategory(categoryToDelete);
-            await _categoryRepository.Save();
-
-            return NoContent();
-        }
-
-
     }
 }

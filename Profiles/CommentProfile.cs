@@ -9,7 +9,6 @@ namespace DotNetCoreReactREST.Profiles
     {
         public CommentProfile()
         {
-
             CreateMap<Comment, CommentDto>()
            .ForMember(
                     dest => dest.LikesCount,
@@ -23,7 +22,6 @@ namespace DotNetCoreReactREST.Profiles
 
             CreateMap<CommentForCreationDto, Comment>();
             CreateMap<CommentForUpdateDto, Comment>();
-
         }
     }
 }

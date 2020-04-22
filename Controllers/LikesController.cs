@@ -14,10 +14,11 @@ namespace DotNetCoreReactREST.Controllers
     [ApiController]
     public class LikesController : ControllerBase
     {
-        private readonly ILikeRepository _likeRepo;
         private readonly ICommentRepository _commentRepo;
-        private readonly IUserRepository _userRepo;
+        private readonly ILikeRepository _likeRepo;
         private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepo;
+
         public LikesController(ILikeRepository likeRepo,
             ICommentRepository commentRepo, IUserRepository userRepo, IMapper mapper)
         {
@@ -25,8 +26,8 @@ namespace DotNetCoreReactREST.Controllers
             _commentRepo = commentRepo;
             _userRepo = userRepo;
             _mapper = mapper;
-
         }
+
         // GET: Api/Comments/{CommentId}/likes
         [HttpGet("comments/{commentId}/likes")]
         public async Task<ActionResult<IEnumerable<LikeDto>>> GetLikesForComment(int commentId)
@@ -71,5 +72,3 @@ namespace DotNetCoreReactREST.Controllers
         }
     }
 }
-
-

@@ -15,6 +15,15 @@ namespace DotNetCoreReactREST.Repositories
             _context = context;
         }
 
+        public Like GetLikeById(int likeId)
+        {
+            if (String.IsNullOrWhiteSpace(likeId.ToString()))
+            {
+                throw new ArgumentNullException(nameof(likeId));
+            }
+            return _context.Likes.FirstOrDefault(like => like.Id == likeId);
+        }
+
         public IEnumerable<Like> GetLikesForComment(int commentId)
         {
             if (String.IsNullOrWhiteSpace(commentId.ToString()))
@@ -31,17 +40,8 @@ namespace DotNetCoreReactREST.Repositories
                 throw new ArgumentNullException(nameof(like));
             }
             _context.Likes.Add(like);
-
         }
 
-        public void UnlikeComment(Like like)
-        {
-            if (like == null)
-            {
-                throw new ArgumentNullException(nameof(like));
-            }
-            _context.Likes.Remove(like);
-        }
         public bool LikeExists(int commentId, string userId)
         {
             return (_context.Likes
@@ -54,13 +54,13 @@ namespace DotNetCoreReactREST.Repositories
             return (_context.SaveChanges() >= 0);
         }
 
-        public Like GetLikeById(int likeId)
+        public void UnlikeComment(Like like)
         {
-            if (String.IsNullOrWhiteSpace(likeId.ToString()))
+            if (like == null)
             {
-                throw new ArgumentNullException(nameof(likeId));
+                throw new ArgumentNullException(nameof(like));
             }
-            return _context.Likes.FirstOrDefault(like => like.Id == likeId);
+            _context.Likes.Remove(like);
         }
     }
 }
