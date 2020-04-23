@@ -1,1 +1,23 @@
-
+{
+  "name": "DotNetCoreReactREST",
+  "version": "1.0.0",
+  "engines": {
+    "node": "12.16.x"
+  },
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AizenSousuke/DotNetCoreReactREST.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AizenSousuke/DotNetCoreReactREST/issues"
+  },
+  "homepage": "https://github.com/AizenSousuke/DotNetCoreReactREST#readme"
+}
