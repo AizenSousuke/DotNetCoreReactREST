@@ -3,23 +3,53 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as stage
 WORKDIR /Stage
 COPY . .
 RUN dotnet restore
+ENV USINGDOCKER true
 # Install node so can call dotnet publish to publish the backend (Will remove later)
-RUN apt-get update -yq \
+RUN if [ "$USINGDOCKER"="false" ]; then echo '================= USINGDOCKER has been set to false ===================='; else apt-get update -yq \
     && apt-get install curl gnupg -yq \
     && curl -sL https://deb.nodesource.com/setup_13.x | bash \
-    && apt-get install nodejs -yq
+    && apt-get install nodejs -yq; fi
 RUN dotnet publish -c Release -o output
+RUN ls output
 WORKDIR /Stage/output
+RUN ls -l
+
+# Build Node Frontend
+FROM node:alpine as react
+WORKDIR /Stage
+COPY ClientApp .
+RUN npm install
+RUN npm run-script build
 RUN ls -l
 
 # Runtime
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 as runtime
 WORKDIR /Code
+
+# Copy Certs
+# RUN mkdir Certs
+# RUN ls -l
+# COPY ./Certs Certs
+# RUN ls Certs
+
+# Copy build folder from frontend
+COPY --from=react /Stage/ .
+
+# Copy backend
 COPY --from=stage /Stage/output .
+
+# Env
+# ENV ASPNETCORE_URLS=https://*:$PORT;http://*:$PORT
+# ENV ASPNETCORE_ENVIRONMENT=Production
+
 # Copy script from local
 COPY ./wait-for-it.sh .
 CMD dos2unix wait-for-it.sh
 RUN chmod +x wait-for-it.sh
+
+# Transfer react prod files to wwwroot folder
+RUN mv build wwwroot
 RUN ls -l
-EXPOSE 80 5000 5001
+RUN ls wwwroot
+EXPOSE 80 443
 CMD [ "./wait-for-it.sh", "sql:1433", "-t", "0", "--", "dotnet",  "DotNetCoreReactREST.dll" ]

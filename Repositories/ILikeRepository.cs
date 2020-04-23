@@ -11,7 +11,5 @@ namespace DotNetCoreReactREST.Repositories
         void UnlikeComment(Like like);
         bool LikeExists(int commentId, string userId);
         bool Save();
-
-
     }
 }

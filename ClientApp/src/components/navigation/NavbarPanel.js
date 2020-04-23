@@ -7,8 +7,8 @@ import SmallPanel from '../common/SmallPanel';
 
 const NavbarPanel = () => {
       const dispatch = useDispatch();
-        const [panelOpen, setPanelOpen] = useState(false);
-        const togglePanel = () => setPanelOpen(!panelOpen);
+      const [panelOpen, setPanelOpen] = useState(false);
+      const togglePanel = () => setPanelOpen(!panelOpen);
 
 
     return (

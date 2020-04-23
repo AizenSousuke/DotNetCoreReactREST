@@ -1,9 +1,26 @@
 .blog-layout {
-    a {
-        color: $white;
-        &:hover {
-            color: $white;
-            text-decoration: none;
-        }
+  overflow: visible;
+
+  .blog-container {
+    width: 40vw;
+    // need to wrap header or resize this
+  }
+
+  a {
+    color: $white;
+    &:hover {
+      color: $white;
+      text-decoration: none;
     }
+  }
+}
+
+.categories-filter {
+  margin: auto;
+  width: 50%;
+
+  //   & .toolbar-header {
+  //     position: relative;
+  //     margin: auto;
+  //   }
 }

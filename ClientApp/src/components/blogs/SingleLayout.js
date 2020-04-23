@@ -2,13 +2,24 @@ import React, { useState, useEffect } from "react";
 import propTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { getSingleBlog } from "../../actions/blogActions";
+import {
+  getSingleBlog,
+  editBlog,
+  likeBlog,
+  getSingleBlogComments,
+  getSingleBlogLikes,
+  getSingleBlogLikeCount,
+  incrementSingleBlogLikes,
+  getLikesForComment
+} from "../../actions/blogActions";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Printer from "./Printer";
 import { Container, Col, Row, Spinner } from "reactstrap";
+import { act } from "react-dom/test-utils";
 import Comment from "./Comment";
 import "../../styles/components/comment.scss";
+import AddComment from "./AddComment";
 
 const SingleLayout = ({ markup, match }) => {
   const [liked, setLiked] = useState(false);
@@ -20,15 +31,22 @@ const SingleLayout = ({ markup, match }) => {
   const [showingEditor, setShowingEditor] = useState(true);
 
   const blog = useSelector(state => state.blogs.single);
-  const comments = useSelector(state => state.blogs.comments);
+  // const users = useSelector(state => state.blogs.users);
   const loading = useSelector(state => state.blogs.loading);
+  const comments = blog.comments;
+  const likes = blog.likes;
+  const likeCount = blog.likeCount;
 
   const like_or_dislike = () => {
     setLiked(prev => !prev);
+    likeCount++;
   };
+
   const dispatch = useDispatch();
   useEffect(() => {
     const params = match.params;
+
+    // set blog to null if creating
     if (!Object.keys(params).length) {
       dispatch(getSingleBlog(null));
       setCreating(true);
@@ -36,12 +54,22 @@ const SingleLayout = ({ markup, match }) => {
     }
     const action = match.params.action;
     if (action === "edit") {
-      dispatch(getSingleBlog(match.params.id));
+      if (blog && !blog.title) {
+        dispatch(getSingleBlog(match.params.id));
+      }
       setEditing(true);
+      setTitle(blog.title);
+      setValue(`<div>${blog.content}</div>`);
       return;
     }
+    // check if blog has been fetched for view, if not fetch it
     dispatch(getSingleBlog(match.params.id));
-  }, [dispatch, match.params]);
+    dispatch(getSingleBlogComments(match.params.id));
+    dispatch(getSingleBlogLikes(match.params.id));
+    dispatch(getSingleBlogLikeCount(match.params.id));
+    // dispatch(getLikesForComment(match.params.id));
+  }, [match.params]);
+
   const viewing = !creating && !editing ? true : false;
 
   SingleLayout.propTypes = {
@@ -49,8 +77,15 @@ const SingleLayout = ({ markup, match }) => {
     editing: propTypes.bool,
     markup: propTypes.string
   };
+
+  // console.log("paramvalue:", match.params.id);
+
   return (
     <div>
+      {/* {JSON.stringify(comments)} */}
+      {/* <div>
+        <h1>Comments: {blog.comments}</h1>
+      </div> */}
       {!loading ? (
         <div className="m-auto wrapper">
           <div>
@@ -90,13 +125,21 @@ const SingleLayout = ({ markup, match }) => {
                     <div>
                       <span>24 blogs</span>
                       <i className="fas fa-newspaper"></i>
-                      <span>420 likes</span>
+                      <span>{likeCount} likes</span>
                       <i className="fas fa-thumbs-up"></i>
                     </div>
                   </div>
                 </div>
                 <div className="profile-card-btns">
-                  <button className="d-block" onClick={like_or_dislike}>
+                  <button
+                    className="d-block"
+                    onClick={() => {
+                      like_or_dislike();
+                      // !liked
+                      //   ? dispatch(likeBlog(1, 1))
+                      //   : dispatch(unlikeBlog(1, 1));
+                    }}
+                  >
                     {liked ? (
                       "Liked"
                     ) : (
@@ -110,7 +153,21 @@ const SingleLayout = ({ markup, match }) => {
                     <span>View John's other blogs</span>
                   </button>
                   {!viewing && title && value && value !== "<p><br></p>" ? (
-                    <button>
+                    <button
+                      onClick={() => {
+                        if (creating) {
+                          // dispatch(createBlog(1, blog.title, value, 1))
+                          return;
+                        }
+                        const batch = {
+                          id: blog.id,
+                          title: title,
+                          description: value,
+                          categoryId: blog.categoryId
+                        };
+                        dispatch(editBlog(batch));
+                      }}
+                    >
                       <span>{creating ? "Create Blog" : "Save Blog"}</span>
                     </button>
                   ) : (
@@ -169,17 +226,31 @@ const SingleLayout = ({ markup, match }) => {
         </div>
       )}
       <Container>
+        <div>
+          <AddComment
+            // applicationUserId={user.applicationUserId}
+            // postId={blog.postId}
+            applicationUserId={1}
+            postId={match.params.id}
+          />
+        </div>
         <div className="comments-wrapper">
-          {comments.map(c => {
-            return (
-              <Comment
-                key={c.id}
-                name={c.name}
-                content={c.content}
-                date={c.date}
-              />
-            );
-          })}
+          {comments
+            ? comments.map(c => {
+                return (
+                  <Comment
+                    key={c.id}
+                    content={c.content}
+                    postId={c.postId}
+                    userId={c.applicationUserId}
+                    name={c.userName}
+                    isAnonymous={c.isAnonymous}
+                    date={c.dateCreated}
+                    // likeCount=
+                  />
+                );
+              })
+            : null}
         </div>
       </Container>
     </div>

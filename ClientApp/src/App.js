@@ -1,9 +1,15 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Route } from "react-router-dom";
 import "./styles/index.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getBlogs, setDummyComments } from "./actions/blogActions";
+import {
+  getBlogs,
+  getUsers,
+  getCategories,
+  getSingleBlogComments,
+  getLikesForComment
+} from "./actions/blogActions";
 import { setUser } from "./actions/auth";
 import Profile from "./pages/Profile";
 import Browse from "./pages/Browse";
@@ -11,17 +17,17 @@ import Blog from "./pages/Blog";
 
 const App = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getBlogs());
+    dispatch(getCategories());
+    dispatch(getUsers());
+    
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       dispatch(setUser(user));
     }
   });
-
-  for (let i = 0; i < 10; i++) {
-    dispatch(setDummyComments(i));
-  }
 
   return (
     <div className="app">

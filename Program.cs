@@ -12,7 +12,7 @@ namespace DotNetCoreReactREST
     {
         public static void Main(string[] args)
         {
-            // Add Serilog for logging through new configuration
+            // Add Serilog for logging through new configuration before the CreateHostBuilder function.
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
@@ -28,18 +28,20 @@ namespace DotNetCoreReactREST
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
                 .Enrich.WithMachineName()
-                .WriteTo.Console()
+                .WriteTo.Console(
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} UTC [{Level}] {Message}{NewLine}{Exception}")
                 .WriteTo.File(new CompactJsonFormatter(), logfile)
                 .CreateLogger();
 
-            Log.Information("Added logging to Program.cs");
+            Log.Information("Added logging to Program.cs before CreateHostBuilder so can log the try catch.");
 
             try
             {
                 Log.Information("Application starting up on {MachineName}");
 
                 // Create host
-                var host = CreateHostBuilder(args).Build();
+                var host = CreateHostBuilder(args)
+                    .Build();
 
                 // run the web app
                 host.Run();
@@ -62,6 +64,16 @@ namespace DotNetCoreReactREST
                 .UseSerilog() // <-- Add this line for serilog;
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    // Set defaults here
+
+                    // If Environment is Production
+                    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+                    {
+                        IConfigurationRoot configuration = new ConfigurationBuilder()
+                        .AddJsonFile("appsettings.Production.json")
+                        .Build();
+                        webBuilder.UseConfiguration(configuration);
+                    }
                     webBuilder.UseStartup<Startup>();
                 });
     }
