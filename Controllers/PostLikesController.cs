@@ -1,24 +1,25 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace DotNetCoreReactREST.Controllers
+namespace DotNetCoreReactREST
 {
-    [Route("api")]
     [ApiController]
+    [Route("api/")]
     public class PostLikesController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IPostLikeRepository _postLikeRepository;
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepo;
-        private readonly IMapper _mapper;
+
         public PostLikesController(IPostLikeRepository postLikeRepo,
             IPostRepository postRepository, IUserRepository userRepo, IMapper mapper)
         {
@@ -26,10 +27,11 @@ namespace DotNetCoreReactREST.Controllers
             _postRepository = postRepository;
             _userRepo = userRepo;
             _mapper = mapper;
-
         }
 
-        [HttpGet("posts/{postId}/postlikes")]
+        // GET: Api/Posts/{PostId}/PostLikes
+        [HttpGet]
+        [Route("posts/{postId}/postlikes")]
         public async Task<IActionResult> GetPostLikesForPost(int postId)
         {
             var postExists = await _postRepository.GetPostByIdAsync(postId);
@@ -41,20 +43,22 @@ namespace DotNetCoreReactREST.Controllers
             return Ok(_mapper.Map<List<PostLikeDto>>(postLikesFromRepo));
         }
 
-        //Authenticate to make sure userId is the same as logged user
-
-        [HttpPost("posts/{postId:int}/users/{userId}/postlikes")]
+        // POST: Api/Posts/{PostId}/Users/{UserId}/PostLikes
+        // Authenticate to make sure userId is the same as logged user
+        [HttpPost]
+        [Route("posts/{postId:int}/users/{userId}/postlikes")]
         public async Task<IActionResult> LikePostAsync([FromRoute]int postId, [FromRoute]string userId)
         {
             Log.Information("PostId: {@PostId}, UserId: {@UserId}", postId, userId);
             // Check if post exists
-            if (await _postRepository.GetPostByIdAsync(postId) == null)
+            var postExists = await _postRepository.GetPostByIdAsync(postId);
+            if (postExists == null)
             {
                 return NotFound("Post doesn't exists.");
             };
             // PostLike is unique to user, so none should exist
-            bool exists = await _postLikeRepository.PostLikeExists(postId, userId);
-            if (exists)
+            bool postLikeExists = await _postLikeRepository.PostLikeExists(postId, userId);
+            if (postLikeExists)
             {
                 return Ok("Post has already been liked.");
             }
@@ -65,13 +69,19 @@ namespace DotNetCoreReactREST.Controllers
                     ApplicationUserId = userId,
                     IsLiked = true
                 });
-            await _postLikeRepository.SaveAsync();
-            return Ok(results);
+            if (results != null)
+            {
+                await _postLikeRepository.SaveAsync();
+                return Ok(results);
+            }
+
+            return Problem("Problem with Database.");
         }
 
-        //Authenticate to make sure userId is the same as logged user
-
-        [HttpDelete("postlikes/{postLikeId}")]
+        // DELETE: Api/PostLikes/{PostLikeId}
+        // Authenticate to make sure userId is the same as logged user
+        [HttpDelete]
+        [Route("postlikes/{postLikeId:int}")]
         public async Task<IActionResult> UnlikePostAsync(int postLikeId)
         {
             var postFromRepo = _postLikeRepository.GetPostLikeById(postLikeId);
@@ -80,11 +90,13 @@ namespace DotNetCoreReactREST.Controllers
                 return NotFound("No likes on post.");
             }
             _postLikeRepository.UnlikePost(postFromRepo);
-            await _postLikeRepository.SaveAsync();
-            var result = await _postLikeRepository.GetLikesForPost(postFromRepo.PostId);
-            return Ok(result);
+            var saved = await _postLikeRepository.SaveAsync();
+            if (saved)
+            {
+                var result = await _postLikeRepository.GetLikesForPost(postFromRepo.PostId);
+                return Ok(result);
+            }
+            return Problem("Not saved.");
         }
     }
 }
-
-

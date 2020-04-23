@@ -1,5 +1,5 @@
-﻿using DotNetCoreReactREST.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using DotNetCoreReactREST.Entities;
 
 namespace DotNetCoreReactREST.Dtos
 {
@@ -7,8 +7,11 @@ namespace DotNetCoreReactREST.Dtos
     {
         // Public facing properties
         public int Id { get; set; }
+
         public string Name { get; set; }
+
         public string Description { get; set; }
+
         public IEnumerable<Post> Posts { get; set; } = new List<Post>();
     }
 }

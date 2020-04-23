@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
@@ -8,8 +10,6 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Controllers
 {
@@ -26,34 +26,7 @@ namespace DotNetCoreReactREST.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/users/{userId}/comments
-        [HttpGet("users/{userId}/comments")]
-        public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsForUser(string userId)
-        {
-            var commentsFromRepo = await _commentRepo.GetCommentsForUser(userId);
-            return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
-        }
-
-        [HttpGet("posts/{postId:int}/comments")]
-        public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsForPost(int postId)
-        {
-            var commentsFromRepo = await _commentRepo.GetCommentsForPost(postId);
-            return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
-        }
-
-        // GET api/comments/{commentId}
-        [HttpGet("comments/{commentId}", Name = "GetComment")]
-        public async Task<ActionResult> GetCommentForUser(int commentId)
-        {
-            var commentFromRepo = await _commentRepo.GetCommentById(commentId);
-            if (commentFromRepo == null)
-            {
-                return NotFound();
-            }
-            return Ok(_mapper.Map<CommentDto>(commentFromRepo));
-        }
-
-        // POST api/comments
+        // POST: Api/Comments
         [HttpPost("comments")]
         public async Task<ActionResult<CommentDto>> CreateComment(CommentForCreationDto comment)
         {
@@ -67,7 +40,49 @@ namespace DotNetCoreReactREST.Controllers
                 commentToReturn);
         }
 
-        // PUT comments/{commentId}
+        // DELETE: Api/Comments/{CommentId}
+        [HttpDelete("comments/{commentId}")]
+        public async Task<ActionResult> Delete(int commentId)
+        {
+            var commentFromRepo = await _commentRepo.GetCommentById(commentId);
+            if (commentFromRepo == null)
+            {
+                return NotFound();
+            }
+            _commentRepo.DeleteComment(commentFromRepo);
+            await _commentRepo.Save();
+            return NoContent();
+        }
+
+        // GET: Api/Comments/{CommentId}
+        [HttpGet("comments/{commentId}", Name = "GetComment")]
+        public async Task<ActionResult> GetCommentForUser(int commentId)
+        {
+            var commentFromRepo = await _commentRepo.GetCommentById(commentId);
+            if (commentFromRepo == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<CommentDto>(commentFromRepo));
+        }
+
+        // GET: Api/Posts/{PostId}/Comments
+        [HttpGet("posts/{postId:int}/comments")]
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsForPost(int postId)
+        {
+            var commentsFromRepo = await _commentRepo.GetCommentsForPost(postId);
+            return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
+        }
+
+        // GET: Api/Users/{UserId}/Comments
+        [HttpGet("users/{userId}/comments")]
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsForUser(string userId)
+        {
+            var commentsFromRepo = await _commentRepo.GetCommentsForUser(userId);
+            return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
+        }
+
+        // PUT: Comments/{CommentId}
         [HttpPut("comments/{commentId}")]
         public async Task<ActionResult> UpdateComment(int commentId, CommentForUpdateDto comment)
         {
@@ -84,7 +99,7 @@ namespace DotNetCoreReactREST.Controllers
             return NoContent();
         }
 
-        //api/comments/commentId
+        // PATCH: Api/Comments/CommentId
         [HttpPatch("comments/{commentId}")]
         public async Task<ActionResult> UpdateCommentPartially(int commentId,
             JsonPatchDocument<CommentForUpdateDto> patchDocument)
@@ -95,9 +110,9 @@ namespace DotNetCoreReactREST.Controllers
                 return BadRequest();
             }
 
-            //map comment from repo to a commentForUpdateDto
+            // Map comment from repo to a commentForUpdateDto
             var commentToPatch = _mapper.Map<CommentForUpdateDto>(commentFromRepo);
-            //patch passing in modelstate to patch item to be aware of
+            // Patch passing in modelstate to patch item to be aware of
             patchDocument.ApplyTo(commentToPatch, ModelState);
 
             if (!TryValidateModel(commentToPatch))
@@ -105,7 +120,7 @@ namespace DotNetCoreReactREST.Controllers
                 return ValidationProblem(ModelState);
             }
 
-            //does nothing, just following convention
+            // Does nothing, just following convention
             _mapper.Map(commentToPatch, commentFromRepo);
             _commentRepo.UpdateComment(commentFromRepo);
             await _commentRepo.Save();
@@ -113,23 +128,8 @@ namespace DotNetCoreReactREST.Controllers
             return NoContent();
         }
 
-
-        // DELETE api/comments/{commentId}
-        [HttpDelete("comments/{commentId}")]
-        public async Task<ActionResult> Delete(int commentId)
-        {
-            var commentFromRepo = await _commentRepo.GetCommentById(commentId);
-            if (commentFromRepo == null)
-            {
-                return NotFound();
-            }
-            _commentRepo.DeleteComment(commentFromRepo);
-            await _commentRepo.Save();
-            return NoContent();
-        }
-
-        //this overrides validation behavior in patch to show 
-        //more detailed error info if model is invalid
+        // This overrides validation behavior in patch to show more detailed error info if model is
+        // invalid
         public override ActionResult ValidationProblem(
            [ActionResultObjectValue] ModelStateDictionary modelStateDictionary)
         {

@@ -1,8 +1,8 @@
-﻿using Bogus;
+﻿using System;
+using Bogus;
 using DotNetCoreReactREST.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace DotNetCoreReactREST.DbContexts
 {
@@ -10,19 +10,23 @@ namespace DotNetCoreReactREST.DbContexts
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-
         }
-        //ApplicationUser DbSet is inherited
+
+        // ApplicationUser DbSet is inherited
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Post> Posts { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<PostLike> PostLikes { get; set; }
-        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Post> Posts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Set cascading for user so that when it gets deleted, everything else reference to this gets deleted. Doesn't work. Error out on deleting comments which the user is deleted but the post is not created by the user. 
+            // Set cascading for user so that when it gets deleted, everything else reference to 
+            // this gets deleted. Doesn't work. Error out on deleting comments which the user is 
+            // deleted but the post is not created by the user.
 
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany<Post>(p => p.Posts)
@@ -117,6 +121,5 @@ namespace DotNetCoreReactREST.DbContexts
             );
             // ==============================
         }
-
     }
 }

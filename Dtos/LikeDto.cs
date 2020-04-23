@@ -9,7 +9,5 @@
         public string ApplicationUserId { get; set; }
 
         public int CommentId { get; set; }
-
-
     }
 }

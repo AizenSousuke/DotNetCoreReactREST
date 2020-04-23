@@ -1,7 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
-using System.Linq;
 
 namespace DotNetCoreReactREST.Profiles
 {
@@ -9,7 +9,6 @@ namespace DotNetCoreReactREST.Profiles
     {
         public CommentProfile()
         {
-
             CreateMap<Comment, CommentDto>()
            .ForMember(
                     dest => dest.LikesCount,
@@ -23,7 +22,6 @@ namespace DotNetCoreReactREST.Profiles
 
             CreateMap<CommentForCreationDto, Comment>();
             CreateMap<CommentForUpdateDto, Comment>();
-
         }
     }
 }

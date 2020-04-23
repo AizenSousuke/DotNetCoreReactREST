@@ -1,11 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Controllers
 {
@@ -22,46 +22,7 @@ namespace DotNetCoreReactREST.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Categories
-        [HttpGet]
-        public async Task<IActionResult> GetCategories([FromQuery] PaginationResourceParameter<Category> paginationResourceParameter)
-        {
-            var result = await _categoryRepository.GetAllCategories(paginationResourceParameter);
-            if (result == null)
-            {
-                return NotFound();
-            }
-            return Ok(result);
-        }
-
-        // GET: api/Categories/5
-        [HttpGet("{categoryId}", Name = "GetCategories")]
-        public async Task<ActionResult<CategoryDto>> GetCategory(int categoryId)
-        {
-            var categoryFromRepo = await _categoryRepository.GetCategoryById(categoryId);
-
-            if (categoryFromRepo == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<CategoryDto>(categoryFromRepo));
-        }
-
-        [HttpPut("{categoryId}")]
-        public async Task<ActionResult<CategoryDto>> EditCategory(int categoryId, CategoryForUpdateDto category)
-        {
-            var categoryFromRepo = await _categoryRepository.GetCategoryById(categoryId);
-            if (categoryFromRepo == null)
-            {
-                return BadRequest();
-            }
-            _mapper.Map(category, categoryFromRepo);
-            await _categoryRepository.Save();
-
-            return NoContent();
-        }
-
+        // POST: Api/Categories
         [HttpPost]
         public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryForCreationDto category)
         {
@@ -69,14 +30,13 @@ namespace DotNetCoreReactREST.Controllers
             await _categoryRepository.AddCategory(categoryToAdd);
             await _categoryRepository.Save();
 
-
             var baseURI = Request.GetDisplayUrl();
             // Alternative way
             // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
             return Created(baseURI + categoryToAdd.Id, _mapper.Map<CategoryDto>(categoryToAdd));
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: Api/Categories/{CategoryId}
         [HttpDelete("{categoryId}")]
         public async Task<ActionResult> DeleteCategory(int categoryId)
         {
@@ -91,6 +51,45 @@ namespace DotNetCoreReactREST.Controllers
             return NoContent();
         }
 
+        // PUT: Api/Categories/{CategoryId}
+        [HttpPut("{categoryId}")]
+        public async Task<ActionResult<CategoryDto>> EditCategory(int categoryId, CategoryForUpdateDto category)
+        {
+            var categoryFromRepo = await _categoryRepository.GetCategoryById(categoryId);
+            if (categoryFromRepo == null)
+            {
+                return BadRequest();
+            }
+            _mapper.Map(category, categoryFromRepo);
+            await _categoryRepository.Save();
 
+            return NoContent();
+        }
+
+        // GET: Api/Categories
+        [HttpGet]
+        public async Task<IActionResult> GetCategories([FromQuery] PaginationResourceParameter<Category> paginationResourceParameter)
+        {
+            var result = await _categoryRepository.GetAllCategories(paginationResourceParameter);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
+        }
+
+        // GET: Api/Categories/{CategoryId}
+        [HttpGet("{categoryId}", Name = "GetCategories")]
+        public async Task<ActionResult<CategoryDto>> GetCategory(int categoryId)
+        {
+            var categoryFromRepo = await _categoryRepository.GetCategoryById(categoryId);
+
+            if (categoryFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<CategoryDto>(categoryFromRepo));
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿    using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
@@ -10,24 +12,22 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DotNetCoreReactREST.Controllers
 {
-    //TODO Add authentication
+    // TODO: Add authentication
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepo;
-        private readonly IPostRepository _postRepository;
         private readonly ICommentRepository _commentRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
+        private readonly IPostRepository _postRepository;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserRepository _userRepo;
 
         public UsersController(
             IMapper mapper,
@@ -44,34 +44,8 @@ namespace DotNetCoreReactREST.Controllers
             _postRepository = postRepository;
             _commentRepository = commentRepository;
         }
-        // GET: Api/Users
-        [HttpGet]
-        public ActionResult<IEnumerable<UserDto>> GetUsers()
-        {
-            var userEntities = _userRepo.GetAllUsers();
-            return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
-        }
-        // GET: Api/Users/Admins
-        [HttpGet("Admins")]
-        public ActionResult<IEnumerable<UserDto>> GetAdmins()
-        {
-            var userEntities = _userRepo.GetAllAdmins();
-            return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
-        }
 
-        // GET api/Users/5
-        [HttpGet("{userId}", Name = "GetUser")]
-        public ActionResult<UserDto> Get(string userId)
-        {
-            var userEntity = _userRepo.GetUserById(userId);
-            if (userEntity == null)
-            {
-                return NotFound();
-            }
-            return Ok(_mapper.Map<UserDto>(userEntity));
-        }
-
-        // POST Api/Users
+        // POST: Api/Users
         [HttpPost]
         public ActionResult<UserDto> CreateUser([FromBody]UserForCreationDto user)
         {
@@ -83,49 +57,7 @@ namespace DotNetCoreReactREST.Controllers
             return CreatedAtRoute("GetUser", new { userId = userToAdd.Id }, userToReturn);
         }
 
-        // PUT Api/User/{UserId}
-        [HttpPut("{userId}")]
-        public ActionResult UpdateUser(string userId, [FromBody]UserForUpdateDto user)
-        {
-            var userFromRepo = _userRepo.GetUserById(userId);
-            if (userFromRepo == null)
-            {
-                return NotFound();
-            }
-            _mapper.Map(user, userFromRepo);
-
-            _userRepo.UpdateUser(userFromRepo);
-            _userRepo.Save();
-
-            return NoContent();
-        }
-
-        [HttpPatch("{userId}")]
-        public ActionResult PartiallyUpdateUser(string userId,
-            JsonPatchDocument<UserForUpdateDto> patchDocument)
-        {
-            var userFromRepo = _userRepo.GetUserById(userId);
-            if (userFromRepo == null)
-            {
-                return NotFound();
-            }
-            var userToPatch = _mapper.Map<UserForUpdateDto>(userFromRepo);
-            patchDocument.ApplyTo(userToPatch, ModelState);
-
-            if (!TryValidateModel(userToPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-
-            //following convention
-            _mapper.Map(userToPatch, userFromRepo);
-            _userRepo.UpdateUser(userFromRepo);
-            _userRepo.Save();
-
-            return NoContent();
-        }
-
-        // DELETE api/<controller>/5
+        // DELETE: Api/Users/{UserId}
         [HttpDelete("{userId}")]
         public async Task<ActionResult> DeleteAsync([FromRoute]string userId)
         {
@@ -151,34 +83,32 @@ namespace DotNetCoreReactREST.Controllers
             return Ok("Deleted user and all his posts and comments");
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> RegisterUserAsync([FromBody] UserForCreationDto registerModel)
+        // GET: Api/Users/{UserId}
+        [HttpGet("{userId}", Name = "GetUser")]
+        public ActionResult<UserDto> Get(string userId)
         {
-            try
+            var userEntity = _userRepo.GetUserById(userId);
+            if (userEntity == null)
             {
-                // Register user
-                ApplicationUser user = new ApplicationUser { UserName = registerModel.UserName, Email = registerModel.Email };
-
-                var existingUser = await _userManager.FindByNameAsync(user.UserName);
-
-                if (existingUser != null)
-                {
-                    return Ok("User " + user.UserName + " already exists!");
-                }
-
-                var result = await _userManager.CreateAsync(user, registerModel.PasswordHash);
-
-                if (result.Succeeded)
-                {
-                    return Ok("Result: " + result + ". User " + registerModel.UserName + " created. You may now log in.");
-                }
-
-                return Ok("Didn't succeed to create user. Please try again.");
+                return NotFound();
             }
-            catch (System.Exception)
-            {
-                throw;
-            }
+            return Ok(_mapper.Map<UserDto>(userEntity));
+        }
+
+        // GET: Api/Users/Admins
+        [HttpGet("Admins")]
+        public ActionResult<IEnumerable<UserDto>> GetAdmins()
+        {
+            var userEntities = _userRepo.GetAllAdmins();
+            return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
+        }
+
+        // GET: Api/Users
+        [HttpGet]
+        public ActionResult<IEnumerable<UserDto>> GetUsers()
+        {
+            var userEntities = _userRepo.GetAllUsers();
+            return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
         }
 
         [HttpGet("login")]
@@ -194,7 +124,6 @@ namespace DotNetCoreReactREST.Controllers
             }
             catch (System.Exception)
             {
-
                 throw;
             }
         }
@@ -231,9 +160,81 @@ namespace DotNetCoreReactREST.Controllers
             }
             catch (System.Exception)
             {
-
                 throw;
             }
+        }
+
+        // PATCH: Api/User/{UserId}
+        [HttpPatch("{userId}")]
+        public ActionResult PartiallyUpdateUser(string userId,
+                    JsonPatchDocument<UserForUpdateDto> patchDocument)
+        {
+            var userFromRepo = _userRepo.GetUserById(userId);
+            if (userFromRepo == null)
+            {
+                return NotFound();
+            }
+            var userToPatch = _mapper.Map<UserForUpdateDto>(userFromRepo);
+            patchDocument.ApplyTo(userToPatch, ModelState);
+
+            if (!TryValidateModel(userToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            // Following convention
+            _mapper.Map(userToPatch, userFromRepo);
+            _userRepo.UpdateUser(userFromRepo);
+            _userRepo.Save();
+
+            return NoContent();
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterUserAsync([FromBody] UserForCreationDto registerModel)
+        {
+            try
+            {
+                // Register user
+                ApplicationUser user = new ApplicationUser { UserName = registerModel.UserName, Email = registerModel.Email };
+
+                var existingUser = await _userManager.FindByNameAsync(user.UserName);
+
+                if (existingUser != null)
+                {
+                    return Ok("User " + user.UserName + " already exists!");
+                }
+
+                var result = await _userManager.CreateAsync(user, registerModel.PasswordHash);
+
+                if (result.Succeeded)
+                {
+                    return Ok("Result: " + result + ". User " + registerModel.UserName + " created. You may now log in.");
+                }
+
+                return Ok("Didn't succeed to create user. Please try again.");
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        // PUT: Api/User/{UserId}
+        [HttpPut("{userId}")]
+        public ActionResult UpdateUser(string userId, [FromBody]UserForUpdateDto user)
+        {
+            var userFromRepo = _userRepo.GetUserById(userId);
+            if (userFromRepo == null)
+            {
+                return NotFound();
+            }
+            _mapper.Map(user, userFromRepo);
+
+            _userRepo.UpdateUser(userFromRepo);
+            _userRepo.Save();
+
+            return NoContent();
         }
 
         public override ActionResult ValidationProblem(
