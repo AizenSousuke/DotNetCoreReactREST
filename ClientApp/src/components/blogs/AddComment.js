@@ -5,7 +5,6 @@ import { createComment } from "../../actions/blogActions";
 import "../../styles/components/addcomment.scss";
 // import CommonModal from "../common/CommonModal";
 // import CommentForm from "./CommentForm";
-import moment from "moment";
 
 const AddComment = props => {
   const dispatch = useDispatch();
