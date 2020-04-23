@@ -1,11 +1,11 @@
-﻿using DotNetCoreReactREST.DbContexts;
-using DotNetCoreReactREST.Entities;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DotNetCoreReactREST.DbContexts;
+using DotNetCoreReactREST.Entities;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace DotNetCoreReactREST.ResourceParameters
 {
@@ -16,8 +16,8 @@ namespace DotNetCoreReactREST.ResourceParameters
 
         public PaginationResourceParameter()
         {
-
         }
+
         public PaginationResourceParameter(AppDbContext context)
         {
             _context = context;
@@ -36,9 +36,12 @@ namespace DotNetCoreReactREST.ResourceParameters
 
         // Parameters
         private int _defaultNumberOfObjectsPerPage = 10;
+
         // Change the max number here in the code
         private const int _maxNumberOfObjectsPerPage = 999;
+
         public int TotalNumberOfObjects { get; set; }
+
         public int TotalNumberOfObjectsPerPage
         {
             get => _defaultNumberOfObjectsPerPage;
@@ -47,10 +50,12 @@ namespace DotNetCoreReactREST.ResourceParameters
 
         // Pages
         public List<int> Pages { get; set; } = new List<int>();
+
         public List<string> PagesURL { get; set; } = new List<string>();
 
         // Navigation bar items
         public int FirstPage { get; set; } = 1;
+
         public int PrevPage { get; set; } // { get => (currentPage - 1) > 1 ? currentPage - 1 : 1; set => prevPage = (currentPage - 1) > 1 ? currentPage - 1 : 0; }
         public int CurrentPage { get; set; } = 1;
         public int NextPage { get; set; } // { get => (currentPage + 1) > lastPage ? currentPage + 1 : lastPage; set => nextPage = (currentPage + 1) > lastPage ? currentPage + 1 : lastPage; }
@@ -226,7 +231,7 @@ namespace DotNetCoreReactREST.ResourceParameters
             IEnumerable<T> result = null;
             if (typeof(T) == typeof(Post))
             {
-                result = (IEnumerable<T>) await collection
+                result = (IEnumerable<T>)await collection
                     .Cast<Post>()
                     .Skip((CurrentPage - 1) * TotalNumberOfObjectsPerPage)
                     .Take(TotalNumberOfObjectsPerPage).ToListAsync();
@@ -251,6 +256,7 @@ namespace DotNetCoreReactREST.ResourceParameters
 
             return this;
         }
+
         public async Task<IEnumerable<T>> UpdateObjList(IQueryable<T> collection)
         {
             return await collection

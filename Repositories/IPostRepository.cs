@@ -1,8 +1,8 @@
-﻿using DotNetCoreReactREST.Entities;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {

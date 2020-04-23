@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿    using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
@@ -10,14 +12,12 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DotNetCoreReactREST.Controllers
 {
-    //TODO Add authentication
+    // TODO: Add authentication
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -45,7 +45,7 @@ namespace DotNetCoreReactREST.Controllers
             _commentRepository = commentRepository;
         }
 
-        // POST Api/Users
+        // POST: Api/Users
         [HttpPost]
         public ActionResult<UserDto> CreateUser([FromBody]UserForCreationDto user)
         {
@@ -57,7 +57,7 @@ namespace DotNetCoreReactREST.Controllers
             return CreatedAtRoute("GetUser", new { userId = userToAdd.Id }, userToReturn);
         }
 
-        // DELETE api/<controller>/5
+        // DELETE: Api/Users/{UserId}
         [HttpDelete("{userId}")]
         public async Task<ActionResult> DeleteAsync([FromRoute]string userId)
         {
@@ -83,7 +83,7 @@ namespace DotNetCoreReactREST.Controllers
             return Ok("Deleted user and all his posts and comments");
         }
 
-        // GET api/Users/5
+        // GET: Api/Users/{UserId}
         [HttpGet("{userId}", Name = "GetUser")]
         public ActionResult<UserDto> Get(string userId)
         {
@@ -164,6 +164,7 @@ namespace DotNetCoreReactREST.Controllers
             }
         }
 
+        // PATCH: Api/User/{UserId}
         [HttpPatch("{userId}")]
         public ActionResult PartiallyUpdateUser(string userId,
                     JsonPatchDocument<UserForUpdateDto> patchDocument)
@@ -181,7 +182,7 @@ namespace DotNetCoreReactREST.Controllers
                 return ValidationProblem(ModelState);
             }
 
-            //following convention
+            // Following convention
             _mapper.Map(userToPatch, userFromRepo);
             _userRepo.UpdateUser(userFromRepo);
             _userRepo.Save();
@@ -219,7 +220,7 @@ namespace DotNetCoreReactREST.Controllers
             }
         }
 
-        // PUT Api/User/{UserId}
+        // PUT: Api/User/{UserId}
         [HttpPut("{userId}")]
         public ActionResult UpdateUser(string userId, [FromBody]UserForUpdateDto user)
         {

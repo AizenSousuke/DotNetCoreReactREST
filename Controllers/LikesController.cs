@@ -1,10 +1,10 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,7 +28,7 @@ namespace DotNetCoreReactREST.Controllers
             _mapper = mapper;
         }
 
-        // GET: Api/Comments/{CommentId}/likes
+        // GET: Api/Comments/{CommentId}/Likes
         [HttpGet("comments/{commentId}/likes")]
         public async Task<ActionResult<IEnumerable<LikeDto>>> GetLikesForComment(int commentId)
         {
@@ -41,12 +41,12 @@ namespace DotNetCoreReactREST.Controllers
             return Ok(_mapper.Map<IEnumerable<LikeDto>>(likesFromRepo));
         }
 
-        //Authenticate to make sure userId is the same as logged user
-        //POST api/Comments/{commentId}/user/{userId}/Likes
+        // POST: Api/Comments/{CommentId}/User/{UserId}/Likes
+        // Authenticate to make sure userId is the same as logged user
         [HttpPost("comments/{commentId}/users/{userId}/Likes")]
         public ActionResult LikeComment(int commentId, string userId)
         {
-            //like is unique to user, so none should exist
+            // Like is unique to user, so none should exist
             if (_likeRepo.LikeExists(commentId, userId))
             {
                 return BadRequest("Comment has been liked.");
@@ -56,8 +56,8 @@ namespace DotNetCoreReactREST.Controllers
             return Ok("Comment has been liked.");
         }
 
-        //Authenticate to make sure userId is the same as logged user
-        //DELETE api/likes/{likeId}
+        // DELETE: Api/Likes/{LikeId}
+        // Authenticate to make sure userId is the same as logged user
         [HttpDelete("likes/{LikeId}")]
         public ActionResult UnLike(int likeId)
         {

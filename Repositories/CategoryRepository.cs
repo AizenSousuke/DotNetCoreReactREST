@@ -1,9 +1,9 @@
+using System;
+using System.Threading.Tasks;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Repositories
 {
