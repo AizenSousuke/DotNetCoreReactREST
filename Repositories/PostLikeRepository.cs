@@ -53,7 +53,7 @@ namespace DotNetCoreReactREST.Repositories
         public async Task<bool> PostLikeExists(int postId, string userId)
         {
             Log.Information("PostId: {@PostId}, UserId: {@UserId}", postId, userId);
-            var result = await _appDbContext.PostLikes
+            bool result = await _appDbContext.PostLikes
                 .AnyAsync(l =>
                 l.ApplicationUserId == userId
                 && l.PostId == postId);
