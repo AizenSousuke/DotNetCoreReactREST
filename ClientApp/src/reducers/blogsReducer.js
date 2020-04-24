@@ -8,9 +8,9 @@ const initialState = {
     title: "",
     body: "",
     comments: [],
-    likeCount: 0
+    likeCount: 0,
     // likes: [],
-  }
+  },
 };
 
 export function blogsReducer(state = initialState, { type, payload }) {
@@ -19,26 +19,32 @@ export function blogsReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         all: payload,
-        loading: false
+        loading: false,
       };
     case "SET_SINGLE_BLOG":
       return {
         ...state,
         loading: false,
-        single: payload
+        single: payload,
+      };
+    case "SET_NEWLY_CREATED_BLOG":
+      return {
+        ...state,
+        all: [payload, ...state.all],
+        loading: false,
       };
     case "SET_BLOG_LOADING":
       return {
         ...state,
-        loading: payload
+        loading: payload,
       };
     case "SET_DUMMY_COMMENTS":
       return {
         ...state,
-        comments: [...state.comments, payload]
+        comments: [...state.comments, payload],
       };
     case "UPDATE_BLOG":
-      const temp = state.all.find(blog => blog.id === payload.id);
+      const temp = state.all.find((blog) => blog.id === payload.id);
       const index = state.all.indexOf(temp);
       return {
         ...state,
@@ -48,22 +54,22 @@ export function blogsReducer(state = initialState, { type, payload }) {
           {
             title: payload.title,
             content: payload.description,
-            categoryId: payload.categoryId
+            categoryId: payload.categoryId,
           },
-          ...state.all.slice(index + 1)
-        ]
+          ...state.all.slice(index + 1),
+        ],
       };
     case "SET_USERS":
       return {
         ...state,
         loading: false,
-        users: payload
+        users: payload,
       };
     case "SET_CATEGORIES":
       return {
         ...state,
         loading: false,
-        categories: payload
+        categories: payload,
       };
     case "SET_SINGLE_BLOG_COMMENTS":
       return payload.length > 0
@@ -72,13 +78,13 @@ export function blogsReducer(state = initialState, { type, payload }) {
             loading: false,
             single: {
               ...state.single,
-              comments: payload
-            }
+              comments: payload,
+            },
           }
         : {
             ...state,
             loading: false,
-            single: { ...state.single, comments: [] }
+            single: { ...state.single, comments: [] },
           };
     case "SET_SINGLE_BLOG_LIKES":
       // console.log("reducerhit");
@@ -87,8 +93,8 @@ export function blogsReducer(state = initialState, { type, payload }) {
         loading: false,
         single: {
           ...state.single,
-          likes: payload
-        }
+          likes: payload,
+        },
       };
     case "SET_SINGLE_BLOG_LIKE_COUNT":
       // console.log("reducerhit");
@@ -97,8 +103,8 @@ export function blogsReducer(state = initialState, { type, payload }) {
         loading: false,
         single: {
           ...state.single,
-          likeCount: payload
-        }
+          likeCount: payload,
+        },
       };
     case "ADD_USERNAMES_TO_COMMENTS":
       return {
@@ -106,8 +112,8 @@ export function blogsReducer(state = initialState, { type, payload }) {
         loading: false,
         single: {
           ...state,
-          comments: { ...state.single.comments, usernames: payload }
-        }
+          comments: { ...state.single.comments, usernames: payload },
+        },
       };
     case "CREATE_COMMENT":
       // console.log("reducerhit");
@@ -116,8 +122,8 @@ export function blogsReducer(state = initialState, { type, payload }) {
         loading: false,
         single: {
           ...state.single,
-          comments: [...state.single.comments, payload]
-        }
+          comments: [...state.single.comments, payload],
+        },
       };
     case "SET_IS_COMMENT_LIKED":
       return {
@@ -125,8 +131,8 @@ export function blogsReducer(state = initialState, { type, payload }) {
         loading: false,
         single: {
           ...state.single,
-          comments: [{ ...state.single.comments, isLiked: payload }]
-        }
+          comments: [{ ...state.single.comments, isLiked: payload }],
+        },
       };
     // case "SET_LIKES_FOR_COMMENT":
     //   return {

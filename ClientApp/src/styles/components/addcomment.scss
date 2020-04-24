@@ -8,10 +8,19 @@
   margin-left: 30px;
 }
 
-.comment-modal {
+.comments-modal {
   // margin: auto;
   // background-color: #00baff;
   // backgroundImage: "url(" + imgUrl + ")");
+
+  .comment-modal-header {
+    img {
+      border-radius: 50%;
+      flex: 1;
+      width: 100px;
+      margin-top: 20px;
+    }
+  }
 
   .comment-box {
     // display: inline-block;
