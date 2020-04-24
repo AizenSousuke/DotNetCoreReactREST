@@ -5,17 +5,14 @@ import { createComment } from "../../actions/blogActions";
 import "../../styles/components/addcomment.scss";
 // import CommonModal from "../common/CommonModal";
 // import CommentForm from "./CommentForm";
-import moment from "moment";
 
 const AddComment = props => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.auth.user);
+  // const user = useSelector(state => state.auth.user);
   const [modal, setModal] = useState(false);
   const [content, setContent] = useState("");
   const toggle = () => setModal(!modal);
 
-  // let id = 51;
-  // let name = "JB";
   return (
     <>
       <Button className="comment-modal-btn" onClick={toggle}>
@@ -40,7 +37,7 @@ const AddComment = props => {
             onSubmit={e => {
               e.preventDefault();
 
-              console.log("content: ", content);
+              // console.log("content: ", content);
               dispatch(
                 createComment(
                   content,

@@ -5,7 +5,11 @@ import { withRouter } from "react-router-dom";
 import {
   getSingleBlog,
   editBlog,
+  likeBlog,
   getSingleBlogComments,
+  getSingleBlogLikes,
+  getSingleBlogLikeCount,
+  incrementSingleBlogLikes,
   getLikesForComment
 } from "../../actions/blogActions";
 import ReactQuill from "react-quill";
@@ -16,7 +20,6 @@ import { act } from "react-dom/test-utils";
 import Comment from "./Comment";
 import "../../styles/components/comment.scss";
 import AddComment from "./AddComment";
-import moment from "moment";
 
 const SingleLayout = ({ markup, match }) => {
   const [liked, setLiked] = useState(false);
@@ -28,16 +31,17 @@ const SingleLayout = ({ markup, match }) => {
   const [showingEditor, setShowingEditor] = useState(true);
 
   const blog = useSelector(state => state.blogs.single);
+  // const users = useSelector(state => state.blogs.users);
   const loading = useSelector(state => state.blogs.loading);
   const comments = blog.comments;
   const likes = blog.likes;
-
-  // const user = useSelector(state => state.auth.user);
-  // console.log("user:", user);
+  const likeCount = blog.likeCount;
 
   const like_or_dislike = () => {
     setLiked(prev => !prev);
+    likeCount++;
   };
+
   const dispatch = useDispatch();
   useEffect(() => {
     const params = match.params;
@@ -61,19 +65,20 @@ const SingleLayout = ({ markup, match }) => {
     // check if blog has been fetched for view, if not fetch it
     dispatch(getSingleBlog(match.params.id));
     dispatch(getSingleBlogComments(match.params.id));
-    // dispatch(getLikesForComment());
+    dispatch(getSingleBlogLikes(match.params.id));
+    dispatch(getSingleBlogLikeCount(match.params.id));
     // dispatch(getLikesForComment(match.params.id));
   }, [match.params]);
+
   const viewing = !creating && !editing ? true : false;
 
-  // console.log("singlecomlikes:", likes);
   SingleLayout.propTypes = {
     creating: propTypes.bool,
     editing: propTypes.bool,
     markup: propTypes.string
   };
 
-  // console.log("singlecom:", singleBlogComments);
+  // console.log("paramvalue:", match.params.id);
 
   return (
     <div>
@@ -120,13 +125,21 @@ const SingleLayout = ({ markup, match }) => {
                     <div>
                       <span>24 blogs</span>
                       <i className="fas fa-newspaper"></i>
-                      <span>420 likes</span>
+                      <span>{likeCount} likes</span>
                       <i className="fas fa-thumbs-up"></i>
                     </div>
                   </div>
                 </div>
                 <div className="profile-card-btns">
-                  <button className="d-block" onClick={like_or_dislike}>
+                  <button
+                    className="d-block"
+                    onClick={() => {
+                      like_or_dislike();
+                      // !liked
+                      //   ? dispatch(likeBlog(1, 1))
+                      //   : dispatch(unlikeBlog(1, 1));
+                    }}
+                  >
                     {liked ? (
                       "Liked"
                     ) : (
@@ -230,8 +243,10 @@ const SingleLayout = ({ markup, match }) => {
                     content={c.content}
                     postId={c.postId}
                     userId={c.applicationUserId}
+                    name={c.userName}
                     isAnonymous={c.isAnonymous}
-                    date="Just now"
+                    date={c.dateCreated}
+                    // likeCount=
                   />
                 );
               })
