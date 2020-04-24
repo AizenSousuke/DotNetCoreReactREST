@@ -19,8 +19,9 @@ namespace DotNetCoreReactREST
 
             // Change the date format here
             string date = DateTime.Now.ToString("ddMMyyyyHHmm");
+
             // Change the filename here
-            string logfile = String.Concat("Logs/logfile_" + date + ".log");
+            string logfile = string.Concat("Logs/logfile_" + date + ".log");
 
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
@@ -43,7 +44,7 @@ namespace DotNetCoreReactREST
                 var host = CreateHostBuilder(args)
                     .Build();
 
-                // run the web app
+                // Run the web app
                 host.Run();
             }
             catch (Exception ex)
@@ -60,7 +61,7 @@ namespace DotNetCoreReactREST
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .UseSerilog() // <-- Add this line for serilog;
+                .UseSerilog() // <-- Add this line for serilog
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     // Set defaults here
@@ -73,6 +74,7 @@ namespace DotNetCoreReactREST
                         .Build();
                         webBuilder.UseConfiguration(configuration);
                     }
+
                     webBuilder.UseStartup<Startup>();
                 });
     }

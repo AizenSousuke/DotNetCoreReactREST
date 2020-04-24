@@ -30,9 +30,10 @@ namespace DotNetCoreReactREST.Controllers
             await _categoryRepository.AddCategory(categoryToAdd);
             await _categoryRepository.Save();
 
-            var baseURI = Request.GetDisplayUrl();
             // Alternative way
             // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
+            var baseURI = Request.GetDisplayUrl();
+
             return Created(baseURI + categoryToAdd.Id, _mapper.Map<CategoryDto>(categoryToAdd));
         }
 
@@ -45,6 +46,7 @@ namespace DotNetCoreReactREST.Controllers
             {
                 BadRequest();
             }
+
             _categoryRepository.DeleteCategory(categoryToDelete);
             await _categoryRepository.Save();
 
@@ -60,6 +62,7 @@ namespace DotNetCoreReactREST.Controllers
             {
                 return BadRequest();
             }
+
             _mapper.Map(category, categoryFromRepo);
             await _categoryRepository.Save();
 
@@ -75,6 +78,7 @@ namespace DotNetCoreReactREST.Controllers
             {
                 return NotFound();
             }
+
             return Ok(result);
         }
 

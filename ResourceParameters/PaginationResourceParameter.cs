@@ -94,7 +94,6 @@ namespace DotNetCoreReactREST.ResourceParameters
                 collection = _context.Posts as IQueryable<Post>;
 
                 // Add possible search parameters
-
                 if (!string.IsNullOrWhiteSpace(paginationResourceParameter.CategoryQuery))
                 {
                     var category = paginationResourceParameter.CategoryQuery.Trim();
@@ -136,7 +135,6 @@ namespace DotNetCoreReactREST.ResourceParameters
                 collection = _context.Categories as IQueryable<Category>;
 
                 // Add possible search parameters
-
                 if (paginationResourceParameter.IdQuery > 0)
                 {
                     var objId = paginationResourceParameter.IdQuery;
@@ -164,24 +162,29 @@ namespace DotNetCoreReactREST.ResourceParameters
 
             // Get total number of pages
             double pageNeeded = (double)TotalNumberOfObjects / (double)TotalNumberOfObjectsPerPage;
+
             // Round up to nearest int
             pageNeeded = Convert.ToInt32(Math.Ceiling((decimal)pageNeeded));
+
             // Min of 1 page
             if (pageNeeded < 1)
             {
                 pageNeeded = 1;
             }
+
             // Min current page number
             if (CurrentPage < 1)
             {
                 CurrentPage = 1;
             }
+
             Log.Information("pageNeeded: " + pageNeeded.ToString());
 
             // For every page, add the number and url
             for (int i = 1; i <= pageNeeded; i++)
             {
                 Pages.Add(i);
+
                 // Compose the URL
                 string fullURL = "/api" + "/" + URLName + "?" + "PageNumber=" + i.ToString();
 

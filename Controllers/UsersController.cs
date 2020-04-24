@@ -1,4 +1,4 @@
-﻿    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using DotNetCoreReactREST.Dtos;
@@ -14,7 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace DotNetCoreReactREST.Controllers
 {
     // TODO: Add authentication
@@ -92,6 +91,7 @@ namespace DotNetCoreReactREST.Controllers
             {
                 return NotFound();
             }
+
             return Ok(_mapper.Map<UserDto>(userEntity));
         }
 
@@ -120,6 +120,7 @@ namespace DotNetCoreReactREST.Controllers
                 {
                     return Ok("User is logged in.");
                 }
+
                 return Ok("No user is logged in.");
             }
             catch (System.Exception)
@@ -136,8 +137,9 @@ namespace DotNetCoreReactREST.Controllers
                 ApplicationUser convertedUser = _mapper.Map<ApplicationUser>(user);
                 await _signInManager.SignInAsync(convertedUser, new AuthenticationProperties()
                 {
-                    IsPersistent = rememberMe ? true : false
+                    IsPersistent = rememberMe ? true : false,
                 });
+
                 return Ok("Logged in successfully!");
             }
             catch (System.Exception)
@@ -156,6 +158,7 @@ namespace DotNetCoreReactREST.Controllers
                     await _signInManager.SignOutAsync();
                     return Ok("Successfully signed out!");
                 }
+
                 return Ok("No user is logged in.");
             }
             catch (System.Exception)
@@ -166,14 +169,16 @@ namespace DotNetCoreReactREST.Controllers
 
         // PATCH: Api/User/{UserId}
         [HttpPatch("{userId}")]
-        public ActionResult PartiallyUpdateUser(string userId,
-                    JsonPatchDocument<UserForUpdateDto> patchDocument)
+        public ActionResult PartiallyUpdateUser(
+            string userId,
+            JsonPatchDocument<UserForUpdateDto> patchDocument)
         {
             var userFromRepo = _userRepo.GetUserById(userId);
             if (userFromRepo == null)
             {
                 return NotFound();
             }
+
             var userToPatch = _mapper.Map<UserForUpdateDto>(userFromRepo);
             patchDocument.ApplyTo(userToPatch, ModelState);
 
@@ -229,6 +234,7 @@ namespace DotNetCoreReactREST.Controllers
             {
                 return NotFound();
             }
+
             _mapper.Map(user, userFromRepo);
 
             _userRepo.UpdateUser(userFromRepo);

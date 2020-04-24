@@ -7,7 +7,6 @@ using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace DotNetCoreReactREST.Controllers
 {
     [Route("api")]
@@ -19,13 +18,16 @@ namespace DotNetCoreReactREST.Controllers
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepo;
 
-        public LikesController(ILikeRepository likeRepo,
-            ICommentRepository commentRepo, IUserRepository userRepo, IMapper mapper)
+        public LikesController(
+            ICommentRepository commentRepo,
+            ILikeRepository likeRepo,
+            IMapper mapper,
+            IUserRepository userRepo)
         {
-            _likeRepo = likeRepo;
             _commentRepo = commentRepo;
-            _userRepo = userRepo;
+            _likeRepo = likeRepo;
             _mapper = mapper;
+            _userRepo = userRepo;
         }
 
         // GET: Api/Comments/{CommentId}/Likes
@@ -37,6 +39,7 @@ namespace DotNetCoreReactREST.Controllers
             {
                 return BadRequest("Comment doesn't exist.");
             }
+
             var likesFromRepo = _likeRepo.GetLikesForComment(commentId);
             return Ok(_mapper.Map<IEnumerable<LikeDto>>(likesFromRepo));
         }
@@ -51,6 +54,7 @@ namespace DotNetCoreReactREST.Controllers
             {
                 return BadRequest("Comment has been liked.");
             }
+
             _likeRepo.LikeComment(new Like { CommentId = commentId, ApplicationUserId = userId });
             _likeRepo.Save();
             return Ok("Comment has been liked.");
@@ -66,6 +70,7 @@ namespace DotNetCoreReactREST.Controllers
             {
                 return BadRequest("No likes on comment.");
             }
+
             _likeRepo.UnlikeComment(commentFromRepo);
             _likeRepo.Save();
             return Ok("Likes has been removed.");

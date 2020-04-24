@@ -16,12 +16,15 @@ namespace DotNetCoreReactREST.Entities
         public string Content { get; set; }
 
         public bool IsAnonymous { get; set; }
+
         public ICollection<Like> Likes { get; set; } = new List<Like>();
 
         public int PostId { get; set; }
+
         public Post Post { get; set; }
 
         public string ApplicationUserId { get; set; }
+
         public ApplicationUser ApplicationUser { get; set; }
     }
 }
