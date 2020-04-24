@@ -22,6 +22,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(category));
             }
+
             await _context.Categories.AddAsync(category);
         }
 
@@ -31,6 +32,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(categoryId));
             }
+
             return await _context.Categories.AnyAsync(c => c.Id == categoryId);
         }
 
@@ -40,6 +42,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(category));
             }
+
             _context.Categories.Remove(category);
         }
 
@@ -70,6 +73,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(category));
             }
+
             _context.Categories.Update(category);
         }
     }

@@ -34,7 +34,7 @@ namespace DotNetCoreReactREST.Services
                     }
                 }
             }
-            catch 
+            catch
             {
             }
 

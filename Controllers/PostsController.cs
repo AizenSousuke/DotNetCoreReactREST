@@ -56,12 +56,13 @@ namespace DotNetCoreReactREST
             {
                 return Ok("Post Deleted.");
             }
+
             return Ok("Post not deleted.");
         }
 
         // GET: Api/Posts/{PostId}
-        [HttpGet]
         // Route will only match if postId can be casted as a int
+        [HttpGet]
         [Route("{postId:int}")]
         public async Task<IActionResult> GetPostByIdAsync(int postId)
         {
@@ -71,6 +72,7 @@ namespace DotNetCoreReactREST
             {
                 return NotFound();
             }
+
             return Ok(_mapper.Map<PostDto>(postFromRepository));
         }
 
@@ -84,6 +86,7 @@ namespace DotNetCoreReactREST
             {
                 return NotFound();
             }
+
             return Ok(result);
         }
 
@@ -127,7 +130,7 @@ namespace DotNetCoreReactREST
                 await _postRepository.Save();
 
                 return Ok(oldPost);
-            };
+            }
         }
     }
 }
