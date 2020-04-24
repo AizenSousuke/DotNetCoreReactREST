@@ -66,12 +66,6 @@ namespace DotNetCoreReactREST.Repositories
             return false;
         }
 
-        public async Task<bool> SaveAsync()
-        {
-            int result = await _appDbContext.SaveChangesAsync();
-            return result >= 0;
-        }
-
         public void UnlikePost(PostLike postLike)
         {
             if (postLike == null)
@@ -80,6 +74,12 @@ namespace DotNetCoreReactREST.Repositories
             }
 
             _appDbContext.PostLikes.Remove(postLike);
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            int result = await _appDbContext.SaveChangesAsync();
+            return result >= 0;
         }
     }
 }

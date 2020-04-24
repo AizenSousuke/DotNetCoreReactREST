@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
 
@@ -52,9 +53,10 @@ namespace DotNetCoreReactREST.Repositories
                             && like.CommentId == commentId);
         }
 
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
-            return _context.SaveChanges() >= 0;
+            int result = await _context.SaveChangesAsync();
+            return result >= 0;
         }
 
         public void UnlikeComment(Like like)

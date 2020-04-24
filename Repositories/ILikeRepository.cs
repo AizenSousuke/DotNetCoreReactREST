@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DotNetCoreReactREST.Entities;
 
 namespace DotNetCoreReactREST.Repositories
@@ -13,7 +14,7 @@ namespace DotNetCoreReactREST.Repositories
 
         bool LikeExists(int commentId, string userId);
 
-        bool Save();
+        Task<bool> SaveAsync();
 
         void UnlikeComment(Like like);
     }

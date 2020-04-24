@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DotNetCoreReactREST.Dtos;
@@ -47,7 +48,7 @@ namespace DotNetCoreReactREST.Controllers
         // POST: Api/Comments/{CommentId}/User/{UserId}/Likes
         // Authenticate to make sure userId is the same as logged user
         [HttpPost("comments/{commentId}/users/{userId}/Likes")]
-        public ActionResult LikeComment(int commentId, string userId)
+        public async Task<IActionResult> LikeComment(int commentId, string userId)
         {
             // Like is unique to user, so none should exist
             if (_likeRepo.LikeExists(commentId, userId))
@@ -56,14 +57,14 @@ namespace DotNetCoreReactREST.Controllers
             }
 
             _likeRepo.LikeComment(new Like { CommentId = commentId, ApplicationUserId = userId });
-            _likeRepo.Save();
+            await _likeRepo.SaveAsync();
             return Ok("Comment has been liked.");
         }
 
         // DELETE: Api/Likes/{LikeId}
         // Authenticate to make sure userId is the same as logged user
-        [HttpDelete("likes/{LikeId}")]
-        public ActionResult UnLike(int likeId)
+        [HttpDelete("likes/{likeId}")]
+        public async Task<IActionResult> UnLike(int likeId)
         {
             var commentFromRepo = _likeRepo.GetLikeById(likeId);
             if (commentFromRepo == null)
@@ -72,7 +73,7 @@ namespace DotNetCoreReactREST.Controllers
             }
 
             _likeRepo.UnlikeComment(commentFromRepo);
-            _likeRepo.Save();
+            await _likeRepo.SaveAsync();
             return Ok("Likes has been removed.");
         }
     }
