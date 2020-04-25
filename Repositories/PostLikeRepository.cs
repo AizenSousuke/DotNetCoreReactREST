@@ -53,7 +53,7 @@ namespace DotNetCoreReactREST.Repositories
         public async Task<bool> PostLikeExists(int postId, string userId)
         {
             Log.Information("PostId: {@PostId}, UserId: {@UserId}", postId, userId);
-            var result = await _appDbContext.PostLikes
+            bool result = await _appDbContext.PostLikes
                 .AnyAsync(l =>
                 l.ApplicationUserId == userId
                 && l.PostId == postId);
@@ -66,12 +66,6 @@ namespace DotNetCoreReactREST.Repositories
             return false;
         }
 
-        public async Task<bool> SaveAsync()
-        {
-            int result = await _appDbContext.SaveChangesAsync();
-            return result >= 0;
-        }
-
         public void UnlikePost(PostLike postLike)
         {
             if (postLike == null)
@@ -80,6 +74,12 @@ namespace DotNetCoreReactREST.Repositories
             }
 
             _appDbContext.PostLikes.Remove(postLike);
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            int result = await _appDbContext.SaveChangesAsync();
+            return result >= 0;
         }
     }
 }

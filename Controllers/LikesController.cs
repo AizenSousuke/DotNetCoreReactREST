@@ -32,7 +32,7 @@ namespace DotNetCoreReactREST.Controllers
 
         // GET: Api/Comments/{CommentId}/Likes
         [HttpGet("comments/{commentId}/likes")]
-        public async Task<ActionResult<IEnumerable<LikeDto>>> GetLikesForComment(int commentId)
+        public async Task<IActionResult> GetLikesForComment(int commentId)
         {
             var commentExists = await _commentRepo.CommentExists(commentId);
             if (!commentExists)
@@ -40,40 +40,50 @@ namespace DotNetCoreReactREST.Controllers
                 return BadRequest("Comment doesn't exist.");
             }
 
-            var likesFromRepo = _likeRepo.GetLikesForComment(commentId);
-            return Ok(_mapper.Map<IEnumerable<LikeDto>>(likesFromRepo));
+            var likesFromRepo = await _likeRepo.GetLikesForComment(commentId);
+            return Ok(_mapper.Map<List<LikeDto>>(likesFromRepo));
         }
 
         // POST: Api/Comments/{CommentId}/User/{UserId}/Likes
         // Authenticate to make sure userId is the same as logged user
         [HttpPost("comments/{commentId}/users/{userId}/Likes")]
-        public ActionResult LikeComment(int commentId, string userId)
+        public async Task<IActionResult> LikeComment(int commentId, string userId)
         {
             // Like is unique to user, so none should exist
-            if (_likeRepo.LikeExists(commentId, userId))
+            bool exists = await _likeRepo.LikeExists(commentId, userId);
+            if (exists)
             {
                 return BadRequest("Comment has been liked.");
             }
 
-            _likeRepo.LikeComment(new Like { CommentId = commentId, ApplicationUserId = userId });
-            _likeRepo.Save();
-            return Ok("Comment has been liked.");
+            Like results = await _likeRepo.LikeComment(new Like { CommentId = commentId, ApplicationUserId = userId });
+            if (results != null)
+            {
+                return Ok(results);
+            }
+
+            return Problem("Problem with Database.");
         }
 
         // DELETE: Api/Likes/{LikeId}
         // Authenticate to make sure userId is the same as logged user
-        [HttpDelete("likes/{LikeId}")]
-        public ActionResult UnLike(int likeId)
+        [HttpDelete("likes/{likeId}")]
+        public async Task<IActionResult> UnLike(int likeId)
         {
-            var commentFromRepo = _likeRepo.GetLikeById(likeId);
+            var commentFromRepo = await _likeRepo.GetLikeById(likeId);
             if (commentFromRepo == null)
             {
                 return BadRequest("No likes on comment.");
             }
 
             _likeRepo.UnlikeComment(commentFromRepo);
-            _likeRepo.Save();
-            return Ok("Likes has been removed.");
+            bool result = await _likeRepo.SaveAsync();
+            if (result)
+            {
+                return Ok("Likes has been removed.");
+            }
+
+            return Problem("Not saved.");
         }
     }
 }
