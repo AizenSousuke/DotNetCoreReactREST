@@ -7,11 +7,10 @@ const initialState = {
     id: 0,
     title: "",
     body: "",
-    comments: []
-    // likeCount: 0
+    comments: [],
+    likeCount: 0
+    // likes: [],
   }
-  // comments: [],
-  // likes: []
 };
 
 export function blogsReducer(state = initialState, { type, payload }) {
@@ -33,13 +32,6 @@ export function blogsReducer(state = initialState, { type, payload }) {
         ...state,
         loading: payload
       };
-    // case "CREATE_COMMENT":
-    //   return {
-    //     ...state,
-    //     loading: false,
-    //     comments: [...state, payload]
-    //     // single: { ...state.single, comments: payload }
-    //   };
     case "SET_DUMMY_COMMENTS":
       return {
         ...state,
@@ -88,6 +80,35 @@ export function blogsReducer(state = initialState, { type, payload }) {
             loading: false,
             single: { ...state.single, comments: [] }
           };
+    case "SET_SINGLE_BLOG_LIKES":
+      // console.log("reducerhit");
+      return {
+        ...state,
+        loading: false,
+        single: {
+          ...state.single,
+          likes: payload
+        }
+      };
+    case "SET_SINGLE_BLOG_LIKE_COUNT":
+      // console.log("reducerhit");
+      return {
+        ...state,
+        loading: false,
+        single: {
+          ...state.single,
+          likeCount: payload
+        }
+      };
+    case "ADD_USERNAMES_TO_COMMENTS":
+      return {
+        ...state,
+        loading: false,
+        single: {
+          ...state,
+          comments: { ...state.single.comments, usernames: payload }
+        }
+      };
     case "CREATE_COMMENT":
       // console.log("reducerhit");
       return {
@@ -133,7 +154,6 @@ export function blogsReducer(state = initialState, { type, payload }) {
     //   return {
     //     ...state
     //   };
-
     default:
       return state;
   }

@@ -4,13 +4,14 @@ import {
   Container,
   Button,
   ButtonGroup,
-  ButtonToolbar
+  ButtonToolbar,
+  Progress
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 const BlogLayout = ({ blogs }) => {
   const categories = useSelector(state => state.blogs.categories); // pass as props?
-  const [filteredBlogs, setFilteredBlogs] = useState(...blogs);
+  const [filteredBlogs, setFilteredBlogs] = useState();
   const [showFiltered, setShowFiltered] = useState(false);
 
   let blogCategories = [];
@@ -28,23 +29,32 @@ const BlogLayout = ({ blogs }) => {
         <ButtonToolbar>
           {/* <h3 className="toolbar-header">Sort by category</h3> */}
           <ButtonGroup>
-            {catlist.map(c => {
+            {catlist.map(cat => {
               return (
                 <Button
                   onClick={() => {
                     setFilteredBlogs(
-                      [...blogs].filter(b => b.categoryId === c.id)
+                      [...blogs].filter(b => b.categoryId === cat.id)
                     );
                     if (!showFiltered) {
                       setShowFiltered(true);
                     }
                   }}
                 >
-                  {c.name}
+                  {cat.name}
                 </Button>
               );
             })}
           </ButtonGroup>
+          {/* <Button
+            onClick={() => {
+              if (showFiltered) {
+                setShowFiltered(false);
+              }
+            }}
+          >
+            Show All
+          </Button> */}
         </ButtonToolbar>
       </div>
       <div className="blog-layout">
@@ -53,7 +63,7 @@ const BlogLayout = ({ blogs }) => {
             <>
               <div className="d-flex flex-wrap justify-content-center">
                 {blogs.map(blog => (
-                  <div className="m-5" key={blog.title}>
+                  <div className="m-5 blog-container" key={blog.title}>
                     <h3>{blog.title}</h3>
                     <Card
                       style={{
@@ -129,7 +139,10 @@ const BlogLayout = ({ blogs }) => {
             </>
           )
         ) : (
-          <h1 className="text-center">Getting Blogs...</h1>
+          <div className="loading">
+            {/* <Progress /> */}
+            <h1 className="text-center">Getting Blogs...</h1>
+          </div>
         )}
       </div>
     </>

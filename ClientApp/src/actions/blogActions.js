@@ -2,8 +2,9 @@ import api from "../api";
 import axios from "axios";
 
 export const getBlogs = () => async dispatch => {
-  const response = await api.get("/posts");
-  dispatch({ type: "SET_BLOGS", payload: response.data });
+  const response = await api.get("/posts").then(({ data }) => {
+    dispatch({ type: "SET_BLOGS", payload: data.objList });
+  });
 };
 
 export const getSingleBlog = id => async (dispatch, getState) => {
@@ -47,10 +48,69 @@ export const getSingleBlogComments = id => async dispatch => {
   const response = await api
     .get(`/posts/${id}/comments`)
     .then(({ data }) => {
+      // console.log("singcomm", data);
       dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data });
     })
     .catch(error => console.log(error));
 };
+
+export const getSingleBlogLikes = id => async dispatch => {
+  const response = await api
+    .get(`/posts/${id}/postlikes`)
+    .then(({ data }) => {
+      // console.log("likesresponse", data);
+      dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data });
+    })
+    .catch(error => console.log(error));
+};
+
+export const getSingleBlogLikeCount = id => async dispatch => {
+  const response = await api
+    .get(`/posts/${id}/postlikes`)
+    .then(({ data }) => {
+      // console.log("singlikedata", data);
+      const likeCount = data.filter(d => d.isLiked).length;
+      // console.log("filteredcount:", likeCount);
+      dispatch({ type: "SET_SINGLE_BLOG_LIKE_COUNT", payload: likeCount });
+    })
+    .catch(error => console.log(error));
+};
+
+export const incrementSingleBlogLikes = id => async dispatch => {
+  const response = await api
+    .post(`posts/${id}/postlikes`)
+    .then(({ data }) =>
+      dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data })
+    );
+};
+
+// current
+export const likeBlog = (postId, userId) => async dispatch => {
+  const response = await api
+    .post(`posts/${postId}/users/${userId}/postlikes`)
+    .then(({ data }) => {
+      dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data });
+    });
+};
+
+export const unlikeBlog = id => async dispatch => {
+  const response = await api.delete(`postlikes/${id}`).then(({ data }) => {
+    dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data });
+  });
+};
+
+// export const LikeOrUnlikeSingleBlog = (id, like = true) => async dispatch => {
+//   const response = await api;
+//   like
+//     ? response
+//         .post(`posts/${id}/postlikes`)
+//         .then(({ data }) =>
+//           dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data })
+//         )
+//     : response.delete(`posts/postlikes/${id}`).then(({ data }) => {
+//         dispatch({ type: "SET_SINGLE_BLOG_LIKES", payload: data });
+//       });
+// };
 
 export const getUsers = () => async dispatch => {
   const response = await api
@@ -58,11 +118,16 @@ export const getUsers = () => async dispatch => {
     .then(data => dispatch({ type: "SET_USERS", payload: data }));
 };
 
+export const addUsernamesToComments = users => {
+  return { type: "ADD_USERNAMES_TO_COMMENTS", payload: users.userName };
+};
+
 // get all categories, useful for filtering by category
 export const getCategories = () => async dispatch => {
-  const response = await api.get("/categories");
-  console.log("categories response: ", response);
-  dispatch({ type: "SET_CATEGORIES", payload: response.data });
+  const response = await api.get("/categories").then(({ data }) => {
+    console.log("categories response: ", data.objList);
+    dispatch({ type: "SET_CATEGORIES", payload: data.objList });
+  });
 };
 
 export const getLikesForComment = id => async dispatch => {
