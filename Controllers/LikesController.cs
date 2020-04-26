@@ -53,8 +53,8 @@ namespace DotNetCoreReactREST.Controllers
             Like exists = await _likeRepo.LikeExists(commentId, userId);
             if (exists != null)
             {
-                // Change the isLiked property
-                exists.IsLiked = true;
+                // Change the isLiked property by toggling
+                exists.IsLiked = !exists.IsLiked;
                 bool result = await _likeRepo.SaveAsync();
                 if (result)
                 {
