@@ -50,16 +50,25 @@ namespace DotNetCoreReactREST.Controllers
         public async Task<IActionResult> LikeComment(int commentId, string userId)
         {
             // Like is unique to user, so none should exist
-            bool exists = await _likeRepo.LikeExists(commentId, userId);
-            if (exists)
+            Like exists = await _likeRepo.LikeExists(commentId, userId);
+            if (exists != null)
             {
-                return BadRequest("Comment has been liked.");
+                // Change the isLiked property
+                exists.IsLiked = true;
+                bool result = await _likeRepo.SaveAsync();
+                if (result)
+                {
+                    return Ok(_mapper.Map<LikeDto>(await _likeRepo.GetLikeById(exists.Id)));
+                }
+
+                return Problem("Problem with Database.");
             }
 
-            Like results = await _likeRepo.LikeComment(new Like { CommentId = commentId, ApplicationUserId = userId });
+            // If Like doesn't exists, create new one
+            Like results = await _likeRepo.LikeComment(new Like { CommentId = commentId, ApplicationUserId = userId, IsLiked = true });
             if (results != null)
             {
-                return Ok(results);
+                return Ok(_mapper.Map<LikeDto>(results));
             }
 
             return Problem("Problem with Database.");
@@ -80,7 +89,7 @@ namespace DotNetCoreReactREST.Controllers
             bool result = await _likeRepo.SaveAsync();
             if (result)
             {
-                return Ok("Likes has been removed.");
+                return Ok(_mapper.Map<LikeDto>(await _likeRepo.GetLikeById(likeId)));
             }
 
             return Problem("Not saved.");
