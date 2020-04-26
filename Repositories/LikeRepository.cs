@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Serilog;
 
 namespace DotNetCoreReactREST.Repositories
@@ -46,8 +47,13 @@ namespace DotNetCoreReactREST.Repositories
             }
 
             await _context.Likes.AddAsync(like);
-            await SaveAsync();
-            return await _context.Likes.FirstOrDefaultAsync(l => l.ApplicationUserId == like.ApplicationUserId);
+            bool results = await SaveAsync();
+            if (results)
+            {
+                return await _context.Likes.FirstOrDefaultAsync(l => l.ApplicationUserId == like.ApplicationUserId);
+            }
+
+            return null;
         }
 
         public async Task<Like> LikeExists(int commentId, string userId)
