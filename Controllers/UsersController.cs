@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 namespace DotNetCoreReactREST.Controllers
@@ -46,7 +47,7 @@ namespace DotNetCoreReactREST.Controllers
 
         // POST: Api/Users
         [HttpPost]
-        public ActionResult<UserDto> CreateUser([FromBody]UserForCreationDto user)
+        public ActionResult<UserDto> CreateUser([FromBody] UserForCreationDto user)
         {
             var userToAdd = _mapper.Map<ApplicationUser>(user);
             _userRepo.AddUser(userToAdd);
@@ -130,17 +131,25 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync([FromBody] UserForCreationDto user, [FromQuery] bool rememberMe)
+        public async Task<IActionResult> LoginAsync([FromBody] UserForLoginDto user, [FromQuery] bool rememberMe)
         {
             try
             {
+                Log.Information("User from method {@User}", user);
                 ApplicationUser convertedUser = _mapper.Map<ApplicationUser>(user);
-                await _signInManager.SignInAsync(convertedUser, new AuthenticationProperties()
+                Log.Information("User from converted user {@User}", convertedUser);
+                ApplicationUser userFromManager = await _userManager.FindByEmailAsync(convertedUser.Email);
+                Log.Information("User from Manager {@User}", userFromManager);
+                if (userFromManager != null)
                 {
-                    IsPersistent = rememberMe ? true : false,
-                });
+                    await _signInManager.SignInAsync(userFromManager, new AuthenticationProperties()
+                    {
+                        IsPersistent = rememberMe ? true : false,
+                    });
 
-                return Ok("Logged in successfully!");
+                    return Ok("Logged in successfully!");
+                }
+                return Problem("Can't login.");
             }
             catch (System.Exception)
             {
@@ -227,7 +236,7 @@ namespace DotNetCoreReactREST.Controllers
 
         // PUT: Api/User/{UserId}
         [HttpPut("{userId}")]
-        public ActionResult UpdateUser(string userId, [FromBody]UserForUpdateDto user)
+        public ActionResult UpdateUser(string userId, [FromBody] UserForUpdateDto user)
         {
             var userFromRepo = _userRepo.GetUserById(userId);
             if (userFromRepo == null)

@@ -110,6 +110,22 @@
     <Compile Remove="Migrations\20200323145847_BogusData.Designer.cs" />
     <Compile Remove="Migrations\20200415153730_AddedPostLikes.cs" />
     <Compile Remove="Migrations\20200415153730_AddedPostLikes.Designer.cs" />
+    <Compile Remove="Migrations\20200426082714_ChangedLikeIsLiked.cs" />
+    <Compile Remove="Migrations\20200426082714_ChangedLikeIsLiked.Designer.cs" />
+    <Compile Remove="Migrations\20200427115459_Properties.cs" />
+    <Compile Remove="Migrations\20200427115459_Properties.Designer.cs" />
+    <Compile Remove="Migrations\20200427120517_Properties.cs" />
+    <Compile Remove="Migrations\20200427120517_Properties.Designer.cs" />
+    <Compile Remove="Migrations\20200427120851_Properties.cs" />
+    <Compile Remove="Migrations\20200427120851_Properties.Designer.cs" />
+    <Compile Remove="Migrations\20200427121206_Properties.cs" />
+    <Compile Remove="Migrations\20200427121206_Properties.Designer.cs" />
+    <Compile Remove="Migrations\20200427121500_Properties.cs" />
+    <Compile Remove="Migrations\20200427121500_Properties.Designer.cs" />
+    <Compile Remove="Migrations\20200427121913_Properties.cs" />
+    <Compile Remove="Migrations\20200427121913_Properties.Designer.cs" />
+    <Compile Remove="Migrations\20200427122036_Properties.cs" />
+    <Compile Remove="Migrations\20200427122036_Properties.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
