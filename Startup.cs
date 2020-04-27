@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,7 @@ namespace DotNetCoreReactREST
     public class Startup
     {
         public IConfiguration Configuration { get; }
+
         public IWebHostEnvironment Environment { get; }
 
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
@@ -70,6 +72,12 @@ namespace DotNetCoreReactREST
             })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddRoles<IdentityRole>();
+            services.ConfigureApplicationCookie(config =>
+            {
+                // Set cookie to 5 minutes
+                config.Cookie.MaxAge = new TimeSpan(0, 0, 5, 0, 0);
+                config.Cookie.Path = "/";
+            });
             services.AddScoped<UserManager<ApplicationUser>>();
             services.AddScoped<SignInManager<ApplicationUser>>();
 
