@@ -74,8 +74,15 @@ namespace DotNetCoreReactREST
                 .AddRoles<IdentityRole>();
             services.ConfigureApplicationCookie(config =>
             {
-                // Set cookie to 5 minutes
-                config.Cookie.MaxAge = new TimeSpan(0, 0, 5, 0, 0);
+                // Set cookie to 5 minutes for dev and 1 day for prod
+                if (Environment.IsDevelopment())
+                {
+                    config.Cookie.MaxAge = new TimeSpan(0, 0, 5, 0, 0);
+                }
+                else
+                {
+                    config.Cookie.MaxAge = new TimeSpan(1, 0, 0, 0, 0);
+                }
                 config.Cookie.Path = "/";
             });
             services.AddScoped<UserManager<ApplicationUser>>();
