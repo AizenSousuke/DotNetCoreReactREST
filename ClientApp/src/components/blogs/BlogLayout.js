@@ -10,8 +10,8 @@ import {
 import CreateBlog from "./CreateBlog";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-const BlogLayout = ({ blogs }) => {
-  const categories = useSelector((state) => state.blogs.categories); // pass as props?
+const BlogLayout = ({ blogs, users }) => {
+  const categories = useSelector((state) => state.blogs.categories);
   const [filteredBlogs, setFilteredBlogs] = useState();
   const [showFiltered, setShowFiltered] = useState(false);
 
@@ -60,9 +60,9 @@ const BlogLayout = ({ blogs }) => {
       </div>
       <div>
         {/* Grid */}
-        <CreateBlog
+        {/* <CreateBlog
         // userId={}
-        />
+        /> */}
       </div>
       <div className="blog-layout">
         {blogs.length ? (

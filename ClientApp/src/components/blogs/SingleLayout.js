@@ -32,17 +32,21 @@ const SingleLayout = ({ markup, match }) => {
   const [showingEditor, setShowingEditor] = useState(true);
 
   const blog = useSelector((state) => state.blogs.single);
-  // const users = useSelector(state => state.blogs.users);
   const loading = useSelector((state) => state.blogs.loading);
-  const comments = blog.comments;
+
+  // const [likes, setLikes] = useState(blog.likeCount);
+
+  console.log("initlikes", blog.likeCount);
+
+  // const users = useSelector(state => state.blogs.users);
   // const likes = blog.likes;
-  let likeCount = blog.likeCount;
+  // const likeCount = blog.likeCount;
 
   // local or redux state for displaying immediate like feedback to users?
 
   const like_or_dislike = () => {
     setLiked((prev) => !prev);
-    // likeCount++;
+    // !liked ? setLikes(likes + 1) : setLikes(likes - 1);
   };
 
   const dispatch = useDispatch();
@@ -130,7 +134,7 @@ const SingleLayout = ({ markup, match }) => {
                       {/* make dynamic */}
                       <span>24 blogs</span>
                       <i className="fas fa-newspaper"></i>
-                      <span>{likeCount} likes</span>
+                      <span>{blog.likeCount} likes</span>
                       <i className="fas fa-thumbs-up"></i>
                     </div>
                   </div>
@@ -140,11 +144,10 @@ const SingleLayout = ({ markup, match }) => {
                     className="d-block"
                     onClick={() => {
                       like_or_dislike();
-                      // !liked
-                      //   ?
                       dispatch(
                         likeBlog(match.params.id, blog.applicationUserId)
                       );
+                      console.log("btnlikes", blog.likeCount);
                       //   : dispatch(unlikeBlog(1, 1));
                     }}
                   >
@@ -243,8 +246,8 @@ const SingleLayout = ({ markup, match }) => {
           />
         </div>
         <div className="comments-wrapper">
-          {comments
-            ? comments.map((c) => {
+          {blog.comments
+            ? blog.comments.map((c) => {
                 return (
                   <Comment
                     key={c.id}
