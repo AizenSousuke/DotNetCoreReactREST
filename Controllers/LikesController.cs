@@ -49,6 +49,13 @@ namespace DotNetCoreReactREST.Controllers
         [HttpPost("comments/{commentId}/users/{userId}/Likes")]
         public async Task<IActionResult> LikeComment(int commentId, string userId)
         {
+            // Check comment exists
+            bool commentExists = await _commentRepo.CommentExists(commentId);
+            if (!commentExists)
+            {
+                return Problem("Comment doesn't exists.");
+            }
+
             // Like is unique to user, so none should exist
             Like exists = await _likeRepo.LikeExists(commentId, userId);
             if (exists != null)

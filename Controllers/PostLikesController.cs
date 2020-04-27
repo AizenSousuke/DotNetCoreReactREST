@@ -62,13 +62,21 @@ namespace DotNetCoreReactREST
             }
 
             // PostLike is unique to user, so none should exist
-            bool postLikeExists = await _postLikeRepository.PostLikeExists(postId, userId);
-            if (postLikeExists)
+            PostLike postLike = await _postLikeRepository.PostLikeExists(postId, userId);
+            if (postLike != null)
             {
-                return Ok("Post has already been liked.");
+                postLike.IsLiked = !postLike.IsLiked;
+                bool result = await _postLikeRepository.SaveAsync();
+                if (result)
+                {
+                    return Ok(_mapper.Map<PostLikeDto>(await _postLikeRepository.GetPostLikeById(postLike.Id)));
+                }
+
+                return Problem("Problem with Database.");
             }
 
-            var results = await _postLikeRepository.LikePostAsync(
+            // If PostLike doesn't exists, create new one
+            PostLike results = await _postLikeRepository.LikePostAsync(
                 new PostLike
                 {
                     PostId = postId,
@@ -77,8 +85,7 @@ namespace DotNetCoreReactREST
                 });
             if (results != null)
             {
-                await _postLikeRepository.SaveAsync();
-                return Ok(results);
+                return Ok(_mapper.Map<PostLikeDto>(results));
             }
 
             return Problem("Problem with Database.");
@@ -90,7 +97,7 @@ namespace DotNetCoreReactREST
         [Route("postlikes/{postLikeId:int}")]
         public async Task<IActionResult> UnlikePostAsync(int postLikeId)
         {
-            var postFromRepo = _postLikeRepository.GetPostLikeById(postLikeId);
+            var postFromRepo = await _postLikeRepository.GetPostLikeById(postLikeId);
             if (postFromRepo == null)
             {
                 return NotFound("No likes on post.");

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Serilog;
 
 namespace DotNetCoreReactREST.Repositories
