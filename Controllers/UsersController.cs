@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using DotNetCoreReactREST.Dtos;
@@ -108,8 +109,15 @@ namespace DotNetCoreReactREST.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<UserDto>> GetUsers()
         {
-            var userEntities = _userRepo.GetAllUsers();
-            return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
+            try
+            {
+                var userEntities = _userRepo.GetAllUsers();
+                return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         [HttpGet("login")]
@@ -119,7 +127,7 @@ namespace DotNetCoreReactREST.Controllers
             {
                 if (_signInManager.IsSignedIn(HttpContext.User))
                 {
-                    return Ok("User is logged in.");
+                    return Ok("User " + HttpContext.User.Identity.Name + " is currently logged in.");
                 }
 
                 return Ok("No user is logged in.");
@@ -135,23 +143,27 @@ namespace DotNetCoreReactREST.Controllers
         {
             try
             {
-                Log.Information("User from method {@User}", user);
+                Log.Information("User's Email from method {@UserEmail}", user.Email);
                 ApplicationUser convertedUser = _mapper.Map<ApplicationUser>(user);
-                Log.Information("User from converted user {@User}", convertedUser);
+                Log.Information("User's Email from converted user {@UserEmail}", convertedUser.Email);
                 ApplicationUser userFromManager = await _userManager.FindByEmailAsync(convertedUser.Email);
-                Log.Information("User from Manager {@User}", userFromManager);
+                Log.Information("User's Name from Manager {@UserName}", userFromManager.NormalizedUserName);
                 if (userFromManager != null)
                 {
-                    await _signInManager.SignInAsync(userFromManager, new AuthenticationProperties()
+                    Microsoft.AspNetCore.Identity.SignInResult results = await _signInManager.PasswordSignInAsync(userFromManager, user.PasswordHash, rememberMe, false);
+                    if (results.Succeeded)
                     {
-                        IsPersistent = rememberMe ? true : false,
-                    });
-
-                    return Ok("Logged in successfully!");
+                        return Ok("Logged in successfully!");
+                    }
+                    else
+                    {
+                        return Unauthorized("Check user name or password.");
+                    }
                 }
-                return Problem("Can't login.");
+
+                return Problem("Can't login. No user found.");
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw;
             }
@@ -170,7 +182,7 @@ namespace DotNetCoreReactREST.Controllers
 
                 return Ok("No user is logged in.");
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw;
             }
@@ -210,7 +222,12 @@ namespace DotNetCoreReactREST.Controllers
             try
             {
                 // Register user
-                ApplicationUser user = new ApplicationUser { UserName = registerModel.UserName, Email = registerModel.Email };
+                ApplicationUser user = new ApplicationUser {
+                    UserName = registerModel.UserName,
+                    Email = registerModel.Email,
+                    NormalizedUserName = registerModel.UserName.Normalize().ToUpper(),
+                    NormalizedEmail = registerModel.Email.Normalize().ToUpper(),
+                };
 
                 var existingUser = await _userManager.FindByNameAsync(user.UserName);
 
@@ -219,16 +236,16 @@ namespace DotNetCoreReactREST.Controllers
                     return Ok("User " + user.UserName + " already exists!");
                 }
 
-                var result = await _userManager.CreateAsync(user, registerModel.PasswordHash);
+                IdentityResult result = await _userManager.CreateAsync(user, registerModel.PasswordHash);
 
                 if (result.Succeeded)
                 {
                     return Ok("Result: " + result + ". User " + registerModel.UserName + " created. You may now log in.");
                 }
 
-                return Ok("Didn't succeed to create user. Please try again.");
+                return BadRequest("Didn't succeed to create user. Please try again.");
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw;
             }
