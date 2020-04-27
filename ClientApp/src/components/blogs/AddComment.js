@@ -1,46 +1,67 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  // Textarea,
+} from "reactstrap";
 import { createComment } from "../../actions/blogActions";
 import "../../styles/components/addcomment.scss";
 // import CommonModal from "../common/CommonModal";
 // import CommentForm from "./CommentForm";
-import moment from "moment";
 
-const AddComment = props => {
+const AddComment = (props) => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.auth.user);
+  // const user = useSelector(state => state.auth.user);
   const [modal, setModal] = useState(false);
   const [content, setContent] = useState("");
   const toggle = () => setModal(!modal);
 
-  // let id = 51;
-  // let name = "JB";
   return (
-    <>
+    <Container>
       <Button className="comment-modal-btn" onClick={toggle}>
         Comment
       </Button>
       <Modal
         isOpen={modal}
-        fade={false}
+        fade={true}
         toggle={toggle}
         className="comments-modal"
       >
         <ModalHeader className="comment-modal-header" toggle={toggle}>
           Leave a comment
+          {
+            // make user-specific
+            <Row>
+              <Col sm="4">
+                <img
+                  src="https://www.w3schools.com/howto/img_avatar.png"
+                  alt="avatar"
+                />
+              </Col>
+            </Row>
+          }
         </ModalHeader>
         <ModalBody className="comment-modal">
           <textarea
             form="comment-box"
-            onChange={e => setContent(e.target.value)}
+            onChange={(e) => setContent(e.target.value)}
+            // responsive?
+            rows={8}
+            cols={60}
           />
           <form
             id="comment-form"
-            onSubmit={e => {
+            onSubmit={(e) => {
               e.preventDefault();
 
-              console.log("content: ", content);
+              // console.log("content: ", content);
               dispatch(
                 createComment(
                   content,
@@ -59,8 +80,7 @@ const AddComment = props => {
         </ModalBody>
         <ModalFooter></ModalFooter>
       </Modal>
-    </>
-
+    </Container>
     // <CommonModal
     //   bodyContent={CommentForm()}
     //   buttonTitle="Send"

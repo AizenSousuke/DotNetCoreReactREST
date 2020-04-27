@@ -1,30 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { Form } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { login, setMessage, setErrors } from "../../actions/auth";
+import { getUsers, login, setMessage, setErrors } from "../../actions/auth";
 import { setModal } from "../../actions/modal";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const errors = useSelector(state => state.auth.errors);
-  const user = useSelector(state => state.auth.user);
+  const errors = useSelector((state) => state.auth.errors);
+  const user = useSelector((state) => state.auth.user);
+  const users = useSelector((state) => state.auth.users);
+  // console.log("seluser", users);
+
   useEffect(() => {
+    dispatch(getUsers());
     dispatch(setModal(false));
   }, [dispatch, user]);
+
   const loginUser = () => {
     dispatch(setMessage(""));
     dispatch(setErrors(null));
     const userObj = {
       email,
-      password
+      password,
     };
-    dispatch(login(userObj));
+    dispatch(login(users, userObj));
   };
+
   return (
     <Form
-      onSubmit={e => {
+      onSubmit={(e) => {
         e.preventDefault();
         loginUser();
       }}
@@ -42,7 +48,7 @@ const LoginForm = () => {
           name="email"
           placeholder="E-mail"
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </div>
       <div>
@@ -52,7 +58,7 @@ const LoginForm = () => {
           name="password"
           placeholder="Password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
       </div>
       <div className="text-center">

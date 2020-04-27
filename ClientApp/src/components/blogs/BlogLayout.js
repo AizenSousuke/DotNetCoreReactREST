@@ -4,13 +4,15 @@ import {
   Container,
   Button,
   ButtonGroup,
-  ButtonToolbar
+  ButtonToolbar,
+  Progress,
 } from "reactstrap";
+import CreateBlog from "./CreateBlog";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-const BlogLayout = ({ blogs }) => {
-  const categories = useSelector(state => state.blogs.categories); // pass as props?
-  const [filteredBlogs, setFilteredBlogs] = useState(...blogs);
+const BlogLayout = ({ blogs, users }) => {
+  const categories = useSelector((state) => state.blogs.categories);
+  const [filteredBlogs, setFilteredBlogs] = useState();
   const [showFiltered, setShowFiltered] = useState(false);
 
   let blogCategories = [];
@@ -20,7 +22,7 @@ const BlogLayout = ({ blogs }) => {
       blogCategories.push(blogs[i].categoryId);
     }
   }
-  const catlist = categories.filter(cat => blogCategories.includes(cat.id));
+  const catlist = categories.filter((cat) => blogCategories.includes(cat.id));
 
   return (
     <>
@@ -28,39 +30,54 @@ const BlogLayout = ({ blogs }) => {
         <ButtonToolbar>
           {/* <h3 className="toolbar-header">Sort by category</h3> */}
           <ButtonGroup>
-            {catlist.map(c => {
+            {catlist.map((cat) => {
               return (
                 <Button
                   onClick={() => {
                     setFilteredBlogs(
-                      [...blogs].filter(b => b.categoryId === c.id)
+                      [...blogs].filter((b) => b.categoryId === cat.id)
                     );
                     if (!showFiltered) {
                       setShowFiltered(true);
                     }
                   }}
                 >
-                  {c.name}
+                  {cat.name}
                 </Button>
               );
             })}
           </ButtonGroup>
+          {/* <Button
+            onClick={() => {
+              if (showFiltered) {
+                setShowFiltered(false);
+              }
+            }}
+          >
+            Show All
+          </Button> */}
         </ButtonToolbar>
+      </div>
+      <div>
+        {/* Grid */}
+        {/* <CreateBlog
+        // userId={}
+        /> */}
       </div>
       <div className="blog-layout">
         {blogs.length ? (
           !showFiltered ? (
             <>
               <div className="d-flex flex-wrap justify-content-center">
-                {blogs.map(blog => (
-                  <div className="m-5" key={blog.title}>
+                {blogs.map((blog) => (
+                  <div className="m-5 blog-container" key={blog.title}>
                     <h3>{blog.title}</h3>
                     <Card
                       style={{
                         backgroundImage:
                           "url(https://i.picsum.photos/id/1025/4951/3301.jpg)",
                         backgroundSize: "cover",
-                        backgroundPosition: "50%"
+                        backgroundPosition: "50%",
                       }}
                       className="m-0"
                     >
@@ -91,7 +108,7 @@ const BlogLayout = ({ blogs }) => {
           ) : (
             <>
               <div className="d-flex flex-wrap justify-content-center">
-                {filteredBlogs.map(blog => (
+                {filteredBlogs.map((blog) => (
                   <div className="m-5" key={blog.title}>
                     <h3>{blog.title}</h3>
                     <Card
@@ -99,7 +116,7 @@ const BlogLayout = ({ blogs }) => {
                         backgroundImage:
                           "url(https://i.picsum.photos/id/1025/4951/3301.jpg)",
                         backgroundSize: "cover",
-                        backgroundPosition: "50%"
+                        backgroundPosition: "50%",
                       }}
                       className="m-0"
                     >
@@ -129,7 +146,10 @@ const BlogLayout = ({ blogs }) => {
             </>
           )
         ) : (
-          <h1 className="text-center">Getting Blogs...</h1>
+          <div className="loading">
+            {/* <Progress /> */}
+            <h1 className="text-center">Getting Blogs...</h1>
+          </div>
         )}
       </div>
     </>

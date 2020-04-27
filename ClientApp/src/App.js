@@ -8,8 +8,7 @@ import {
   getUsers,
   getCategories,
   getSingleBlogComments,
-  getLikesForComment
-  // setDummyComments
+  getLikesForComment,
 } from "./actions/blogActions";
 import { setUser } from "./actions/auth";
 import Profile from "./pages/Profile";
@@ -22,18 +21,13 @@ const App = () => {
   useEffect(() => {
     dispatch(getBlogs());
     dispatch(getCategories());
-    // dispatch(getLikesForComment(1));
-    // dispatch(getUsers());
+    dispatch(getUsers());
 
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      dispatch(setUser(user));
-    }
+    //   const user = JSON.parse(localStorage.getItem("user"));
+    //   if (user) {
+    //     dispatch(setUser(user));
+    //   }
   });
-
-  // for (let i = 0; i < 10; i++) {
-  //   dispatch(setDummyComments(i));
-  // }
 
   return (
     <div className="app">
