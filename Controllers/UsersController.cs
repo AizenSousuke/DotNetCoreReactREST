@@ -48,14 +48,12 @@ namespace DotNetCoreReactREST.Controllers
 
         // POST: Api/Users
         [HttpPost]
-        public ActionResult<UserDto> CreateUser([FromBody] UserForCreationDto user)
+        public async Task<ActionResult<UserDto>> CreateUserAsync([FromBody] UserForCreationDto user)
         {
-            var userToAdd = _mapper.Map<ApplicationUser>(user);
-            _userRepo.AddUser(userToAdd);
-            _userRepo.Save();
-
-            var userToReturn = _mapper.Map<UserDto>(userToAdd);
-            return CreatedAtRoute("GetUser", new { userId = userToAdd.Id }, userToReturn);
+            ApplicationUser userToAdd = _mapper.Map<ApplicationUser>(user);
+            ApplicationUser newUser = await _userRepo.AddUserAsync(userToAdd);
+            await _userRepo.SaveAsync();
+            return Ok(_mapper.Map<UserDto>(newUser));
         }
 
         // DELETE: Api/Users/{UserId}
@@ -86,9 +84,9 @@ namespace DotNetCoreReactREST.Controllers
 
         // GET: Api/Users/{UserId}
         [HttpGet("{userId}", Name = "GetUser")]
-        public ActionResult<UserDto> Get(string userId)
+        public async Task<ActionResult<UserDto>> GetAsync(string userId)
         {
-            var userEntity = _userRepo.GetUserById(userId);
+            ApplicationUser userEntity = await _userRepo.GetUserByIdAsync(userId);
             if (userEntity == null)
             {
                 return NotFound();
@@ -99,19 +97,19 @@ namespace DotNetCoreReactREST.Controllers
 
         // GET: Api/Users/Admins
         [HttpGet("Admins")]
-        public ActionResult<IEnumerable<UserDto>> GetAdmins()
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAdminsAsync()
         {
-            var userEntities = _userRepo.GetAllAdmins();
+            IEnumerable<ApplicationUser> userEntities = await _userRepo.GetAllAdminsAsync();
             return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
         }
 
         // GET: Api/Users
         [HttpGet]
-        public ActionResult<IEnumerable<UserDto>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersAsync()
         {
             try
             {
-                var userEntities = _userRepo.GetAllUsers();
+                IEnumerable<ApplicationUser> userEntities = await _userRepo.GetAllUsersAsync();
                 return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
             }
             catch (Exception)
@@ -190,11 +188,11 @@ namespace DotNetCoreReactREST.Controllers
 
         // PATCH: Api/User/{UserId}
         [HttpPatch("{userId}")]
-        public ActionResult PartiallyUpdateUser(
+        public async Task<ActionResult> PartiallyUpdateUserAsync(
             string userId,
             JsonPatchDocument<UserForUpdateDto> patchDocument)
         {
-            var userFromRepo = _userRepo.GetUserById(userId);
+            ApplicationUser userFromRepo = await _userRepo.GetUserByIdAsync(userId);
             if (userFromRepo == null)
             {
                 return NotFound();
@@ -210,10 +208,12 @@ namespace DotNetCoreReactREST.Controllers
 
             // Following convention
             _mapper.Map(userToPatch, userFromRepo);
+            // Update actually is at the patchDocument.ApplyTo() method above. This is following convention only.
             _userRepo.UpdateUser(userFromRepo);
-            _userRepo.Save();
+            await _userRepo.SaveAsync();
+            ApplicationUser updatedUser = await _userRepo.GetUserByIdAsync(userId);
 
-            return NoContent();
+            return Ok(_mapper.Map<UserDto>(updatedUser));
         }
 
         [HttpPost("register")]
@@ -243,7 +243,7 @@ namespace DotNetCoreReactREST.Controllers
                     return Ok("Result: " + result + ". User " + registerModel.UserName + " created. You may now log in.");
                 }
 
-                return BadRequest("Didn't succeed to create user. Please try again.");
+                return BadRequest("Didn't succeed to create user. Please try again. Make sure you're using a proper password - i.e, P@ssw0rd1.");
             }
             catch (Exception)
             {
@@ -253,20 +253,20 @@ namespace DotNetCoreReactREST.Controllers
 
         // PUT: Api/User/{UserId}
         [HttpPut("{userId}")]
-        public ActionResult UpdateUser(string userId, [FromBody] UserForUpdateDto user)
+        public async Task<ActionResult> UpdateUserAsync(string userId, [FromBody] UserForUpdateDto user)
         {
-            var userFromRepo = _userRepo.GetUserById(userId);
+            var userFromRepo = await _userRepo.GetUserByIdAsync(userId);
             if (userFromRepo == null)
             {
                 return NotFound();
             }
 
             _mapper.Map(user, userFromRepo);
-
             _userRepo.UpdateUser(userFromRepo);
-            _userRepo.Save();
+            await _userRepo.SaveAsync();
+            ApplicationUser updatedUser = await _userRepo.GetUserByIdAsync(userId);
 
-            return NoContent();
+            return Ok(_mapper.Map<UserDto>(updatedUser));
         }
 
         public override ActionResult ValidationProblem(
