@@ -58,7 +58,7 @@ namespace DotNetCoreReactREST.Controllers
 
         // DELETE: Api/Users/{UserId}
         [HttpDelete("{userId}")]
-        public async Task<ActionResult> DeleteAsync([FromRoute]string userId)
+        public async Task<IActionResult> DeleteAsync([FromRoute]string userId)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -67,24 +67,24 @@ namespace DotNetCoreReactREST.Controllers
             }
 
             // Delete comments
-            IEnumerable<Comment> commentsToDelete = await _commentRepository.GetCommentsForUser(user.Id);
-            foreach (var comment in commentsToDelete)
-            {
-                _commentRepository.DeleteComment(comment);
-            }
+            // IEnumerable<Comment> commentsToDelete = await _commentRepository.GetCommentsForUser(user.Id);
+            // foreach (var comment in commentsToDelete)
+            // {
+            //     _commentRepository.DeleteComment(comment);
+            // }
 
             // Delete posts
             // Seems like don't need to add as it does not error out
 
             // Delete user
-            await _userManager.DeleteAsync(user);
+            ApplicationUser deletedUser = await _userRepo.DeleteUserAsync(user);
 
-            return Ok("Deleted user and all his posts and comments");
+            return Ok(_mapper.Map<UserDto>(deletedUser).UserName + " has been deleted.");
         }
 
         // GET: Api/Users/{UserId}
         [HttpGet("{userId}", Name = "GetUser")]
-        public async Task<ActionResult<UserDto>> GetAsync(string userId)
+        public async Task<IActionResult> GetAsync(string userId)
         {
             ApplicationUser userEntity = await _userRepo.GetUserByIdAsync(userId);
             if (userEntity == null)
@@ -146,6 +146,13 @@ namespace DotNetCoreReactREST.Controllers
                 Log.Information("User's Email from converted user {@UserEmail}", convertedUser.Email);
                 ApplicationUser userFromManager = await _userManager.FindByEmailAsync(convertedUser.Email);
                 Log.Information("User's Name from Manager {@UserName}", userFromManager.NormalizedUserName);
+
+                // Check if user is deleted
+                if (userFromManager.IsDeleted)
+                {
+                    return Unauthorized("User " + userFromManager.UserName + " has been deleted or disabled.");
+                }
+
                 if (userFromManager != null)
                 {
                     Microsoft.AspNetCore.Identity.SignInResult results = await _signInManager.PasswordSignInAsync(userFromManager, user.PasswordHash, rememberMe, false);
@@ -188,7 +195,7 @@ namespace DotNetCoreReactREST.Controllers
 
         // PATCH: Api/User/{UserId}
         [HttpPatch("{userId}")]
-        public async Task<ActionResult> PartiallyUpdateUserAsync(
+        public async Task<IActionResult> PartiallyUpdateUserAsync(
             string userId,
             JsonPatchDocument<UserForUpdateDto> patchDocument)
         {
@@ -227,6 +234,7 @@ namespace DotNetCoreReactREST.Controllers
                     Email = registerModel.Email,
                     NormalizedUserName = registerModel.UserName.Normalize().ToUpper(),
                     NormalizedEmail = registerModel.Email.Normalize().ToUpper(),
+                    IsDeleted = false,
                 };
 
                 var existingUser = await _userManager.FindByNameAsync(user.UserName);
@@ -253,7 +261,7 @@ namespace DotNetCoreReactREST.Controllers
 
         // PUT: Api/User/{UserId}
         [HttpPut("{userId}")]
-        public async Task<ActionResult> UpdateUserAsync(string userId, [FromBody] UserForUpdateDto user)
+        public async Task<IActionResult> UpdateUserAsync(string userId, [FromBody] UserForUpdateDto user)
         {
             var userFromRepo = await _userRepo.GetUserByIdAsync(userId);
             if (userFromRepo == null)
