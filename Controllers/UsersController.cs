@@ -238,10 +238,17 @@ namespace DotNetCoreReactREST.Controllers
                 };
 
                 var existingUser = await _userManager.FindByNameAsync(user.UserName);
+                var existingUserEmail = await _userManager.FindByEmailAsync(user.Email);
 
                 if (existingUser != null)
                 {
-                    return Ok("User " + user.UserName + " already exists!");
+                    return BadRequest("User " + user.UserName + " already exists!");
+                }
+
+                // Technically the email can be checked at the CreateAsync() method below as it will not return succeeded due to the options in startup.
+                if (existingUserEmail != null)
+                {
+                    return BadRequest("User with Email " + user.Email + " already exists!");
                 }
 
                 IdentityResult result = await _userManager.CreateAsync(user, registerModel.PasswordHash);

@@ -67,7 +67,9 @@ namespace DotNetCoreReactREST
             services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
             {
                 // Password requirements
+                opt.User.RequireUniqueEmail = true;
                 opt.Password.RequiredLength = 8;
+                opt.Password.RequireDigit = true;
             })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddRoles<IdentityRole>();
