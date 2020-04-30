@@ -1,25 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.ResourceParameters;
-using Microsoft.AspNetCore.JsonPatch;
 
 namespace DotNetCoreReactREST.Repositories
 {
     public interface IPostRepository
     {
-        Task<Post> CreatePostAsync(Post post);
+        Task AddPostAsync(Post post);
 
-        Task<bool> DeletePostAsync(int postId);
+        void DeletePost(Post post);
 
         Task<Post> GetPostByIdAsync(int postId);
 
-        Task<List<Post>> GetPostsAsync();
-
         Task<PaginationResourceParameter<Post>> GetPostsAsync(PaginationResourceParameter<Post> paginationResourceParameter);
 
-        Task<bool> Save();
-
-        Task<Post> UpdatePostAsync(int postId, JsonPatchDocument post);
+        Task<bool> SaveAsync();
     }
 }
