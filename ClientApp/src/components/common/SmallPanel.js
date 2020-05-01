@@ -2,7 +2,7 @@ import React from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../actions/auth";
+import { setUser, resetLoginStatus } from "../../actions/auth";
 
 const SmallPanel = ({ closePanel, panel }) => {
   const dispatch = useDispatch();
@@ -20,6 +20,7 @@ const SmallPanel = ({ closePanel, panel }) => {
           <li
             onClick={() => {
               dispatch(setUser(null));
+              dispatch(resetLoginStatus()); // temp
               closePanel();
             }}
           >

@@ -1,5 +1,6 @@
 const initialState = {
   user: null,
+  loggedIn: false,
   loading: false,
   errors: null,
   token: null,
@@ -15,7 +16,7 @@ export const authReducer = (state = initialState, { type, payload }) => {
       localStorage.setItem("users", JSON.stringify(payload.users));
       return {
         ...state,
-        users: payload,
+        users: [...state, payload], // ?
         loading: false,
         message: "User successfully registered!",
       };
@@ -25,19 +26,34 @@ export const authReducer = (state = initialState, { type, payload }) => {
       // } else {
       //   localStorage.removeItem("user");
       // }
-      console.log("redset");
       return {
         ...state,
         user: payload,
         loading: false,
       };
     case "SET_USERS":
-      console.log("redpay:", payload);
-      console.log("reducerhit");
       return {
         ...state,
         users: payload,
         loading: false,
+      };
+    // case "SET_LOGIN_STATUS":
+    //   if (payload != "No user is logged in.") {
+    //     console.log("statusred");
+    //     return {
+    //       ...state,
+    //       loggedIn: true,
+    //     };
+    //   } else {
+    //     return {
+    //       ...state,
+    //       loggedIn: false,
+    //     };
+    //   }
+    case "SET_LOGIN_STATUS":
+      return {
+        ...state,
+        loggedIn: payload,
       };
     case "SET_AUTH_ERRORS":
       return {

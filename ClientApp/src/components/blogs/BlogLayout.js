@@ -12,6 +12,7 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 const BlogLayout = ({ blogs, users }) => {
   const categories = useSelector((state) => state.blogs.categories);
+  const user = useSelector((state) => state.auth.user);
   const [filteredBlogs, setFilteredBlogs] = useState();
   const [showFiltered, setShowFiltered] = useState(false);
 
@@ -23,6 +24,10 @@ const BlogLayout = ({ blogs, users }) => {
     }
   }
   const catlist = categories.filter((cat) => blogCategories.includes(cat.id));
+
+  useEffect(() => {
+    console.log("currentuser:", user);
+  });
 
   return (
     <>

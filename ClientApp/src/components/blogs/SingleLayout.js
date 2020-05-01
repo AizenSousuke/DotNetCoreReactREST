@@ -34,9 +34,13 @@ const SingleLayout = ({ markup, match }) => {
   const blog = useSelector((state) => state.blogs.single);
   const loading = useSelector((state) => state.blogs.loading);
 
+  // pass as props instead?
+  const user = useSelector((state) => state.auth.user);
+
   // const [likes, setLikes] = useState(blog.likeCount);
 
-  console.log("initlikes", blog.likeCount);
+  // console.log("initlikes", blog.likeCount);
+  // console.log("currentuser", user);
 
   // const users = useSelector(state => state.blogs.users);
   // const likes = blog.likes;
@@ -47,6 +51,7 @@ const SingleLayout = ({ markup, match }) => {
   const like_or_dislike = () => {
     setLiked((prev) => !prev);
     // !liked ? setLikes(likes + 1) : setLikes(likes - 1);
+    // add local likeCount variable?
   };
 
   const dispatch = useDispatch();
@@ -147,7 +152,7 @@ const SingleLayout = ({ markup, match }) => {
                       dispatch(
                         likeBlog(match.params.id, blog.applicationUserId)
                       );
-                      console.log("btnlikes", blog.likeCount);
+                      // console.log("btnlikes", blog.likeCount);
                       //   : dispatch(unlikeBlog(1, 1));
                     }}
                   >
@@ -242,6 +247,7 @@ const SingleLayout = ({ markup, match }) => {
             // applicationUserId={user.applicationUserId}
             // postId={blog.postId}
             applicationUserId={1}
+            // applicationUserId={user.applicationUserId}
             postId={match.params.id}
           />
         </div>

@@ -5,12 +5,13 @@ import "./styles/index.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   getBlogs,
+  // getUser,
   getUsers,
   getCategories,
   getSingleBlogComments,
   getLikesForComment,
 } from "./actions/blogActions";
-import { setUser } from "./actions/auth";
+import { setUser, getLoginStatus } from "./actions/auth";
 import Profile from "./pages/Profile";
 import Browse from "./pages/Browse";
 import Blog from "./pages/Blog";
@@ -22,6 +23,8 @@ const App = () => {
     dispatch(getBlogs());
     dispatch(getCategories());
     dispatch(getUsers());
+    // dispatch(getLoginStatus());
+    // dispatch(getUser());
 
     //   const user = JSON.parse(localStorage.getItem("user"));
     //   if (user) {

@@ -4,11 +4,13 @@ import "../../styles/components/comment.scss";
 import { useDispatch, useSelector, useEffect } from "react-redux";
 import { likeComment, deleteLike } from "../../actions/blogActions";
 
-const Comment = props => {
+const Comment = (props) => {
   const [liked, setLiked] = useState(false);
   // const users = useSelector(state => state.blogs.users);
-  // const isLiked = useSelector(state => state.blogs.single.comments.isLiked);
+  // const isLiked = useSelector((state) => state.blogs.single.comments.isLiked);
   const dispatch = useDispatch();
+
+  // console.log(isLiked);
 
   return (
     <Row className="comment" key={props.id}>

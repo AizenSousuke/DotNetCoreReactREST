@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setModal } from "../../actions/modal";
 import { NavLink } from "react-router-dom";
@@ -14,14 +14,26 @@ import {
 import Register from "../auth/Register";
 import Login from "../auth/Login";
 import NavbarPanel from "./NavbarPanel";
+import { getLoginStatus } from "../../actions/auth";
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [loggedIn, setLoggedIn] = useState(false);
   const dispatch = useDispatch();
   const toggle = () => setIsOpen(!isOpen);
   const user = useSelector((state) => state.auth.user);
+  const loggedIn = useSelector((state) => state.auth.loggedIn);
+
+  console.log("lin", loggedIn);
+  console.log("navUser:", user);
+  console.log("cookie", document.cookie);
+
+  // useEffect(() => {
+  //   dispatch(getLoginStatus());
+  // });
 
   const authCheck = () => {
-    if (!user) {
+    if (!loggedIn) {
       return (
         <>
           <span

@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Form } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers, login, setMessage, setErrors } from "../../actions/auth";
+import {
+  getUsers,
+  login,
+  setMessage,
+  setErrors,
+  getLoginStatus,
+} from "../../actions/auth";
 import { setModal } from "../../actions/modal";
 
 const LoginForm = () => {
@@ -11,7 +17,7 @@ const LoginForm = () => {
   const errors = useSelector((state) => state.auth.errors);
   const user = useSelector((state) => state.auth.user);
   const users = useSelector((state) => state.auth.users);
-  // console.log("seluser", users);
+  console.log("seluser", users.data);
 
   useEffect(() => {
     dispatch(getUsers());
@@ -26,6 +32,7 @@ const LoginForm = () => {
       password,
     };
     dispatch(login(users, userObj));
+    // dispatch(getLoginStatus());
   };
 
   return (
