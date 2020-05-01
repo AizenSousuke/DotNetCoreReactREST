@@ -45,16 +45,23 @@ namespace DotNetCoreReactREST.Repositories
             }
         }
 
-        public async Task<bool> DeletePostAsync(int postId)
+        public async Task<Post> DeletePostAsync(int postId)
         {
             Post post = await GetPostByIdAsync(postId);
             if (post != null)
             {
-                _appDbContext.Posts.Remove(post);
-                return await SaveAsync();
+                post.IsDeleted = !post.IsDeleted;
+                await SaveAsync();
+                Post deletedPost = await GetPostByIdAsync(postId);
+                if (deletedPost != null)
+                {
+                    return deletedPost;
+                }
+
+                return null;
             }
 
-            return false;
+            return null;
         }
 
         public async Task<Post> GetPostByIdAsync(int postId)

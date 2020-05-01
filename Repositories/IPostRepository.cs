@@ -10,7 +10,7 @@ namespace DotNetCoreReactREST.Repositories
     {
         Task<Post> CreatePostAsync(Post post);
 
-        Task<bool> DeletePostAsync(int postId);
+        Task<Post> DeletePostAsync(int postId);
 
         Task<Post> GetPostByIdAsync(int postId);
 

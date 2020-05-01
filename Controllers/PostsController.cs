@@ -51,13 +51,13 @@ namespace DotNetCoreReactREST
                 return NotFound("There is nothing to delete.");
             }
 
-            bool result = await _postRepository.DeletePostAsync(postId);
-            if (result)
+            Post result = await _postRepository.DeletePostAsync(postId);
+            if (result != null)
             {
-                return Ok("Post Deleted.");
+                return Ok(_mapper.Map<PostDto>(result));
             }
 
-            return Ok("Post not deleted.");
+            return Ok(_mapper.Map<PostDto>(result));
         }
 
         // GET: Api/Posts/{PostId}
@@ -87,7 +87,7 @@ namespace DotNetCoreReactREST
                 return NotFound();
             }
 
-            return Ok(result);
+            return Ok(_mapper.Map<PostDto>(result));
         }
 
         // PATCH: Api/Posts/{PostId}
@@ -109,6 +109,11 @@ namespace DotNetCoreReactREST
             }
             else
             {
+                if (oldPost.IsDeleted)
+                {
+                    return BadRequest("Cannot update a deleted post.");
+                }
+
                 patchDocument.ApplyTo(oldPost, ModelState);
                 string postPatchImageUrl = oldPost.ImageUrl;
 
@@ -134,7 +139,7 @@ namespace DotNetCoreReactREST
 
                 if (newPost != null)
                 {
-                    return Ok(newPost);
+                    return Ok(_mapper.Map<PostDto>(newPost));
                 }
 
                 return NotFound();
