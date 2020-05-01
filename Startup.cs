@@ -84,6 +84,7 @@ namespace DotNetCoreReactREST
                 {
                     config.Cookie.MaxAge = new TimeSpan(1, 0, 0, 0, 0);
                 }
+
                 config.Cookie.Path = "/";
             });
             services.AddScoped<UserManager<ApplicationUser>>();

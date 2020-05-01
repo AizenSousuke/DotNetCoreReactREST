@@ -139,10 +139,11 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync([FromBody] UserForLoginDto user, [FromQuery] bool rememberMe)
+        public async Task<IActionResult> LoginAsync([FromBody] UserForLoginDto user, [FromQuery] bool rememberMe = false)
         {
             try
             {
+                Log.Information("Remember Me == {@RememberMe}", rememberMe.ToString());
                 Log.Information("User's Email from method {@UserEmail}", user.Email);
                 ApplicationUser convertedUser = _mapper.Map<ApplicationUser>(user);
                 Log.Information("User's Email from converted user {@UserEmail}", convertedUser.Email);
