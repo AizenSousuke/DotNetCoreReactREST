@@ -73,6 +73,11 @@ namespace DotNetCoreReactREST
                 return NotFound();
             }
 
+            if (postFromRepository.IsDeleted)
+            {
+                return BadRequest("Post has been deleted");
+            }
+
             return Ok(_mapper.Map<PostDto>(postFromRepository));
         }
 

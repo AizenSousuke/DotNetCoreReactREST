@@ -13,10 +13,10 @@ namespace DotNetCoreReactREST.Entities
 
         public bool IsAdmin { get; set; }
 
-        public bool IsDeleted { get; set; }
-
         public ICollection<Post> Posts { get; set; } = new List<Post>();
 
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
+        public bool IsDeleted { get; set; }
     }
 }
