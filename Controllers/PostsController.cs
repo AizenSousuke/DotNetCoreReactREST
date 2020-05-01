@@ -92,7 +92,7 @@ namespace DotNetCoreReactREST
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<PostDto>(result));
+            return Ok(result);
         }
 
         // PATCH: Api/Posts/{PostId}
