@@ -28,7 +28,7 @@ namespace DotNetCoreReactREST.Repositories
                 Log.Information("Setting Post DateTime: {@DateTime}", post.DateTime.ToString());
                 await _appDbContext.Posts.AddAsync(post);
 
-                var result = await Save();
+                bool result = await SaveAsync();
                 if (result)
                 {
                     List<Post> newPost = await GetPostsAsync();
@@ -51,7 +51,7 @@ namespace DotNetCoreReactREST.Repositories
             if (post != null)
             {
                 _appDbContext.Posts.Remove(post);
-                return await Save();
+                return await SaveAsync();
             }
 
             return false;
@@ -75,7 +75,7 @@ namespace DotNetCoreReactREST.Repositories
             return await result.InitAsync(paginationResourceParameter);
         }
 
-        public async Task<bool> Save()
+        public async Task<bool> SaveAsync()
         {
             int result = await _appDbContext.SaveChangesAsync();
             return result >= 0;
@@ -84,8 +84,13 @@ namespace DotNetCoreReactREST.Repositories
         public async Task<Post> UpdatePostAsync(int postId, JsonPatchDocument post)
         {
             // Post oldPost = await GetPostByIdAsync(postId);
-            await Save();
-            return await GetPostByIdAsync(postId);
+            bool saved = await SaveAsync();
+            if (saved)
+            {
+                return await GetPostByIdAsync(postId);
+            }
+
+            return null;
         }
     }
 }

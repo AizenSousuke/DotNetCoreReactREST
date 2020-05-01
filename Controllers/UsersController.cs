@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DotNetCoreReactREST.Dtos;
@@ -72,6 +73,7 @@ namespace DotNetCoreReactREST.Controllers
             // {
             //     _commentRepository.DeleteComment(comment);
             // }
+            // IEnumerable<Comment> comment = await _commentRepository.GetCommentsForUser(user.Id);
 
             // Delete posts
             // Seems like don't need to add as it does not error out
@@ -237,8 +239,8 @@ namespace DotNetCoreReactREST.Controllers
                     IsDeleted = false,
                 };
 
-                var existingUser = await _userManager.FindByNameAsync(user.UserName);
-                var existingUserEmail = await _userManager.FindByEmailAsync(user.Email);
+                ApplicationUser existingUser = await _userManager.FindByNameAsync(user.UserName);
+                ApplicationUser existingUserEmail = await _userManager.FindByEmailAsync(user.Email);
 
                 if (existingUser != null)
                 {
