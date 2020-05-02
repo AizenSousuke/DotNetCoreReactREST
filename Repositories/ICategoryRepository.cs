@@ -6,18 +6,14 @@ namespace DotNetCoreReactREST.Repositories
 {
     public interface ICategoryRepository
     {
-        Task AddCategory(Category category);
-
-        Task<bool> CategoryExists(int categoryId);
+        Task AddCategoryAsync(Category category);
 
         void DeleteCategory(Category category);
 
-        Task<PaginationResourceParameter<Category>> GetAllCategories(PaginationResourceParameter<Category> paginationResourceParameter);
+        Task<PaginationResourceParameter<Category>> GetCategoriesAsync(PaginationResourceParameter<Category> paginationResourceParameter);
 
-        Task<Category> GetCategoryById(int categoryId);
+        Task<Category> GetCategoryByIdAsync(int categoryId);
 
-        Task<bool> Save();
-
-        void UpdateCategory(Category category);
+        Task<bool> SaveAsync();
     }
 }

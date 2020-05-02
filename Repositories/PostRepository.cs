@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.ResourceParameters;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -13,79 +10,49 @@ namespace DotNetCoreReactREST.Repositories
 {
     public class PostRepository : IPostRepository
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly AppDbContext _context;
 
-        public PostRepository(AppDbContext appDbContext)
+        public PostRepository(AppDbContext context)
         {
-            _appDbContext = appDbContext;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<Post> CreatePostAsync(Post post)
+        public async Task AddPostAsync(Post post)
         {
-            try
+            if (post == null)
             {
-                post.DateTime = DateTime.Now;
-                Log.Information("Setting Post DateTime: {@DateTime}", post.DateTime.ToString());
-                await _appDbContext.Posts.AddAsync(post);
-
-                var result = await Save();
-                if (result)
-                {
-                    List<Post> newPost = await GetPostsAsync();
-                    Log.Information("Finding Post DateTime: {@DateTime}", newPost.FirstOrDefault(p => p.DateTime == post.DateTime).DateTime.ToString());
-                    return newPost.FirstOrDefault(p => p.DateTime == post.DateTime);
-                }
-
-                return null;
+                throw new ArgumentNullException(nameof(post));
             }
-            catch (Exception e)
-            {
-                Log.Error(e.ToString());
-                throw;
-            }
+
+            post.DateTime = DateTime.Now;
+            Log.Information("Setting Post DateTime: {@DateTime}", post.DateTime.ToString());
+            await _context.Posts.AddAsync(post);
         }
 
-        public async Task<bool> DeletePostAsync(int postId)
+        public void DeletePost(Post post)
         {
-            Post post = await GetPostByIdAsync(postId);
-            if (post != null)
+            if (post == null)
             {
-                _appDbContext.Posts.Remove(post);
-                return await Save();
+                throw new ArgumentNullException(nameof(post));
             }
 
-            return false;
+            _context.Posts.Remove(post);
         }
 
         public async Task<Post> GetPostByIdAsync(int postId)
         {
-            return await _appDbContext.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
-        }
-
-        public async Task<List<Post>> GetPostsAsync()
-        {
-            List<Post> posts = await _appDbContext.Posts
-                .OrderByDescending(p => p.Id).ToListAsync();
-            return posts;
+            return await _context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
         }
 
         public async Task<PaginationResourceParameter<Post>> GetPostsAsync(PaginationResourceParameter<Post> paginationResourceParameter)
         {
-            PaginationResourceParameter<Post> result = new PaginationResourceParameter<Post>(_appDbContext);
+            PaginationResourceParameter<Post> result = new PaginationResourceParameter<Post>(_context);
             return await result.InitAsync(paginationResourceParameter);
         }
 
-        public async Task<bool> Save()
+        public async Task<bool> SaveAsync()
         {
-            int result = await _appDbContext.SaveChangesAsync();
-            return result >= 0;
-        }
-
-        public async Task<Post> UpdatePostAsync(int postId, JsonPatchDocument post)
-        {
-            // Post oldPost = await GetPostByIdAsync(postId);
-            await Save();
-            return await GetPostByIdAsync(postId);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }
