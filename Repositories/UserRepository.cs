@@ -40,7 +40,7 @@ namespace DotNetCoreReactREST.Repositories
             }
 
             ApplicationUser userToDelete = await GetUserByIdAsync(user.Id);
-            userToDelete.IsDeleted = true;
+            userToDelete.IsDeleted = !userToDelete.IsDeleted;
             await SaveAsync();
             return await GetUserByIdAsync(user.Id);
         }
