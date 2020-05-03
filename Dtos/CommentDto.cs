@@ -6,7 +6,7 @@ namespace DotNetCoreReactREST.Dtos
     {
         public int Id { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        public DateTime DateTime { get; set; }
 
         public string Content { get; set; }
 

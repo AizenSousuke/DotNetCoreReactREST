@@ -17,18 +17,21 @@ namespace DotNetCoreReactREST.Repositories
             _context = context ?? throw new ArgumentException(nameof(context));
         }
 
-        public async Task AddComment(Comment comment)
+        public async Task<Comment> AddCommentAsync(Comment comment)
         {
             if (comment == null)
             {
                 throw new ArgumentNullException(nameof(comment));
             }
 
-            comment.DateCreated = DateTime.Now;
+            comment.DateTime = DateTime.Now;
             await _context.Comments.AddAsync(comment);
+            await SaveAsync();
+            Comment newComment = await _context.Comments.FirstOrDefaultAsync(c => c.DateTime == comment.DateTime);
+            return await GetCommentByIdAsync(newComment.Id);
         }
 
-        public async Task<bool> CommentExists(int commentId)
+        public async Task<bool> CommentExistsAsync(int commentId)
         {
             if (string.IsNullOrEmpty(commentId.ToString()))
             {
@@ -38,50 +41,45 @@ namespace DotNetCoreReactREST.Repositories
             return await _context.Comments.AnyAsync(c => c.Id == commentId);
         }
 
-        public void DeleteComment(Comment comment)
+        public async Task<Comment> DeleteCommentAsync(Comment comment)
         {
             if (comment == null)
             {
                 throw new ArgumentNullException(nameof(comment));
             }
 
-            _context.Comments.Remove(comment);
+            comment.IsDeleted = !comment.IsDeleted;
+            await SaveAsync();
+            return await GetCommentByIdAsync(comment.Id);
         }
 
-        public async Task<Comment> GetCommentById(int commentId)
+        public async Task<Comment> GetCommentByIdAsync(int commentId)
         {
             if (string.IsNullOrWhiteSpace(commentId.ToString()))
             {
                 throw new ArgumentNullException(nameof(commentId));
             }
 
-            return await _context.Comments
-                .Include(c => c.ApplicationUser)
-                .Include(c => c.Likes)
-                .FirstOrDefaultAsync(c => c.Id == commentId);
+            return await _context.Comments.FirstOrDefaultAsync(c => c.Id == commentId);
         }
 
-        public async Task<IEnumerable<Comment>> GetCommentsForPost(int postId)
+        public async Task<IEnumerable<Comment>> GetCommentsForPostAsync(int postId)
         {
             return await _context.Comments
                 .Where(c => c.PostId == postId)
-                .Include(c => c.ApplicationUser)
-                .OrderBy(c => c.Likes.Count())
-                .ThenByDescending(c => c.DateCreated)
+                .OrderByDescending(c => c.DateTime)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Comment>> GetCommentsForUser(string userId)
+        public async Task<IEnumerable<Comment>> GetCommentsForUserAsync(string userId)
         {
             return await _context.Comments
                 .Where(c => c.ApplicationUserId == userId)
-                .Include(c => c.ApplicationUser)
-                .Include(c => c.Likes)
-                .OrderByDescending(c => c.DateCreated)
+                .OrderByDescending(c => c.DateTime)
                 .ToListAsync();
         }
 
-        public async Task<bool> Save()
+        public async Task<bool> SaveAsync()
         {
             return await _context.SaveChangesAsync() >= 0;
         }

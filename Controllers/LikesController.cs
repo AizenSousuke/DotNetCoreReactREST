@@ -34,7 +34,7 @@ namespace DotNetCoreReactREST.Controllers
         [HttpGet("comments/{commentId}/likes")]
         public async Task<IActionResult> GetLikesForComment(int commentId)
         {
-            var commentExists = await _commentRepo.CommentExists(commentId);
+            var commentExists = await _commentRepo.CommentExistsAsync(commentId);
             if (!commentExists)
             {
                 return BadRequest("Comment doesn't exist.");
@@ -50,7 +50,7 @@ namespace DotNetCoreReactREST.Controllers
         public async Task<IActionResult> LikeComment(int commentId, string userId)
         {
             // Check comment exists
-            bool commentExists = await _commentRepo.CommentExists(commentId);
+            bool commentExists = await _commentRepo.CommentExistsAsync(commentId);
             if (!commentExists)
             {
                 return Problem("Comment doesn't exists.");
