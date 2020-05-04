@@ -47,7 +47,7 @@ namespace DotNetCoreReactREST.Controllers
                 BadRequest();
             }
 
-            _categoryRepository.DeleteCategory(categoryToDelete);
+            await _categoryRepository.DeleteCategory(categoryToDelete);
             await _categoryRepository.Save();
 
             return NoContent();
