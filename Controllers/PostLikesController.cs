@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace DotNetCoreReactREST
 {
     [ApiController]
@@ -20,13 +19,16 @@ namespace DotNetCoreReactREST
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepo;
 
-        public PostLikesController(IPostLikeRepository postLikeRepo,
-            IPostRepository postRepository, IUserRepository userRepo, IMapper mapper)
+        public PostLikesController(
+            IMapper mapper,
+            IPostLikeRepository postLikeRepo,
+            IPostRepository postRepository,
+            IUserRepository userRepo)
         {
+            _mapper = mapper;
             _postLikeRepository = postLikeRepo;
             _postRepository = postRepository;
             _userRepo = userRepo;
-            _mapper = mapper;
         }
 
         // GET: Api/Posts/{PostId}/PostLikes
@@ -39,6 +41,7 @@ namespace DotNetCoreReactREST
             {
                 return NotFound("Post doesn't exist.");
             }
+
             var postLikesFromRepo = await _postLikeRepository.GetLikesForPost(postId);
             return Ok(_mapper.Map<List<PostLikeDto>>(postLikesFromRepo));
         }
@@ -50,24 +53,27 @@ namespace DotNetCoreReactREST
         public async Task<IActionResult> LikePostAsync([FromRoute]int postId, [FromRoute]string userId)
         {
             Log.Information("PostId: {@PostId}, UserId: {@UserId}", postId, userId);
+
             // Check if post exists
             var postExists = await _postRepository.GetPostByIdAsync(postId);
             if (postExists == null)
             {
                 return NotFound("Post doesn't exists.");
-            };
+            }
+
             // PostLike is unique to user, so none should exist
             bool postLikeExists = await _postLikeRepository.PostLikeExists(postId, userId);
             if (postLikeExists)
             {
                 return Ok("Post has already been liked.");
             }
+
             var results = await _postLikeRepository.LikePostAsync(
                 new PostLike
                 {
                     PostId = postId,
                     ApplicationUserId = userId,
-                    IsLiked = true
+                    IsLiked = true,
                 });
             if (results != null)
             {
@@ -89,6 +95,7 @@ namespace DotNetCoreReactREST
             {
                 return NotFound("No likes on post.");
             }
+
             _postLikeRepository.UnlikePost(postFromRepo);
             var saved = await _postLikeRepository.SaveAsync();
             if (saved)
@@ -96,6 +103,7 @@ namespace DotNetCoreReactREST
                 var result = await _postLikeRepository.GetLikesForPost(postFromRepo.PostId);
                 return Ok(result);
             }
+
             return Problem("Not saved.");
         }
     }

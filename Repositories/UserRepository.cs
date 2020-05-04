@@ -21,6 +21,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             user.DateCreated = DateTime.Now;
             _context.Users.Add(user);
         }
@@ -31,6 +32,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
             _context.Users.Remove(user);
         }
 
@@ -44,17 +46,18 @@ namespace DotNetCoreReactREST.Repositories
 
         public IEnumerable<ApplicationUser> GetAllUsers()
         {
-            return _context.Users.
-                OrderBy(u => u.UserName)
+            return _context.Users
+                .OrderBy(u => u.UserName)
                 .ToList();
         }
 
         public ApplicationUser GetUserById(string userId)
         {
-            if (String.IsNullOrWhiteSpace(userId))
+            if (string.IsNullOrWhiteSpace(userId))
             {
                 throw new ArgumentNullException(nameof(userId));
             }
+
             return _context.Users.FirstOrDefault(u => u.Id == userId);
         }
 
@@ -71,7 +74,7 @@ namespace DotNetCoreReactREST.Repositories
 
         public bool UserExists(string userId)
         {
-            if (String.IsNullOrWhiteSpace(userId))
+            if (string.IsNullOrWhiteSpace(userId))
             {
                 throw new ArgumentNullException(nameof(userId));
             }
@@ -81,10 +84,11 @@ namespace DotNetCoreReactREST.Repositories
 
         public bool UserExistsByName(string name)
         {
-            if (String.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(name));
             }
+
             return _context.Users.Any(u => u.UserName == name);
         }
     }

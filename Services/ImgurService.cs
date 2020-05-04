@@ -7,7 +7,7 @@ using Serilog;
 
 namespace DotNetCoreReactREST.Services
 {
-    public class ImageUpload
+    public class ImgurService
     {
         private const string ClientId = "ea30be65cb915f5";
         private const string Placeholder = "https://via.placeholder.com/150";
@@ -21,7 +21,7 @@ namespace DotNetCoreReactREST.Services
         {
             try
             {
-                Log.Information("Filepath: {@FilePath}", filepath);
+                Log.Information($"Filepath: {@filepath}");
                 using (WebClient webclient = new WebClient())
                 {
                     var client = new ImgurClient(ClientId);
@@ -34,7 +34,7 @@ namespace DotNetCoreReactREST.Services
                     }
                 }
             }
-            catch 
+            catch
             {
             }
 

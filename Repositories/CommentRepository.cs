@@ -23,6 +23,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(comment));
             }
+
             comment.DateCreated = DateTime.Now;
             await _context.Comments.AddAsync(comment);
         }
@@ -33,6 +34,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(commentId));
             }
+
             return await _context.Comments.AnyAsync(c => c.Id == commentId);
         }
 
@@ -42,6 +44,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(comment));
             }
+
             _context.Comments.Remove(comment);
         }
 
@@ -51,6 +54,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(commentId));
             }
+
             return await _context.Comments
                 .Include(c => c.ApplicationUser)
                 .Include(c => c.Likes)
@@ -88,6 +92,7 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(comment));
             }
+
             _context.Comments.Update(comment);
         }
     }

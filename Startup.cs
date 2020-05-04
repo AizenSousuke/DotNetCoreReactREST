@@ -22,22 +22,23 @@ namespace DotNetCoreReactREST
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
-        public IWebHostEnvironment Environment { get; }
-
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             Environment = env;
         }
 
+        public IConfiguration Configuration { get; }
+
+        public IWebHostEnvironment Environment { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Configuration variables
-            //var host = Configuration["DBHOST"] ?? "localhost";
-            //var port = Configuration["DBPORT"] ?? "1433";
-            //var password = Configuration["DBPASSWORD"] ?? "password";
+            // var host = Configuration["DBHOST"] ?? "localhost";
+            // var port = Configuration["DBPORT"] ?? "1433";
+            // var password = Configuration["DBPASSWORD"] ?? "password";
 
             if (Environment.IsDevelopment())
             {
@@ -56,7 +57,7 @@ namespace DotNetCoreReactREST
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ILikeRepository, LikeRepository>();
-            services.AddScoped<IPostLikeRepository, PostLikeRespository>();
+            services.AddScoped<IPostLikeRepository, PostLikeRepository>();
 
             // Add AutoMapper to map object to object
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -81,27 +82,28 @@ namespace DotNetCoreReactREST
                 setupAction.SerializerSettings.ContractResolver =
                    new CamelCasePropertyNamesContractResolver();
             })
-            //add support for xml
+
+            // Add support for xml
             .AddXmlDataContractSerializerFormatters()
             .ConfigureApiBehaviorOptions(setupAction =>
             {
-                //if api modelstate is invalid, add problem details
+                // If api modelstate is invalid, add problem details
                 setupAction.InvalidModelStateResponseFactory = context =>
                 {
                     var problemDetails = new ValidationProblemDetails(context.ModelState)
                     {
-                        Type = "",
+                        Type = string.Empty,
                         Title = "One or more model validation errors occurred.",
                         Status = StatusCodes.Status422UnprocessableEntity,
                         Detail = "See the errors property for details.",
-                        Instance = context.HttpContext.Request.Path
+                        Instance = context.HttpContext.Request.Path,
                     };
 
                     problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
 
                     return new UnprocessableEntityObjectResult(problemDetails)
                     {
-                        ContentTypes = { "application/problem+json" }
+                        ContentTypes = { "application/problem+json" },
                     };
                 };
             });
@@ -114,7 +116,7 @@ namespace DotNetCoreReactREST
                 {
                     Title = "Blog API",
                     Description = "All the endpoints documentation.",
-                    Version = "v1"
+                    Version = "v1",
                 });
             });
 
@@ -127,13 +129,13 @@ namespace DotNetCoreReactREST
             // Authorization
             services.AddAuthorization();
 
-            //Cross Origin Requests
-            //AddPolicy("Name of policy")
+            // Cross Origin Requests
+            // AddPolicy("Name of policy")
             services.AddCors(options => options.AddPolicy("AllowOpenOrigin", builder =>
             {
+                // For specific origins - builder.WithOrigins("http://example.com",
+                // "http://www.contoso.com");
                 builder.AllowAnyOrigin()
-                      //for specific origins - builder.WithOrigins("http://example.com",
-                      //"http://www.contoso.com");
                       .AllowAnyMethod()
                       .AllowAnyHeader();
             }));
@@ -167,12 +169,13 @@ namespace DotNetCoreReactREST
                 app.UseDirectoryBrowser(new DirectoryBrowserOptions()
                 {
                     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory())),
-                    RequestPath = "/dir"
+                    RequestPath = "/dir",
                 });
             }
             else
             {
                 app.UseExceptionHandler("/Error");
+
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -184,6 +187,7 @@ namespace DotNetCoreReactREST
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog API v1");
+
                 // To serve the Swagger UI at the app's root (http://localhost:<port>/), set the RoutePrefix property to an empty string:
                 // c.RoutePrefix = string.Empty;
             });

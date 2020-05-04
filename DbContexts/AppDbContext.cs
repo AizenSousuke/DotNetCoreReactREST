@@ -8,7 +8,8 @@ namespace DotNetCoreReactREST.DbContexts
 {
     public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options)
         {
         }
 
@@ -16,18 +17,20 @@ namespace DotNetCoreReactREST.DbContexts
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
+
         public DbSet<Like> Likes { get; set; }
+
         public DbSet<PostLike> PostLikes { get; set; }
+
         public DbSet<Post> Posts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Set cascading for user so that when it gets deleted, everything else reference to 
-            // this gets deleted. Doesn't work. Error out on deleting comments which the user is 
+            // Set cascading for user so that when it gets deleted, everything else reference to
+            // this gets deleted. Doesn't work. Error out on deleting comments which the user is
             // deleted but the post is not created by the user.
-
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany<Post>(p => p.Posts)
                 .WithOne(a => a.ApplicationUser)
@@ -51,12 +54,12 @@ namespace DotNetCoreReactREST.DbContexts
             var userId = 1;
 
             // Users
+            // Ensure all properties have rules. By default, StrictMode is false
+            // Set a global policy by using Faker.DefaultStrictMode
+            // .StrictMode(true)
+            // postId is deterministic
             var fakeUsers = new Faker<ApplicationUser>()
-                // Ensure all properties have rules. By default, StrictMode is false
-                // Set a global policy by using Faker.DefaultStrictMode
-                // .StrictMode(true)
-                // postId is deterministic
-                .RuleFor(o => o.Id, f => userId++.ToString())
+                .RuleFor(o => o.Id, f => (userId++).ToString())
                 .RuleFor(o => o.UserName, f => f.Name.FirstName())
                 .RuleFor(o => o.Email, f => f.Internet.Email(f.Name.FirstName()))
                 .RuleFor(o => o.PasswordHash, f => "password");
@@ -64,11 +67,11 @@ namespace DotNetCoreReactREST.DbContexts
             var categoryId = 1;
 
             // Category
+            // Ensure all properties have rules. By default, StrictMode is false
+            // Set a global policy by using Faker.DefaultStrictMode
+            // .StrictMode(true)
+            // postId is deterministic
             var fakeCategory = new Faker<Category>()
-                // Ensure all properties have rules. By default, StrictMode is false
-                // Set a global policy by using Faker.DefaultStrictMode
-                // .StrictMode(true)
-                // postId is deterministic
                 .RuleFor(o => o.Id, f => categoryId++)
                 .RuleFor(o => o.Name, f => f.Random.Word())
                 .RuleFor(o => o.Description, f => f.Random.Words());
@@ -76,11 +79,11 @@ namespace DotNetCoreReactREST.DbContexts
             var postId = 1;
 
             // Posts
+            // Ensure all properties have rules. By default, StrictMode is false
+            // Set a global policy by using Faker.DefaultStrictMode
+            // .StrictMode(true)
+            // postId is deterministic
             var fakePosts = new Faker<Post>()
-                // Ensure all properties have rules. By default, StrictMode is false
-                // Set a global policy by using Faker.DefaultStrictMode
-                // .StrictMode(true)
-                // postId is deterministic
                 .RuleFor(o => o.Id, f => postId++)
                 .RuleFor(o => o.CategoryId, f => f.Random.Int(1, 5))
                 .RuleFor(o => o.ApplicationUserId, f => f.Random.Int(1, 3).ToString())
@@ -92,11 +95,11 @@ namespace DotNetCoreReactREST.DbContexts
             var commentId = 1;
 
             // Category
+            // Ensure all properties have rules. By default, StrictMode is false
+            // Set a global policy by using Faker.DefaultStrictMode
+            // .StrictMode(true)
+            // postId is deterministic
             var fakeComment = new Faker<Comment>()
-                // Ensure all properties have rules. By default, StrictMode is false
-                // Set a global policy by using Faker.DefaultStrictMode
-                // .StrictMode(true)
-                // postId is deterministic
                 .RuleFor(o => o.Id, f => commentId++)
                 .RuleFor(o => o.ApplicationUserId, f => f.Random.Int(1, 3).ToString())
                 .RuleFor(o => o.PostId, f => f.Random.Int(1, 3))
@@ -105,20 +108,17 @@ namespace DotNetCoreReactREST.DbContexts
 
             // Generate the data
             modelBuilder.Entity<ApplicationUser>().HasData(
-                fakeUsers.Generate(50)
-            );
+                fakeUsers.Generate(50));
 
             modelBuilder.Entity<Category>().HasData(
-                fakeCategory.Generate(50)
-            );
+                fakeCategory.Generate(50));
 
             modelBuilder.Entity<Post>().HasData(
-                fakePosts.Generate(50)
-            );
+                fakePosts.Generate(50));
 
             modelBuilder.Entity<Comment>().HasData(
-                fakeComment.Generate(50)
-            );
+                fakeComment.Generate(50));
+
             // ==============================
         }
     }

@@ -14,11 +14,9 @@ namespace DotNetCoreReactREST.Profiles
                     dest => dest.LikesCount,
                     opt => opt.MapFrom(src => src.Likes.Count()))
            .ForMember(
-
                 dest => dest.UserName,
                 opt => opt.MapFrom(src =>
-                src.IsAnonymous == true ? "Anonymous" : src.ApplicationUser.UserName
-                ));
+                    src.IsAnonymous == true ? "Anonymous" : src.ApplicationUser.UserName));
 
             CreateMap<CommentForCreationDto, Comment>();
             CreateMap<CommentForUpdateDto, Comment>();

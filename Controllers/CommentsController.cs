@@ -35,7 +35,8 @@ namespace DotNetCoreReactREST.Controllers
             await _commentRepo.Save();
 
             var commentToReturn = _mapper.Map<CommentDto>(commentToAdd);
-            return CreatedAtRoute("GetComment",
+            return CreatedAtRoute(
+                "GetComment",
                 new { commentId = commentToReturn.Id },
                 commentToReturn);
         }
@@ -49,6 +50,7 @@ namespace DotNetCoreReactREST.Controllers
             {
                 return NotFound();
             }
+
             _commentRepo.DeleteComment(commentFromRepo);
             await _commentRepo.Save();
             return NoContent();
@@ -63,6 +65,7 @@ namespace DotNetCoreReactREST.Controllers
             {
                 return NotFound();
             }
+
             return Ok(_mapper.Map<CommentDto>(commentFromRepo));
         }
 
@@ -91,6 +94,7 @@ namespace DotNetCoreReactREST.Controllers
             {
                 return BadRequest();
             }
+
             _mapper.Map(comment, commentToUpdate);
 
             _commentRepo.UpdateComment(commentToUpdate);
@@ -101,7 +105,8 @@ namespace DotNetCoreReactREST.Controllers
 
         // PATCH: Api/Comments/CommentId
         [HttpPatch("comments/{commentId}")]
-        public async Task<ActionResult> UpdateCommentPartially(int commentId,
+        public async Task<ActionResult> UpdateCommentPartially(
+            int commentId,
             JsonPatchDocument<CommentForUpdateDto> patchDocument)
         {
             var commentFromRepo = await _commentRepo.GetCommentById(commentId);
@@ -112,6 +117,7 @@ namespace DotNetCoreReactREST.Controllers
 
             // Map comment from repo to a commentForUpdateDto
             var commentToPatch = _mapper.Map<CommentForUpdateDto>(commentFromRepo);
+
             // Patch passing in modelstate to patch item to be aware of
             patchDocument.ApplyTo(commentToPatch, ModelState);
 

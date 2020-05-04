@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace DotNetCoreReactREST.Repositories
 {
@@ -15,43 +18,52 @@ namespace DotNetCoreReactREST.Repositories
             _context = context;
         }
 
-        public Like GetLikeById(int likeId)
+        public async Task<Like> GetLikeById(int likeId)
         {
-            if (String.IsNullOrWhiteSpace(likeId.ToString()))
+            if (string.IsNullOrWhiteSpace(likeId.ToString()))
             {
                 throw new ArgumentNullException(nameof(likeId));
             }
-            return _context.Likes.FirstOrDefault(like => like.Id == likeId);
+
+            return await _context.Likes.FirstOrDefaultAsync(like => like.Id == likeId);
         }
 
-        public IEnumerable<Like> GetLikesForComment(int commentId)
+        public async Task<IEnumerable<Like>> GetLikesForComment(int commentId)
         {
-            if (String.IsNullOrWhiteSpace(commentId.ToString()))
+            if (string.IsNullOrWhiteSpace(commentId.ToString()))
             {
                 throw new ArgumentNullException(nameof(commentId));
             }
-            return _context.Likes;
+
+            return await _context.Likes.Where(l => l.CommentId == commentId).OrderByDescending(l => l.Id).ToListAsync();
         }
 
-        public void LikeComment(Like like)
+        public async Task<Like> LikeComment(Like like)
         {
             if (like == null)
             {
                 throw new ArgumentNullException(nameof(like));
             }
-            _context.Likes.Add(like);
+
+            await _context.Likes.AddAsync(like);
+            await SaveAsync();
+            return await _context.Likes.FirstOrDefaultAsync(l => l.ApplicationUserId == like.ApplicationUserId);
         }
 
-        public bool LikeExists(int commentId, string userId)
+        public async Task<bool> LikeExists(int commentId, string userId)
         {
-            return (_context.Likes
-                .Any(like => like.ApplicationUserId == userId
-                && like.CommentId == commentId));
-        }
+            Log.Information("CommentId: {@CommentId}, UserId: {@UserId}", commentId, userId);
+            bool result = await _context.Likes
+                .AnyAsync(like =>
+                like.ApplicationUserId == userId
+                && like.CommentId == commentId);
+            Log.Information("CommentLikeExists: {@CommentLikeExists}", result);
+            if (result)
+            {
+                return result;
+            }
 
-        public bool Save()
-        {
-            return (_context.SaveChanges() >= 0);
+            return false;
         }
 
         public void UnlikeComment(Like like)
@@ -60,7 +72,14 @@ namespace DotNetCoreReactREST.Repositories
             {
                 throw new ArgumentNullException(nameof(like));
             }
+
             _context.Likes.Remove(like);
+        }
+
+        public async Task<bool> SaveAsync()
+        {
+            int result = await _context.SaveChangesAsync();
+            return result >= 0;
         }
     }
 }
