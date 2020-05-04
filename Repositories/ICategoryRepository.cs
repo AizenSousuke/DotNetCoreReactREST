@@ -10,7 +10,7 @@ namespace DotNetCoreReactREST.Repositories
 
         Task<bool> CategoryExists(int categoryId);
 
-        void DeleteCategory(Category category);
+        Task<Category> DeleteCategory(Category category);
 
         Task<PaginationResourceParameter<Category>> GetAllCategories(PaginationResourceParameter<Category> paginationResourceParameter);
 

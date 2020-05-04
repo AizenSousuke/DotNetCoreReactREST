@@ -36,14 +36,23 @@ namespace DotNetCoreReactREST.Repositories
             return await _context.Categories.AnyAsync(c => c.Id == categoryId);
         }
 
-        public void DeleteCategory(Category category)
+        public async Task<Category> DeleteCategory(Category category)
         {
             if (category == null)
             {
                 throw new ArgumentNullException(nameof(category));
             }
 
-            _context.Categories.Remove(category);
+            category.IsDeleted = true;
+            await Save();
+
+            Category deletedCategory = await GetCategoryById(category.Id);
+            if (deletedCategory != null)
+            {
+                return deletedCategory;
+            }
+
+            return null;
         }
 
         public async Task<PaginationResourceParameter<Category>> GetAllCategories(PaginationResourceParameter<Category> paginationResourceParameter)
