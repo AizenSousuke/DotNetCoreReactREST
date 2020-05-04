@@ -28,25 +28,40 @@ namespace DotNetCoreReactREST
 
         // POST: Api/Posts
         [HttpPost]
-        public async Task<IActionResult> CreatePostAsync([FromBody]PostDto post)
+        public async Task<IActionResult> CreatePost([FromBody]PostDto post)
         {
-            // Replace with Imgur URL of the image
-            post.ImageUrl = await new ImageUpload().Upload(post.ImageUrl);
+            if (post == null)
+            {
+                throw new ArgumentNullException(nameof(post));
+            }
 
-            Post newPost = await _postRepository.CreatePostAsync(_mapper.Map<Post>(post));
-            var baseURI = Request.GetDisplayUrl();
+            // Replace with Imgur URL of the image
+            post.ImageUrl = await new ImgurService().Upload(post.ImageUrl);
+
+            var postToAdd = _mapper.Map<Post>(post);
+            await _postRepository.AddPostAsync(postToAdd);
+
+            var isSaved = await _postRepository.SaveAsync();
+            if (!isSaved)
+            {
+                return Problem("Problem saving newly created post.");
+            }
+
+            Log.Information("Finding Post DateTime: {@DateTime}", postToAdd.DateTime.ToString());
 
             // Alternative way
             // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
-            return Created(baseURI + newPost.Id, _mapper.Map<PostDto>(newPost));
+            var baseURI = Request.GetDisplayUrl();
+
+            return Created(baseURI + postToAdd.Id, _mapper.Map<PostDto>(postToAdd));
         }
 
         // DELETE: Api/Posts/{PostId}
         [HttpDelete("{postId:int}")]
         public async Task<IActionResult> DeletePostAsync([FromRoute]int postId)
         {
-            var post = await _postRepository.GetPostByIdAsync(postId);
-            if (post == null)
+            var postToDelete = await _postRepository.GetPostByIdAsync(postId);
+            if (postToDelete == null)
             {
                 return NotFound("There is nothing to delete.");
             }
@@ -106,6 +121,8 @@ namespace DotNetCoreReactREST
 
             // Post to update
             Post oldPost = await _postRepository.GetPostByIdAsync(postId);
+
+            // Previous/old Image Url
             string prePatchImageUrl = oldPost.ImageUrl;
 
             if (oldPost == null)
@@ -120,7 +137,6 @@ namespace DotNetCoreReactREST
                 }
 
                 patchDocument.ApplyTo(oldPost, ModelState);
-                string postPatchImageUrl = oldPost.ImageUrl;
 
                 if (!ModelState.IsValid)
                 {
@@ -130,10 +146,13 @@ namespace DotNetCoreReactREST
                 // Update time
                 oldPost.DateTime = DateTime.Now;
 
+                // Updated/new Image Url
+                string postPatchImageUrl = oldPost.ImageUrl;
+
                 // Replace with Imgur URL of the updated image
                 if (prePatchImageUrl != postPatchImageUrl)
                 {
-                    oldPost.ImageUrl = await new ImageUpload().Upload(oldPost.ImageUrl);
+                    oldPost.ImageUrl = await new ImgurService().Upload(oldPost.ImageUrl);
                 }
 
                 // Save
@@ -149,6 +168,36 @@ namespace DotNetCoreReactREST
 
                 return NotFound();
             }
+        }
+
+        // GET: Api/Posts/{PostId}
+        // Route will only match if postId can be casted as a int
+        [HttpGet]
+        [Route("{postId:int}")]
+        public async Task<IActionResult> GetPost(int postId)
+        {
+            Post postFromRepo = await _postRepository.GetPostByIdAsync(postId);
+            Log.Information("Post from Repository when getting post by id: {@0}", postFromRepo);
+            if (postFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<PostDto>(postFromRepo));
+        }
+
+        // GET: Api/Posts[category = string &| searchQuery = string]
+        [HttpGet]
+        [HttpHead]
+        public async Task<IActionResult> GetPosts([FromQuery]PaginationResourceParameter<Post> paginationResourceParameter)
+        {
+            var result = await _postRepository.GetPostsAsync(paginationResourceParameter);
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
         }
     }
 }

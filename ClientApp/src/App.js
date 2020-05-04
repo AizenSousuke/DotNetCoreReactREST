@@ -22,7 +22,6 @@ const App = () => {
     dispatch(getBlogs());
     dispatch(getCategories());
     dispatch(getUsers());
-
     //   const user = JSON.parse(localStorage.getItem("user"));
     //   if (user) {
     //     dispatch(setUser(user));

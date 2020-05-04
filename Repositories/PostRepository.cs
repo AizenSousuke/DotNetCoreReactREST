@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.ResourceParameters;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -13,16 +10,16 @@ namespace DotNetCoreReactREST.Repositories
 {
     public class PostRepository : IPostRepository
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly AppDbContext _context;
 
-        public PostRepository(AppDbContext appDbContext)
+        public PostRepository(AppDbContext context)
         {
-            _appDbContext = appDbContext;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<Post> CreatePostAsync(Post post)
+        public async Task AddPostAsync(Post post)
         {
-            try
+            if (post == null)
             {
                 post.DateTime = DateTime.Now;
                 Log.Information("Setting Post DateTime: {@DateTime}", post.DateTime.ToString());
@@ -43,12 +40,15 @@ namespace DotNetCoreReactREST.Repositories
                 Log.Error(e.ToString());
                 throw;
             }
+
+            post.DateTime = DateTime.Now;
+            Log.Information("Setting Post DateTime: {@DateTime}", post.DateTime.ToString());
+            await _context.Posts.AddAsync(post);
         }
 
         public async Task<Post> DeletePostAsync(int postId)
         {
-            Post post = await GetPostByIdAsync(postId);
-            if (post != null)
+            if (post == null)
             {
                 post.IsDeleted = !post.IsDeleted;
                 await SaveAsync();
@@ -66,19 +66,12 @@ namespace DotNetCoreReactREST.Repositories
 
         public async Task<Post> GetPostByIdAsync(int postId)
         {
-            return await _appDbContext.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
-        }
-
-        public async Task<List<Post>> GetPostsAsync()
-        {
-            List<Post> posts = await _appDbContext.Posts
-                .OrderByDescending(p => p.Id).ToListAsync();
-            return posts;
+            return await _context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
         }
 
         public async Task<PaginationResourceParameter<Post>> GetPostsAsync(PaginationResourceParameter<Post> paginationResourceParameter)
         {
-            PaginationResourceParameter<Post> result = new PaginationResourceParameter<Post>(_appDbContext);
+            PaginationResourceParameter<Post> result = new PaginationResourceParameter<Post>(_context);
             return await result.InitAsync(paginationResourceParameter);
         }
 

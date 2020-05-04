@@ -16,7 +16,7 @@ namespace DotNetCoreReactREST.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task AddCategory(Category category)
+        public async Task AddCategoryAsync(Category category)
         {
             if (category == null)
             {
@@ -55,35 +55,20 @@ namespace DotNetCoreReactREST.Repositories
             return null;
         }
 
-        public async Task<PaginationResourceParameter<Category>> GetAllCategories(PaginationResourceParameter<Category> paginationResourceParameter)
+        public async Task<PaginationResourceParameter<Category>> GetCategoriesAsync(PaginationResourceParameter<Category> paginationResourceParameter)
         {
             PaginationResourceParameter<Category> result = new PaginationResourceParameter<Category>(_context);
             return await result.InitAsync(paginationResourceParameter);
         }
 
-        public async Task<Category> GetCategoryById(int categoryId)
+        public async Task<Category> GetCategoryByIdAsync(int categoryId)
         {
-            if (string.IsNullOrWhiteSpace(categoryId.ToString()))
-            {
-                throw new ArgumentNullException(nameof(categoryId));
-            }
-
             return await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
         }
 
-        public async Task<bool> Save()
+        public async Task<bool> SaveAsync()
         {
-            return await _context.SaveChangesAsync() >= 0;
-        }
-
-        public void UpdateCategory(Category category)
-        {
-            if (category == null)
-            {
-                throw new ArgumentNullException(nameof(category));
-            }
-
-            _context.Categories.Update(category);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

@@ -68,6 +68,7 @@ export const getSingleBlogComments = (id) => async (dispatch) => {
   const response = await api
     .get(`/posts/${id}/comments`)
     .then(({ data }) => {
+      // console.log("singcomm", data);
       dispatch({ type: "SET_SINGLE_BLOG_COMMENTS", payload: data });
     })
     .catch((error) => console.log(error));
@@ -124,6 +125,10 @@ export const getUsers = () => async (dispatch) => {
   const response = await api
     .get("/users")
     .then((data) => dispatch({ type: "SET_USERS", payload: data }));
+};
+
+export const addUsernamesToComments = users => {
+  return { type: "ADD_USERNAMES_TO_COMMENTS", payload: users.userName };
 };
 
 // get all categories, useful for filtering by category

@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../components/Layout";
-import { useSelector, getState } from "react-redux";
+import { useSelector } from "react-redux";
 import BlogLayout from "../components/blogs/BlogLayout";
 
 const Browse = () => {
@@ -9,7 +9,7 @@ const Browse = () => {
   return (
     <Layout>
       <div className="browse mt-5">
-        <BlogLayout blogs={blogs} />
+       <BlogLayout blogs={blogs} />
       </div>
     </Layout>
   );

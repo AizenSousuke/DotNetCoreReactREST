@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { setModal } from '../../actions/modal';
+import { useDispatch } from 'react-redux';
+import { setModal } from '../../actions/modal';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import SmallPanel from '../common/SmallPanel';
 
 const NavbarPanel = () => {
-      // const dispatch = useDispatch();
-        const [panelOpen, setPanelOpen] = useState(false);
-        const togglePanel = () => setPanelOpen(!panelOpen);
+      const dispatch = useDispatch();
+      const [panelOpen, setPanelOpen] = useState(false);
+      const togglePanel = () => setPanelOpen(!panelOpen);
 
 
     return (

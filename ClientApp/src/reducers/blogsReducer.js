@@ -160,7 +160,6 @@ export function blogsReducer(state = initialState, { type, payload }) {
     //   return {
     //     ...state
     //   };
-
     default:
       return state;
   }

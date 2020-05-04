@@ -76,6 +76,7 @@ const SingleLayout = ({ markup, match }) => {
     dispatch(getSingleBlogLikeCount(match.params.id));
     // dispatch(getLikesForComment(match.params.id));
   }, [match.params]);
+
   const viewing = !creating && !editing ? true : false;
 
   SingleLayout.propTypes = {
