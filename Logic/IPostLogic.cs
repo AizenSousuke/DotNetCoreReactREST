@@ -11,11 +11,10 @@ namespace DotNetCoreReactREST.Logic
 
         Task<PostDto> DeletePostAsync(int postId);
 
-        Task<PostDto> UpdatePostAsync(int postId, PostDto postDto);
-
         Task<PostDto> GetPostByIdAsync(int postId);
 
         Task<PaginationResourceParameter<PostDto>> GetPostAsync(PaginationResourceParameter<Post> paginationResourceParameter);
 
+        Task<PostDto> UpdatePostAsync(int postId, PostDto postDto);
     }
 }

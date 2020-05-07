@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
+using DotNetCoreReactREST.Logic;
 using DotNetCoreReactREST.Repositories;
 using DotNetCoreReactREST.ResourceParameters;
 using DotNetCoreReactREST.Services;
@@ -19,45 +20,36 @@ namespace DotNetCoreReactREST
     {
         private readonly IMapper _mapper;
         private readonly IPostRepository _postRepository;
+        private readonly IPostLogic _postLogic;
 
-        public PostsController(IPostRepository postRepository, IMapper mapper)
+        public PostsController(IPostRepository postRepository, IMapper mapper, IPostLogic postLogic)
         {
             _postRepository = postRepository;
             _mapper = mapper;
+            _postLogic = postLogic;
         }
 
         // POST: Api/Posts
         [HttpPost]
         public async Task<IActionResult> AddPostAsync([FromBody]PostDto post)
         {
-            // Replace with Imgur URL of the image
-            post.ImageUrl = await new ImageUpload().Upload(post.ImageUrl);
+            PostDto newPost = await _postLogic.AddPostAsync(post);
 
-            Post newPost = await _postRepository.AddPostAsync(_mapper.Map<Post>(post));
             var baseURI = Request.GetDisplayUrl();
-
-            // Alternative way
-            // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
-            return Created(baseURI + newPost.Id, _mapper.Map<PostDto>(newPost));
+            return Created(baseURI + newPost.Id, newPost);
         }
 
         // DELETE: Api/Posts/{PostId}
         [HttpDelete("{postId:int}")]
         public async Task<IActionResult> DeletePostAsync([FromRoute]int postId)
         {
-            var post = await _postRepository.GetPostByIdAsync(postId);
-            if (post == null)
+            PostDto deletedPost = await _postLogic.DeletePostAsync(postId);
+            if (deletedPost == null)
             {
                 return NotFound();
             }
 
-            Post result = await _postRepository.DeletePostAsync(postId);
-            if (result != null)
-            {
-                return Ok(_mapper.Map<PostDto>(result));
-            }
-
-            return Ok(_mapper.Map<PostDto>(result));
+            return Ok(deletedPost);
         }
 
         // GET: Api/Posts/{PostId}
