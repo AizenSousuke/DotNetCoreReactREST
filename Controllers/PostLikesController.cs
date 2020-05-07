@@ -40,7 +40,7 @@ namespace DotNetCoreReactREST
         // POST: Api/Posts/{PostId}/Users/{UserId}/PostLikes
         // Authenticate to make sure userId is the same as logged user
         [HttpPost]
-        [Route("posts/{postId:int}/users/{userId:string}/postlikes")]
+        [Route("posts/{postId:int}/users/{userId}/postlikes")]
         public async Task<IActionResult> LikePostAsync([FromRoute]int postId, [FromRoute]string userId)
         {
             PostLikeDto postLike = await _postLikeLogic.LikePostAsync(postId, userId);

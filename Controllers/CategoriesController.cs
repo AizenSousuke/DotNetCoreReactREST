@@ -27,7 +27,7 @@ namespace DotNetCoreReactREST.Controllers
 
             if (addedCategory == null)
             {
-                return Problem();
+                return Problem("Category might have existed.");
             }
 
             // Alternative way

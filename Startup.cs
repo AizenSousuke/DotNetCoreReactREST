@@ -63,6 +63,8 @@ namespace DotNetCoreReactREST
             // Add Business Logic
             services.AddScoped<ICategoryLogic, CategoryLogic>();
             services.AddScoped<ICommentLogic, CommentLogic>();
+            services.AddScoped<IPostLikeLogic, PostLikeLogic>();
+            services.AddScoped<IPostLogic, PostLogic>();
 
 
             // Add AutoMapper to map object to object
