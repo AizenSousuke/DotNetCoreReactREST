@@ -16,7 +16,7 @@ namespace DotNetCoreReactREST.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task AddCategory(Category category)
+        public async Task AddCategoryAsync(Category category)
         {
             if (category == null)
             {
@@ -26,64 +26,31 @@ namespace DotNetCoreReactREST.Repositories
             await _context.Categories.AddAsync(category);
         }
 
-        public async Task<bool> CategoryExists(int categoryId)
+        public async Task<bool> CategoryNameExistsAsync(string categoryName)
         {
-            if (string.IsNullOrEmpty(categoryId.ToString()))
+            // TODO: Double check following defensive programming. What are the requirements for category name? Can it be empty? Can it be only whitespaces?
+            if (string.IsNullOrEmpty(categoryName) || string.IsNullOrWhiteSpace(categoryName))
             {
-                throw new ArgumentNullException(nameof(categoryId));
+                throw new ArgumentNullException(nameof(categoryName));
             }
 
-            return await _context.Categories.AnyAsync(c => c.Id == categoryId);
+            return await _context.Categories.AnyAsync(c => c.Name == categoryName);
         }
 
-        public async Task<Category> DeleteCategory(Category category)
-        {
-            if (category == null)
-            {
-                throw new ArgumentNullException(nameof(category));
-            }
-
-            category.IsDeleted = true;
-            await Save();
-
-            Category deletedCategory = await GetCategoryById(category.Id);
-            if (deletedCategory != null)
-            {
-                return deletedCategory;
-            }
-
-            return null;
-        }
-
-        public async Task<PaginationResourceParameter<Category>> GetAllCategories(PaginationResourceParameter<Category> paginationResourceParameter)
+        public async Task<PaginationResourceParameter<Category>> GetCategoriesAsync(PaginationResourceParameter<Category> paginationResourceParameter)
         {
             PaginationResourceParameter<Category> result = new PaginationResourceParameter<Category>(_context);
             return await result.InitAsync(paginationResourceParameter);
         }
 
-        public async Task<Category> GetCategoryById(int categoryId)
+        public async Task<Category> GetCategoryByIdAsync(int categoryId)
         {
-            if (string.IsNullOrWhiteSpace(categoryId.ToString()))
-            {
-                throw new ArgumentNullException(nameof(categoryId));
-            }
-
             return await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
         }
 
-        public async Task<bool> Save()
+        public async Task<bool> SaveAsync()
         {
-            return await _context.SaveChangesAsync() >= 0;
-        }
-
-        public void UpdateCategory(Category category)
-        {
-            if (category == null)
-            {
-                throw new ArgumentNullException(nameof(category));
-            }
-
-            _context.Categories.Update(category);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

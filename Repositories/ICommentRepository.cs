@@ -6,11 +6,9 @@ namespace DotNetCoreReactREST.Repositories
 {
     public interface ICommentRepository
     {
-        Task<Comment> AddCommentAsync(Comment comment);
+        Task AddCommentAsync(Comment comment);
 
         Task<bool> CommentExistsAsync(int commentId);
-
-        Task<Comment> DeleteCommentAsync(Comment comment);
 
         Task<Comment> GetCommentByIdAsync(int commentId);
 
@@ -20,6 +18,6 @@ namespace DotNetCoreReactREST.Repositories
 
         Task<bool> SaveAsync();
 
-        void UpdateComment(Comment comment);
+        void UpdateCommentAsync(Comment comment);
     }
 }
