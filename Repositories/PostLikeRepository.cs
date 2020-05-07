@@ -58,27 +58,16 @@ namespace DotNetCoreReactREST.Repositories
         public async Task<PostLike> PostLikeExists(int postId, string userId)
         {
             Log.Information("PostId: {@PostId}, UserId: {@UserId}", postId, userId);
-            PostLike result = await _context.PostLikes
+            PostLike postLike = await _context.PostLikes
                 .FirstOrDefaultAsync(l =>
                 l.ApplicationUserId == userId
                 && l.PostId == postId);
-            Log.Information("PostLikeExists: {@PostLikeExists}", result);
-            if (result == null)
+            Log.Information("PostLikeExists: {@PostLikeExists}", postLike);
+            if (postLike == null)
             {
                 return null;
             }
 
-            return result;
-        }
-
-        public PostLike UnlikePost(PostLike postLike)
-        {
-            if (postLike == null)
-            {
-                throw new ArgumentNullException(nameof(postLike));
-            }
-
-            postLike.IsLiked = false;
             return postLike;
         }
 

@@ -18,7 +18,9 @@ namespace DotNetCoreReactREST.Logic
         private readonly IMapper _mapper;
         private readonly IPostRepository _postRepository;
 
-        public PostLogic(IPostRepository postRepository, IMapper mapper)
+        public PostLogic(
+            IPostRepository postRepository,
+            IMapper mapper)
         {
             _postRepository = postRepository;
             _mapper = mapper;

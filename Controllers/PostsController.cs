@@ -1,9 +1,7 @@
 ﻿using System.Threading.Tasks;
-using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Logic;
-using DotNetCoreReactREST.Repositories;
 using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.JsonPatch;
@@ -15,14 +13,11 @@ namespace DotNetCoreReactREST
     [Route("api/[controller]")]
     public class PostsController : ControllerBase
     {
-        private readonly IMapper _mapper;
-        private readonly IPostRepository _postRepository;
         private readonly IPostLogic _postLogic;
 
-        public PostsController(IPostRepository postRepository, IMapper mapper, IPostLogic postLogic)
+        public PostsController(
+            IPostLogic postLogic)
         {
-            _postRepository = postRepository;
-            _mapper = mapper;
             _postLogic = postLogic;
         }
 
@@ -53,7 +48,7 @@ namespace DotNetCoreReactREST
         // Route will only match if postId can be casted as a int
         [HttpGet]
         [Route("{postId:int}")]
-        public async Task<IActionResult> GetPostByIdAsync(int postId)
+        public async Task<IActionResult> GetPostByIdAsync([FromRoute]int postId)
         {
             PostDto post = await _postLogic.GetPostByIdAsync(postId);
             if (post == null)

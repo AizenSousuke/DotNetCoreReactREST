@@ -1,6 +1,6 @@
-﻿using DotNetCoreReactREST.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using DotNetCoreReactREST.Entities;
 
 namespace DotNetCoreReactREST.Repositories
 {
@@ -13,8 +13,6 @@ namespace DotNetCoreReactREST.Repositories
         Task<PostLike> LikePostAsync(PostLike postLike);
 
         Task<PostLike> PostLikeExists(int postId, string userId);
-
-        PostLike UnlikePost(PostLike postLike);
 
         Task<bool> SaveAsync();
     }
