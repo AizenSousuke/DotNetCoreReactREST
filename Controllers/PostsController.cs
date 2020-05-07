@@ -48,7 +48,7 @@ namespace DotNetCoreReactREST
             var post = await _postRepository.GetPostByIdAsync(postId);
             if (post == null)
             {
-                return NotFound("There is nothing to delete.");
+                return NotFound();
             }
 
             Post result = await _postRepository.DeletePostAsync(postId);
@@ -75,7 +75,7 @@ namespace DotNetCoreReactREST
 
             if (postFromRepository.IsDeleted)
             {
-                return BadRequest("Post has been deleted");
+                return BadRequest();
             }
 
             return Ok(_mapper.Map<PostDto>(postFromRepository));
@@ -116,7 +116,7 @@ namespace DotNetCoreReactREST
             {
                 if (oldPost.IsDeleted)
                 {
-                    return BadRequest("Cannot update a deleted post.");
+                    return BadRequest();
                 }
 
                 patchDocument.ApplyTo(oldPost, ModelState);
@@ -137,7 +137,12 @@ namespace DotNetCoreReactREST
                 }
 
                 // Save
-                await _postRepository.SaveAsync();
+                bool isSaved = await _postRepository.SaveAsync();
+
+                if (!isSaved)
+                {
+                    return null;
+                }
 
                 // Updated post
                 Post newPost = await _postRepository.GetPostByIdAsync(oldPost.Id);

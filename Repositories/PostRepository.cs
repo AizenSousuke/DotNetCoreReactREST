@@ -22,50 +22,62 @@ namespace DotNetCoreReactREST.Repositories
 
         public async Task<Post> CreatePostAsync(Post post)
         {
-            try
+            if (post == null)
             {
-                post.DateTime = DateTime.Now;
-                Log.Information("Setting Post DateTime: {@DateTime}", post.DateTime.ToString());
-                await _appDbContext.Posts.AddAsync(post);
-
-                bool result = await SaveAsync();
-                if (result)
-                {
-                    List<Post> newPost = await GetPostsAsync();
-                    Log.Information("Finding Post DateTime: {@DateTime}", newPost.FirstOrDefault(p => p.DateTime == post.DateTime).DateTime.ToString());
-                    return newPost.FirstOrDefault(p => p.DateTime == post.DateTime);
-                }
-
-                return null;
+                throw new ArgumentNullException(nameof(post));
             }
-            catch (Exception e)
-            {
-                Log.Error(e.ToString());
-                throw;
-            }
-        }
 
-        public async Task<Post> DeletePostAsync(int postId)
-        {
-            Post post = await GetPostByIdAsync(postId);
-            if (post != null)
-            {
-                post.IsDeleted = !post.IsDeleted;
-                await SaveAsync();
-                Post deletedPost = await GetPostByIdAsync(postId);
-                if (deletedPost != null)
-                {
-                    return deletedPost;
-                }
+            post.DateTime = DateTime.Now;
+            Log.Information("Setting Post DateTime: {@DateTime}", post.DateTime.ToString());
+            await _appDbContext.Posts.AddAsync(post);
 
-                return null;
+            bool isSaved = await SaveAsync();
+            if (isSaved)
+            {
+                List<Post> newPost = await GetPostsAsync();
+                Log.Information("Finding Post DateTime: {@DateTime}", newPost.FirstOrDefault(p => p.DateTime == post.DateTime).DateTime.ToString());
+                return newPost.FirstOrDefault(p => p.DateTime == post.DateTime);
             }
 
             return null;
         }
 
+        public async Task<Post> DeletePostAsync(int postId)
+        {
+            if (postId == null)
+            {
+                throw new ArgumentNullException(nameof(postId));
+            }
+
+            Post post = await GetPostByIdAsync(postId);
+            if (post == null)
+            {
+                return null;
+            }
+
+            post.IsDeleted = !post.IsDeleted;
+            bool isSaved = await SaveAsync();
+            if (!isSaved)
+            {
+                return null;
+            }
+
+            Post deletedPost = await GetPostByIdAsync(postId);
+            if (deletedPost == null)
+            {
+                return null;
+            }
+
+            return deletedPost;
+        }
+
         public async Task<Post> GetPostByIdAsync(int postId)
         {
+            if (postId == null)
+            {
+                throw new ArgumentNullException(nameof(postId));
+            }
+
             return await _appDbContext.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
         }
 
@@ -73,6 +85,11 @@ namespace DotNetCoreReactREST.Repositories
         {
             List<Post> posts = await _appDbContext.Posts
                 .OrderByDescending(p => p.Id).ToListAsync();
+            if (posts == null)
+            {
+                return null;
+            }
+
             return posts;
         }
 
@@ -84,20 +101,23 @@ namespace DotNetCoreReactREST.Repositories
 
         public async Task<bool> SaveAsync()
         {
-            int result = await _appDbContext.SaveChangesAsync();
-            return result >= 0;
+            return await _appDbContext.SaveChangesAsync() > 0;
         }
 
         public async Task<Post> UpdatePostAsync(int postId, JsonPatchDocument post)
         {
-            // Post oldPost = await GetPostByIdAsync(postId);
-            bool saved = await SaveAsync();
-            if (saved)
+            if (postId == null || post == null)
             {
-                return await GetPostByIdAsync(postId);
+                throw new ArgumentNullException();
             }
 
-            return null;
+            bool isSaved = await SaveAsync();
+            if (!isSaved)
+            {
+                return null;
+            }
+
+            return await GetPostByIdAsync(postId);
         }
     }
 }

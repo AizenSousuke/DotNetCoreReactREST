@@ -41,7 +41,12 @@ namespace DotNetCoreReactREST.Repositories
 
             ApplicationUser userToDelete = await GetUserByIdAsync(user.Id);
             userToDelete.IsDeleted = !userToDelete.IsDeleted;
-            await SaveAsync();
+            bool isSaved = await SaveAsync();
+            if (!isSaved)
+            {
+                return null;
+            }
+
             return await GetUserByIdAsync(user.Id);
         }
 
@@ -72,7 +77,7 @@ namespace DotNetCoreReactREST.Repositories
 
         public async Task<bool> SaveAsync()
         {
-            return await _context.SaveChangesAsync() >= 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public void UpdateUser(ApplicationUser user)
