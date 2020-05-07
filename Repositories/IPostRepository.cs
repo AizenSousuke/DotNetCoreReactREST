@@ -8,7 +8,7 @@ namespace DotNetCoreReactREST.Repositories
 {
     public interface IPostRepository
     {
-        Task<Post> CreatePostAsync(Post post);
+        Task<Post> AddPostAsync(Post post);
 
         Task<Post> DeletePostAsync(int postId);
 

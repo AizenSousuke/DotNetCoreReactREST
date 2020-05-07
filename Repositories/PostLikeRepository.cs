@@ -11,11 +11,11 @@ namespace DotNetCoreReactREST.Repositories
 {
     public class PostLikeRepository : IPostLikeRepository
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly AppDbContext _context;
 
         public PostLikeRepository(AppDbContext context)
         {
-            _appDbContext = context;
+            _context = context;
         }
 
         public async Task<List<PostLike>> GetLikesForPost(int postId)
@@ -25,7 +25,7 @@ namespace DotNetCoreReactREST.Repositories
                 throw new ArgumentNullException(nameof(postId));
             }
 
-            return await _appDbContext.PostLikes.Where(pl => pl.PostId == postId).OrderByDescending(pl => pl.Id).ToListAsync();
+            return await _context.PostLikes.Where(pl => pl.PostId == postId).OrderByDescending(pl => pl.Id).ToListAsync();
         }
 
         public async Task<PostLike> GetPostLikeById(int postLikeId)
@@ -35,7 +35,7 @@ namespace DotNetCoreReactREST.Repositories
                 throw new ArgumentNullException(nameof(postLikeId));
             }
 
-            return await _appDbContext.PostLikes.FirstOrDefaultAsync(l => l.Id == postLikeId);
+            return await _context.PostLikes.FirstOrDefaultAsync(l => l.Id == postLikeId);
         }
 
         public async Task<PostLike> LikePostAsync(PostLike postLike)
@@ -45,7 +45,7 @@ namespace DotNetCoreReactREST.Repositories
                 throw new ArgumentNullException(nameof(postLike));
             }
 
-            await _appDbContext.PostLikes.AddAsync(postLike);
+            await _context.PostLikes.AddAsync(postLike);
             bool isSaved = await SaveAsync();
             if (!isSaved)
             {
@@ -58,7 +58,7 @@ namespace DotNetCoreReactREST.Repositories
         public async Task<PostLike> PostLikeExists(int postId, string userId)
         {
             Log.Information("PostId: {@PostId}, UserId: {@UserId}", postId, userId);
-            PostLike result = await _appDbContext.PostLikes
+            PostLike result = await _context.PostLikes
                 .FirstOrDefaultAsync(l =>
                 l.ApplicationUserId == userId
                 && l.PostId == postId);
@@ -84,7 +84,7 @@ namespace DotNetCoreReactREST.Repositories
 
         public async Task<bool> SaveAsync()
         {
-            return await _appDbContext.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

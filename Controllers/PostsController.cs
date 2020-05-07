@@ -28,12 +28,12 @@ namespace DotNetCoreReactREST
 
         // POST: Api/Posts
         [HttpPost]
-        public async Task<IActionResult> CreatePostAsync([FromBody]PostDto post)
+        public async Task<IActionResult> AddPostAsync([FromBody]PostDto post)
         {
             // Replace with Imgur URL of the image
             post.ImageUrl = await new ImageUpload().Upload(post.ImageUrl);
 
-            Post newPost = await _postRepository.CreatePostAsync(_mapper.Map<Post>(post));
+            Post newPost = await _postRepository.AddPostAsync(_mapper.Map<Post>(post));
             var baseURI = Request.GetDisplayUrl();
 
             // Alternative way
