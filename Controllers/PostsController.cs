@@ -1,16 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Logic;
 using DotNetCoreReactREST.Repositories;
 using DotNetCoreReactREST.ResourceParameters;
-using DotNetCoreReactREST.Services;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 
 namespace DotNetCoreReactREST
 {
@@ -58,19 +55,13 @@ namespace DotNetCoreReactREST
         [Route("{postId:int}")]
         public async Task<IActionResult> GetPostByIdAsync(int postId)
         {
-            Post postFromRepository = await _postRepository.GetPostByIdAsync(postId);
-            Log.Information("Post from Repository when getting post by id: {@0}", postFromRepository);
-            if (postFromRepository == null)
+            PostDto post = await _postLogic.GetPostByIdAsync(postId);
+            if (post == null)
             {
                 return NotFound();
             }
 
-            if (postFromRepository.IsDeleted)
-            {
-                return BadRequest();
-            }
-
-            return Ok(_mapper.Map<PostDto>(postFromRepository));
+            return Ok(post);
         }
 
         // GET: Api/Posts[category = string &| searchQuery = string]
@@ -78,7 +69,7 @@ namespace DotNetCoreReactREST
         [HttpHead]
         public async Task<IActionResult> GetPostsAsync([FromQuery]PaginationResourceParameter<Post> paginationResourceParameter)
         {
-            var result = await _postRepository.GetPostsAsync(paginationResourceParameter);
+            PaginationResourceParameter<Post> result = await _postLogic.GetPostAsync(paginationResourceParameter);
             if (result == null)
             {
                 return NotFound();
@@ -91,61 +82,13 @@ namespace DotNetCoreReactREST
         [HttpPatch("{postId:int}", Name = "{postId:int}")]
         public async Task<IActionResult> UpdatePostAsync([FromRoute]int postId, [FromBody]JsonPatchDocument<Post> patchDocument)
         {
-            if (!ModelState.IsValid)
+            PostDto updatedPost = await _postLogic.UpdatePostAsync(postId, patchDocument, ModelState);
+            if (updatedPost == null)
             {
-                return new BadRequestObjectResult(ModelState);
+                return Problem();
             }
 
-            // Post to update
-            Post oldPost = await _postRepository.GetPostByIdAsync(postId);
-            string prePatchImageUrl = oldPost.ImageUrl;
-
-            if (oldPost == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                if (oldPost.IsDeleted)
-                {
-                    return BadRequest();
-                }
-
-                patchDocument.ApplyTo(oldPost, ModelState);
-                string postPatchImageUrl = oldPost.ImageUrl;
-
-                if (!ModelState.IsValid)
-                {
-                    return new BadRequestObjectResult(ModelState);
-                }
-
-                // Update time
-                oldPost.DateTime = DateTime.Now;
-
-                // Replace with Imgur URL of the updated image
-                if (prePatchImageUrl != postPatchImageUrl)
-                {
-                    oldPost.ImageUrl = await new ImageUpload().Upload(oldPost.ImageUrl);
-                }
-
-                // Save
-                bool isSaved = await _postRepository.SaveAsync();
-
-                if (!isSaved)
-                {
-                    return null;
-                }
-
-                // Updated post
-                Post newPost = await _postRepository.GetPostByIdAsync(oldPost.Id);
-
-                if (newPost != null)
-                {
-                    return Ok(_mapper.Map<PostDto>(newPost));
-                }
-
-                return NotFound();
-            }
+            return Ok(updatedPost);
         }
     }
 }

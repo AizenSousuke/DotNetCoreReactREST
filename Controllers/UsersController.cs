@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Repositories;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -232,7 +230,8 @@ namespace DotNetCoreReactREST.Controllers
             try
             {
                 // Register user
-                ApplicationUser user = new ApplicationUser {
+                ApplicationUser user = new ApplicationUser
+                {
                     UserName = registerModel.UserName,
                     Email = registerModel.Email,
                     NormalizedUserName = registerModel.UserName.Normalize().ToUpper(),

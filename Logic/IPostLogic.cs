@@ -2,6 +2,8 @@
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.ResourceParameters;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DotNetCoreReactREST.Logic
 {
@@ -13,8 +15,8 @@ namespace DotNetCoreReactREST.Logic
 
         Task<PostDto> GetPostByIdAsync(int postId);
 
-        Task<PaginationResourceParameter<PostDto>> GetPostAsync(PaginationResourceParameter<Post> paginationResourceParameter);
+        Task<PaginationResourceParameter<Post>> GetPostAsync(PaginationResourceParameter<Post> paginationResourceParameter);
 
-        Task<PostDto> UpdatePostAsync(int postId, PostDto postDto);
+        Task<PostDto> UpdatePostAsync(int postId, JsonPatchDocument<Post> patchDocument, ModelStateDictionary modelState);
     }
 }
