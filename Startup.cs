@@ -65,6 +65,8 @@ namespace DotNetCoreReactREST
             services.AddScoped<ICommentLogic, CommentLogic>();
             services.AddScoped<IPostLikeLogic, PostLikeLogic>();
             services.AddScoped<IPostLogic, PostLogic>();
+            services.AddScoped<IPostLikeLogic, PostLikeLogic>();
+            services.AddScoped<IUserLogic, UserLogic>();
 
 
             // Add AutoMapper to map object to object

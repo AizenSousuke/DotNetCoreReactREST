@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
+using DotNetCoreReactREST.Logic;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
@@ -25,6 +26,7 @@ namespace DotNetCoreReactREST.Controllers
         private readonly ICommentRepository _commentRepository;
         private readonly IMapper _mapper;
         private readonly IPostRepository _postRepository;
+        private readonly IUserLogic _userLogic;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepo;
@@ -34,6 +36,7 @@ namespace DotNetCoreReactREST.Controllers
             IUserRepository userRepository,
             IPostRepository postRepository,
             ICommentRepository commentRepository,
+            IUserLogic userLogic,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
         {
@@ -43,43 +46,33 @@ namespace DotNetCoreReactREST.Controllers
             _signInManager = signInManager;
             _postRepository = postRepository;
             _commentRepository = commentRepository;
+            _userLogic = userLogic;
         }
 
         // POST: Api/Users
         [HttpPost]
         public async Task<ActionResult<UserDto>> CreateUserAsync([FromBody] UserForCreationDto user)
         {
-            ApplicationUser userToAdd = _mapper.Map<ApplicationUser>(user);
-            ApplicationUser newUser = await _userRepo.AddUserAsync(userToAdd);
-            await _userRepo.SaveAsync();
-            return Ok(_mapper.Map<UserDto>(newUser));
+            UserDto createdUser = await _userLogic.AddUserAsync(user);
+            if (createdUser == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(createdUser);
         }
 
         // DELETE: Api/Users/{UserId}
         [HttpDelete("{userId}")]
         public async Task<IActionResult> DeleteAsync([FromRoute]string userId)
         {
-            ApplicationUser user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
+            UserDto deletedUser = await _userLogic.DeleteUserAsync(userId);
+            if (deletedUser == null)
             {
                 return NotFound();
             }
 
-            // Delete comments
-            // IEnumerable<Comment> commentsToDelete = await _commentRepository.GetCommentsForUser(user.Id);
-            // foreach (var comment in commentsToDelete)
-            // {
-            //     _commentRepository.DeleteComment(comment);
-            // }
-            // IEnumerable<Comment> comment = await _commentRepository.GetCommentsForUser(user.Id);
-
-            // Delete posts
-            // Seems like don't need to add as it does not error out
-
-            // Delete user
-            ApplicationUser deletedUser = await _userRepo.DeleteUserAsync(user);
-
-            return Ok(_mapper.Map<UserDto>(deletedUser).UserName + " has been deleted.");
+            return Ok(deletedUser);
         }
 
         // GET: Api/Users/{UserId}
