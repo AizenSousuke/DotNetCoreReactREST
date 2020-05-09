@@ -153,11 +153,11 @@ namespace DotNetCoreReactREST.Controllers
                 }
                 else
                 {
-                    return Unauthorized("Check user name or password.");
+                    return Unauthorized("Check password.");
                 }
             }
 
-            return Problem("Can't login. No user found. Ensure that you're using the correct email.");
+            return NotFound("Can't login. No user found. Ensure that you're using the correct email.");
         }
 
         [HttpPost("logout")]
