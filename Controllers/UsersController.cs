@@ -12,8 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Serilog;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 namespace DotNetCoreReactREST.Controllers
@@ -30,6 +30,7 @@ namespace DotNetCoreReactREST.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepo;
+        private readonly ILogger<UsersController> _logger;
 
         public UsersController(
             IMapper mapper,
@@ -38,7 +39,8 @@ namespace DotNetCoreReactREST.Controllers
             ICommentRepository commentRepository,
             IUserLogic userLogic,
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            ILogger<UsersController> logger)
         {
             _mapper = mapper;
             _userRepo = userRepository;
@@ -47,6 +49,7 @@ namespace DotNetCoreReactREST.Controllers
             _postRepository = postRepository;
             _commentRepository = commentRepository;
             _userLogic = userLogic;
+            _logger = logger;
         }
 
         // POST: Api/Users
@@ -128,21 +131,21 @@ namespace DotNetCoreReactREST.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] UserForLoginDto user, [FromQuery] bool rememberMe = false)
         {
-            Log.Information("Remember Me == {@RememberMe}", rememberMe.ToString());
-            Log.Information("User's Email from method {@UserEmail}", user.Email);
+            _logger.LogInformation("Remember Me == {@RememberMe}", rememberMe.ToString());
+            _logger.LogInformation("User's Email from method {@UserEmail}", user.Email);
             ApplicationUser convertedUser = _mapper.Map<ApplicationUser>(user);
-            Log.Information("User's Email from converted user {@UserEmail}", convertedUser.Email);
+            _logger.LogInformation("User's Email from converted user {@UserEmail}", convertedUser.Email);
             ApplicationUser userFromManager = await _userManager.FindByEmailAsync(convertedUser.Email);
-            Log.Information("User's Name from Manager {@UserName}", userFromManager.NormalizedUserName);
-
-            // Check if user is deleted
-            if (userFromManager.IsDeleted)
-            {
-                return Unauthorized("User " + userFromManager.UserName + " has been deleted or disabled.");
-            }
-
             if (userFromManager != null)
             {
+                _logger.LogInformation("User's Name from Manager {@UserName}", userFromManager.NormalizedUserName);
+
+                // Check if user is deleted
+                if (userFromManager.IsDeleted)
+                {
+                    return Unauthorized("User " + userFromManager.UserName + " has been deleted or disabled.");
+                }
+
                 Microsoft.AspNetCore.Identity.SignInResult results = await _signInManager.PasswordSignInAsync(userFromManager, user.PasswordHash, rememberMe, false);
                 if (results.Succeeded)
                 {
@@ -154,7 +157,7 @@ namespace DotNetCoreReactREST.Controllers
                 }
             }
 
-            return Problem("Can't login. No user found.");
+            return Problem("Can't login. No user found. Ensure that you're using the correct email.");
         }
 
         [HttpPost("logout")]
