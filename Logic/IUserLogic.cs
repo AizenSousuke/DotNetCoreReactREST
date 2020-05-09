@@ -1,4 +1,5 @@
 ﻿using DotNetCoreReactREST.Dtos;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DotNetCoreReactREST.Logic
@@ -8,5 +9,9 @@ namespace DotNetCoreReactREST.Logic
         Task<UserDto> AddUserAsync(UserForCreationDto user);
 
         Task<UserDto> DeleteUserAsync(string userId);
+
+        Task<UserDto> GetAsync(string userId);
+
+        Task<IEnumerable<UserDto>> GetUsersAsync();
     }
 }

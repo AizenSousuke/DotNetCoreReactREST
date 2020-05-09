@@ -69,5 +69,22 @@ namespace DotNetCoreReactREST.Logic
 
             return _mapper.Map<UserDto>(deletedUser);
         }
+
+        public async Task<UserDto> GetAsync(string userId)
+        {
+            ApplicationUser userEntity = await _userRepo.GetUserByIdAsync(userId);
+            if (userEntity == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<UserDto>(userEntity);
+        }
+
+        public async Task<IEnumerable<UserDto>> GetUsersAsync()
+        {
+            IEnumerable<ApplicationUser> userEntities = await _userRepo.GetAllUsersAsync();
+            return _mapper.Map<IEnumerable<UserDto>>(userEntities);
+        }
     }
 }
