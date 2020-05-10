@@ -93,15 +93,15 @@ namespace DotNetCoreReactREST.Controllers
 
         // GET: Api/Users/Admins
         [HttpGet("Admins")]
-        public async Task<ActionResult<IEnumerable<UserDto>>> GetAdminsAsync()
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllAdminsAsync()
         {
-            IEnumerable<ApplicationUser> userEntities = await _userRepo.GetAllAdminsAsync();
-            if (userEntities == null)
+            IEnumerable<UserDto> admins = await _userLogic.GetAllAdminsAsync();
+            if (admins == null)
             {
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<IEnumerable<UserDto>>(userEntities));
+            return Ok(admins);
         }
 
         // GET: Api/Users

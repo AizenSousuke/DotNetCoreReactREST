@@ -13,5 +13,7 @@ namespace DotNetCoreReactREST.Logic
         Task<UserDto> GetAsync(string userId);
 
         Task<IEnumerable<UserDto>> GetUsersAsync();
+
+        Task<IEnumerable<UserDto>> GetAllAdminsAsync();
     }
 }

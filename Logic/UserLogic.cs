@@ -86,5 +86,16 @@ namespace DotNetCoreReactREST.Logic
             IEnumerable<ApplicationUser> userEntities = await _userRepo.GetAllUsersAsync();
             return _mapper.Map<IEnumerable<UserDto>>(userEntities);
         }
+
+        public async Task<IEnumerable<UserDto>> GetAllAdminsAsync()
+        {
+            IEnumerable<ApplicationUser> userEntities = await _userRepo.GetAllAdminsAsync();
+            if (userEntities == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<IEnumerable<UserDto>>(userEntities);
+        }
     }
 }
