@@ -46,34 +46,40 @@ namespace DotNetCoreReactREST.Repositories
             }
 
             await _context.Likes.AddAsync(like);
-            await SaveAsync();
-            return await _context.Likes.FirstOrDefaultAsync(l => l.ApplicationUserId == like.ApplicationUserId);
+            bool results = await SaveAsync();
+            if (results)
+            {
+                return await _context.Likes.FirstOrDefaultAsync(l => l.ApplicationUserId == like.ApplicationUserId);
+            }
+
+            return null;
         }
 
-        public async Task<bool> LikeExists(int commentId, string userId)
+        public async Task<Like> LikeExists(int commentId, string userId)
         {
             Log.Information("CommentId: {@CommentId}, UserId: {@UserId}", commentId, userId);
-            bool result = await _context.Likes
-                .AnyAsync(like =>
+            Like result = await _context.Likes
+                .FirstOrDefaultAsync(like =>
                 like.ApplicationUserId == userId
                 && like.CommentId == commentId);
             Log.Information("CommentLikeExists: {@CommentLikeExists}", result);
-            if (result)
+            if (result != null)
             {
                 return result;
             }
 
-            return false;
+            return null;
         }
 
-        public void UnlikeComment(Like like)
+        public Like UnlikeComment(Like like)
         {
             if (like == null)
             {
                 throw new ArgumentNullException(nameof(like));
             }
 
-            _context.Likes.Remove(like);
+            like.IsLiked = false;
+            return like;
         }
 
         public async Task<bool> SaveAsync()

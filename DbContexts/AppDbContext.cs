@@ -59,9 +59,12 @@ namespace DotNetCoreReactREST.DbContexts
             // .StrictMode(true)
             // postId is deterministic
             var fakeUsers = new Faker<ApplicationUser>()
+                .StrictMode(false)
                 .RuleFor(o => o.Id, f => (userId++).ToString())
-                .RuleFor(o => o.UserName, f => f.Name.FirstName())
-                .RuleFor(o => o.Email, f => f.Internet.Email(f.Name.FirstName()))
+                .RuleFor(o => o.UserName, f => f.Name.FullName())
+                .RuleFor(o => o.NormalizedUserName, (f, u) => u.UserName.ToUpper().Normalize())
+                .RuleFor(o => o.Email, (f, u) => f.Internet.Email(u.UserName))
+                .RuleFor(o => o.NormalizedEmail, (f, u) => u.Email.ToUpper())
                 .RuleFor(o => o.PasswordHash, f => "password");
 
             var categoryId = 1;
@@ -107,6 +110,7 @@ namespace DotNetCoreReactREST.DbContexts
                 .RuleFor(o => o.IsAnonymous, f => f.Random.Bool(0.5f));
 
             // Generate the data
+
             modelBuilder.Entity<ApplicationUser>().HasData(
                 fakeUsers.Generate(50));
 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DotNetCoreReactREST.Repositories
 {
@@ -15,7 +17,7 @@ namespace DotNetCoreReactREST.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public void AddUser(ApplicationUser user)
+        public async Task<ApplicationUser> AddUserAsync(ApplicationUser user)
         {
             if (user == null)
             {
@@ -23,47 +25,57 @@ namespace DotNetCoreReactREST.Repositories
             }
 
             user.DateCreated = DateTime.Now;
-            _context.Users.Add(user);
+            await _context.Users.AddAsync(user);
+            ApplicationUser newUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+            return await GetUserByIdAsync(newUser.Id);
         }
 
-        public void DeleteUser(ApplicationUser user)
+        public async Task<ApplicationUser> DeleteUserAsync(ApplicationUser user)
         {
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
             }
 
-            _context.Users.Remove(user);
+            ApplicationUser userToDelete = await GetUserByIdAsync(user.Id);
+            userToDelete.IsDeleted = !userToDelete.IsDeleted;
+            bool isSaved = await SaveAsync();
+            if (!isSaved)
+            {
+                return null;
+            }
+
+            return await GetUserByIdAsync(user.Id);
         }
 
-        public IEnumerable<ApplicationUser> GetAllAdmins()
+        public async Task<IEnumerable<ApplicationUser>> GetAllAdminsAsync()
         {
-            return _context.Users
+            return await _context.Users
                 .Where(u => u.IsAdmin == true)
                 .OrderBy(u => u.UserName)
-                .ToList();
+                .ToListAsync();
         }
 
-        public IEnumerable<ApplicationUser> GetAllUsers()
+        public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
         {
-            return _context.Users
+            return await _context.Users
                 .OrderBy(u => u.UserName)
-                .ToList();
+                .ToListAsync();
         }
 
-        public ApplicationUser GetUserById(string userId)
+        public async Task<ApplicationUser> GetUserByIdAsync(string userId)
         {
             if (string.IsNullOrWhiteSpace(userId))
             {
                 throw new ArgumentNullException(nameof(userId));
             }
 
-            return _context.Users.FirstOrDefault(u => u.Id == userId);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
         }
 
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
-            return _context.SaveChanges() >= 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public void UpdateUser(ApplicationUser user)
