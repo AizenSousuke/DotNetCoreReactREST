@@ -14,8 +14,6 @@ namespace DotNetCoreReactREST.Repositories
 
         Task<PostLike> PostLikeExists(int postId, string userId);
 
-        PostLike UnlikePost(PostLike postLike);
-
         Task<bool> SaveAsync();
     }
 }

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using System.Threading.Tasks;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
-using DotNetCoreReactREST.Repositories;
+using DotNetCoreReactREST.Logic;
 using DotNetCoreReactREST.ResourceParameters;
-using DotNetCoreReactREST.Services;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 
 namespace DotNetCoreReactREST
 {
@@ -17,68 +13,50 @@ namespace DotNetCoreReactREST
     [Route("api/[controller]")]
     public class PostsController : ControllerBase
     {
-        private readonly IMapper _mapper;
-        private readonly IPostRepository _postRepository;
+        private readonly IPostLogic _postLogic;
 
-        public PostsController(IPostRepository postRepository, IMapper mapper)
+        public PostsController(
+            IPostLogic postLogic)
         {
-            _postRepository = postRepository;
-            _mapper = mapper;
+            _postLogic = postLogic;
         }
 
         // POST: Api/Posts
         [HttpPost]
-        public async Task<IActionResult> CreatePostAsync([FromBody]PostDto post)
+        public async Task<IActionResult> AddPostAsync([FromBody]PostDto post)
         {
-            // Replace with Imgur URL of the image
-            post.ImageUrl = await new ImageUpload().Upload(post.ImageUrl);
+            PostDto newPost = await _postLogic.AddPostAsync(post);
 
-            Post newPost = await _postRepository.CreatePostAsync(_mapper.Map<Post>(post));
             var baseURI = Request.GetDisplayUrl();
-
-            // Alternative way
-            // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
-            return Created(baseURI + newPost.Id, _mapper.Map<PostDto>(newPost));
+            return Created(baseURI + newPost.Id, newPost);
         }
 
         // DELETE: Api/Posts/{PostId}
         [HttpDelete("{postId:int}")]
         public async Task<IActionResult> DeletePostAsync([FromRoute]int postId)
         {
-            var post = await _postRepository.GetPostByIdAsync(postId);
-            if (post == null)
+            PostDto deletedPost = await _postLogic.DeletePostAsync(postId);
+            if (deletedPost == null)
             {
-                return NotFound("There is nothing to delete.");
+                return NotFound();
             }
 
-            Post result = await _postRepository.DeletePostAsync(postId);
-            if (result != null)
-            {
-                return Ok(_mapper.Map<PostDto>(result));
-            }
-
-            return Ok(_mapper.Map<PostDto>(result));
+            return Ok(deletedPost);
         }
 
         // GET: Api/Posts/{PostId}
         // Route will only match if postId can be casted as a int
         [HttpGet]
         [Route("{postId:int}")]
-        public async Task<IActionResult> GetPostByIdAsync(int postId)
+        public async Task<IActionResult> GetPostByIdAsync([FromRoute]int postId)
         {
-            Post postFromRepository = await _postRepository.GetPostByIdAsync(postId);
-            Log.Information("Post from Repository when getting post by id: {@0}", postFromRepository);
-            if (postFromRepository == null)
+            PostDto post = await _postLogic.GetPostByIdAsync(postId);
+            if (post == null)
             {
                 return NotFound();
             }
 
-            if (postFromRepository.IsDeleted)
-            {
-                return BadRequest("Post has been deleted");
-            }
-
-            return Ok(_mapper.Map<PostDto>(postFromRepository));
+            return Ok(post);
         }
 
         // GET: Api/Posts[category = string &| searchQuery = string]
@@ -86,7 +64,7 @@ namespace DotNetCoreReactREST
         [HttpHead]
         public async Task<IActionResult> GetPostsAsync([FromQuery]PaginationResourceParameter<Post> paginationResourceParameter)
         {
-            var result = await _postRepository.GetPostsAsync(paginationResourceParameter);
+            PaginationResourceParameter<Post> result = await _postLogic.GetPostAsync(paginationResourceParameter);
             if (result == null)
             {
                 return NotFound();
@@ -99,56 +77,13 @@ namespace DotNetCoreReactREST
         [HttpPatch("{postId:int}", Name = "{postId:int}")]
         public async Task<IActionResult> UpdatePostAsync([FromRoute]int postId, [FromBody]JsonPatchDocument<Post> patchDocument)
         {
-            if (!ModelState.IsValid)
+            PostDto updatedPost = await _postLogic.UpdatePostAsync(postId, patchDocument, ModelState);
+            if (updatedPost == null)
             {
-                return new BadRequestObjectResult(ModelState);
+                return Problem();
             }
 
-            // Post to update
-            Post oldPost = await _postRepository.GetPostByIdAsync(postId);
-            string prePatchImageUrl = oldPost.ImageUrl;
-
-            if (oldPost == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                if (oldPost.IsDeleted)
-                {
-                    return BadRequest("Cannot update a deleted post.");
-                }
-
-                patchDocument.ApplyTo(oldPost, ModelState);
-                string postPatchImageUrl = oldPost.ImageUrl;
-
-                if (!ModelState.IsValid)
-                {
-                    return new BadRequestObjectResult(ModelState);
-                }
-
-                // Update time
-                oldPost.DateTime = DateTime.Now;
-
-                // Replace with Imgur URL of the updated image
-                if (prePatchImageUrl != postPatchImageUrl)
-                {
-                    oldPost.ImageUrl = await new ImageUpload().Upload(oldPost.ImageUrl);
-                }
-
-                // Save
-                await _postRepository.SaveAsync();
-
-                // Updated post
-                Post newPost = await _postRepository.GetPostByIdAsync(oldPost.Id);
-
-                if (newPost != null)
-                {
-                    return Ok(_mapper.Map<PostDto>(newPost));
-                }
-
-                return NotFound();
-            }
+            return Ok(updatedPost);
         }
     }
 }

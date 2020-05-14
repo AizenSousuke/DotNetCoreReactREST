@@ -3,6 +3,7 @@ using System.IO;
 using AutoMapper;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
+using DotNetCoreReactREST.Logic;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -58,6 +59,14 @@ namespace DotNetCoreReactREST
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ILikeRepository, LikeRepository>();
             services.AddScoped<IPostLikeRepository, PostLikeRepository>();
+
+            // Add Business Logic
+            services.AddScoped<ICategoryLogic, CategoryLogic>();
+            services.AddScoped<ICommentLogic, CommentLogic>();
+            services.AddScoped<IPostLikeLogic, PostLikeLogic>();
+            services.AddScoped<IPostLogic, PostLogic>();
+            services.AddScoped<IPostLikeLogic, PostLikeLogic>();
+            services.AddScoped<IUserLogic, UserLogic>();
 
             // Add AutoMapper to map object to object
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

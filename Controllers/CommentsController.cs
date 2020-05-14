@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
-using DotNetCoreReactREST.Repositories;
+using DotNetCoreReactREST.Logic;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -18,105 +16,93 @@ namespace DotNetCoreReactREST.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        private readonly ICommentRepository _commentRepo;
-        private readonly IMapper _mapper;
+        private readonly ICommentLogic _commentLogic;
 
-        public CommentsController(ICommentRepository commentRepo, IMapper mapper)
+        public CommentsController(ICommentLogic commentLogic)
         {
-            _commentRepo = commentRepo;
-            _mapper = mapper;
+            _commentLogic = commentLogic;
         }
 
-        // POST: Api/Comments
+        // POST: api/comments
         [HttpPost("comments")]
-        public async Task<ActionResult<CommentDto>> CreateCommentAsync(CommentForCreationDto comment)
+        public async Task<ActionResult<CommentDto>> CreateComment(CommentForCreationDto comment)
         {
-            Comment commentToAdd = _mapper.Map<Comment>(comment);
-            Comment commentToReturn = await _commentRepo.AddCommentAsync(commentToAdd);
-            return Ok(_mapper.Map<CommentDto>(commentToReturn));
+            CommentDto addedComment = await _commentLogic.CreateCommentAsync(comment);
+
+            if (addedComment == null)
+            {
+                return Problem();
+            }
+
+            return Ok(addedComment);
         }
 
-        // DELETE: Api/Comments/{CommentId}
+        // DELETE: api/comments/{commentId}
         [HttpDelete("comments/{commentId}")]
-        public async Task<ActionResult> DeleteAsync(int commentId)
+        public async Task<ActionResult> DeleteComment(int commentId)
         {
-            Comment commentFromRepo = await _commentRepo.GetCommentByIdAsync(commentId);
-            if (commentFromRepo == null)
+            CommentDto deletedComment = await _commentLogic.DeleteCommentAsync(commentId);
+
+            if (deletedComment == null)
             {
-                return NotFound();
+                return Problem();
             }
 
-            Comment deletedComment = await _commentRepo.DeleteCommentAsync(commentFromRepo);
-            return Ok(_mapper.Map<CommentDto>(deletedComment));
+            return Ok(deletedComment);
         }
 
-        // GET: Api/Comments/{CommentId}
-        [HttpGet("comments/{commentId}", Name = "GetComment")]
-        public async Task<ActionResult> GetCommentForUserAsync(int commentId)
-        {
-            Comment commentFromRepo = await _commentRepo.GetCommentByIdAsync(commentId);
-            if (commentFromRepo == null)
-            {
-                return NotFound();
-            }
-            if (commentFromRepo.IsDeleted)
-            {
-                return BadRequest("Comment has been deleted.");
-            }
-
-            return Ok(_mapper.Map<CommentDto>(commentFromRepo));
-        }
-
-        // GET: Api/Posts/{PostId}/Comments
-        [HttpGet("posts/{postId:int}/comments")]
-        public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsForPostAsync(int postId)
-        {
-            IEnumerable<Comment> commentsFromRepo = await _commentRepo.GetCommentsForPostAsync(postId);
-            return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
-        }
-
-        // GET: Api/Users/{UserId}/Comments
-        [HttpGet("users/{userId}/comments")]
-        public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsForUserAsync(string userId)
-        {
-            IEnumerable<Comment> commentsFromRepo = await _commentRepo.GetCommentsForUserAsync(userId);
-            return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
-        }
-
-        // PATCH: Api/Comments/{CommentId}
+        // PATCH: api/comments/{commentId}
         [HttpPatch("comments/{commentId}")]
-        public async Task<IActionResult> UpdateCommentAsync(
+        public async Task<ActionResult> EditComment(
             [FromRoute]int commentId,
             [FromBody]JsonPatchDocument<Comment> patchDocument)
         {
+            // TODO: Temporary stays here. Don't know how to move it into business logic layer
             if (!ModelState.IsValid)
             {
                 return new BadRequestObjectResult(ModelState);
             }
 
-            Comment commentFromRepo = await _commentRepo.GetCommentByIdAsync(commentId);
-            if (commentFromRepo == null)
+            CommentDto result = await _commentLogic.EditCommentAsync(commentId, patchDocument, ModelState);
+
+            if (result == null)
             {
                 return NotFound();
             }
 
-            if (commentFromRepo.IsDeleted)
+            return Ok(result);
+        }
+
+        // GET: api/comments/{commentId}
+        [HttpGet("comments/{commentId}", Name = "GetComment")]
+        public async Task<ActionResult<CommentDto>> GetComment(int commentId)
+        {
+            CommentDto result = await _commentLogic.GetCommentAsync(commentId);
+
+            if (result == null)
             {
-                return BadRequest("Cannot update a deleted comment.");
+                return NotFound();
             }
 
-            // Patch passing in modelstate to patch item to be aware of
-            patchDocument.ApplyTo(commentFromRepo, ModelState);
-            commentFromRepo.DateTime = DateTime.Now;
-            _commentRepo.UpdateComment(commentFromRepo);
-            await _commentRepo.SaveAsync();
-            Comment updatedComment = await _commentRepo.GetCommentByIdAsync(commentId);
-            if (updatedComment != null)
-            {
-                return Ok(_mapper.Map<CommentDto>(updatedComment));
-            }
+            return Ok(result);
+        }
 
-            return NotFound();
+        // GET: api/posts/{postId}/comments
+        [HttpGet("posts/{postId:int}/comments")]
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsForPost(int postId)
+        {
+            IEnumerable<CommentDto> result = await _commentLogic.GetCommentsForPostAsync(postId);
+
+            return Ok(result);
+        }
+
+        // GET: api/users/{userId}/comments
+        [HttpGet("users/{userId}/comments")]
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsForUser(string userId)
+        {
+            IEnumerable<CommentDto> result = await _commentLogic.GetCommentsForUserAsync(userId);
+
+            return Ok(result);
         }
 
         // This overrides validation behavior in patch to show more detailed error info if model is
