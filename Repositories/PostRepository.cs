@@ -14,10 +14,10 @@ namespace DotNetCoreReactREST.Repositories
 
         public PostRepository(AppDbContext context)
         {
-            _context = appDbContext;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<Post> AddPostAsync(Post post)
+        public async Task AddPostAsync(Post post)
         {
             if (post == null)
             {
@@ -27,57 +27,21 @@ namespace DotNetCoreReactREST.Repositories
             post.DateTime = DateTime.Now;
             Log.Information("Setting Post DateTime: {@DateTime}", post.DateTime.ToString());
             await _context.Posts.AddAsync(post);
-
-            bool isSaved = await SaveAsync();
-            if (isSaved)
-            {
-                List<Post> newPost = await GetPostsAsync();
-                Log.Information("Finding Post DateTime: {@DateTime}", newPost.FirstOrDefault(p => p.DateTime == post.DateTime).DateTime.ToString());
-                return newPost.FirstOrDefault(p => p.DateTime == post.DateTime);
-            }
-
-            return null;
         }
 
-        public async Task<Post> DeletePostAsync(int postId)
+        public void DeletePost(Post post)
         {
-            Post post = await GetPostByIdAsync(postId);
             if (post == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(post));
             }
 
-            post.IsDeleted = !post.IsDeleted;
-            bool isSaved = await SaveAsync();
-            if (!isSaved)
-            {
-                return null;
-            }
-
-            Post deletedPost = await GetPostByIdAsync(postId);
-            if (deletedPost == null)
-            {
-                return null;
-            }
-
-            return deletedPost;
+            _context.Posts.Remove(post);
         }
 
         public async Task<Post> GetPostByIdAsync(int postId)
         {
-            return await _context.Posts.Where(p => p.Id == postId).FirstOrDefaultAsync();
-        }
-
-        public async Task<List<Post>> GetPostsAsync()
-        {
-            List<Post> posts = await _context.Posts
-                .OrderByDescending(p => p.Id).ToListAsync();
-            if (posts == null)
-            {
-                return null;
-            }
-
-            return posts;
+            return await _context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
         }
 
         public async Task<PaginationResourceParameter<Post>> GetPostsAsync(PaginationResourceParameter<Post> paginationResourceParameter)
@@ -89,17 +53,6 @@ namespace DotNetCoreReactREST.Repositories
         public async Task<bool> SaveAsync()
         {
             return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<Post> UpdatePostAsync(int postId, JsonPatchDocument post)
-        {
-            bool isSaved = await SaveAsync();
-            if (!isSaved)
-            {
-                return null;
-            }
-
-            return await GetPostByIdAsync(postId);
         }
     }
 }

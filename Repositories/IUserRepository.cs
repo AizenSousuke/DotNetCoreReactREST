@@ -1,27 +1,26 @@
-﻿using DotNetCoreReactREST.Entities;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using DotNetCoreReactREST.Entities;
 
 namespace DotNetCoreReactREST.Repositories
 {
     public interface IUserRepository
     {
-        Task<ApplicationUser> AddUserAsync(ApplicationUser user);
+        void AddUser(ApplicationUser user);
 
-        Task<ApplicationUser> DeleteUserAsync(ApplicationUser user);
+        void DeleteUser(ApplicationUser user);
 
-        Task<IEnumerable<ApplicationUser>> GetAllAdminsAsync();
+        IEnumerable<ApplicationUser> GetAllAdmins();
 
-        Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
+        IEnumerable<ApplicationUser> GetAllUsers();
 
-        Task<ApplicationUser> GetUserByIdAsync(string userId);
+        ApplicationUser GetUserById(string userId);
 
-        Task<bool> SaveAsync();
+        bool Save();
 
         void UpdateUser(ApplicationUser user);
 
         bool UserExists(string userId);
 
-        bool UserExistsByName(string name);
+        bool UserExistsByName(string userName);
     }
 }

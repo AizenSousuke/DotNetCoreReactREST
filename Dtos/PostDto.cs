@@ -20,7 +20,5 @@ namespace DotNetCoreReactREST.Dtos
         public int CategoryId { get; set; }
 
         public string ApplicationUserId { get; set; }
-
-        public bool IsDeleted { get; set; }
     }
 }

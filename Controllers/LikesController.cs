@@ -34,7 +34,7 @@ namespace DotNetCoreReactREST.Controllers
         [HttpGet("comments/{commentId}/likes")]
         public async Task<IActionResult> GetLikesForComment(int commentId)
         {
-            var commentExists = await _commentRepo.CommentExistsAsync(commentId);
+            var commentExists = await _commentRepo.CommentExists(commentId);
             if (!commentExists)
             {
                 return BadRequest("Comment doesn't exist.");
@@ -49,33 +49,17 @@ namespace DotNetCoreReactREST.Controllers
         [HttpPost("comments/{commentId}/users/{userId}/Likes")]
         public async Task<IActionResult> LikeComment(int commentId, string userId)
         {
-            // Check comment exists
-            bool commentExists = await _commentRepo.CommentExistsAsync(commentId);
-            if (!commentExists)
-            {
-                return Problem("Comment doesn't exists.");
-            }
-
             // Like is unique to user, so none should exist
-            Like exists = await _likeRepo.LikeExists(commentId, userId);
-            if (exists != null)
+            bool exists = await _likeRepo.LikeExists(commentId, userId);
+            if (exists)
             {
-                // Change the isLiked property by toggling
-                exists.IsLiked = !exists.IsLiked;
-                bool result = await _likeRepo.SaveAsync();
-                if (result)
-                {
-                    return Ok(_mapper.Map<LikeDto>(await _likeRepo.GetLikeById(exists.Id)));
-                }
-
-                return Problem("Problem with Database.");
+                return BadRequest("Comment has been liked.");
             }
 
-            // If Like doesn't exists, create new one
-            Like results = await _likeRepo.LikeComment(new Like { CommentId = commentId, ApplicationUserId = userId, IsLiked = true });
+            Like results = await _likeRepo.LikeComment(new Like { CommentId = commentId, ApplicationUserId = userId });
             if (results != null)
             {
-                return Ok(_mapper.Map<LikeDto>(results));
+                return Ok(results);
             }
 
             return Problem("Problem with Database.");
@@ -96,7 +80,7 @@ namespace DotNetCoreReactREST.Controllers
             bool result = await _likeRepo.SaveAsync();
             if (result)
             {
-                return Ok(_mapper.Map<LikeDto>(await _likeRepo.GetLikeById(likeId)));
+                return Ok("Likes has been removed.");
             }
 
             return Problem("Not saved.");

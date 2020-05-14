@@ -11,11 +11,11 @@ namespace DotNetCoreReactREST.Repositories
 {
     public class PostLikeRepository : IPostLikeRepository
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext _appDbContext;
 
         public PostLikeRepository(AppDbContext context)
         {
-            _context = context;
+            _appDbContext = context;
         }
 
         public async Task<List<PostLike>> GetLikesForPost(int postId)
@@ -25,55 +25,61 @@ namespace DotNetCoreReactREST.Repositories
                 throw new ArgumentNullException(nameof(postId));
             }
 
-            return await _context.PostLikes.Where(pl => pl.PostId == postId).OrderByDescending(pl => pl.Id).ToListAsync();
+            return await _appDbContext.PostLikes.Where(pl => pl.PostId == postId).OrderByDescending(pl => pl.Id).ToListAsync();
         }
 
-        public async Task<PostLike> GetPostLikeById(int postLikeId)
+        public PostLike GetPostLikeById(int postLikeId)
         {
             if (string.IsNullOrWhiteSpace(postLikeId.ToString()))
             {
                 throw new ArgumentNullException(nameof(postLikeId));
             }
 
-            return await _context.PostLikes.FirstOrDefaultAsync(l => l.Id == postLikeId);
+            return _appDbContext.PostLikes.FirstOrDefault(l => l.Id == postLikeId);
         }
 
-        public async Task<PostLike> LikePostAsync(PostLike postLike)
+        public async Task<List<PostLike>> LikePostAsync(PostLike postLike)
         {
             if (postLike == null)
             {
                 throw new ArgumentNullException(nameof(postLike));
             }
 
-            await _context.PostLikes.AddAsync(postLike);
-            bool isSaved = await SaveAsync();
-            if (!isSaved)
-            {
-                return null;
-            }
-
-            return await GetPostLikeById(postLike.PostId);
+            await _appDbContext.PostLikes.AddAsync(postLike);
+            await SaveAsync();
+            return await GetLikesForPost(postLike.PostId);
         }
 
-        public async Task<PostLike> PostLikeExists(int postId, string userId)
+        public async Task<bool> PostLikeExists(int postId, string userId)
         {
             Log.Information("PostId: {@PostId}, UserId: {@UserId}", postId, userId);
-            PostLike postLike = await _context.PostLikes
-                .FirstOrDefaultAsync(l =>
+            bool result = await _appDbContext.PostLikes
+                .AnyAsync(l =>
                 l.ApplicationUserId == userId
                 && l.PostId == postId);
-            Log.Information("PostLikeExists: {@PostLikeExists}", postLike);
-            if (postLike == null)
+            Log.Information("PostLikeExists: {@PostLikeExists}", result);
+            if (result)
             {
-                return null;
+                return result;
             }
 
-            return postLike;
+            return false;
+        }
+
+        public void UnlikePost(PostLike postLike)
+        {
+            if (postLike == null)
+            {
+                throw new ArgumentNullException(nameof(postLike));
+            }
+
+            _appDbContext.PostLikes.Remove(postLike);
         }
 
         public async Task<bool> SaveAsync()
         {
-            return await _context.SaveChangesAsync() > 0;
+            int result = await _appDbContext.SaveChangesAsync();
+            return result >= 0;
         }
     }
 }

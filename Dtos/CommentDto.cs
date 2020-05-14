@@ -6,7 +6,7 @@ namespace DotNetCoreReactREST.Dtos
     {
         public int Id { get; set; }
 
-        public DateTime DateTime { get; set; }
+        public DateTime DateCreated { get; set; }
 
         public string Content { get; set; }
 
@@ -19,7 +19,5 @@ namespace DotNetCoreReactREST.Dtos
         public bool IsAnonymous { get; set; }
 
         public string UserName { get; set; }
-
-        public bool IsDeleted { get; set; }
     }
 }

@@ -11,8 +11,6 @@ namespace DotNetCoreReactREST.Profiles
             CreateMap<ApplicationUser, UserDto>();
             CreateMap<UserForCreationDto, ApplicationUser>();
             CreateMap<UserForUpdateDto, ApplicationUser>().ReverseMap();
-            CreateMap<UserForLoginDto, ApplicationUser>();
-            CreateMap<UserForLoginDto, ApplicationUser>().ReverseMap();
         }
     }
 }

@@ -10,7 +10,7 @@ import {
   getSingleBlogLikes,
   getSingleBlogLikeCount,
   incrementSingleBlogLikes,
-  getLikesForComment,
+  getLikesForComment
 } from "../../actions/blogActions";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -30,22 +30,16 @@ const SingleLayout = ({ markup, match }) => {
   const [value, setValue] = useState("");
   const [showingEditor, setShowingEditor] = useState(true);
 
-  const blog = useSelector((state) => state.blogs.single);
-  const loading = useSelector((state) => state.blogs.loading);
-
-  // const [likes, setLikes] = useState(blog.likeCount);
-
-  console.log("initlikes", blog.likeCount);
-
+  const blog = useSelector(state => state.blogs.single);
   // const users = useSelector(state => state.blogs.users);
-  // const likes = blog.likes;
-  // const likeCount = blog.likeCount;
-
-  // local or redux state for displaying immediate like feedback to users?
+  const loading = useSelector(state => state.blogs.loading);
+  const comments = blog.comments;
+  const likes = blog.likes;
+  const likeCount = blog.likeCount;
 
   const like_or_dislike = () => {
-    setLiked((prev) => !prev);
-    // !liked ? setLikes(likes + 1) : setLikes(likes - 1);
+    setLiked(prev => !prev);
+    likeCount++;
   };
 
   const dispatch = useDispatch();
@@ -81,12 +75,10 @@ const SingleLayout = ({ markup, match }) => {
   SingleLayout.propTypes = {
     creating: propTypes.bool,
     editing: propTypes.bool,
-    markup: propTypes.string,
+    markup: propTypes.string
   };
 
-  // console.log("userid", blog.applicationUserId);
   // console.log("paramvalue:", match.params.id);
-  // console.log("likecount", likeCount);
 
   return (
     <div>
@@ -131,10 +123,9 @@ const SingleLayout = ({ markup, match }) => {
                   <div className="profile-card-info">
                     <span>John Texas</span>
                     <div>
-                      {/* make dynamic */}
                       <span>24 blogs</span>
                       <i className="fas fa-newspaper"></i>
-                      <span>{blog.likeCount} likes</span>
+                      <span>{likeCount} likes</span>
                       <i className="fas fa-thumbs-up"></i>
                     </div>
                   </div>
@@ -144,10 +135,8 @@ const SingleLayout = ({ markup, match }) => {
                     className="d-block"
                     onClick={() => {
                       like_or_dislike();
-                      dispatch(
-                        likeBlog(match.params.id, blog.applicationUserId)
-                      );
-                      console.log("btnlikes", blog.likeCount);
+                      // !liked
+                      //   ? dispatch(likeBlog(1, 1))
                       //   : dispatch(unlikeBlog(1, 1));
                     }}
                   >
@@ -174,7 +163,7 @@ const SingleLayout = ({ markup, match }) => {
                           id: blog.id,
                           title: title,
                           description: value,
-                          categoryId: blog.categoryId,
+                          categoryId: blog.categoryId
                         };
                         dispatch(editBlog(batch));
                       }}
@@ -211,13 +200,13 @@ const SingleLayout = ({ markup, match }) => {
                   ) : (
                     <form onSubmit={() => setEditingTitle(!editingTitle)}>
                       <input
-                        onKeyPress={(e) => {
+                        onKeyPress={e => {
                           if (e.which === 13) setEditingTitle(!editingTitle);
                         }}
                         className="h1 text-black input--text d-block blog-creation-title"
                         type="text"
                         value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        onChange={e => setTitle(e.target.value)}
                         placeholder="Untitled Blog"
                         autoFocus
                       />
@@ -246,8 +235,8 @@ const SingleLayout = ({ markup, match }) => {
           />
         </div>
         <div className="comments-wrapper">
-          {blog.comments
-            ? blog.comments.map((c) => {
+          {comments
+            ? comments.map(c => {
                 return (
                   <Comment
                     key={c.id}

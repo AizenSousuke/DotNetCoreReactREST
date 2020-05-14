@@ -8,12 +8,14 @@ namespace DotNetCoreReactREST.Repositories
     {
         Task<List<PostLike>> GetLikesForPost(int postId);
 
-        Task<PostLike> GetPostLikeById(int postLikeId);
+        PostLike GetPostLikeById(int postLikeId);
 
-        Task<PostLike> LikePostAsync(PostLike postLike);
+        Task<List<PostLike>> LikePostAsync(PostLike postLike);
 
-        Task<PostLike> PostLikeExists(int postId, string userId);
+        Task<bool> PostLikeExists(int postId, string userId);
 
         Task<bool> SaveAsync();
+
+        void UnlikePost(PostLike postLike);
     }
 }

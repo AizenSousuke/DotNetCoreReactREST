@@ -19,7 +19,7 @@ namespace DotNetCoreReactREST.Services
         /// <returns>The URL of uploaded image file on Imgur.</returns>
         public async Task<string> Upload(string filepath)
         {
-            if (!string.IsNullOrEmpty(filepath))
+            try
             {
                 Log.Information($"Filepath: {@filepath}");
                 using (WebClient webclient = new WebClient())
@@ -30,14 +30,12 @@ namespace DotNetCoreReactREST.Services
                     using (var stream = await webclient.OpenReadTaskAsync(filepath))
                     {
                         IImage image = await endpoint.UploadImageStreamAsync(stream);
-                        if (image == null)
-                        {
-                            return Placeholder;
-                        }
-
                         return image.Link;
                     }
                 }
+            }
+            catch
+            {
             }
 
             return Placeholder;

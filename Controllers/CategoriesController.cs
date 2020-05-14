@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
-using DotNetCoreReactREST.Logic;
+using DotNetCoreReactREST.Repositories;
 using DotNetCoreReactREST.ResourceParameters;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -12,65 +14,77 @@ namespace DotNetCoreReactREST.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly ICategoryLogic _categoryLogic;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper _mapper;
 
-        public CategoriesController(ICategoryLogic categoryLogic)
+        public CategoriesController(IMapper mapper, ICategoryRepository categoryRepository)
         {
-            _categoryLogic = categoryLogic;
+            _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
 
-        // POST: api/categories
+        // POST: Api/Categories
         [HttpPost]
         public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryForCreationDto category)
         {
-            CategoryDto addedCategory = await _categoryLogic.CreateCategoryAsync(category);
-
-            if (addedCategory == null)
+            if (category == null)
             {
-                return Problem("Category might have existed.");
+                throw new ArgumentNullException(nameof(category));
+            }
+
+            var categoryToAdd = _mapper.Map<Category>(category);
+            await _categoryRepository.AddCategoryAsync(categoryToAdd);
+
+            var isSaved = await _categoryRepository.SaveAsync();
+            if (!isSaved)
+            {
+                return Problem("Problem saving newly created category.");
             }
 
             // Alternative way
             // var baseURI = Request.Scheme + "://" + Request.Host + Request.Path;
             var baseURI = Request.GetDisplayUrl();
 
-            return Created(baseURI + addedCategory.Id, addedCategory);
+            return Created(baseURI + categoryToAdd.Id, _mapper.Map<CategoryDto>(categoryToAdd));
         }
 
-        // DELETE: api/categories/{categoryId}
+        // DELETE: Api/Categories/{CategoryId}
         [HttpDelete("{categoryId}")]
         public async Task<ActionResult> DeleteCategory(int categoryId)
         {
-            CategoryDto deletedCategory = await _categoryLogic.DeleteCategoryAsync(categoryId);
-
-            if (deletedCategory == null)
+            var categoryToDelete = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+            if (categoryToDelete == null)
             {
-                return Problem();
+                return BadRequest("Category does not exists");
             }
 
-            return Ok(deletedCategory);
+            _categoryRepository.DeleteCategory(categoryToDelete);
+            await _categoryRepository.SaveAsync();
+
+            return NoContent();
         }
 
-        // PATCH: api/categories/{categoryId}
+        // PATCH: Api/Categories/{CategoryId}
         [HttpPatch("{categoryId}")]
-        public async Task<ActionResult> EditCategory(int categoryId, CategoryForUpdateDto category)
+        public async Task<ActionResult<CategoryDto>> EditCategory(int categoryId, CategoryForUpdateDto category)
         {
-            CategoryDto result = await _categoryLogic.EditCategoryAsync(categoryId, category);
-
-            if (result == null)
+            var categoryFromRepo = await _categoryRepository.GetCategoryByIdAsync(categoryId);
+            if (categoryFromRepo == null)
             {
-                return NotFound();
+                return BadRequest("Category does not exists");
             }
 
-            return Ok(result);
+            _mapper.Map(category, categoryFromRepo);
+            await _categoryRepository.SaveAsync();
+
+            return NoContent();
         }
 
-        // GET: api/categories
+        // GET: Api/Categories
         [HttpGet]
-        public async Task<ActionResult> GetCategories([FromQuery] PaginationResourceParameter<Category> paginationResourceParameter)
+        public async Task<IActionResult> GetCategories([FromQuery] PaginationResourceParameter<Category> paginationResourceParameter)
         {
-            PaginationResourceParameter<Category> result = await _categoryLogic.GetCategoriesAsync(paginationResourceParameter);
-
+            var result = await _categoryRepository.GetCategoriesAsync(paginationResourceParameter);
             if (result == null)
             {
                 return NotFound();
@@ -79,18 +93,18 @@ namespace DotNetCoreReactREST.Controllers
             return Ok(result);
         }
 
-        // GET: api/categories/{categoryId}
+        // GET: Api/Categories/{CategoryId}
         [HttpGet("{categoryId}", Name = "GetCategories")]
         public async Task<ActionResult<CategoryDto>> GetCategory(int categoryId)
         {
-            CategoryDto result = await _categoryLogic.GetCategoryAsync(categoryId);
+            var categoryFromRepo = await _categoryRepository.GetCategoryByIdAsync(categoryId);
 
-            if (result == null)
+            if (categoryFromRepo == null)
             {
                 return NotFound();
             }
 
-            return Ok(result);
+            return Ok(_mapper.Map<CategoryDto>(categoryFromRepo));
         }
     }
 }

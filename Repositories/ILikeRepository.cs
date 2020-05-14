@@ -12,10 +12,10 @@ namespace DotNetCoreReactREST.Repositories
 
         Task<Like> LikeComment(Like like);
 
-        Task<Like> LikeExists(int commentId, string userId);
+        Task<bool> LikeExists(int commentId, string userId);
 
         Task<bool> SaveAsync();
 
-        Like UnlikeComment(Like like);
+        void UnlikeComment(Like like);
     }
 }

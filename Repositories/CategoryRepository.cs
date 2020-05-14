@@ -26,15 +26,14 @@ namespace DotNetCoreReactREST.Repositories
             await _context.Categories.AddAsync(category);
         }
 
-        public async Task<bool> CategoryNameExistsAsync(string categoryName)
+        public void DeleteCategory(Category category)
         {
-            // TODO: Double check following defensive programming. What are the requirements for category name? Can it be empty? Can it be only whitespaces?
-            if (string.IsNullOrEmpty(categoryName) || string.IsNullOrWhiteSpace(categoryName))
+            if (category == null)
             {
-                throw new ArgumentNullException(nameof(categoryName));
+                throw new ArgumentNullException(nameof(category));
             }
 
-            return await _context.Categories.AnyAsync(c => c.Name == categoryName);
+            _context.Categories.Remove(category);
         }
 
         public async Task<PaginationResourceParameter<Category>> GetCategoriesAsync(PaginationResourceParameter<Category> paginationResourceParameter)

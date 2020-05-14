@@ -15,7 +15,5 @@ namespace DotNetCoreReactREST.Entities
         public string Description { get; set; }
 
         public ICollection<Post> Posts { get; set; } = new List<Post>();
-
-        public bool IsDeleted { get; set; }
     }
 }

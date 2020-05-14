@@ -9,7 +9,7 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  Container,
+  Container
 } from "reactstrap";
 import Register from "../auth/Register";
 import Login from "../auth/Login";
@@ -18,8 +18,7 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const toggle = () => setIsOpen(!isOpen);
-  const user = useSelector((state) => state.auth.user);
-
+  const user = useSelector(state => state.auth.user);
   const authCheck = () => {
     if (!user) {
       return (
@@ -39,7 +38,9 @@ const Navigation = () => {
         </>
       );
     } else {
-      return <NavbarPanel />;
+      return (
+       <NavbarPanel />
+      );
     }
   };
   return (

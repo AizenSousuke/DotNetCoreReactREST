@@ -8,7 +8,7 @@ namespace DotNetCoreReactREST.Repositories
     {
         Task AddCategoryAsync(Category category);
 
-        Task<bool> CategoryNameExistsAsync(string categoryName);
+        void DeleteCategory(Category category);
 
         Task<PaginationResourceParameter<Category>> GetCategoriesAsync(PaginationResourceParameter<Category> paginationResourceParameter);
 
