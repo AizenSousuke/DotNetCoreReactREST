@@ -6,13 +6,13 @@ namespace DotNetCoreReactREST.Repositories
 {
     public interface ILikeRepository
     {
-        Task<Like> GetLikeById(int likeId);
+        Task<Like> GetLikeByIdAsync(int likeId);
 
-        Task<IEnumerable<Like>> GetLikesForComment(int commentId);
+        Task<IEnumerable<Like>> GetLikesForCommentAsync(int commentId);
 
-        Task<Like> LikeComment(Like like);
+        Task<Like> LikeCommentAsync(Like like);
 
-        Task<Like> LikeExists(int commentId, string userId);
+        Task<Like> LikeExistsAsync(int commentId, string userId);
 
         Task<bool> SaveAsync();
 

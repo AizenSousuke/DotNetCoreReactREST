@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
+using DotNetCoreReactREST.Logic;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,93 +14,57 @@ namespace DotNetCoreReactREST.Controllers
     [ApiController]
     public class LikesController : ControllerBase
     {
-        private readonly ICommentRepository _commentRepo;
-        private readonly ILikeRepository _likeRepo;
+        private readonly ILikeLogic _likeLogic;
         private readonly IMapper _mapper;
-        private readonly IUserRepository _userRepo;
 
-        public LikesController(
-            ICommentRepository commentRepo,
-            ILikeRepository likeRepo,
-            IMapper mapper,
-            IUserRepository userRepo)
+        public LikesController(ILikeLogic likeLogic, IMapper mapper)
         {
-            _commentRepo = commentRepo;
-            _likeRepo = likeRepo;
+            _likeLogic = likeLogic;
             _mapper = mapper;
-            _userRepo = userRepo;
         }
 
-        // GET: Api/Comments/{CommentId}/Likes
+        // GET: api/comments/{commentId}/likes
         [HttpGet("comments/{commentId}/likes")]
-        public async Task<IActionResult> GetLikesForComment(int commentId)
+        public async Task<ActionResult> GetLikesForComment(int commentId)
         {
-            var commentExists = await _commentRepo.CommentExistsAsync(commentId);
-            if (!commentExists)
+            IEnumerable<LikeDto> result = await _likeLogic.GetLikesForCommentAsync(commentId);
+
+            if (result == null)
             {
-                return BadRequest("Comment doesn't exist.");
+                return NotFound();
             }
 
-            var likesFromRepo = await _likeRepo.GetLikesForComment(commentId);
-            return Ok(_mapper.Map<List<LikeDto>>(likesFromRepo));
+            return Ok(result);
         }
 
-        // POST: Api/Comments/{CommentId}/User/{UserId}/Likes
+        // POST: api/comments/{commentId}/user/{userId}/likes
         // Authenticate to make sure userId is the same as logged user
         [HttpPost("comments/{commentId}/users/{userId}/Likes")]
-        public async Task<IActionResult> LikeComment(int commentId, string userId)
+        public async Task<ActionResult> LikeComment(int commentId, string userId)
         {
-            // Check comment exists
-            bool commentExists = await _commentRepo.CommentExistsAsync(commentId);
-            if (!commentExists)
+            LikeDto result = await _likeLogic.LikeCommentAsync(commentId, userId);
+
+            if (result == null)
             {
-                return Problem("Comment doesn't exists.");
+                return Problem();
             }
 
-            // Like is unique to user, so none should exist
-            Like exists = await _likeRepo.LikeExists(commentId, userId);
-            if (exists != null)
-            {
-                // Change the isLiked property by toggling
-                exists.IsLiked = !exists.IsLiked;
-                bool result = await _likeRepo.SaveAsync();
-                if (result)
-                {
-                    return Ok(_mapper.Map<LikeDto>(await _likeRepo.GetLikeById(exists.Id)));
-                }
-
-                return Problem("Problem with Database.");
-            }
-
-            // If Like doesn't exists, create new one
-            Like results = await _likeRepo.LikeComment(new Like { CommentId = commentId, ApplicationUserId = userId, IsLiked = true });
-            if (results != null)
-            {
-                return Ok(_mapper.Map<LikeDto>(results));
-            }
-
-            return Problem("Problem with Database.");
+            return Ok(result);
         }
 
-        // DELETE: Api/Likes/{LikeId}
+        // DELETE: api/likes/{likeId}
         // Authenticate to make sure userId is the same as logged user
         [HttpDelete("likes/{likeId}")]
-        public async Task<IActionResult> UnLike(int likeId)
+        public async Task<ActionResult> Unlike(int likeId)
         {
-            var commentFromRepo = await _likeRepo.GetLikeById(likeId);
-            if (commentFromRepo == null)
+            LikeDto result = await _likeLogic.UnlikeCommentAsync(likeId);
+
+            if (result == null)
             {
-                return BadRequest("No likes on comment.");
+                return Problem();
             }
 
-            _likeRepo.UnlikeComment(commentFromRepo);
-            bool result = await _likeRepo.SaveAsync();
-            if (result)
-            {
-                return Ok(_mapper.Map<LikeDto>(await _likeRepo.GetLikeById(likeId)));
-            }
-
-            return Problem("Not saved.");
+            return Ok(result);
         }
     }
 }
