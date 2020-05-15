@@ -16,6 +16,6 @@ namespace DotNetCoreReactREST.Repositories
 
         Task<bool> SaveAsync();
 
-        Like UnlikeCommentAsync(Like like);
+        Like UnlikeComment(Like like);
     }
 }

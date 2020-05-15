@@ -70,7 +70,7 @@ namespace DotNetCoreReactREST.Logic
 
             return _mapper.Map<LikeDto>(like);
         }
-
+         
         public async Task<LikeDto> UnlikeCommentAsync(int likeId)
         {
             Like like = await _likeRepository.GetLikeByIdAsync(likeId);
@@ -79,7 +79,7 @@ namespace DotNetCoreReactREST.Logic
                 return null;
             }
 
-            _likeRepository.UnlikeCommentAsync(like);
+            _likeRepository.UnlikeComment(like);
 
             bool isSaved = await _likeRepository.SaveAsync();
 
