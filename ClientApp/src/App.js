@@ -8,7 +8,7 @@ import {
   getUsers,
   getCategories,
   getSingleBlogComments,
-  getLikesForComment
+  getLikesForComment,
 } from "./actions/blogActions";
 import { setUser } from "./actions/auth";
 import Profile from "./pages/Profile";
@@ -22,11 +22,11 @@ const App = () => {
     dispatch(getBlogs());
     dispatch(getCategories());
     dispatch(getUsers());
-    
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      dispatch(setUser(user));
-    }
+
+    //   const user = JSON.parse(localStorage.getItem("user"));
+    //   if (user) {
+    //     dispatch(setUser(user));
+    //   }
   });
 
   return (

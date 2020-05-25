@@ -9,7 +9,7 @@ namespace DotNetCoreReactREST.Entities
         [Key]
         public int Id { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        public DateTime DateTime { get; set; }
 
         [Required]
         [MaxLength(1000)]
@@ -26,5 +26,7 @@ namespace DotNetCoreReactREST.Entities
         public string ApplicationUserId { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

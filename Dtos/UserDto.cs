@@ -11,5 +11,7 @@
         public string PasswordHash { get; set; }
 
         public bool IsAdmin { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

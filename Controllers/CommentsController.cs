@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
-using DotNetCoreReactREST.Repositories;
+using DotNetCoreReactREST.Logic;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -17,121 +16,93 @@ namespace DotNetCoreReactREST.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
-        private readonly ICommentRepository _commentRepo;
-        private readonly IMapper _mapper;
+        private readonly ICommentLogic _commentLogic;
 
-        public CommentsController(ICommentRepository commentRepo, IMapper mapper)
+        public CommentsController(ICommentLogic commentLogic)
         {
-            _commentRepo = commentRepo;
-            _mapper = mapper;
+            _commentLogic = commentLogic;
         }
 
-        // POST: Api/Comments
+        // POST: api/comments
         [HttpPost("comments")]
         public async Task<ActionResult<CommentDto>> CreateComment(CommentForCreationDto comment)
         {
-            var commentToAdd = _mapper.Map<Comment>(comment);
-            await _commentRepo.AddComment(commentToAdd);
-            await _commentRepo.Save();
+            CommentDto addedComment = await _commentLogic.CreateCommentAsync(comment);
 
-            var commentToReturn = _mapper.Map<CommentDto>(commentToAdd);
-            return CreatedAtRoute(
-                "GetComment",
-                new { commentId = commentToReturn.Id },
-                commentToReturn);
+            if (addedComment == null)
+            {
+                return Problem();
+            }
+
+            return Ok(addedComment);
         }
 
-        // DELETE: Api/Comments/{CommentId}
+        // DELETE: api/comments/{commentId}
         [HttpDelete("comments/{commentId}")]
-        public async Task<ActionResult> Delete(int commentId)
+        public async Task<ActionResult> DeleteComment(int commentId)
         {
-            var commentFromRepo = await _commentRepo.GetCommentById(commentId);
-            if (commentFromRepo == null)
+            CommentDto deletedComment = await _commentLogic.DeleteCommentAsync(commentId);
+
+            if (deletedComment == null)
+            {
+                return Problem();
+            }
+
+            return Ok(deletedComment);
+        }
+
+        // PATCH: api/comments/{commentId}
+        [HttpPatch("comments/{commentId}")]
+        public async Task<ActionResult> EditComment(
+            [FromRoute]int commentId,
+            [FromBody]JsonPatchDocument<Comment> patchDocument)
+        {
+            // TODO: Temporary stays here. Don't know how to move it into business logic layer
+            if (!ModelState.IsValid)
+            {
+                return new BadRequestObjectResult(ModelState);
+            }
+
+            CommentDto result = await _commentLogic.EditCommentAsync(commentId, patchDocument, ModelState);
+
+            if (result == null)
             {
                 return NotFound();
             }
 
-            _commentRepo.DeleteComment(commentFromRepo);
-            await _commentRepo.Save();
-            return NoContent();
+            return Ok(result);
         }
 
-        // GET: Api/Comments/{CommentId}
+        // GET: api/comments/{commentId}
         [HttpGet("comments/{commentId}", Name = "GetComment")]
-        public async Task<ActionResult> GetCommentForUser(int commentId)
+        public async Task<ActionResult<CommentDto>> GetComment(int commentId)
         {
-            var commentFromRepo = await _commentRepo.GetCommentById(commentId);
-            if (commentFromRepo == null)
+            CommentDto result = await _commentLogic.GetCommentAsync(commentId);
+
+            if (result == null)
             {
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<CommentDto>(commentFromRepo));
+            return Ok(result);
         }
 
-        // GET: Api/Posts/{PostId}/Comments
+        // GET: api/posts/{postId}/comments
         [HttpGet("posts/{postId:int}/comments")]
         public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsForPost(int postId)
         {
-            var commentsFromRepo = await _commentRepo.GetCommentsForPost(postId);
-            return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
+            IEnumerable<CommentDto> result = await _commentLogic.GetCommentsForPostAsync(postId);
+
+            return Ok(result);
         }
 
-        // GET: Api/Users/{UserId}/Comments
+        // GET: api/users/{userId}/comments
         [HttpGet("users/{userId}/comments")]
         public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsForUser(string userId)
         {
-            var commentsFromRepo = await _commentRepo.GetCommentsForUser(userId);
-            return Ok(_mapper.Map<IEnumerable<CommentDto>>(commentsFromRepo));
-        }
+            IEnumerable<CommentDto> result = await _commentLogic.GetCommentsForUserAsync(userId);
 
-        // PUT: Comments/{CommentId}
-        [HttpPut("comments/{commentId}")]
-        public async Task<ActionResult> UpdateComment(int commentId, CommentForUpdateDto comment)
-        {
-            var commentToUpdate = await _commentRepo.GetCommentById(commentId);
-            if (commentToUpdate == null)
-            {
-                return BadRequest();
-            }
-
-            _mapper.Map(comment, commentToUpdate);
-
-            _commentRepo.UpdateComment(commentToUpdate);
-            await _commentRepo.Save();
-
-            return NoContent();
-        }
-
-        // PATCH: Api/Comments/CommentId
-        [HttpPatch("comments/{commentId}")]
-        public async Task<ActionResult> UpdateCommentPartially(
-            int commentId,
-            JsonPatchDocument<CommentForUpdateDto> patchDocument)
-        {
-            var commentFromRepo = await _commentRepo.GetCommentById(commentId);
-            if (commentFromRepo == null)
-            {
-                return BadRequest();
-            }
-
-            // Map comment from repo to a commentForUpdateDto
-            var commentToPatch = _mapper.Map<CommentForUpdateDto>(commentFromRepo);
-
-            // Patch passing in modelstate to patch item to be aware of
-            patchDocument.ApplyTo(commentToPatch, ModelState);
-
-            if (!TryValidateModel(commentToPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-
-            // Does nothing, just following convention
-            _mapper.Map(commentToPatch, commentFromRepo);
-            _commentRepo.UpdateComment(commentFromRepo);
-            await _commentRepo.Save();
-
-            return NoContent();
+            return Ok(result);
         }
 
         // This overrides validation behavior in patch to show more detailed error info if model is

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
 
 namespace DotNetCoreReactREST.Entities
 {
@@ -16,5 +16,7 @@ namespace DotNetCoreReactREST.Entities
         public ICollection<Post> Posts { get; set; } = new List<Post>();
 
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
+        public bool IsDeleted { get; set; }
     }
 }
