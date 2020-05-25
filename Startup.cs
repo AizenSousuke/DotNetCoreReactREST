@@ -63,7 +63,7 @@ namespace DotNetCoreReactREST
             // Add Business Logic
             services.AddScoped<ICategoryLogic, CategoryLogic>();
             services.AddScoped<ICommentLogic, CommentLogic>();
-            services.AddScoped<IPostLikeLogic, PostLikeLogic>();
+            services.AddScoped<ILikeLogic, LikeLogic>();
             services.AddScoped<IPostLogic, PostLogic>();
             services.AddScoped<IPostLikeLogic, PostLikeLogic>();
             services.AddScoped<IUserLogic, UserLogic>();

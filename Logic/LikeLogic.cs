@@ -9,7 +9,7 @@ using DotNetCoreReactREST.Repositories;
 
 namespace DotNetCoreReactREST.Logic
 {
-    public class LikeLogic
+    public class LikeLogic : ILikeLogic
     {
         private readonly ILikeRepository _likeRepository;
         private readonly IMapper _mapper;
