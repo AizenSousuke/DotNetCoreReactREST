@@ -44,6 +44,9 @@ namespace DotNetCoreReactREST.Migrations
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -94,801 +97,951 @@ namespace DotNetCoreReactREST.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "331588e0-dc9c-4a33-b24d-4736b9a7b8a0",
+                            ConcurrencyStamp = "4c29df0c-7c93-4614-9034-6be4354abdc7",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Bennett.Hills19@gmail.com",
+                            Email = "DinoBreitenberg.Hills19@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "DINOBREITENBERG.HILLS19@GMAIL.COM",
+                            NormalizedUserName = "DINO BREITENBERG",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "38b462ba-e376-4d61-a943-a3b899079219",
+                            SecurityStamp = "fc30ce58-20d3-4a6d-9ee5-9b4d9fdd898a",
                             TwoFactorEnabled = false,
-                            UserName = "Dino"
+                            UserName = "Dino Breitenberg"
                         },
                         new
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c52c5806-9860-48d6-8bee-7831ce27033e",
+                            ConcurrencyStamp = "f5a7e317-6ca5-434d-8b94-908d6325a8b6",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Karson_Boyer@hotmail.com",
+                            Email = "GisselleLockman_Boyer@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "GISSELLELOCKMAN_BOYER@HOTMAIL.COM",
+                            NormalizedUserName = "GISSELLE LOCKMAN",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "57779cf5-0fe5-4a4c-8ee5-22a4e903de1d",
+                            SecurityStamp = "a31e1ee5-7853-469b-8fb2-9a7a1fdf45d0",
                             TwoFactorEnabled = false,
-                            UserName = "Gisselle"
+                            UserName = "Gisselle Lockman"
                         },
                         new
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "da7b301b-8abc-4350-8393-ed8e833172c9",
+                            ConcurrencyStamp = "f369958f-100b-4939-88b1-725f5f46c3fd",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Melody_Rath@hotmail.com",
+                            Email = "BeaulahQuitzon_Rath@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "BEAULAHQUITZON_RATH@HOTMAIL.COM",
+                            NormalizedUserName = "BEAULAH QUITZON",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0a1c93ed-a69c-48a8-8aba-1ea4d7a4ddb4",
+                            SecurityStamp = "9032a3ad-0768-4c86-8ddb-b121d3e630c6",
                             TwoFactorEnabled = false,
-                            UserName = "Beaulah"
+                            UserName = "Beaulah Quitzon"
                         },
                         new
                         {
                             Id = "4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a9ff4b3c-1dd9-4646-80c1-16f1588d7c44",
+                            ConcurrencyStamp = "a064fb63-7ada-414a-b495-b642bee27767",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Jaylan.Padberg32@gmail.com",
+                            Email = "ArmandKub.Padberg32@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "ARMANDKUB.PADBERG32@GMAIL.COM",
+                            NormalizedUserName = "ARMAND KUB",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cf4671ea-0a3a-4cc5-b703-7689de3bb03c",
+                            SecurityStamp = "4959a6f9-0d7c-42a4-b7e0-da818b52a4d9",
                             TwoFactorEnabled = false,
-                            UserName = "Armand"
+                            UserName = "Armand Kub"
                         },
                         new
                         {
                             Id = "5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "969c5b98-a546-415d-80f7-c50c105d6668",
+                            ConcurrencyStamp = "6f68ee74-8550-45ff-8109-3c3ce6766213",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Adan_Luettgen@hotmail.com",
+                            Email = "AriAdams_Luettgen@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "ARIADAMS_LUETTGEN@HOTMAIL.COM",
+                            NormalizedUserName = "ARI ADAMS",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7b722767-7a07-4ea9-8c01-e1335148b4d5",
+                            SecurityStamp = "4da35d85-ba6d-4919-b63f-3d5cce813b7c",
                             TwoFactorEnabled = false,
-                            UserName = "Ari"
+                            UserName = "Ari Adams"
                         },
                         new
                         {
                             Id = "6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c41d127c-edd9-459f-9761-f411da72aa06",
+                            ConcurrencyStamp = "284b719a-5752-4176-a803-aac8e95c4c27",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Berenice.Bradtke41@hotmail.com",
+                            Email = "TatumBreitenberg.Bradtke41@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "TATUMBREITENBERG.BRADTKE41@HOTMAIL.COM",
+                            NormalizedUserName = "TATUM BREITENBERG",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6bc524c9-49e7-480e-8295-3adaf9e02ce7",
+                            SecurityStamp = "53feb52a-0559-4b31-85f3-a0641f42f16f",
                             TwoFactorEnabled = false,
-                            UserName = "Tatum"
+                            UserName = "Tatum Breitenberg"
                         },
                         new
                         {
                             Id = "7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bff0914d-aaf0-4465-9350-8fbe88134e82",
+                            ConcurrencyStamp = "5fe6f36e-8b54-4fca-94be-25411257e557",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Charity35@hotmail.com",
+                            Email = "MadelineDare35@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "MADELINEDARE35@HOTMAIL.COM",
+                            NormalizedUserName = "MADELINE DARE",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "643cd122-cfb6-40f8-9d75-132b75979087",
+                            SecurityStamp = "b5baad7d-9309-4639-bd35-7130ab05c940",
                             TwoFactorEnabled = false,
-                            UserName = "Madeline"
+                            UserName = "Madeline Dare"
                         },
                         new
                         {
                             Id = "8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0ef5bbdb-6348-429e-83ae-66df739b0fd9",
+                            ConcurrencyStamp = "7019795b-5982-4c38-8951-f97da4612580",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Maye44@yahoo.com",
+                            Email = "ArielProsacco44@yahoo.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "ARIELPROSACCO44@YAHOO.COM",
+                            NormalizedUserName = "ARIEL PROSACCO",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "70ff9bc9-8ff6-4a3c-b618-d2d2b3232ddc",
+                            SecurityStamp = "c925a1c1-8563-40d6-84e6-baa9c85997a5",
                             TwoFactorEnabled = false,
-                            UserName = "Ariel"
+                            UserName = "Ariel Prosacco"
                         },
                         new
                         {
                             Id = "9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9f31141d-81eb-4d76-8c94-d108ad80c843",
+                            ConcurrencyStamp = "f16bba4e-0b04-48d9-bbf2-6c1dee4042be",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Clint43@hotmail.com",
+                            Email = "GlennaDonnelly43@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "GLENNADONNELLY43@HOTMAIL.COM",
+                            NormalizedUserName = "GLENNA DONNELLY",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6a2cdded-fe60-4ece-812f-334ac3ca3266",
+                            SecurityStamp = "f047cada-f545-4878-95db-5454fe2670e6",
                             TwoFactorEnabled = false,
-                            UserName = "Glenna"
+                            UserName = "Glenna Donnelly"
                         },
                         new
                         {
                             Id = "10",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2bc3209d-f286-48bc-b4db-e1fcd3840e50",
+                            ConcurrencyStamp = "39e6b319-cf6b-4bb0-821a-5b5c2b1694f7",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Dortha69@yahoo.com",
+                            Email = "CamrynGorczany69@yahoo.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "CAMRYNGORCZANY69@YAHOO.COM",
+                            NormalizedUserName = "CAMRYN GORCZANY",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e16410e4-f5ec-46cf-94f8-cdf103339173",
+                            SecurityStamp = "a55e2fb4-a505-497e-b660-b545862c937a",
                             TwoFactorEnabled = false,
-                            UserName = "Camryn"
+                            UserName = "Camryn Gorczany"
                         },
                         new
                         {
                             Id = "11",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9e92c736-1db8-4137-b351-1d74c4c9de82",
+                            ConcurrencyStamp = "0d4e38b5-b8ff-483a-97b2-1b985b576979",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Harvey.Kertzmann@yahoo.com",
+                            Email = "ZachariahJohns.Kertzmann@yahoo.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "ZACHARIAHJOHNS.KERTZMANN@YAHOO.COM",
+                            NormalizedUserName = "ZACHARIAH JOHNS",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3c6848b0-029b-4bd2-9aeb-61409e19a84e",
+                            SecurityStamp = "f9505bd5-d962-4bfb-be0e-ef56340c7bad",
                             TwoFactorEnabled = false,
-                            UserName = "Zachariah"
+                            UserName = "Zachariah Johns"
                         },
                         new
                         {
                             Id = "12",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fbd011e6-b02c-4919-88a9-a2530e269ad9",
+                            ConcurrencyStamp = "244f9122-ce5f-4e52-9ef5-bb2fc328872b",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Carol90@gmail.com",
+                            Email = "LenoraCronin90@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "LENORACRONIN90@GMAIL.COM",
+                            NormalizedUserName = "LENORA CRONIN",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0fec172d-6a3c-41c4-ac76-4e3b31c678f7",
+                            SecurityStamp = "289c9314-d84d-41ed-ac10-d07817c43965",
                             TwoFactorEnabled = false,
-                            UserName = "Lenora"
+                            UserName = "Lenora Cronin"
                         },
                         new
                         {
                             Id = "13",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3cab878a-ff71-4a4a-abcf-3cf4fca5d695",
+                            ConcurrencyStamp = "870fe9a8-3a01-4382-b776-9d584c396c3f",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Anya62@yahoo.com",
+                            Email = "NayeliBins62@yahoo.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "NAYELIBINS62@YAHOO.COM",
+                            NormalizedUserName = "NAYELI BINS",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bc97b9f7-7153-400e-902a-115ceffd9b59",
+                            SecurityStamp = "4b750dd4-e5b1-420f-ae46-60ce05a5f0f3",
                             TwoFactorEnabled = false,
-                            UserName = "Nayeli"
+                            UserName = "Nayeli Bins"
                         },
                         new
                         {
                             Id = "14",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5898c6de-2f1f-4cdb-979a-2628c4964629",
+                            ConcurrencyStamp = "546a39ff-c4f7-4a25-8c8b-67694f043b74",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Wyatt40@yahoo.com",
+                            Email = "KhalilYost40@yahoo.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "KHALILYOST40@YAHOO.COM",
+                            NormalizedUserName = "KHALIL YOST",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fad98867-b2c2-4fb5-a6e2-ac4c80ffc739",
+                            SecurityStamp = "2a8c87c3-0da9-4b41-81f4-30ef1e0cbfae",
                             TwoFactorEnabled = false,
-                            UserName = "Khalil"
+                            UserName = "Khalil Yost"
                         },
                         new
                         {
                             Id = "15",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4df86b39-d1df-464e-93ef-bb554661816e",
+                            ConcurrencyStamp = "1bf41c15-349a-473b-adc9-0ce30af79ca7",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Floy.Ortiz@hotmail.com",
+                            Email = "BettyHerzog.Ortiz@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "BETTYHERZOG.ORTIZ@HOTMAIL.COM",
+                            NormalizedUserName = "BETTY HERZOG",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3728edf0-12ad-46ab-88e0-7b72466b4a45",
+                            SecurityStamp = "2f8e203a-4b8f-4e4d-9638-057213df1172",
                             TwoFactorEnabled = false,
-                            UserName = "Betty"
+                            UserName = "Betty Herzog"
                         },
                         new
                         {
                             Id = "16",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5d50b79c-7f9d-4645-9544-750d3079d24e",
+                            ConcurrencyStamp = "70b2195a-fe4e-457a-a4b3-2933991144fa",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Dejon63@hotmail.com",
+                            Email = "TerranceFrami63@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "TERRANCEFRAMI63@HOTMAIL.COM",
+                            NormalizedUserName = "TERRANCE FRAMI",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c01b33e9-43c4-4ce9-a9a9-72ea3456bd60",
+                            SecurityStamp = "2938d450-63f3-4871-a1a5-3dfa16e36b1c",
                             TwoFactorEnabled = false,
-                            UserName = "Terrance"
+                            UserName = "Terrance Frami"
                         },
                         new
                         {
                             Id = "17",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bc2f0692-d3f9-4db7-9b01-666dbab2b6b7",
+                            ConcurrencyStamp = "48a234dd-e6b2-463b-a005-8520c1d0832d",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Lucy.Fisher@gmail.com",
+                            Email = "SadyeNitzsche.Fisher@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "SADYENITZSCHE.FISHER@GMAIL.COM",
+                            NormalizedUserName = "SADYE NITZSCHE",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "64da748b-89e3-4ef0-b58c-9241f136fba1",
+                            SecurityStamp = "50e8e557-1de4-4af9-9b2b-db9b84c7e242",
                             TwoFactorEnabled = false,
-                            UserName = "Sadye"
+                            UserName = "Sadye Nitzsche"
                         },
                         new
                         {
                             Id = "18",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "11077021-d975-48f1-89ec-eefccef9a432",
+                            ConcurrencyStamp = "4007cfd9-497b-433d-a6e2-675b623b15cd",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Chesley5@gmail.com",
+                            Email = "DaveDavis5@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "DAVEDAVIS5@GMAIL.COM",
+                            NormalizedUserName = "DAVE DAVIS",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7273b00e-776f-4d9b-a20d-3d1ee47cf1e3",
+                            SecurityStamp = "b8fd95fa-085c-4a9a-a74f-9f7c967ef1ab",
                             TwoFactorEnabled = false,
-                            UserName = "Dave"
+                            UserName = "Dave Davis"
                         },
                         new
                         {
                             Id = "19",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "201e7c38-b1c3-4e79-99b0-28ac7327b0fb",
+                            ConcurrencyStamp = "c011ef63-35a8-4816-a21c-9de654097fbc",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Lisandro.Terry31@gmail.com",
+                            Email = "QuintonMurazik.Terry31@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "QUINTONMURAZIK.TERRY31@GMAIL.COM",
+                            NormalizedUserName = "QUINTON MURAZIK",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e899c043-df72-4da7-bf3d-9d9b02f3192b",
+                            SecurityStamp = "0547142e-0974-4a62-8d91-d67f4264bbe7",
                             TwoFactorEnabled = false,
-                            UserName = "Quinton"
+                            UserName = "Quinton Murazik"
                         },
                         new
                         {
                             Id = "20",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "62b5397d-c888-4395-8274-0f5e9747b465",
+                            ConcurrencyStamp = "83fcba7a-13db-4614-8aea-fe19d9baaf7b",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Harry55@gmail.com",
+                            Email = "ShermanJohns55@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "SHERMANJOHNS55@GMAIL.COM",
+                            NormalizedUserName = "SHERMAN JOHNS",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a39795eb-9d67-44fd-901b-08bc67da5bd7",
+                            SecurityStamp = "fb9f8caa-b581-4e3e-803d-950c8094a350",
                             TwoFactorEnabled = false,
-                            UserName = "Sherman"
+                            UserName = "Sherman Johns"
                         },
                         new
                         {
                             Id = "21",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "db143893-e676-4cf2-83c8-7ec7c4380112",
+                            ConcurrencyStamp = "08b248cc-8d83-4213-a202-9ee9fa44031e",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Laisha_Gulgowski70@hotmail.com",
+                            Email = "TreverMcKenzie_Gulgowski70@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "TREVERMCKENZIE_GULGOWSKI70@HOTMAIL.COM",
+                            NormalizedUserName = "TREVER MCKENZIE",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e2603f1a-6126-4563-9be9-033632b99f66",
+                            SecurityStamp = "a3ab9ee2-e28a-4548-a3b6-f7fb9ac7f145",
                             TwoFactorEnabled = false,
-                            UserName = "Trever"
+                            UserName = "Trever McKenzie"
                         },
                         new
                         {
                             Id = "22",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a0a632a8-e123-4925-b797-f40cb61af899",
+                            ConcurrencyStamp = "4b96bd95-acc0-4bf8-be99-ae81eeee6a05",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Zachery.Hintz@yahoo.com",
+                            Email = "AbeZemlak.Hintz@yahoo.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "ABEZEMLAK.HINTZ@YAHOO.COM",
+                            NormalizedUserName = "ABE ZEMLAK",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "76082787-f9e1-4fd1-bb24-d04d48b40aa3",
+                            SecurityStamp = "1e3db345-33d7-46f7-8678-2aebc4b8a3ff",
                             TwoFactorEnabled = false,
-                            UserName = "Abe"
+                            UserName = "Abe Zemlak"
                         },
                         new
                         {
                             Id = "23",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "43cb92d4-df14-4143-8dcc-71f87a8b9ecc",
+                            ConcurrencyStamp = "07892eed-fd1c-4756-9e14-1cd51a615051",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Courtney22@hotmail.com",
+                            Email = "KiaraEffertz22@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "KIARAEFFERTZ22@HOTMAIL.COM",
+                            NormalizedUserName = "KIARA EFFERTZ",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8b35ad28-b8b9-4b28-a78b-27790db9f71e",
+                            SecurityStamp = "1433caf4-7703-45e1-9b11-22371b69e861",
                             TwoFactorEnabled = false,
-                            UserName = "Kiara"
+                            UserName = "Kiara Effertz"
                         },
                         new
                         {
                             Id = "24",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6535e761-e42c-4c31-8207-5c431c02db61",
+                            ConcurrencyStamp = "89f19073-8508-4727-87d4-42e7f3dee4f2",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Maci.Welch40@hotmail.com",
+                            Email = "FlorenceOHara.Welch40@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "FLORENCEOHARA.WELCH40@HOTMAIL.COM",
+                            NormalizedUserName = "FLORENCE O'HARA",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6b030686-4575-45b2-a2f7-d8e1c4c95d9d",
+                            SecurityStamp = "b08331c1-b129-478d-9c19-c846257b3f53",
                             TwoFactorEnabled = false,
-                            UserName = "Florence"
+                            UserName = "Florence O'Hara"
                         },
                         new
                         {
                             Id = "25",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8995c5ec-3665-40cd-8a4e-99dd549f2c3f",
+                            ConcurrencyStamp = "fa7d382a-2e38-41e8-9b7f-053d0b415909",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Mittie.Erdman9@gmail.com",
+                            Email = "PattieReilly.Erdman9@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "PATTIEREILLY.ERDMAN9@GMAIL.COM",
+                            NormalizedUserName = "PATTIE REILLY",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3ca0ceef-8481-492f-b33d-4827d947f9aa",
+                            SecurityStamp = "3390541d-1440-4877-8aed-ba32556e21f0",
                             TwoFactorEnabled = false,
-                            UserName = "Pattie"
+                            UserName = "Pattie Reilly"
                         },
                         new
                         {
                             Id = "26",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1b388505-305b-414a-a1c2-aa0ecb8bf967",
+                            ConcurrencyStamp = "49652e9b-60b4-43f6-96f0-4372bd2ac3b2",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Jarrell.Friesen97@yahoo.com",
+                            Email = "MarkKrajcik.Friesen97@yahoo.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "MARKKRAJCIK.FRIESEN97@YAHOO.COM",
+                            NormalizedUserName = "MARK KRAJCIK",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d5edddf2-f0b0-4df8-a6c1-6398e615831c",
+                            SecurityStamp = "03736c4f-bdc5-42a8-a4e7-499fe7c3b375",
                             TwoFactorEnabled = false,
-                            UserName = "Mark"
+                            UserName = "Mark Krajcik"
                         },
                         new
                         {
                             Id = "27",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9fc98791-770f-44c0-91ea-7f727814d748",
+                            ConcurrencyStamp = "55aa8a0a-ef29-44a0-8270-1377de60adaa",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Amir.Windler50@hotmail.com",
+                            Email = "ElianBecker.Windler50@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "ELIANBECKER.WINDLER50@HOTMAIL.COM",
+                            NormalizedUserName = "ELIAN BECKER",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e4594e2a-bff5-44fd-af63-2ee6c879921d",
+                            SecurityStamp = "48a9a06a-7f51-45e4-a293-dbe0c554f044",
                             TwoFactorEnabled = false,
-                            UserName = "Elian"
+                            UserName = "Elian Becker"
                         },
                         new
                         {
                             Id = "28",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e5a76f85-9c86-44eb-b577-2c84283d1d65",
+                            ConcurrencyStamp = "df839d12-d3f9-43bb-84d6-5a6df3eefc05",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Bennett.Mertz76@gmail.com",
+                            Email = "LisandroBreitenberg.Mertz76@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "LISANDROBREITENBERG.MERTZ76@GMAIL.COM",
+                            NormalizedUserName = "LISANDRO BREITENBERG",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9e020e5f-a0dc-4f63-8e9f-99a099d27f04",
+                            SecurityStamp = "af85bdc4-b7eb-487f-ae88-900a51db3c8f",
                             TwoFactorEnabled = false,
-                            UserName = "Lisandro"
+                            UserName = "Lisandro Breitenberg"
                         },
                         new
                         {
                             Id = "29",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "011539b4-1d08-44fb-9829-09e0b41e496f",
+                            ConcurrencyStamp = "ec6ac52c-ed24-4082-84ed-3ff39a24a20e",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Ara37@yahoo.com",
+                            Email = "SusanaBlanda37@yahoo.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "SUSANABLANDA37@YAHOO.COM",
+                            NormalizedUserName = "SUSANA BLANDA",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ef13ecda-21a1-4d2b-8962-f77888b63c0c",
+                            SecurityStamp = "5a1019fb-606c-4442-bd8c-98b530ef5e61",
                             TwoFactorEnabled = false,
-                            UserName = "Susana"
+                            UserName = "Susana Blanda"
                         },
                         new
                         {
                             Id = "30",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dccaf218-7465-4521-bc9c-02509044d778",
+                            ConcurrencyStamp = "fa06a4de-ee34-4a59-a555-eb88b0270e2b",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Wilhelm.Rutherford31@hotmail.com",
+                            Email = "BradleyWuckert.Rutherford31@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "BRADLEYWUCKERT.RUTHERFORD31@HOTMAIL.COM",
+                            NormalizedUserName = "BRADLEY WUCKERT",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4f8c74a0-a600-4c2c-82b6-07c0bc408c12",
+                            SecurityStamp = "4a51569f-4608-44f6-95e5-b7c44c03fd34",
                             TwoFactorEnabled = false,
-                            UserName = "Bradley"
+                            UserName = "Bradley Wuckert"
                         },
                         new
                         {
                             Id = "31",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1c330964-5d8d-412c-aa3b-e4c92a491972",
+                            ConcurrencyStamp = "482d66b1-9e7e-4bbe-9c1c-b440dce5bc90",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Avis_Mosciski24@yahoo.com",
+                            Email = "LuraBoyle_Mosciski24@yahoo.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "LURABOYLE_MOSCISKI24@YAHOO.COM",
+                            NormalizedUserName = "LURA BOYLE",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "eb3f69ec-366c-4723-95f0-976163652b95",
+                            SecurityStamp = "561ae3e6-8888-4272-9b70-02a20ed1881c",
                             TwoFactorEnabled = false,
-                            UserName = "Lura"
+                            UserName = "Lura Boyle"
                         },
                         new
                         {
                             Id = "32",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "84ae7770-6ba4-4855-acde-521200643122",
+                            ConcurrencyStamp = "44271542-fbf6-441f-8640-3151d5eed694",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Lavina57@gmail.com",
+                            Email = "AndrewMetz57@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "ANDREWMETZ57@GMAIL.COM",
+                            NormalizedUserName = "ANDREW METZ",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0b98953c-5c43-45c6-b46f-e36abd776759",
+                            SecurityStamp = "c16fd16f-8866-427d-9a47-405e636514c8",
                             TwoFactorEnabled = false,
-                            UserName = "Andrew"
+                            UserName = "Andrew Metz"
                         },
                         new
                         {
                             Id = "33",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "67643580-a913-4c77-9318-07ae13fa9fcf",
+                            ConcurrencyStamp = "5d256249-2728-4b93-86eb-887d8e369555",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Casey_Cruickshank@yahoo.com",
+                            Email = "StephaniaCruickshank_Cruickshank@yahoo.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "STEPHANIACRUICKSHANK_CRUICKSHANK@YAHOO.COM",
+                            NormalizedUserName = "STEPHANIA CRUICKSHANK",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "521204d6-ea1a-4a01-a978-e31564abda69",
+                            SecurityStamp = "9d6a69fe-e272-495d-abfd-dcad38cdd746",
                             TwoFactorEnabled = false,
-                            UserName = "Stephania"
+                            UserName = "Stephania Cruickshank"
                         },
                         new
                         {
                             Id = "34",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "120db724-017d-427b-b777-14213996cdfb",
+                            ConcurrencyStamp = "4c17f826-b157-4d8f-8577-be9f60b6feea",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Ernest.Jacobs62@hotmail.com",
+                            Email = "DaneHarber.Jacobs62@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "DANEHARBER.JACOBS62@HOTMAIL.COM",
+                            NormalizedUserName = "DANE HARBER",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c66cf4d9-527c-4b54-bc30-c553647c0a8c",
+                            SecurityStamp = "3021c8f5-fa24-4c21-b360-9654b8495dc1",
                             TwoFactorEnabled = false,
-                            UserName = "Dane"
+                            UserName = "Dane Harber"
                         },
                         new
                         {
                             Id = "35",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d28efa26-ac48-469c-9979-46c61920b3e3",
+                            ConcurrencyStamp = "7eb84980-b5e9-4e69-81c8-4403f3e44441",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Ruby7@gmail.com",
+                            Email = "AlanaStehr7@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "ALANASTEHR7@GMAIL.COM",
+                            NormalizedUserName = "ALANA STEHR",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f98818b8-c2ca-4d10-81ff-fe4a6858f1ee",
+                            SecurityStamp = "f167c92f-9499-4019-9897-4e576e07de84",
                             TwoFactorEnabled = false,
-                            UserName = "Alana"
+                            UserName = "Alana Stehr"
                         },
                         new
                         {
                             Id = "36",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "14c43a15-56b8-41f1-8765-441cd15ea75b",
+                            ConcurrencyStamp = "24d4ed82-af5a-462c-a421-c474996c63f5",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Carlotta.Lehner@hotmail.com",
+                            Email = "RoelCrona.Lehner@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "ROELCRONA.LEHNER@HOTMAIL.COM",
+                            NormalizedUserName = "ROEL CRONA",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c75348e5-f43b-45ba-a370-4556bd77545e",
+                            SecurityStamp = "602275b9-f9bc-421b-bb31-4f65b9701682",
                             TwoFactorEnabled = false,
-                            UserName = "Roel"
+                            UserName = "Roel Crona"
                         },
                         new
                         {
                             Id = "37",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "81b4d567-9089-49ba-a249-4978eb810adb",
+                            ConcurrencyStamp = "ecdcb1b1-0ca0-4a90-a504-1f6669c94da3",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Abdullah2@hotmail.com",
+                            Email = "MafaldaAbernathy2@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "MAFALDAABERNATHY2@HOTMAIL.COM",
+                            NormalizedUserName = "MAFALDA ABERNATHY",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5ff2cd46-cec7-40a8-bfa6-53f5d6766b5a",
+                            SecurityStamp = "5235a92e-6f74-40be-b737-3fe23d3d037c",
                             TwoFactorEnabled = false,
-                            UserName = "Mafalda"
+                            UserName = "Mafalda Abernathy"
                         },
                         new
                         {
                             Id = "38",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "495b49d9-dbf2-4ce5-a801-8bbabf97fe39",
+                            ConcurrencyStamp = "cbb11cf9-3b0c-42e5-87b9-566517955bb1",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Vallie.Kovacek65@hotmail.com",
+                            Email = "MalachiWilderman.Kovacek65@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "MALACHIWILDERMAN.KOVACEK65@HOTMAIL.COM",
+                            NormalizedUserName = "MALACHI WILDERMAN",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bb4dc1a0-8301-44ff-89c8-b97f6cb4fa18",
+                            SecurityStamp = "8c5cc2b4-c36d-4f6f-ae87-5881abe6e377",
                             TwoFactorEnabled = false,
-                            UserName = "Malachi"
+                            UserName = "Malachi Wilderman"
                         },
                         new
                         {
                             Id = "39",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9acb41b7-70df-45c6-9c7f-1262e29da257",
+                            ConcurrencyStamp = "e338e224-bc39-4bee-8b74-1f81b1d6da99",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Unique_Wunsch70@hotmail.com",
+                            Email = "CallieWhite_Wunsch70@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "CALLIEWHITE_WUNSCH70@HOTMAIL.COM",
+                            NormalizedUserName = "CALLIE WHITE",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c7d1ba86-1ac7-45c5-9348-5dd46024dfb5",
+                            SecurityStamp = "19ba4277-baf2-4793-86a2-d1bb73183516",
                             TwoFactorEnabled = false,
-                            UserName = "Callie"
+                            UserName = "Callie White"
                         },
                         new
                         {
                             Id = "40",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3380b55e-26d0-4d03-9410-f6d885ce406e",
+                            ConcurrencyStamp = "08e166a8-0ed6-42f9-947f-3b02298b23a0",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Elmira.Hudson1@hotmail.com",
+                            Email = "GraceHaag.Hudson1@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "GRACEHAAG.HUDSON1@HOTMAIL.COM",
+                            NormalizedUserName = "GRACE HAAG",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "35f971d3-8db0-4aac-9765-2da257f69d8c",
+                            SecurityStamp = "f21f423f-89d7-4e0f-a4ad-7a7929064eed",
                             TwoFactorEnabled = false,
-                            UserName = "Grace"
+                            UserName = "Grace Haag"
                         },
                         new
                         {
                             Id = "41",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f75e7349-b011-406f-8d92-b836abe37076",
+                            ConcurrencyStamp = "ed806a84-f60d-4007-859e-aa3ac4da3a2e",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Darwin.Bauch@yahoo.com",
+                            Email = "StephenFeil.Bauch@yahoo.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "STEPHENFEIL.BAUCH@YAHOO.COM",
+                            NormalizedUserName = "STEPHEN FEIL",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3832dbdd-96bd-4a35-810d-779c8f924484",
+                            SecurityStamp = "543b65f0-7e4e-4a7d-83cd-617abdddb88b",
                             TwoFactorEnabled = false,
-                            UserName = "Stephen"
+                            UserName = "Stephen Feil"
                         },
                         new
                         {
                             Id = "42",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "76ff2216-2770-4096-964d-82df735f5c4d",
+                            ConcurrencyStamp = "37aa3b1b-d4f3-472f-87f6-616d9772df55",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Virgil.Hintz@hotmail.com",
+                            Email = "NorbertWintheiser.Hintz@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "NORBERTWINTHEISER.HINTZ@HOTMAIL.COM",
+                            NormalizedUserName = "NORBERT WINTHEISER",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "32971bac-4261-4a1c-86b3-13d74a4c3927",
+                            SecurityStamp = "c6910340-31fe-4796-a68b-7bc2b8856dff",
                             TwoFactorEnabled = false,
-                            UserName = "Norbert"
+                            UserName = "Norbert Wintheiser"
                         },
                         new
                         {
                             Id = "43",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2065c3be-7569-4849-831b-998b8bc7fc09",
+                            ConcurrencyStamp = "e9c710cf-af0e-4ff9-9bd9-ec1d1ce0fcc4",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Dimitri_White@gmail.com",
+                            Email = "GayGleason_White@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "GAYGLEASON_WHITE@GMAIL.COM",
+                            NormalizedUserName = "GAY GLEASON",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "92f48145-2c17-4a5b-a749-e828c46a2474",
+                            SecurityStamp = "cbe21bce-d682-44fd-bbc1-242efac04762",
                             TwoFactorEnabled = false,
-                            UserName = "Gay"
+                            UserName = "Gay Gleason"
                         },
                         new
                         {
                             Id = "44",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "975b9fd9-41cd-499d-901a-ee3eb715c1dc",
+                            ConcurrencyStamp = "28bbc8d7-d8eb-4c81-a580-88cd37da041a",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "King17@hotmail.com",
+                            Email = "VerlaMayer17@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "VERLAMAYER17@HOTMAIL.COM",
+                            NormalizedUserName = "VERLA MAYER",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5381d076-567a-4be5-9e25-1dfca06daf7b",
+                            SecurityStamp = "7a5e761b-f7e8-4e68-83dc-fdc7121cc95c",
                             TwoFactorEnabled = false,
-                            UserName = "Verla"
+                            UserName = "Verla Mayer"
                         },
                         new
                         {
                             Id = "45",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "835ed446-1176-4971-819f-b4ccf65d0420",
+                            ConcurrencyStamp = "7ef6b00d-c78e-492e-b877-e1d3482d6383",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "River.Abernathy@hotmail.com",
+                            Email = "ZacharySkiles.Abernathy@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "ZACHARYSKILES.ABERNATHY@HOTMAIL.COM",
+                            NormalizedUserName = "ZACHARY SKILES",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b00cccc2-f4c9-43dd-891c-330042b4f577",
+                            SecurityStamp = "f09c9864-f686-47f8-8b4c-d91e5785cfa6",
                             TwoFactorEnabled = false,
-                            UserName = "Zachary"
+                            UserName = "Zachary Skiles"
                         },
                         new
                         {
                             Id = "46",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fa040a29-3aac-40dd-acc2-d32ead43ceb2",
+                            ConcurrencyStamp = "468a8343-21fa-47e8-96e3-661e0b460b4d",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Violet_Anderson26@hotmail.com",
+                            Email = "JaimeWintheiser_Anderson26@hotmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "JAIMEWINTHEISER_ANDERSON26@HOTMAIL.COM",
+                            NormalizedUserName = "JAIME WINTHEISER",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9820b4a2-28cb-4a9b-8262-65c4584078be",
+                            SecurityStamp = "98343c1c-80e0-4575-b7ad-508a1b23030c",
                             TwoFactorEnabled = false,
-                            UserName = "Jaime"
+                            UserName = "Jaime Wintheiser"
                         },
                         new
                         {
                             Id = "47",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a702f704-62b7-440d-9703-bc0b4d4c4029",
+                            ConcurrencyStamp = "581b4995-0551-41c0-a784-ff40457dfb28",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Eriberto1@gmail.com",
+                            Email = "HiltonHane1@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "HILTONHANE1@GMAIL.COM",
+                            NormalizedUserName = "HILTON HANE",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e32c4e1b-ad14-41d6-9c7e-e30003717832",
+                            SecurityStamp = "95e8e9da-98ae-4ae4-b1e5-e760265009a5",
                             TwoFactorEnabled = false,
-                            UserName = "Hilton"
+                            UserName = "Hilton Hane"
                         },
                         new
                         {
                             Id = "48",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3f9903e5-1fac-4ef5-9eaf-b93ce4457ca5",
+                            ConcurrencyStamp = "1ba639c5-e7b8-430d-875e-040674c6b294",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Forrest.Hamill@yahoo.com",
+                            Email = "IzabellaHessel.Hamill@yahoo.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "IZABELLAHESSEL.HAMILL@YAHOO.COM",
+                            NormalizedUserName = "IZABELLA HESSEL",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d84878a1-4860-4f14-b309-2d5a34f6ad23",
+                            SecurityStamp = "298439ec-259c-4555-92c5-47b255ab9e87",
                             TwoFactorEnabled = false,
-                            UserName = "Izabella"
+                            UserName = "Izabella Hessel"
                         },
                         new
                         {
                             Id = "49",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "07409299-8296-4fbe-a427-ad98ba3810fb",
+                            ConcurrencyStamp = "3f9c16be-6fcd-4b43-b2f4-2e67775d4262",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Dominique.Schaden76@yahoo.com",
+                            Email = "FlorencioGlover.Schaden76@yahoo.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "FLORENCIOGLOVER.SCHADEN76@YAHOO.COM",
+                            NormalizedUserName = "FLORENCIO GLOVER",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "78067c27-de00-4478-a2f0-ea1f5edb3149",
+                            SecurityStamp = "fa3e008b-89ff-4522-87e7-fc3a6b82a8d1",
                             TwoFactorEnabled = false,
-                            UserName = "Florencio"
+                            UserName = "Florencio Glover"
                         },
                         new
                         {
                             Id = "50",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "988343c7-19f0-4ce3-ac8d-9cd8ee898d3d",
+                            ConcurrencyStamp = "adbb8f92-5cb8-4683-970a-2b7958c649b9",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "Dayna_Schmitt@gmail.com",
+                            Email = "DameonFisher_Schmitt@gmail.com",
                             EmailConfirmed = false,
                             IsAdmin = false,
+                            IsDeleted = false,
                             LockoutEnabled = false,
+                            NormalizedEmail = "DAMEONFISHER_SCHMITT@GMAIL.COM",
+                            NormalizedUserName = "DAMEON FISHER",
                             PasswordHash = "password",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "89848f30-a22c-40e3-8e17-b71eb74999c1",
+                            SecurityStamp = "4d5deabe-67f7-440d-82ca-3cde8b23538a",
                             TwoFactorEnabled = false,
-                            UserName = "Dameon"
+                            UserName = "Dameon Fisher"
                         });
                 });
 
@@ -901,6 +1054,9 @@ namespace DotNetCoreReactREST.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -916,300 +1072,350 @@ namespace DotNetCoreReactREST.Migrations
                         {
                             Id = 1,
                             Description = "payment syndicate Ohio",
+                            IsDeleted = false,
                             Name = "Credit Card Account"
                         },
                         new
                         {
                             Id = 2,
                             Description = "Sudanese Pound Rubber multi-byte",
+                            IsDeleted = false,
                             Name = "Rubber"
                         },
                         new
                         {
                             Id = 3,
                             Description = "Agent Directives Unbranded Frozen Shoes",
+                            IsDeleted = false,
                             Name = "Gambia"
                         },
                         new
                         {
                             Id = 4,
                             Description = "Fort",
+                            IsDeleted = false,
                             Name = "Beauty & Sports"
                         },
                         new
                         {
                             Id = 5,
                             Description = "Factors North Dakota Unbranded Steel Computer",
+                            IsDeleted = false,
                             Name = "Oklahoma"
                         },
                         new
                         {
                             Id = 6,
                             Description = "vortals approach",
+                            IsDeleted = false,
                             Name = "bandwidth"
                         },
                         new
                         {
                             Id = 7,
                             Description = "Applications grow Bahamas",
+                            IsDeleted = false,
                             Name = "HDD"
                         },
                         new
                         {
                             Id = 8,
                             Description = "Customer",
+                            IsDeleted = false,
                             Name = "payment"
                         },
                         new
                         {
                             Id = 9,
                             Description = "Soft",
+                            IsDeleted = false,
                             Name = "Fresh"
                         },
                         new
                         {
                             Id = 10,
                             Description = "process improvement",
+                            IsDeleted = false,
                             Name = "Maine"
                         },
                         new
                         {
                             Id = 11,
                             Description = "generating Integration",
+                            IsDeleted = false,
                             Name = "Rustic Steel Shoes"
                         },
                         new
                         {
                             Id = 12,
                             Description = "Pike Multi-tiered Berkshire",
+                            IsDeleted = false,
                             Name = "port"
                         },
                         new
                         {
                             Id = 13,
                             Description = "RAM Indiana",
+                            IsDeleted = false,
                             Name = "Angola"
                         },
                         new
                         {
                             Id = 14,
                             Description = "monitor",
+                            IsDeleted = false,
                             Name = "bluetooth"
                         },
                         new
                         {
                             Id = 15,
                             Description = "Unbranded",
+                            IsDeleted = false,
                             Name = "Malaysian Ringgit"
                         },
                         new
                         {
                             Id = 16,
                             Description = "Intelligent Steel Bacon digital circuit",
+                            IsDeleted = false,
                             Name = "frictionless"
                         },
                         new
                         {
                             Id = 17,
                             Description = "Cloned Data forecast",
+                            IsDeleted = false,
                             Name = "content"
                         },
                         new
                         {
                             Id = 18,
                             Description = "black tan",
+                            IsDeleted = false,
                             Name = "Small Granite Mouse"
                         },
                         new
                         {
                             Id = 19,
                             Description = "GB Bedfordshire well-modulated",
+                            IsDeleted = false,
                             Name = "Handcrafted Metal Pants"
                         },
                         new
                         {
                             Id = 20,
                             Description = "attitude-oriented aggregate Manor",
+                            IsDeleted = false,
                             Name = "Circles"
                         },
                         new
                         {
                             Id = 21,
                             Description = "Producer copy synthesizing",
+                            IsDeleted = false,
                             Name = "Auto Loan Account"
                         },
                         new
                         {
                             Id = 22,
                             Description = "Greens Rubber Bahamas",
+                            IsDeleted = false,
                             Name = "Checking Account"
                         },
                         new
                         {
                             Id = 23,
                             Description = "Rapids",
+                            IsDeleted = false,
                             Name = "driver"
                         },
                         new
                         {
                             Id = 24,
                             Description = "Ergonomic yellow Tasty Fresh Fish",
+                            IsDeleted = false,
                             Name = "Greece"
                         },
                         new
                         {
                             Id = 25,
                             Description = "payment Customer neural-net",
+                            IsDeleted = false,
                             Name = "SQL"
                         },
                         new
                         {
                             Id = 26,
                             Description = "Sports, Baby & Toys",
+                            IsDeleted = false,
                             Name = "Savings Account"
                         },
                         new
                         {
                             Id = 27,
                             Description = "integrate Gorgeous Metal Chips",
+                            IsDeleted = false,
                             Name = "web-enabled"
                         },
                         new
                         {
                             Id = 28,
                             Description = "Latvian Lats Unbranded Fresh Table",
+                            IsDeleted = false,
                             Name = "withdrawal"
                         },
                         new
                         {
                             Id = 29,
                             Description = "networks Squares Senior",
+                            IsDeleted = false,
                             Name = "calculating"
                         },
                         new
                         {
                             Id = 30,
                             Description = "customer loyalty Montana connecting",
+                            IsDeleted = false,
                             Name = "budgetary management"
                         },
                         new
                         {
                             Id = 31,
                             Description = "Progressive Technician discrete",
+                            IsDeleted = false,
                             Name = "Hollow"
                         },
                         new
                         {
                             Id = 32,
                             Description = "Gorgeous Wooden Pants",
+                            IsDeleted = false,
                             Name = "invoice"
                         },
                         new
                         {
                             Id = 33,
                             Description = "Dynamic Planner Frozen",
+                            IsDeleted = false,
                             Name = "Strategist"
                         },
                         new
                         {
                             Id = 34,
                             Description = "implement",
+                            IsDeleted = false,
                             Name = "Operations"
                         },
                         new
                         {
                             Id = 35,
                             Description = "Missouri Mozambique",
+                            IsDeleted = false,
                             Name = "Intelligent"
                         },
                         new
                         {
                             Id = 36,
                             Description = "quantify Rustic Frozen Sausages Fresh",
+                            IsDeleted = false,
                             Name = "Brooks"
                         },
                         new
                         {
                             Id = 37,
                             Description = "Square",
+                            IsDeleted = false,
                             Name = "Personal Loan Account"
                         },
                         new
                         {
                             Id = 38,
                             Description = "synthesize Realigned",
+                            IsDeleted = false,
                             Name = "Configuration"
                         },
                         new
                         {
                             Id = 39,
                             Description = "intermediate online Auto Loan Account",
+                            IsDeleted = false,
                             Name = "Berkshire"
                         },
                         new
                         {
                             Id = 40,
                             Description = "Accountability Wooden",
+                            IsDeleted = false,
                             Name = "Row"
                         },
                         new
                         {
                             Id = 41,
                             Description = "Refined Metal Soap",
+                            IsDeleted = false,
                             Name = "redundant"
                         },
                         new
                         {
                             Id = 42,
                             Description = "innovate Kwanza",
+                            IsDeleted = false,
                             Name = "unleash"
                         },
                         new
                         {
                             Id = 43,
                             Description = "function open-source",
+                            IsDeleted = false,
                             Name = "reboot"
                         },
                         new
                         {
                             Id = 44,
                             Description = "Berkshire",
+                            IsDeleted = false,
                             Name = "HDD"
                         },
                         new
                         {
                             Id = 45,
                             Description = "THX",
+                            IsDeleted = false,
                             Name = "Small"
                         },
                         new
                         {
                             Id = 46,
                             Description = "withdrawal Florida SAS",
+                            IsDeleted = false,
                             Name = "Data"
                         },
                         new
                         {
                             Id = 47,
                             Description = "Shoes & Automotive transmit",
+                            IsDeleted = false,
                             Name = "haptic"
                         },
                         new
                         {
                             Id = 48,
                             Description = "Buckinghamshire experiences",
+                            IsDeleted = false,
                             Name = "backing up"
                         },
                         new
                         {
                             Id = 49,
                             Description = "front-end Crossroad",
+                            IsDeleted = false,
                             Name = "backing up"
                         },
                         new
                         {
                             Id = 50,
                             Description = "Chief deploy",
+                            IsDeleted = false,
                             Name = "SCSI"
                         });
                 });
@@ -1229,10 +1435,13 @@ namespace DotNetCoreReactREST.Migrations
                         .HasColumnType("nvarchar(1000)")
                         .HasMaxLength(1000);
 
-                    b.Property<DateTime>("DateCreated")
+                    b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsAnonymous")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<int>("PostId")
@@ -1252,8 +1461,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 1,
                             ApplicationUserId = "1",
                             Content = "deposit Soft Fantastic Concrete Pants",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 1
                         },
                         new
@@ -1261,8 +1471,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 2,
                             ApplicationUserId = "2",
                             Content = "generate Books deposit",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1270,8 +1481,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 3,
                             ApplicationUserId = "3",
                             Content = "Equatorial Guinea Games",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1279,8 +1491,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 4,
                             ApplicationUserId = "2",
                             Content = "niches",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1288,8 +1501,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 5,
                             ApplicationUserId = "3",
                             Content = "mobile",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 1
                         },
                         new
@@ -1297,8 +1511,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 6,
                             ApplicationUserId = "2",
                             Content = "Health, Books & Tools",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1306,8 +1521,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 7,
                             ApplicationUserId = "3",
                             Content = "bypass",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1315,8 +1531,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 8,
                             ApplicationUserId = "2",
                             Content = "Incredible Wooden Shoes quantify",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1324,8 +1541,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 9,
                             ApplicationUserId = "2",
                             Content = "asynchronous Configuration",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1333,8 +1551,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 10,
                             ApplicationUserId = "3",
                             Content = "impactful Mountain",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1342,8 +1561,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 11,
                             ApplicationUserId = "3",
                             Content = "USB withdrawal",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1351,8 +1571,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 12,
                             ApplicationUserId = "1",
                             Content = "Credit Card Account synergies",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1360,8 +1581,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 13,
                             ApplicationUserId = "3",
                             Content = "Generic",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1369,8 +1591,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 14,
                             ApplicationUserId = "3",
                             Content = "zero tolerance",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1378,8 +1601,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 15,
                             ApplicationUserId = "2",
                             Content = "THX",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 1
                         },
                         new
@@ -1387,8 +1611,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 16,
                             ApplicationUserId = "1",
                             Content = "Qatari Rial",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1396,8 +1621,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 17,
                             ApplicationUserId = "1",
                             Content = "Investment Account",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 1
                         },
                         new
@@ -1405,8 +1631,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 18,
                             ApplicationUserId = "2",
                             Content = "multi-byte District",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1414,8 +1641,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 19,
                             ApplicationUserId = "2",
                             Content = "transmitter",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1423,8 +1651,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 20,
                             ApplicationUserId = "3",
                             Content = "Regional Afghani",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1432,8 +1661,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 21,
                             ApplicationUserId = "1",
                             Content = "Representative zero tolerance",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1441,8 +1671,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 22,
                             ApplicationUserId = "1",
                             Content = "JSON Money Market Account",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 1
                         },
                         new
@@ -1450,8 +1681,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 23,
                             ApplicationUserId = "3",
                             Content = "Unbranded Metal Shirt Cambridgeshire",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 1
                         },
                         new
@@ -1459,8 +1691,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 24,
                             ApplicationUserId = "1",
                             Content = "Gorgeous Metal Mouse Outdoors",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1468,8 +1701,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 25,
                             ApplicationUserId = "2",
                             Content = "Walks",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1477,8 +1711,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 26,
                             ApplicationUserId = "3",
                             Content = "Camp revolutionize Digitized",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 1
                         },
                         new
@@ -1486,8 +1721,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 27,
                             ApplicationUserId = "3",
                             Content = "Unbranded Licensed",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1495,8 +1731,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 28,
                             ApplicationUserId = "2",
                             Content = "Mobility invoice dynamic",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1504,8 +1741,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 29,
                             ApplicationUserId = "1",
                             Content = "Platinum",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 1
                         },
                         new
@@ -1513,8 +1751,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 30,
                             ApplicationUserId = "2",
                             Content = "Dam Automotive, Movies & Health maximize",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 1
                         },
                         new
@@ -1522,8 +1761,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 31,
                             ApplicationUserId = "3",
                             Content = "green GB",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1531,8 +1771,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 32,
                             ApplicationUserId = "1",
                             Content = "Swedish Krona",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1540,8 +1781,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 33,
                             ApplicationUserId = "2",
                             Content = "Direct Forks Credit Card Account",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 1
                         },
                         new
@@ -1549,8 +1791,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 34,
                             ApplicationUserId = "1",
                             Content = "Outdoors, Computers & Home fresh-thinking",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1558,8 +1801,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 35,
                             ApplicationUserId = "3",
                             Content = "stable",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1567,8 +1811,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 36,
                             ApplicationUserId = "2",
                             Content = "invoice Brook",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1576,8 +1821,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 37,
                             ApplicationUserId = "3",
                             Content = "De-engineered deposit",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 1
                         },
                         new
@@ -1585,8 +1831,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 38,
                             ApplicationUserId = "2",
                             Content = "budgetary management",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1594,8 +1841,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 39,
                             ApplicationUserId = "1",
                             Content = "Grove",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 1
                         },
                         new
@@ -1603,8 +1851,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 40,
                             ApplicationUserId = "2",
                             Content = "Money Market Account invoice green",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1612,8 +1861,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 41,
                             ApplicationUserId = "1",
                             Content = "Congolese Franc synthesize",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1621,8 +1871,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 42,
                             ApplicationUserId = "1",
                             Content = "Movies Sleek Metal Cheese",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1630,8 +1881,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 43,
                             ApplicationUserId = "2",
                             Content = "Rubber Jamaican Dollar",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1639,8 +1891,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 44,
                             ApplicationUserId = "3",
                             Content = "parsing optical",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1648,8 +1901,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 45,
                             ApplicationUserId = "2",
                             Content = "Haiti Ways",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1657,8 +1911,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 46,
                             ApplicationUserId = "2",
                             Content = "Refined Granite Cheese Sports",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 1
                         },
                         new
@@ -1666,8 +1921,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 47,
                             ApplicationUserId = "3",
                             Content = "Solutions generate",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1675,8 +1931,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 48,
                             ApplicationUserId = "1",
                             Content = "communities Island Saint Lucia",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 2
                         },
                         new
@@ -1684,8 +1941,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 49,
                             ApplicationUserId = "1",
                             Content = "deposit Mountains Gorgeous",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = true,
+                            IsDeleted = false,
                             PostId = 3
                         },
                         new
@@ -1693,8 +1951,9 @@ namespace DotNetCoreReactREST.Migrations
                             Id = 50,
                             ApplicationUserId = "2",
                             Content = "hacking Small Fresh Gloves",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             IsAnonymous = false,
+                            IsDeleted = false,
                             PostId = 1
                         });
                 });
@@ -1711,6 +1970,9 @@ namespace DotNetCoreReactREST.Migrations
 
                     b.Property<int>("CommentId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsLiked")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -1748,6 +2010,9 @@ namespace DotNetCoreReactREST.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(250)")
@@ -1768,8 +2033,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 2,
                             Content = "Quo quos sint officia provident.",
-                            DateTime = new DateTime(2020, 1, 15, 23, 10, 53, 853, DateTimeKind.Local).AddTicks(3838),
+                            DateTime = new DateTime(2020, 2, 2, 15, 22, 3, 734, DateTimeKind.Local).AddTicks(7931),
                             Description = "Officia voluptas dolor voluptate accusamus asperiores dignissimos consequatur.",
+                            IsDeleted = false,
                             Title = "Iste excepturi nesciunt consequatur similique placeat."
                         },
                         new
@@ -1778,8 +2044,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 2,
                             Content = "Enim pariatur facere et nihil.",
-                            DateTime = new DateTime(2019, 7, 21, 21, 23, 23, 898, DateTimeKind.Local).AddTicks(9301),
+                            DateTime = new DateTime(2019, 8, 8, 13, 34, 33, 780, DateTimeKind.Local).AddTicks(3174),
                             Description = "Molestiae quis ut natus.",
+                            IsDeleted = false,
                             Title = "Ratione earum consequatur sapiente commodi iure voluptatum et."
                         },
                         new
@@ -1788,8 +2055,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 1,
                             Content = "Delectus autem recusandae et repellendus sint quisquam veritatis.",
-                            DateTime = new DateTime(2020, 2, 20, 2, 30, 29, 653, DateTimeKind.Local).AddTicks(3316),
+                            DateTime = new DateTime(2020, 3, 8, 18, 41, 39, 534, DateTimeKind.Local).AddTicks(7153),
                             Description = "Nulla et eveniet enim exercitationem temporibus id nihil consequatur molestiae.",
+                            IsDeleted = false,
                             Title = "Et et tempore."
                         },
                         new
@@ -1798,8 +2066,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 2,
                             Content = "Asperiores voluptatum dolorem voluptas laudantium et quia.",
-                            DateTime = new DateTime(2020, 1, 4, 18, 22, 51, 418, DateTimeKind.Local).AddTicks(4626),
+                            DateTime = new DateTime(2020, 1, 22, 10, 34, 1, 299, DateTimeKind.Local).AddTicks(8467),
                             Description = "Est molestiae et sit enim.",
+                            IsDeleted = false,
                             Title = "Dolor consequatur quibusdam harum laborum magnam molestiae necessitatibus."
                         },
                         new
@@ -1808,8 +2077,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 4,
                             Content = "Commodi corporis rerum rem eveniet.",
-                            DateTime = new DateTime(2019, 7, 24, 23, 54, 45, 52, DateTimeKind.Local).AddTicks(9784),
+                            DateTime = new DateTime(2019, 8, 11, 16, 5, 54, 934, DateTimeKind.Local).AddTicks(3588),
                             Description = "Nesciunt quia quia rerum aperiam veniam.",
+                            IsDeleted = false,
                             Title = "Aut et sed omnis occaecati minus animi officiis sed corporis."
                         },
                         new
@@ -1818,8 +2088,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 3,
                             Content = "Enim dolores voluptatem cumque.",
-                            DateTime = new DateTime(2019, 8, 15, 22, 33, 37, 898, DateTimeKind.Local).AddTicks(522),
+                            DateTime = new DateTime(2019, 9, 2, 14, 44, 47, 779, DateTimeKind.Local).AddTicks(4350),
                             Description = "Eos nihil est autem dolorem optio accusantium nemo.",
+                            IsDeleted = false,
                             Title = "Omnis illum expedita est dolorem eum."
                         },
                         new
@@ -1828,8 +2099,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 3,
                             Content = "Praesentium aperiam praesentium ut quos.",
-                            DateTime = new DateTime(2020, 3, 6, 22, 19, 15, 342, DateTimeKind.Local).AddTicks(4535),
+                            DateTime = new DateTime(2020, 3, 24, 14, 30, 25, 223, DateTimeKind.Local).AddTicks(8311),
                             Description = "Dolorem illo laudantium culpa sit.",
+                            IsDeleted = false,
                             Title = "Alias voluptatem et et quidem animi voluptatum delectus adipisci."
                         },
                         new
@@ -1838,8 +2110,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 4,
                             Content = "Sed aliquam qui minus neque.",
-                            DateTime = new DateTime(2019, 4, 20, 16, 16, 2, 201, DateTimeKind.Local).AddTicks(8784),
+                            DateTime = new DateTime(2019, 5, 8, 8, 27, 12, 83, DateTimeKind.Local).AddTicks(2583),
                             Description = "Vel quisquam ut voluptas animi et qui non eum aut.",
+                            IsDeleted = false,
                             Title = "Veniam qui incidunt ut fuga porro velit."
                         },
                         new
@@ -1848,8 +2121,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 2,
                             Content = "Fuga quia est vero molestiae alias eos provident.",
-                            DateTime = new DateTime(2019, 8, 26, 1, 59, 55, 42, DateTimeKind.Local).AddTicks(6206),
+                            DateTime = new DateTime(2019, 9, 12, 18, 11, 4, 924, DateTimeKind.Local).AddTicks(5),
                             Description = "Tempora quos ex perferendis et optio similique.",
+                            IsDeleted = false,
                             Title = "Ut aliquid saepe."
                         },
                         new
@@ -1858,8 +2132,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 1,
                             Content = "Odit ratione aut.",
-                            DateTime = new DateTime(2019, 4, 27, 0, 11, 4, 90, DateTimeKind.Local).AddTicks(410),
+                            DateTime = new DateTime(2019, 5, 14, 16, 22, 13, 971, DateTimeKind.Local).AddTicks(4182),
                             Description = "Et veniam eum dicta beatae reprehenderit laudantium eum nemo.",
+                            IsDeleted = false,
                             Title = "Ipsam quasi quia omnis."
                         },
                         new
@@ -1868,8 +2143,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 1,
                             Content = "Neque quia esse sit perspiciatis unde minus sit doloremque.",
-                            DateTime = new DateTime(2020, 3, 2, 14, 55, 36, 922, DateTimeKind.Local).AddTicks(1400),
+                            DateTime = new DateTime(2020, 3, 20, 7, 6, 46, 803, DateTimeKind.Local).AddTicks(5199),
                             Description = "Voluptate nobis possimus veniam sequi dolorem.",
+                            IsDeleted = false,
                             Title = "Culpa magni vitae officiis id maiores vel aspernatur."
                         },
                         new
@@ -1878,8 +2154,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 5,
                             Content = "Maiores mollitia maiores.",
-                            DateTime = new DateTime(2019, 7, 6, 0, 8, 36, 320, DateTimeKind.Local).AddTicks(286),
+                            DateTime = new DateTime(2019, 7, 23, 16, 19, 46, 201, DateTimeKind.Local).AddTicks(4057),
                             Description = "Rem voluptatibus sit exercitationem.",
+                            IsDeleted = false,
                             Title = "Fugiat neque provident minus deserunt quos."
                         },
                         new
@@ -1888,8 +2165,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 1,
                             Content = "Aut sit sit nulla sed dolor iste hic.",
-                            DateTime = new DateTime(2019, 7, 17, 14, 29, 9, 646, DateTimeKind.Local).AddTicks(5583),
+                            DateTime = new DateTime(2019, 8, 4, 6, 40, 19, 527, DateTimeKind.Local).AddTicks(9379),
                             Description = "Et dicta et impedit est et sequi accusantium est.",
+                            IsDeleted = false,
                             Title = "Earum nisi facilis autem porro eius dolor doloremque qui eveniet."
                         },
                         new
@@ -1898,8 +2176,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 3,
                             Content = "Quibusdam sunt dolores quo non autem.",
-                            DateTime = new DateTime(2020, 1, 5, 19, 1, 56, 255, DateTimeKind.Local).AddTicks(2839),
+                            DateTime = new DateTime(2020, 1, 23, 11, 13, 6, 136, DateTimeKind.Local).AddTicks(6635),
                             Description = "Consequatur illum excepturi esse.",
+                            IsDeleted = false,
                             Title = "Hic vel ipsa."
                         },
                         new
@@ -1908,8 +2187,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 5,
                             Content = "Rerum sint dolores vel libero blanditiis.",
-                            DateTime = new DateTime(2019, 6, 1, 19, 6, 45, 866, DateTimeKind.Local).AddTicks(3604),
+                            DateTime = new DateTime(2019, 6, 19, 11, 17, 55, 747, DateTimeKind.Local).AddTicks(7370),
                             Description = "Dolorum vitae est.",
+                            IsDeleted = false,
                             Title = "Quae suscipit quis delectus perferendis praesentium hic mollitia."
                         },
                         new
@@ -1918,8 +2198,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 2,
                             Content = "Quam modi rem quibusdam vel ratione beatae magnam.",
-                            DateTime = new DateTime(2020, 2, 3, 21, 17, 33, 896, DateTimeKind.Local).AddTicks(9085),
+                            DateTime = new DateTime(2020, 2, 21, 13, 28, 43, 778, DateTimeKind.Local).AddTicks(2878),
                             Description = "Et minima alias alias omnis voluptates voluptas nam nulla doloremque.",
+                            IsDeleted = false,
                             Title = "Sed dolor possimus quae magni."
                         },
                         new
@@ -1928,8 +2209,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 1,
                             Content = "Facilis porro aut.",
-                            DateTime = new DateTime(2019, 7, 15, 0, 14, 8, 68, DateTimeKind.Local).AddTicks(651),
+                            DateTime = new DateTime(2019, 8, 1, 16, 25, 17, 949, DateTimeKind.Local).AddTicks(4416),
                             Description = "Esse qui est labore laboriosam.",
+                            IsDeleted = false,
                             Title = "Quos officiis nostrum sed veritatis vitae temporibus."
                         },
                         new
@@ -1938,8 +2220,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 3,
                             Content = "Inventore omnis ipsam mollitia sed incidunt praesentium.",
-                            DateTime = new DateTime(2019, 12, 28, 23, 24, 10, 919, DateTimeKind.Local).AddTicks(6137),
+                            DateTime = new DateTime(2020, 1, 15, 15, 35, 20, 800, DateTimeKind.Local).AddTicks(9958),
                             Description = "Recusandae fugiat labore tempore molestias magni corrupti autem cumque.",
+                            IsDeleted = false,
                             Title = "Est blanditiis fugit ipsa rem dolorem doloremque cum."
                         },
                         new
@@ -1948,8 +2231,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 3,
                             Content = "Necessitatibus at repellat libero sunt sint tempora.",
-                            DateTime = new DateTime(2019, 9, 9, 20, 53, 45, 551, DateTimeKind.Local).AddTicks(8740),
+                            DateTime = new DateTime(2019, 9, 27, 13, 4, 55, 433, DateTimeKind.Local).AddTicks(2564),
                             Description = "Dolor quos officia quaerat omnis in.",
+                            IsDeleted = false,
                             Title = "Dignissimos id deserunt aut assumenda."
                         },
                         new
@@ -1958,8 +2242,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 1,
                             Content = "Aut voluptatem ullam velit optio nihil soluta ut temporibus est.",
-                            DateTime = new DateTime(2019, 4, 21, 3, 37, 54, 536, DateTimeKind.Local).AddTicks(5230),
+                            DateTime = new DateTime(2019, 5, 8, 19, 49, 4, 417, DateTimeKind.Local).AddTicks(9088),
                             Description = "Incidunt facilis optio quod quo enim.",
+                            IsDeleted = false,
                             Title = "Vero velit vero culpa consequatur perferendis cupiditate non ipsam sint."
                         },
                         new
@@ -1968,8 +2253,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 1,
                             Content = "Fugiat aut sint porro earum sunt laborum distinctio quo voluptatem.",
-                            DateTime = new DateTime(2019, 5, 23, 0, 22, 51, 419, DateTimeKind.Local).AddTicks(4778),
+                            DateTime = new DateTime(2019, 6, 9, 16, 34, 1, 300, DateTimeKind.Local).AddTicks(8636),
                             Description = "Sunt minus incidunt voluptatem aut in fuga aliquid.",
+                            IsDeleted = false,
                             Title = "Quo nobis fugit ea natus animi."
                         },
                         new
@@ -1978,8 +2264,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 3,
                             Content = "Illum necessitatibus sit eius sapiente ducimus qui architecto blanditiis facilis.",
-                            DateTime = new DateTime(2019, 11, 18, 1, 59, 27, 693, DateTimeKind.Local).AddTicks(2233),
+                            DateTime = new DateTime(2019, 12, 5, 18, 10, 37, 574, DateTimeKind.Local).AddTicks(6090),
                             Description = "Velit sed officia et itaque deserunt nemo illo.",
+                            IsDeleted = false,
                             Title = "Ut dolor voluptas aspernatur occaecati sapiente culpa eum voluptatem."
                         },
                         new
@@ -1988,8 +2275,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 4,
                             Content = "Sed sint ea voluptatibus perspiciatis quisquam sed nulla.",
-                            DateTime = new DateTime(2019, 6, 12, 13, 44, 57, 115, DateTimeKind.Local).AddTicks(1916),
+                            DateTime = new DateTime(2019, 6, 30, 5, 56, 6, 996, DateTimeKind.Local).AddTicks(5771),
                             Description = "Iure reprehenderit qui.",
+                            IsDeleted = false,
                             Title = "Non eligendi dicta voluptatem ullam."
                         },
                         new
@@ -1998,8 +2286,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 4,
                             Content = "Sit consequatur hic dolores nihil iusto provident sit dignissimos.",
-                            DateTime = new DateTime(2020, 3, 31, 14, 42, 7, 749, DateTimeKind.Local).AddTicks(3821),
+                            DateTime = new DateTime(2020, 4, 18, 6, 53, 17, 630, DateTimeKind.Local).AddTicks(7675),
                             Description = "Consectetur expedita autem.",
+                            IsDeleted = false,
                             Title = "Ea a debitis et autem necessitatibus quia id quod perferendis."
                         },
                         new
@@ -2008,8 +2297,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 1,
                             Content = "Molestiae numquam voluptas ipsum.",
-                            DateTime = new DateTime(2019, 6, 2, 21, 29, 45, 995, DateTimeKind.Local).AddTicks(8567),
+                            DateTime = new DateTime(2019, 6, 20, 13, 40, 55, 877, DateTimeKind.Local).AddTicks(2420),
                             Description = "Est qui et ut quo voluptates.",
+                            IsDeleted = false,
                             Title = "Cupiditate error vero quam itaque sit sit consequuntur."
                         },
                         new
@@ -2018,8 +2308,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 4,
                             Content = "Ipsa est rerum ex modi repellat nesciunt quisquam.",
-                            DateTime = new DateTime(2019, 9, 1, 17, 5, 27, 393, DateTimeKind.Local).AddTicks(6067),
+                            DateTime = new DateTime(2019, 9, 19, 9, 16, 37, 274, DateTimeKind.Local).AddTicks(9881),
                             Description = "Dolor sequi libero magnam.",
+                            IsDeleted = false,
                             Title = "Adipisci maiores voluptatum eum earum et laborum eius commodi iure."
                         },
                         new
@@ -2028,8 +2319,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 5,
                             Content = "Aperiam omnis sapiente eligendi consequuntur ratione voluptas atque.",
-                            DateTime = new DateTime(2019, 8, 14, 19, 11, 54, 645, DateTimeKind.Local).AddTicks(8871),
+                            DateTime = new DateTime(2019, 9, 1, 11, 23, 4, 527, DateTimeKind.Local).AddTicks(2708),
                             Description = "Amet hic eaque excepturi dolores aut et.",
+                            IsDeleted = false,
                             Title = "Eum ex et minus est delectus tempora tenetur perspiciatis."
                         },
                         new
@@ -2038,8 +2330,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 1,
                             Content = "Asperiores voluptatem quo eos ad modi necessitatibus.",
-                            DateTime = new DateTime(2019, 7, 1, 20, 48, 49, 809, DateTimeKind.Local).AddTicks(8554),
+                            DateTime = new DateTime(2019, 7, 19, 12, 59, 59, 691, DateTimeKind.Local).AddTicks(2333),
                             Description = "Dignissimos ullam explicabo ut.",
+                            IsDeleted = false,
                             Title = "Quia fugit esse repellendus iure aut occaecati deleniti qui."
                         },
                         new
@@ -2048,8 +2341,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 2,
                             Content = "Aliquam quia consequuntur ea sit minima nulla.",
-                            DateTime = new DateTime(2019, 12, 22, 14, 4, 45, 948, DateTimeKind.Local).AddTicks(5926),
+                            DateTime = new DateTime(2020, 1, 9, 6, 15, 55, 829, DateTimeKind.Local).AddTicks(9727),
                             Description = "Accusantium consequuntur temporibus exercitationem architecto.",
+                            IsDeleted = false,
                             Title = "Tempora quisquam saepe et."
                         },
                         new
@@ -2058,8 +2352,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 4,
                             Content = "Officia non eveniet esse ipsum nemo et laudantium praesentium.",
-                            DateTime = new DateTime(2020, 3, 22, 13, 47, 32, 997, DateTimeKind.Local).AddTicks(4935),
+                            DateTime = new DateTime(2020, 4, 9, 5, 58, 42, 878, DateTimeKind.Local).AddTicks(8738),
                             Description = "Quia nesciunt sint dolore dolor.",
+                            IsDeleted = false,
                             Title = "Est nulla neque a suscipit omnis provident."
                         },
                         new
@@ -2068,8 +2363,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 3,
                             Content = "Suscipit officiis ut natus et.",
-                            DateTime = new DateTime(2020, 3, 21, 9, 57, 2, 302, DateTimeKind.Local).AddTicks(2479),
+                            DateTime = new DateTime(2020, 4, 8, 2, 8, 12, 183, DateTimeKind.Local).AddTicks(6280),
                             Description = "Eligendi in aliquam reiciendis placeat.",
+                            IsDeleted = false,
                             Title = "Sed est rerum earum velit perspiciatis quidem aut quae vitae."
                         },
                         new
@@ -2078,8 +2374,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 5,
                             Content = "Est ut magni natus.",
-                            DateTime = new DateTime(2019, 7, 26, 0, 52, 0, 35, DateTimeKind.Local).AddTicks(4016),
+                            DateTime = new DateTime(2019, 8, 12, 17, 3, 9, 916, DateTimeKind.Local).AddTicks(7817),
                             Description = "Quidem sit impedit vel eius porro nihil.",
+                            IsDeleted = false,
                             Title = "Nostrum ut ratione eum explicabo consequatur."
                         },
                         new
@@ -2088,8 +2385,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 3,
                             Content = "Nostrum delectus distinctio maiores ut.",
-                            DateTime = new DateTime(2020, 3, 13, 9, 1, 40, 154, DateTimeKind.Local).AddTicks(5168),
+                            DateTime = new DateTime(2020, 3, 31, 1, 12, 50, 35, DateTimeKind.Local).AddTicks(8971),
                             Description = "Est ut repellat ipsa impedit.",
+                            IsDeleted = false,
                             Title = "Quo dicta minus porro iure."
                         },
                         new
@@ -2098,8 +2396,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 5,
                             Content = "Et non ad natus ipsum.",
-                            DateTime = new DateTime(2019, 11, 27, 18, 2, 18, 747, DateTimeKind.Local).AddTicks(1707),
+                            DateTime = new DateTime(2019, 12, 15, 10, 13, 28, 628, DateTimeKind.Local).AddTicks(5509),
                             Description = "Necessitatibus earum reprehenderit quia eveniet labore vitae iusto ullam.",
+                            IsDeleted = false,
                             Title = "Quis sequi et dolorem sed."
                         },
                         new
@@ -2108,8 +2407,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 1,
                             Content = "Mollitia id et vel perferendis non non commodi dolorum ipsam.",
-                            DateTime = new DateTime(2019, 5, 29, 14, 20, 3, 282, DateTimeKind.Local).AddTicks(1080),
+                            DateTime = new DateTime(2019, 6, 16, 6, 31, 13, 163, DateTimeKind.Local).AddTicks(4881),
                             Description = "Consequuntur asperiores nisi recusandae fugit unde amet corrupti.",
+                            IsDeleted = false,
                             Title = "Pariatur est aut qui deserunt harum."
                         },
                         new
@@ -2118,8 +2418,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 4,
                             Content = "Sunt consequatur dolore.",
-                            DateTime = new DateTime(2020, 3, 8, 2, 8, 17, 847, DateTimeKind.Local).AddTicks(9824),
+                            DateTime = new DateTime(2020, 3, 25, 18, 19, 27, 729, DateTimeKind.Local).AddTicks(3596),
                             Description = "Aliquid ratione aut quibusdam et perspiciatis labore aut.",
+                            IsDeleted = false,
                             Title = "Maiores reiciendis id."
                         },
                         new
@@ -2128,8 +2429,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 1,
                             Content = "Fugiat fugiat laboriosam accusamus et aut quia.",
-                            DateTime = new DateTime(2019, 9, 19, 5, 47, 41, 828, DateTimeKind.Local).AddTicks(3745),
+                            DateTime = new DateTime(2019, 10, 6, 21, 58, 51, 709, DateTimeKind.Local).AddTicks(7557),
                             Description = "Ad facere asperiores voluptas eveniet ex tenetur.",
+                            IsDeleted = false,
                             Title = "Sunt omnis enim velit odio rerum adipisci sint."
                         },
                         new
@@ -2138,8 +2440,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 5,
                             Content = "Cupiditate autem dolore ut consectetur.",
-                            DateTime = new DateTime(2019, 7, 22, 0, 7, 54, 477, DateTimeKind.Local).AddTicks(7212),
+                            DateTime = new DateTime(2019, 8, 8, 16, 19, 4, 359, DateTimeKind.Local).AddTicks(998),
                             Description = "Non libero voluptate enim impedit hic dolores.",
+                            IsDeleted = false,
                             Title = "Repellat autem quia vero officiis nobis."
                         },
                         new
@@ -2148,8 +2451,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 3,
                             Content = "Ratione veniam aut natus consequuntur.",
-                            DateTime = new DateTime(2019, 11, 25, 4, 45, 39, 632, DateTimeKind.Local).AddTicks(24),
+                            DateTime = new DateTime(2019, 12, 12, 20, 56, 49, 513, DateTimeKind.Local).AddTicks(3836),
                             Description = "Fuga sed occaecati possimus sint ratione quasi saepe sed beatae.",
+                            IsDeleted = false,
                             Title = "Consectetur ducimus consequatur est ut."
                         },
                         new
@@ -2158,8 +2462,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 2,
                             Content = "Dolor id consectetur adipisci reiciendis magni qui eveniet.",
-                            DateTime = new DateTime(2020, 3, 1, 4, 41, 49, 79, DateTimeKind.Local).AddTicks(4478),
+                            DateTime = new DateTime(2020, 3, 18, 20, 52, 58, 960, DateTimeKind.Local).AddTicks(8290),
                             Description = "Quidem recusandae libero nihil debitis possimus labore.",
+                            IsDeleted = false,
                             Title = "Provident voluptas iste recusandae cumque."
                         },
                         new
@@ -2168,8 +2473,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 2,
                             Content = "Optio velit laborum voluptates.",
-                            DateTime = new DateTime(2019, 9, 8, 17, 13, 34, 822, DateTimeKind.Local).AddTicks(5513),
+                            DateTime = new DateTime(2019, 9, 26, 9, 24, 44, 703, DateTimeKind.Local).AddTicks(9326),
                             Description = "Qui ullam reiciendis qui illo non molestias dolores.",
+                            IsDeleted = false,
                             Title = "Consequuntur harum quo et inventore et dolore."
                         },
                         new
@@ -2178,8 +2484,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 2,
                             Content = "Molestias omnis incidunt atque possimus est.",
-                            DateTime = new DateTime(2020, 2, 25, 8, 15, 51, 189, DateTimeKind.Local).AddTicks(1340),
+                            DateTime = new DateTime(2020, 3, 14, 0, 27, 1, 70, DateTimeKind.Local).AddTicks(5152),
                             Description = "Modi animi consequatur.",
+                            IsDeleted = false,
                             Title = "Velit in reprehenderit eum quidem sed quis fugit fugit praesentium."
                         },
                         new
@@ -2188,8 +2495,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 1,
                             Content = "Explicabo eligendi totam earum rem quas voluptates fuga sit.",
-                            DateTime = new DateTime(2019, 7, 14, 16, 57, 39, 397, DateTimeKind.Local).AddTicks(2936),
+                            DateTime = new DateTime(2019, 8, 1, 9, 8, 49, 278, DateTimeKind.Local).AddTicks(6717),
                             Description = "Enim rerum magni eos aperiam at at.",
+                            IsDeleted = false,
                             Title = "Libero molestiae quasi sed soluta."
                         },
                         new
@@ -2198,8 +2506,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 1,
                             Content = "Quas voluptate et optio velit iure.",
-                            DateTime = new DateTime(2020, 3, 22, 23, 10, 28, 260, DateTimeKind.Local).AddTicks(4110),
+                            DateTime = new DateTime(2020, 4, 9, 15, 21, 38, 141, DateTimeKind.Local).AddTicks(7917),
                             Description = "Excepturi delectus est eius voluptates iusto recusandae optio laboriosam.",
+                            IsDeleted = false,
                             Title = "Voluptas quasi quia inventore aliquid."
                         },
                         new
@@ -2208,8 +2517,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 1,
                             Content = "Dicta nisi at quia rem iste quas sed.",
-                            DateTime = new DateTime(2019, 6, 25, 9, 14, 5, 676, DateTimeKind.Local).AddTicks(1439),
+                            DateTime = new DateTime(2019, 7, 13, 1, 25, 15, 557, DateTimeKind.Local).AddTicks(5207),
                             Description = "Totam illum aut aut.",
+                            IsDeleted = false,
                             Title = "Quia velit ipsa aspernatur ipsam aspernatur quia."
                         },
                         new
@@ -2218,8 +2528,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "1",
                             CategoryId = 3,
                             Content = "Nam cumque est similique ex iste et.",
-                            DateTime = new DateTime(2019, 9, 11, 23, 28, 6, 688, DateTimeKind.Local).AddTicks(7673),
+                            DateTime = new DateTime(2019, 9, 29, 15, 39, 16, 570, DateTimeKind.Local).AddTicks(1463),
                             Description = "Aspernatur et tempore ut vel aut dolor tempora.",
+                            IsDeleted = false,
                             Title = "Ut qui expedita sapiente qui alias sit eos omnis."
                         },
                         new
@@ -2228,8 +2539,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 3,
                             Content = "Dolorum earum et odio et non est similique maxime.",
-                            DateTime = new DateTime(2019, 11, 24, 8, 25, 0, 565, DateTimeKind.Local).AddTicks(1956),
+                            DateTime = new DateTime(2019, 12, 12, 0, 36, 10, 446, DateTimeKind.Local).AddTicks(5746),
                             Description = "Ut facilis libero consectetur sit.",
+                            IsDeleted = false,
                             Title = "Enim voluptas necessitatibus."
                         },
                         new
@@ -2238,8 +2550,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "2",
                             CategoryId = 4,
                             Content = "Recusandae dolorem dignissimos deserunt non impedit.",
-                            DateTime = new DateTime(2020, 3, 30, 23, 42, 28, 380, DateTimeKind.Local).AddTicks(3079),
+                            DateTime = new DateTime(2020, 4, 17, 15, 53, 38, 261, DateTimeKind.Local).AddTicks(6866),
                             Description = "Corporis ea iure velit animi dolorem quod suscipit quaerat aperiam.",
+                            IsDeleted = false,
                             Title = "Corrupti consequuntur dolorum."
                         },
                         new
@@ -2248,8 +2561,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 4,
                             Content = "Et ea voluptatem omnis neque aut maiores eveniet magnam.",
-                            DateTime = new DateTime(2019, 8, 27, 11, 32, 3, 408, DateTimeKind.Local).AddTicks(8309),
+                            DateTime = new DateTime(2019, 9, 14, 3, 43, 13, 290, DateTimeKind.Local).AddTicks(2096),
                             Description = "Corporis veniam qui autem in voluptatem ut omnis commodi.",
+                            IsDeleted = false,
                             Title = "Aut et esse voluptatem."
                         },
                         new
@@ -2258,8 +2572,9 @@ namespace DotNetCoreReactREST.Migrations
                             ApplicationUserId = "3",
                             CategoryId = 3,
                             Content = "Quidem magnam qui voluptate vitae aut.",
-                            DateTime = new DateTime(2019, 9, 16, 17, 5, 7, 825, DateTimeKind.Local).AddTicks(6595),
+                            DateTime = new DateTime(2019, 10, 4, 9, 16, 17, 707, DateTimeKind.Local).AddTicks(353),
                             Description = "Possimus adipisci omnis ut iure omnis et praesentium id.",
+                            IsDeleted = false,
                             Title = "Quis nisi ducimus consequatur."
                         });
                 });
@@ -2272,7 +2587,7 @@ namespace DotNetCoreReactREST.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");
@@ -2281,8 +2596,6 @@ namespace DotNetCoreReactREST.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("PostId");
 
@@ -2462,11 +2775,7 @@ namespace DotNetCoreReactREST.Migrations
 
             modelBuilder.Entity("DotNetCoreReactREST.Entities.PostLike", b =>
                 {
-                    b.HasOne("DotNetCoreReactREST.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("DotNetCoreReactREST.Entities.Post", "Post")
+                    b.HasOne("DotNetCoreReactREST.Entities.Post", null)
                         .WithMany("PostLike")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)

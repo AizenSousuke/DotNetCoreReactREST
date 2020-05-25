@@ -3,6 +3,7 @@ using System.IO;
 using AutoMapper;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
+using DotNetCoreReactREST.Logic;
 using DotNetCoreReactREST.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,15 +23,15 @@ namespace DotNetCoreReactREST
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+        public IWebHostEnvironment Environment { get; }
+
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             Environment = env;
         }
-
-        public IConfiguration Configuration { get; }
-
-        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -59,6 +60,14 @@ namespace DotNetCoreReactREST
             services.AddScoped<ILikeRepository, LikeRepository>();
             services.AddScoped<IPostLikeRepository, PostLikeRepository>();
 
+            // Add Business Logic
+            services.AddScoped<ICategoryLogic, CategoryLogic>();
+            services.AddScoped<ICommentLogic, CommentLogic>();
+            services.AddScoped<IPostLikeLogic, PostLikeLogic>();
+            services.AddScoped<IPostLogic, PostLogic>();
+            services.AddScoped<IPostLikeLogic, PostLikeLogic>();
+            services.AddScoped<IUserLogic, UserLogic>();
+
             // Add AutoMapper to map object to object
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -67,10 +76,26 @@ namespace DotNetCoreReactREST
             services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
             {
                 // Password requirements
+                opt.User.RequireUniqueEmail = true;
                 opt.Password.RequiredLength = 8;
+                opt.Password.RequireDigit = true;
             })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddRoles<IdentityRole>();
+            services.ConfigureApplicationCookie(config =>
+            {
+                // Set cookie to 5 minutes for dev and 1 day for prod
+                if (Environment.IsDevelopment())
+                {
+                    config.Cookie.MaxAge = new TimeSpan(0, 0, 5, 0, 0);
+                }
+                else
+                {
+                    config.Cookie.MaxAge = new TimeSpan(1, 0, 0, 0, 0);
+                }
+
+                config.Cookie.Path = "/";
+            });
             services.AddScoped<UserManager<ApplicationUser>>();
             services.AddScoped<SignInManager<ApplicationUser>>();
 

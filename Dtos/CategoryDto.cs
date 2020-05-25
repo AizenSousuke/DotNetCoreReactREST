@@ -13,5 +13,7 @@ namespace DotNetCoreReactREST.Dtos
         public string Description { get; set; }
 
         public IEnumerable<Post> Posts { get; set; } = new List<Post>();
+
+        public bool IsDeleted { get; set; }
     }
 }
