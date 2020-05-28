@@ -241,3 +241,7 @@ _Pvt_Extensions
 # SSL Certificates
 /Certs
 /generate-ssl-certificate.ps1
+
+# Secrets
+/Secrets*
+secrets.*

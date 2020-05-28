@@ -71,6 +71,13 @@ namespace DotNetCoreReactREST
             // Add AutoMapper to map object to object
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            // Configure jwt authentication
+            IConfigurationSection appSettingsSection = Configuration.GetSection("JWT");
+            Console.WriteLine("JWT Key ==================> " + appSettingsSection.GetValue<string>("Secret"));
+
+            //var appSettings = appSettingsSection.Get<AppSettings>();
+            //var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
             // Identity
             services.AddIdentityCore<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();
             services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
@@ -82,6 +89,7 @@ namespace DotNetCoreReactREST
             })
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddRoles<IdentityRole>();
+
             services.ConfigureApplicationCookie(config =>
             {
                 // Set cookie to 5 minutes for dev and 1 day for prod

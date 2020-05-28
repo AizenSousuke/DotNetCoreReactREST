@@ -65,12 +65,21 @@ namespace DotNetCoreReactREST
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     // Set defaults here
+                    if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+                    {
+                        IConfigurationRoot configuration = new ConfigurationBuilder()
+                        .AddJsonFile("appsettings.Development.json")
+                        .AddJsonFile("./secrets/secrets.json")
+                        .Build();
+                        webBuilder.UseConfiguration(configuration);
+                    }
 
                     // If Environment is Production
                     if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
                     {
                         IConfigurationRoot configuration = new ConfigurationBuilder()
                         .AddJsonFile("appsettings.Production.json")
+                        .AddJsonFile("./secrets/secrets.json")
                         .Build();
                         webBuilder.UseConfiguration(configuration);
                     }
