@@ -14,6 +14,7 @@ import {
 import Register from "../auth/Register";
 import Login from "../auth/Login";
 import NavbarPanel from "./NavbarPanel";
+import { isLoggedIn } from "../../actions/auth";
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
@@ -21,7 +22,11 @@ const Navigation = () => {
   const user = useSelector((state) => state.auth.user);
 
   const authCheck = () => {
-    if (!user) {
+    // Check if there's any user logged in first
+    var userLoggedIn = dispatch(isLoggedIn());
+    console.log(userLoggedIn);
+
+    if (userLoggedIn == "No user is logged in") {
       return (
         <>
           <span

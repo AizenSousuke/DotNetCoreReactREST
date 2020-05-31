@@ -28,6 +28,14 @@ export const login = (users, { email, password }) => async (dispatch) => {
   }
 };
 
+export const isLoggedIn = () => async (dispatch) => {
+  const response = await api.get("/users/login")
+                            .then(({ data }) => {
+                              console.log(data);
+                              return data;
+                            });
+}
+
 export const register = ({ username, email, password }) => {
   let type = "";
   let payload = null;

@@ -6,6 +6,7 @@ using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Logic;
 using DotNetCoreReactREST.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ using Microsoft.Extensions.Options;
 namespace DotNetCoreReactREST.Controllers
 {
     // TODO: Add authentication
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -92,6 +94,7 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         // GET: Api/Users/Admins
+        [AllowAnonymous]
         [HttpGet("Admins")]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAllAdminsAsync()
         {
@@ -105,6 +108,7 @@ namespace DotNetCoreReactREST.Controllers
         }
 
         // GET: Api/Users
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetUsersAsync()
         {
@@ -117,6 +121,7 @@ namespace DotNetCoreReactREST.Controllers
             return Ok(users);
         }
 
+        [AllowAnonymous]
         [HttpGet("login")]
         public IActionResult IsLoggedIn()
         {
@@ -128,6 +133,7 @@ namespace DotNetCoreReactREST.Controllers
             return Ok("No user is logged in.");
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] UserForLoginDto user, [FromQuery] bool rememberMe = false)
         {
