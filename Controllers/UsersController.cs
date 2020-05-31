@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using DotNetCoreReactREST.Dtos;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Logic;
 using DotNetCoreReactREST.Repositories;
+using DotNetCoreReactREST.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +20,15 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 namespace DotNetCoreReactREST.Controllers
 {
     // TODO: Add authentication
-    [Route("api/[controller]")]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly ICommentRepository _commentRepository;
@@ -31,6 +39,7 @@ namespace DotNetCoreReactREST.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserRepository _userRepo;
         private readonly ILogger<UsersController> _logger;
+        private readonly AppSettings _appSettings;
 
         public UsersController(
             IMapper mapper,
@@ -40,7 +49,8 @@ namespace DotNetCoreReactREST.Controllers
             IUserLogic userLogic,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ILogger<UsersController> logger)
+            ILogger<UsersController> logger,
+            IOptions<AppSettings> appSettings)
         {
             _mapper = mapper;
             _userRepo = userRepository;
@@ -50,6 +60,7 @@ namespace DotNetCoreReactREST.Controllers
             _commentRepository = commentRepository;
             _userLogic = userLogic;
             _logger = logger;
+            _appSettings = appSettings.Value;
         }
 
         // POST: Api/Users
@@ -128,6 +139,7 @@ namespace DotNetCoreReactREST.Controllers
             return Ok("No user is logged in.");
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] UserForLoginDto user, [FromQuery] bool rememberMe = false)
         {
@@ -136,7 +148,7 @@ namespace DotNetCoreReactREST.Controllers
             ApplicationUser convertedUser = _mapper.Map<ApplicationUser>(user);
             _logger.LogInformation("User's Email from converted user {@UserEmail}", convertedUser.Email);
             ApplicationUser userFromManager = await _userManager.FindByEmailAsync(convertedUser.Email);
-            if (userFromManager != null)
+            if (userFromManager != null && userFromManager.PasswordHash == user.PasswordHash)
             {
                 _logger.LogInformation("User's Name from Manager {@UserName}", userFromManager.NormalizedUserName);
 
@@ -146,15 +158,20 @@ namespace DotNetCoreReactREST.Controllers
                     return Unauthorized("User " + userFromManager.UserName + " has been deleted or disabled.");
                 }
 
-                Microsoft.AspNetCore.Identity.SignInResult results = await _signInManager.PasswordSignInAsync(userFromManager, user.PasswordHash, rememberMe, false);
-                if (results.Succeeded)
-                {
-                    return Ok("Logged in successfully!");
-                }
-                else
-                {
-                    return Unauthorized("Check password.");
-                }
+                // Sign in using Sign In Manager
+                //Microsoft.AspNetCore.Identity.SignInResult results = await _signInManager.PasswordSignInAsync(userFromManager, user.PasswordHash, rememberMe, false);
+                //if (results.Succeeded)
+                //{
+                //    return Ok("Logged in successfully!");
+                //}
+                //else
+                //{
+                //    return Unauthorized("Check password.");
+                //}
+
+                // Sign in and get JWT Token
+                user.Token = GenerateJSONWebToken(userFromManager, _appSettings);
+                return Ok(_mapper.Map<UserForLoginDto>(user));
             }
 
             return NotFound("Can't login. No user found. Ensure that you're using the correct email.");
@@ -264,6 +281,29 @@ namespace DotNetCoreReactREST.Controllers
             var options = HttpContext.RequestServices
                 .GetRequiredService<IOptions<ApiBehaviorOptions>>();
             return (ActionResult)options.Value.InvalidModelStateResponseFactory(ControllerContext);
+        }
+
+        private string GenerateJSONWebToken(ApplicationUser user, AppSettings appSettings) {
+
+#pragma warning disable SA1312 // Variable names should begin with lower-case letter
+            SecurityToken JSONWebToken;
+#pragma warning restore SA1312 // Variable names should begin with lower-case letter
+            byte[] secretKey = Encoding.ASCII.GetBytes(appSettings.Secret);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                }),
+                Expires = DateTime.UtcNow.AddDays(1),
+                Issuer = appSettings.Issuer,
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256Signature),
+            };
+            JSONWebToken = tokenHandler.CreateToken(tokenDescriptor);
+            string token = tokenHandler.WriteToken(JSONWebToken);
+            return token;
         }
     }
 }

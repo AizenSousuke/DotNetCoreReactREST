@@ -1,10 +1,13 @@
 using System;
 using System.IO;
+using System.Text;
 using AutoMapper;
 using DotNetCoreReactREST.DbContexts;
 using DotNetCoreReactREST.Entities;
 using DotNetCoreReactREST.Logic;
 using DotNetCoreReactREST.Repositories;
+using DotNetCoreReactREST.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 
@@ -72,11 +76,62 @@ namespace DotNetCoreReactREST
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // Configure jwt authentication
-            IConfigurationSection appSettingsSection = Configuration.GetSection("JWT");
-            Console.WriteLine("JWT Key ==================> " + appSettingsSection.GetValue<string>("Secret"));
+            IConfigurationSection appSettingsSection = Configuration.GetSection("AppSettings");
 
-            //var appSettings = appSettingsSection.Get<AppSettings>();
-            //var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            // Configure services for appSettings for the secret key
+            // Mapping of configuration sections (aka secrets.json) to classes is done in the ConfigureServices method of the Startup.cs file (aka here).
+            services.Configure<AppSettings>(appSettingsSection);
+
+            if (Environment.IsDevelopment())
+            {
+                Console.WriteLine("JWT Key ==================> " + appSettingsSection.GetValue<string>("Secret"));
+            }
+
+            string jwtKey = appSettingsSection.GetValue<string>("Secret");
+            var key = Encoding.ASCII.GetBytes(jwtKey);
+            if (Environment.IsDevelopment())
+            {
+                Console.WriteLine("Key ==================> " + key);
+            }
+
+            // Remember to delete the orphan auth below or transfer this below
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(bearer =>
+            {
+                bearer.SaveToken = true;
+
+                // Only disable in dev env
+                //if (Environment.IsDevelopment())
+                //{
+                //    bearer.RequireHttpsMetadata = false;
+                //}
+
+                bearer.RequireHttpsMetadata = false;
+
+                bearer.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidIssuer = appSettingsSection.GetValue<string>("Issuer"),
+                    ValidateAudience = false,
+                    ValidateLifetime = false,
+                };
+
+                if (Environment.IsDevelopment())
+                {
+                    Console.WriteLine("Issuer Signin Key ========> " + bearer.TokenValidationParameters.IssuerSigningKey);
+                }
+            });
+
+            // ======================
 
             // Identity
             services.AddIdentityCore<ApplicationUser>().AddEntityFrameworkStores<AppDbContext>();
@@ -90,20 +145,21 @@ namespace DotNetCoreReactREST
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddRoles<IdentityRole>();
 
-            services.ConfigureApplicationCookie(config =>
-            {
-                // Set cookie to 5 minutes for dev and 1 day for prod
-                if (Environment.IsDevelopment())
-                {
-                    config.Cookie.MaxAge = new TimeSpan(0, 0, 5, 0, 0);
-                }
-                else
-                {
-                    config.Cookie.MaxAge = new TimeSpan(1, 0, 0, 0, 0);
-                }
+            //services.ConfigureApplicationCookie(config =>
+            //{
+            //    // Set cookie to 5 minutes for dev and 1 day for prod
+            //    if (Environment.IsDevelopment())
+            //    {
+            //        config.Cookie.MaxAge = new TimeSpan(0, 0, 5, 0, 0);
+            //    }
+            //    else
+            //    {
+            //        config.Cookie.MaxAge = new TimeSpan(1, 0, 0, 0, 0);
+            //    }
 
-                config.Cookie.Path = "/";
-            });
+            //    config.Cookie.Path = "/";
+            //});
+
             services.AddScoped<UserManager<ApplicationUser>>();
             services.AddScoped<SignInManager<ApplicationUser>>();
 
@@ -156,11 +212,11 @@ namespace DotNetCoreReactREST
             // Development directory browser
             services.AddDirectoryBrowser();
 
-            // Authentication
-            services.AddAuthentication();
+            // Authentication (Implemented above)
+            // services.AddAuthentication();
 
             // Authorization
-            services.AddAuthorization();
+            // services.AddAuthorization();
 
             // Cross Origin Requests
             // AddPolicy("Name of policy")
@@ -227,7 +283,7 @@ namespace DotNetCoreReactREST
 
             app.UseRouting();
 
-            // Use authentication and authorization - who are you vs are you allowed
+            // Use authentication and authorization - who are you vs are you allowed - used in JWT authentication
             app.UseAuthentication();
             app.UseAuthorization();
 

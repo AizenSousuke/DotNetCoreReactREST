@@ -2,12 +2,14 @@
 
 namespace DotNetCoreReactREST.Dtos
 {
-    public class UserForLoginDto : UserDto
+    public class UserForLoginDto
     {
         [Required]
-        public new string Email { get; set; }
+        public string Email { get; set; }
 
         [Required]
-        public new string PasswordHash { get; set; }
+        public string PasswordHash { get; set; }
+
+        public string Token { get; set; }
     }
 }
